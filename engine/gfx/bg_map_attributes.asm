@@ -104,10 +104,10 @@ LoadBGMapAttributes::
 	ret
 
 BGMapAttributesPointers:
+	dw BGMapAttributes_WholeScreen ; Trade Tube
 	dw BGMapAttributes_Unknown1
 	dw BGMapAttributes_Unknown2
 	dw BGMapAttributes_GameFreakIntro
-	dw BGMapAttributes_TrainerCard
 	dw BGMapAttributes_PartyMenu
 	dw BGMapAttributes_NidorinoIntro
 	dw BGMapAttributes_TitleScreen

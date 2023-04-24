@@ -270,7 +270,7 @@ Trade_DrawOpenEndOfLinkCable:
 	call Trade_ClearTileMap
 	ld b, HIGH(vBGMap0)
 	call CopyScreenTileBufferToVRAM
-	ld b, SET_PAL_GENERIC
+	ld b, SET_PAL_TRADE_TUBE
 	call RunPaletteCommand
 
 ; This function call is pointless. It just copies blank tiles to VRAM that was
@@ -449,7 +449,7 @@ Trade_InitGameboyTransferGfx:
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	call ClearScreen
-	ld b, SET_PAL_GENERIC
+	ld b, SET_PAL_TRADE_TUBE
 	call RunPaletteCommand
 	xor a
 	ldh [hAutoBGTransferEnabled], a

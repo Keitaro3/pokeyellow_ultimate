@@ -110,6 +110,11 @@ SetPal_Pokedex:
 	ld hl, wPalPacket
 	ld de, BlkPacket_Pokedex
 	ret
+	
+SetPal_Pokedex2:
+	ld hl, PalPacket_Pokedex
+	ld de, BlkPacket_WholeScreen
+	ret
 
 SetPal_Slots:
 	ld hl, PalPacket_Slots
@@ -212,45 +217,10 @@ SetPal_PokemonWholeScreen:
 	ld hl, wPalPacket
 	ld de, BlkPacket_WholeScreen
 	ret
-
-SetPal_TrainerCard:
-	ld hl, BlkPacket_TrainerCard
-	ld de, wTrainerCardBlkPacket
-	ld bc, $40
-	call CopyData
-	ld de, BadgeBlkDataLengths
-	ld hl, wTrainerCardBlkPacket + 2
-	ld a, [wObtainedBadges]
-	ld c, NUM_BADGES
-.badgeLoop
-	srl a
-	push af
-	jr c, .haveBadge
-; The player doens't have the badge, so zero the badge's blk data.
-	push bc
-	ld a, [de]
-	ld c, a
-	xor a
-.zeroBadgeDataLoop
-	ld [hli], a
-	dec c
-	jr nz, .zeroBadgeDataLoop
-	pop bc
-	jr .nextBadge
-.haveBadge
-; The player does have the badge, so skip past the badge's blk data.
-	ld a, [de]
-.skipBadgeDataLoop
-	inc hl
-	dec a
-	jr nz, .skipBadgeDataLoop
-.nextBadge
-	pop af
-	inc de
-	dec c
-	jr nz, .badgeLoop
-	ld hl, PalPacket_TrainerCard
-	ld de, wTrainerCardBlkPacket
+	
+SetPal_TradeTube:
+	ld hl, PalPacket_TradeTube
+	ld de, BlkPacket_WholeScreen
 	ret
 
 SendUnknownPalPacket_7205d::
@@ -278,21 +248,15 @@ SetPalFunctions:
 	dw SetPal_PartyMenu
 	dw SetPal_PokemonWholeScreen
 	dw SetPal_GameFreakIntro
-	dw SetPal_TrainerCard
-	dw SendUnknownPalPacket_7205d
-	dw SendUnknownPalPacket_72064
-
-; The length of the blk data of each badge on the Trainer Card.
-; The Rainbow Badge has 3 entries because of its many colors.
-BadgeBlkDataLengths:
-	db 6     ; Boulder Badge
-	db 6     ; Cascade Badge
-	db 6     ; Thunder Badge
-	db 6 * 3 ; Rainbow Badge
-	db 6     ; Soul Badge
-	db 6     ; Marsh Badge
-	db 6     ; Volcano Badge
-	db 6     ; Earth Badge
+	dw SetPal_Generic ; Trainer Card
+	dw SendUnknownPalPacket_7205d ; Pikachu Beach gameplay
+	dw SendUnknownPalPacket_72064 ; Pikachu Beach title
+	dw SetPal_Pokedex2
+	;dw SetPal_Pokepic
+	;dw SetPal_PackPals
+	dw SetPal_TradeTube
+	;dw SetPal_TrainerOrMonFrontpic
+	;dw SetPal_GenderSelect
 
 DeterminePaletteID:
 	ld a, [hl]
@@ -1056,10 +1020,11 @@ palPacketPointers:
 	dw BlkPacket_Titlescreen
 	dw BlkPacket_NidorinoIntro
 	dw wPartyMenuBlkPacket
-	dw wTrainerCardBlkPacket
+	;dw wTrainerCardBlkPacket
 	dw BlkPacket_GameFreakIntro
 	dw wPalPacket
 	dw UnknownPacket_72751
+	dw PalPacket_TradeTube
 palPacketPointersEnd:
 
 CopySGBBorderTiles:
