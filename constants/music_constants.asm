@@ -45,7 +45,7 @@ ENDM
 	music_const MUSIC_BIKE_RIDING,         Music_BikeRiding
 	music_const MUSIC_SURFING,             Music_Surfing
 	music_const MUSIC_GAME_CORNER,         Music_GameCorner
-	music_const MUSIC_YELLOW_INTRO,        Music_YellowIntro
+	music_const MUSIC_INTRO_BATTLE,        Music_IntroBattle
 	music_const MUSIC_DUNGEON1,            Music_Dungeon1
 	music_const MUSIC_DUNGEON2,            Music_Dungeon2
 	music_const MUSIC_DUNGEON3,            Music_Dungeon3

@@ -1,3 +1,3 @@
 Version_GFX:
-INCBIN "gfx/title/blue_version.1bpp" ; unused
+INCBIN "gfx/title/red_version.1bpp"
 Version_GFXEnd:

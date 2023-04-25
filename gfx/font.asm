@@ -1,4 +1,4 @@
-PokemonLogoJapanGraphics: INCBIN "gfx/title/pokemon_logo_japan.2bpp"
+PokemonLogoGraphics: INCBIN "gfx/title/pokemon_logo.2bpp"
 FontGraphics:: INCBIN "gfx/font/font.1bpp"
 FontGraphicsEnd::
 

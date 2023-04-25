@@ -528,7 +528,6 @@ INCLUDE "audio/music/surfing.asm"
 INCLUDE "audio/music/jigglypuffsong.asm"
 INCLUDE "audio/music/halloffame.asm"
 INCLUDE "audio/music/credits.asm"
-INCLUDE "audio/music/yellowintro.asm"
 
 
 SECTION "Music 4", ROMX
