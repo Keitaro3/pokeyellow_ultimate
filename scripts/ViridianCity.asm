@@ -220,7 +220,6 @@ ViridianCityScript9:
 	ld a, [wXCoord]
 	cp 19
 	jr z, .asm_191e4
-	callfar Func_f1a01
 	ld de, ViridianCityOldManMovementData1
 .asm_191e4
 	ld a, $8

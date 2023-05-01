@@ -200,13 +200,6 @@ ViridianCityText_f19fc:
 	text_far _ViridianCityText14
 	text_end
 
-
-Func_f1a01::
-	ld hl, Data_f1a0a
-	ld b, SPRITE_FACING_RIGHT
-	call TryApplyPikachuMovementData
-	ret
-
 Data_f1a0a:
 	db $00
 	db $1d

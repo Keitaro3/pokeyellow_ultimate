@@ -55,17 +55,15 @@ LoadSpriteSetFromMapHeader:
 ; data from the map's header. Since the VRAM tile pattern slots are filled in
 ; the order of the sprite set, in order to find the VRAM tile pattern slot
 ; for a sprite slot, the picture ID for the sprite is looked up within the
-; sprite set. The index of the picture ID within the sprite set plus two
-; (since the Red sprite always has the first VRAM tile pattern slot and the
-; Pikachu sprite reserves the second slot) is the VRAM tile pattern slot.
+; sprite set. The index of the picture ID within the sprite set plus one
+; (since the Red sprite always has the first VRAM tile pattern slot)
+; is the VRAM tile pattern slot.
 	ld hl, wSpriteSet
 	ld bc, (wSpriteSetID - wSpriteSet)
 	xor a
 	call FillMemory
-	ld a, SPRITE_PIKACHU ; load Pikachu separately
-	ld [wSpriteSet], a
 	ld hl, wSprite01StateData1
-	ld a, 14
+	ld a, 15
 .storeVRAMSlotsLoop
 	push af
 	ld a, [hl] ; [x#SPRITESTATEDATA1_PICTUREID] (zero if sprite slot is not used)
@@ -120,11 +118,7 @@ CheckIfPictureIDAlreadyLoaded:
 
 CheckForFourTileSprite:
 ; Checks for a sprite added in yellow
-; Returns no carry if the sprite is Pikachu, as its sprite is handled separately
 ; Else, returns carry if the sprite uses 4 tiles
-	cp SPRITE_PIKACHU       ; is this the Pikachu Sprite?
-	ret z                   ; return if yes
-
 	cp FIRST_STILL_SPRITE   ; is this a four tile sprite?
 	jr nc, .notYellowSprite ; set carry if yes
 ; regular sprite
@@ -250,9 +244,7 @@ ReadSpriteSheetData:
 Func_14150:
 	ld a, $1
 	ld [wSpritePlayerStateData2ImageBaseOffset], a ; vram slot for player
-	ld a, $2
-	ld [wSpritePikachuStateData2ImageBaseOffset], a ; vram slot for Pikachu
-	ld a, $e
+	ld a, $f
 	ld hl, wSprite01StateData1
 .loop
 	ldh [hVRAMSlot], a ; store current sprite set slot as a counter

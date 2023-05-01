@@ -1,11 +1,11 @@
 PikachuFanText::
 	text "Won't you admire"
-	line "my CLEFAIRY's"
+	line "my PIKACHU's"
 	cont "adorable tail?"
 	done
 
 PikachuFanBetterText::
-	text "Humph! My CLEFAIRY"
+	text "Humph! My PIKACHU"
 	line "is twice as cute"
 	cont "as that one!"
 	done
@@ -17,7 +17,7 @@ PikachuFanPrintText::
 
 	para "He gave me a nice"
 	line "PRINT of my cute"
-	cont "CLEFAIRY."
+	cont "PIKACHU."
 	done
 
 SeelFanText::
@@ -43,7 +43,8 @@ SeelFanPrintText::
 	done
 
 FanClubPikachuText::
-	text "CLEFAIRY: Pippii!"
+	text "PIKACHU: Chu!"
+	line "Pikachu!"
 	done
 
 FanClubSeelText::

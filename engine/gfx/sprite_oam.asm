@@ -103,12 +103,12 @@ PrepareOAMData::
 	inc e
 	ld a, [wd5cd]
 	add [hl]
-	cp $80
-	jr c, .asm_4a1c
-	ld b, a
-	ldh a, [hPikachuSpriteVRAMOffset]
-	add b
-.asm_4a1c
+	;cp $80
+	;jr c, .asm_4a1c
+	;ld b, a
+	;ldh a, [hPikachuSpriteVRAMOffset]
+	;add b
+;.asm_4a1c
 	ld [de], a ; tile id
 	inc hl
 	inc e

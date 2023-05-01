@@ -24,12 +24,9 @@ _UpdateSprites::
 	jr nz, .spriteLoop
 	ret
 .updateCurrentSprite
-	ldh a, [hCurrentSpriteOffset]
-	and a
-	jp z, UpdatePlayerSprite
-	cp $f0 ; pikachu
-	jp z, SpawnPikachu
-	ld a, [hl]
+	cp $1
+	jp nz, UpdateNonPlayerSprite
+	jp UpdatePlayerSprite
 
 UpdateNonPlayerSprite:
 	dec a
@@ -273,17 +270,6 @@ DetectCollisionBetweenSprites:
 	jr nc, .next ; go to next sprite if distance is still positive after both adjustments
 
 .collision
-	ld a, l
-	and $f0 ; collision with pikachu?
-	jr nz, .asm_4cd9
-	xor a
-	ld [wd434], a
-	ldh a, [hFF8F]
-	cp $f
-	jr nz, .asm_4cd9
-	call Func_4d0a
-	jr .asm_4cef
-.asm_4cd9
 	ldh a, [hFF91] ; a = 7 or 9 depending on sprite i's delta X
 	ld b, a
 	ldh a, [hFF90] ; a = 7 or 9 depending on sprite i's delta Y
@@ -331,31 +317,6 @@ DetectCollisionBetweenSprites:
 	inc a
 	cp $10
 	jp nz, .loop
-	ret
-
-; takes delta X or delta Y in a
-; b = delta X/Y
-; c = 0 if delta X/Y is 0
-; c = 7 if delta X/Y is 1
-; c = 9 if delta X/Y is -1
-Func_4d0a:
-	ldh a, [hFF91]
-	ld b, a
-	ldh a, [hFF90]
-	inc l
-	cp b
-	jr c, .asm_4d17
-	ld b, %1100
-	jr .asm_4d19
-.asm_4d17
-	ld b, %11
-.asm_4d19
-	ld a, c
-	and b
-	ld [wd434], a
-	ld a, c
-	inc l
-	inc l
 	ret
 
 SetSpriteCollisionValues:

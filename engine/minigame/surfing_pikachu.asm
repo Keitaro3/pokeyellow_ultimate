@@ -85,7 +85,7 @@ SurfingPikachuLoop:
 	ret
 
 SurfingPikachu_CheckPressedSelect:
-	ld hl, wd492
+	ld hl, wAlreadySpokeToSurfinDude
 	bit 1, [hl]
 	ret z
 	ldh a, [hJoyPressed]
@@ -1702,9 +1702,9 @@ DidPlayerGetAHighScore:
 	jr c, .not_high_score
 	jr nz, .high_score
 .not_high_score
-	call WaitForSoundToFinish
-	ldpikacry e, PikachuCry28
-	call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
+	;call WaitForSoundToFinish
+	;ldpikacry e, PikachuCry28
+	;call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
 	and a
 	ret
 
@@ -1714,19 +1714,11 @@ DidPlayerGetAHighScore:
 	ld a, [wSurfingMinigameTotalScore + 1]
 	ld [wSurfingMinigameHiScore + 1], a
 	call WaitForSoundToFinish
-	ldpikacry e, PikachuCry34
-	call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
+	;ldpikacry e, PikachuCry34
+	;call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
 	ld a, SFX_GET_ITEM2_4_2
 	call PlaySound
 	scf
-	ret
-
-SurfingMinigame_PlayPikaCryIfSurfingPikaInParty:
-	push de
-	callfar IsSurfingPikachuInThePlayersParty
-	pop de
-	ret nc
-	callfar PlayPikachuSoundClip
 	ret
 
 SurfingMinigame_IncreaseRadnessMeter:

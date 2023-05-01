@@ -49,27 +49,26 @@ CreditsTextPointers:
 	dw CreditsText_Yoshikawa
 	dw CreditsText_Oota23
 	dw CreditsText_Yoshida
-	dw CreditsText_Matsumita
+	dw CreditsText_Sato     ; Hitomi Sato
 	dw CreditsText_Seya
-	dw CreditsText_Sekine
-	dw CreditsText_Shimamura
-	dw CreditsText_Shimoyamada
+	dw CreditsText_Aoki     ; Morikazu Aoki
+	dw CreditsText_Ichinose ; Go Ichinose
+	dw CreditsText_Sato2    ; Muneo Sato
 	dw CreditsText_SuperMarioClub
 	dw CreditsText_Izushi
-	dw CreditsText_Nomura
+	dw CreditsText_Oomori   ; Shigeru Ohmori
 	dw CreditsText_Harada
 	dw CreditsText_Yamagami
 	dw CreditsText_Nishimura
 	dw CreditsText_Saeki
-	dw CreditsText_Fuzii
-	dw CreditsText_Shogakukan
-	dw CreditsText_Ootani
-	dw CreditsText_PikachuVoice
+	dw CreditsText_ModBy	; Modification By
+	dw CreditsText_Marino	; Me!
 	dw CreditsText_USStaff
 	dw CreditsText_USCoord
 	dw CreditsText_Tilden
 	dw CreditsText_Kawakami
 	dw CreditsText_Nakamura2
+	dw CreditsText_Giese
 	dw CreditsText_Shoemake
 	dw CreditsText_Osborne
 	dw CreditsText_Translation
@@ -90,7 +89,7 @@ CreditsTextPointers:
 	assert_table_length NUM_CRED_STRINGS
 
 CreditsText_Version:
-	db -6, "YELLOW VERSION"
+	db -5, "ORIGINAL GAME"
 	next   "    STAFF@"
 CreditsText_Tajiri:
 	db -6, "SATOSHI TAJIRI@"
@@ -186,24 +185,24 @@ CreditsText_Yoshikawa:
 	db -6, "RENA YOSHIKAWA@"
 CreditsText_Oota23:
 	db -6, "TOMOMICHI OOTA@"
-CreditsText_Matsumita:
-	db -8, "TOSHINOBU MATSUMIYA@"
+CreditsText_Sato:
+	db -5, "HITOMI SATO@"		  ; FRLG Scenario
 CreditsText_Seya:
 	db -5, "NOBUHIRO SEYA@"
 CreditsText_Yoshida:
 	db -7, "HIRONOBU YOSHIDA@"
-CreditsText_Sekine:
-	db -6, "KAZUHITO SEKINE@"
-CreditsText_Shimamura:
-	db -7, "KAZUSHI SHIMAMURA@"
-CreditsText_Shimoyamada:
-	db -9, "TERUYUKI SHIMOYAMADA@"
+CreditsText_Aoki:
+	db -5, "MORIKAZU AOKI@"		  ; Gen 2 SFX
+CreditsText_Ichinose:
+	db -5, "GO ICHINOSE@"		  ; Gen 2 Music
+CreditsText_Sato2:
+	db -5, "MUNEO SATO@"		  ; Gen 2 Monster Design
 CreditsText_SuperMarioClub:
 	db -9, "NCL SUPER MARIO CLUB@"
 CreditsText_Izushi:
 	db -7, "TAKEHIRO IZUSHI@"
-CreditsText_Nomura:
-	db -5, "FUZIKO NOMURA@"
+CreditsText_Oomori:
+	db -6, "SHIGERU OOMORI@"	  ; FRLG Map Design	
 CreditsText_Harada:
 	db -6, "TAKAHIRO HARADA@"
 CreditsText_Yamagami:
@@ -211,18 +210,13 @@ CreditsText_Yamagami:
 CreditsText_Nishimura:
 	db -8, "KENTAROU NISHIMURA@"
 CreditsText_Saeki:
-	db -5, "NAOKO SAEKI@"
-CreditsText_Fuzii:
-	db -5, "TAKAYA FUZII@"
-CreditsText_Shogakukan:
-	db -4, "SHOGAKUKAN"
-	next   "PRODUCTION@"
-CreditsText_Ootani:
-	db -5, "IKUE OOTANI@"
-CreditsText_PikachuVoice:
-	db -6, "PIKACHU VOICE@"
-
-	db -3, "××××××××@"
+	db -5, "NAOKO SAEKI@"	
+CreditsText_ModBy:
+	db -7, "GAME MODIFICATION@"
+	next   "       BY@"
+CreditsText_Marino:
+	db -5, "TONY MARINO@"
+	next   " (KEITARO)@"
 CreditsText_USStaff:
 	db -7, "US VERSION STAFF@"
 CreditsText_USCoord:
@@ -233,6 +227,8 @@ CreditsText_Kawakami:
 	db -6, "NAOKO KAWAKAMI@"
 CreditsText_Nakamura2:
 	db -6, "HIRO NAKAMURA@"
+CreditsText_Giese:
+	db -6, "WILLIAM GIESE@"
 CreditsText_Shoemake:
 	db -6, "RANDY SHOEMAKE@"
 CreditsText_Osborne:

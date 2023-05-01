@@ -33,19 +33,14 @@ EnterMapAnim::
 	ld [hl], $ff ; wPlayerSpinInPlaceAnimSoundID
 	ld hl, wFacingDirectionList
 	call PlayerSpinInPlace
-	ld a, $1
-	ld [wPikachuSpawnState], a
 .restoreDefaultMusic
 	call PlayDefaultMusic
 .done
-	call Func_151d
 	jp RestoreFacingDirectionAndYScreenPos
 .dungeonWarpAnimation
 	ld c, 50
 	call DelayFrames
 	call PlayerSpinWhileMovingDown
-	ld a, $0
-	ld [wPikachuSpawnState], a
 	jr .done
 .flyAnimation
 	pop hl
@@ -61,8 +56,6 @@ EnterMapAnim::
 	ld de, FlyAnimationEnterScreenCoords
 	call DoFlyAnimation
 	call LoadPlayerSpriteGraphics
-	ld a, $1
-	ld [wPikachuSpawnState], a
 	jr .restoreDefaultMusic
 
 FlyAnimationEnterScreenCoords:
@@ -94,7 +87,6 @@ PlayerSpinWhileMovingDown:
 
 
 _LeaveMapAnim::
-	call Func_1510
 	call InitFacingDirectionList
 	call IsPlayerStandingOnWarpPadOrHole
 	ld a, b

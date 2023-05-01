@@ -83,11 +83,6 @@ _WhichFloorText::
 	line "you want? "
 	done
 
-_SleepingPikachuText1::
-	text "There isn't any"
-	line "response..."
-	prompt
-
 _PartyMenuNormalText::
 	text "Choose a #MON."
 	done
@@ -276,11 +271,6 @@ _AccessedHoFPCText::
 	line "OF FAME List."
 	prompt
 
-_SleepingPikachuText2::
-	text "There isn't any"
-	line "response..."
-	prompt
-
 _SwitchOnText::
 	text "Switch on!"
 	prompt
@@ -332,12 +322,6 @@ _CantTakeMonText::
 
 	para "Deposit #MON"
 	line "first."
-	prompt
-
-_PikachuUnhappyText::
-	text_ram wcd6d
-	text " looks"
-	line "unhappy about it!"
 	prompt
 
 _ReleaseWhichMonText::
@@ -418,13 +402,6 @@ _AccessedOaksPCText::
 
 	para "Accessed #DEX"
 	line "Rating System."
-	prompt
-
-_ExpressionText::
-	text "This expression is"
-	line "No. @"
-	text_decimal wExpressionNumber, 1, 2
-	text "."
 	prompt
 
 _NotEnoughMemoryText::

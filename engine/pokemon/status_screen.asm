@@ -170,25 +170,8 @@ StatusScreen:
 	call GBPalNormal
 	hlcoord 1, 0
 	call LoadFlippedFrontSpriteByMonIndex ; draw Pokémon picture
-	ld a, [wMonDataLocation]
-	cp ENEMY_PARTY_DATA
-	jr z, .playRegularCry
-	cp BOX_DATA
-	jr z, .checkBoxData
-	callfar IsThisPartymonStarterPikachu_Party
-	jr nc, .playRegularCry
-	jr .playPikachuSoundClip
-.checkBoxData
-	callfar IsThisPartymonStarterPikachu_Box
-	jr nc, .playRegularCry
-.playPikachuSoundClip
-	ld e, 16
-	callfar PlayPikachuSoundClip
-	jr .continue
-.playRegularCry
 	ld a, [wcf91]
 	call PlayCry ; play Pokémon cry
-.continue
 	call WaitForTextScrollButtonPress ; wait for button
 	pop af
 	ldh [hTileAnimations], a

@@ -28,38 +28,7 @@ Museum2FText4:
 	text_end
 
 Museum2FText5:
-	text_asm
-	ld a, [wd472]
-	bit 7, a
-	jr nz, .asm_5c1f6
-	ld hl, Museum2FText_5c20e
-	call PrintText
-	jr .asm_5c20b
-
-.asm_5c1f6
-	ld a, [wPikachuHappiness]
-	cp 101
-	jr c, .asm_5c205
-	ld hl, Museum2FText_5c218
-	call PrintText
-	jr .asm_5c20b
-
-.asm_5c205
-	ld hl, Museum2FText_5c213
-	call PrintText
-.asm_5c20b
-	jp TextScriptEnd
-
-Museum2FText_5c20e:
 	text_far _Museum2FText5
-	text_end
-
-Museum2FText_5c213:
-	text_far _Museum2FPikachuText1
-	text_end
-
-Museum2FText_5c218:
-	text_far _Museum2FPikachuText2
 	text_end
 
 Museum2FText6:

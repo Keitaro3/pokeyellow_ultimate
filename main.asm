@@ -144,7 +144,6 @@ SECTION "Battle Engine 5", ROMX
 
 INCLUDE "engine/battle/display_effectiveness.asm"
 INCLUDE "engine/items/tmhm.asm"
-INCLUDE "engine/pikachu/respawn_overworld_pikachu.asm"
 INCLUDE "engine/battle/scale_sprites.asm"
 INCLUDE "engine/slots/game_corner_slots2.asm"
 
@@ -342,18 +341,11 @@ INCLUDE "engine/printer/printer2.asm"
 INCLUDE "engine/overworld/npc_movement_2.asm"
 
 
-SECTION "Pikachu PCM", ROMX
+SECTION "Specific Script Flags", ROMX
 
-INCLUDE "engine/pikachu/pikachu_pcm.asm"
 INCLUDE "engine/overworld/advance_player_sprite.asm"
 INCLUDE "engine/events/black_out.asm"
 INCLUDE "engine/overworld/specific_script_flags.asm"
-
-
-SECTION "Try Pikachu Movement", ROMX
-
-INCLUDE "engine/overworld/unused_load_missable_object_data.asm"
-INCLUDE "engine/events/try_pikachu_movement.asm"
 
 
 SECTION "Credits", ROMX
@@ -374,9 +366,8 @@ INCLUDE "engine/battle/common_text.asm"
 INCLUDE "engine/battle/link_battle_versus_text.asm"
 INCLUDE "engine/battle/unused_stats_functions.asm"
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
-INCLUDE "engine/battle/pikachu_entrance_anim.asm"
 INCLUDE "engine/battle/decrement_pp.asm"
-INCLUDE "engine/events/pikachu_happiness.asm"
+; happiness code goes here, eventually.
 
 
 SECTION "Battle Engine 9", ROMX
@@ -411,14 +402,9 @@ INCLUDE "engine/minigame/surfing_pikachu.asm"
 INCLUDE "engine/gfx/animated_objects.asm"
 
 
-SECTION "Overworld Pikachu", ROMX
+SECTION "Map Header Pointers", ROMX
 
 INCLUDE "data/maps/songs.asm"
 INCLUDE "data/maps/map_header_pointers.asm"
 INCLUDE "data/maps/map_header_banks.asm"
-INCLUDE "engine/pikachu/pikachu_follow.asm"
-INCLUDE "engine/pikachu/pikachu_status.asm"
-INCLUDE "engine/pikachu/pikachu_emotions.asm"
-INCLUDE "engine/pikachu/pikachu_movement.asm"
-INCLUDE "engine/pikachu/pikachu_pic_animation.asm"
 INCLUDE "engine/debug/debug_menu.asm"

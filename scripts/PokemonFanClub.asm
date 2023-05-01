@@ -1,72 +1,5 @@
 PokemonFanClub_Script:
-	call EnableAutoTextBoxDrawing
-	ld hl, PokemonFanClub_ScriptPointers
-	ld a, [wFanClubCurScript]
-	call CallFunctionInTable
-	ret
-
-PokemonFanClub_ScriptPointers:
-	dw FanClubScript1
-	dw FanClubScript2
-
-FanClubScript1:
-	ld hl, wd492
-	bit 7, [hl]
-	call z, FanClubScript_59a44
-	ld hl, wd492
-	set 7, [hl]
-	ret
-
-FanClubScript2:
-	ld hl, wd492
-	bit 7, [hl]
-	call z, FanClubScript_59a39
-	ld hl, wd492
-	set 7, [hl]
-	ret
-
-FanClubScript_59a39:
-	call Random
-	ldh a, [hRandomAdd]
-	cp 25
-	call c, FanClubScript_59a44
-	ret
-
-FanClubScript_59a44:
-	ld a, [wd472]
-	bit 7, a
-	ret z
-	callfar CheckPikachuFaintedOrStatused
-	ret c
-	ld a, $1
-	ld [wFanClubCurScript], a
-	xor a
-	ld [wPlayerMovingDirection], a
-	call UpdateSprites
-	call UpdateSprites
-	ld a, EXCLAMATION_BUBBLE
-	ld [wWhichEmotionBubble], a
-	ld a, $f ; Pikachu
-	ld [wEmotionBubbleSpriteIndex], a
-	predef EmotionBubble
-	ld hl, PikachuMovementScript_59a8c
-	call ApplyPikachuMovementData
-	ld a, $2
-	ld [wSprite03StateData1MovementStatus], a ; Seel
-	xor a ; SPRITE_FACING_DOWN
-	ld [wSprite03StateData1FacingDirection], a
-	callfar InitializePikachuTextID
-	call DisablePikachuFollowingPlayer
-	ret
-
-PikachuMovementScript_59a8c:
-	db $00
-	db $26
-	db $20
-	db $20
-	db $20
-	db $1e
-	db $3f
+	jp EnableAutoTextBoxDrawing
 
 PokemonFanClub_TextPointers:
 	dw FanClubText1
@@ -77,7 +10,7 @@ PokemonFanClub_TextPointers:
 	dw FanClubText6
 
 FanClubText1:
-; clefairy fan
+; pikachu fan
 	text_asm
 	CheckEventHL EVENT_152
 	jr z, .asm_59aaf
@@ -151,7 +84,7 @@ FanClubText3:
 	text_asm
 	ld hl, .text
 	call PrintText
-	ld a, CLEFAIRY
+	ld a, PIKACHU
 	call PlayCry
 	call WaitForSoundToFinish
 	jp TextScriptEnd

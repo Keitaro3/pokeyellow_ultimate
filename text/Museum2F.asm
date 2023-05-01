@@ -33,20 +33,6 @@ _Museum2FText5::
 	line "soon, I promise!"
 	done
 
-_Museum2FPikachuText1::
-	text "Your PIKACHU looks"
-	line "untamed."
-	cont "May I have it for"
-	cont "my daughter?"
-	done
-
-_Museum2FPikachuText2::
-	text "I'd like to get"
-	line "that PIKACHU off"
-	cont "you, but it's too"
-	cont "attached to you."
-	done
-
 _Museum2FText6::
 	text "SPACE SHUTTLE"
 	line "COLUMBIA"

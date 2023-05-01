@@ -71,12 +71,8 @@ CeladonGameCornerScript1:
 .asm_48c43
 	ld a, [wXCoord]
 	cp 8
-	jr nz, .pikachu
+	jr nz, .asm_48c4d
 	ld de, MovementData_48c63
-	jr .asm_48c4d
-.pikachu
-	callfar Func_f1f23
-	ld de, MovementData_48c5a
 .asm_48c4d
 	ld a, $b
 	ldh [hSpriteIndex], a

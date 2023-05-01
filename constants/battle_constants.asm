@@ -40,8 +40,6 @@ DEF BIT_TEST_BATTLE EQU 0
 	const BATTLE_TYPE_NORMAL  ; 0
 	const BATTLE_TYPE_OLD_MAN ; 1
 	const BATTLE_TYPE_SAFARI  ; 2
-	const BATTLE_TYPE_RUN     ; 3
-	const BATTLE_TYPE_PIKACHU ; 4
 
 ; damage limits before type effectiveness
 DEF MIN_NEUTRAL_DAMAGE EQU 2

@@ -170,17 +170,3 @@ _PewterGymGuidePostBattleText::
 	line "You're #MON"
 	cont "champ material!"
 	done
-
-_PewterGymGuyText::
-	text "All right! Let's"
-	line "get happening!"
-
-	para "It will be tough"
-	line "for your PIKACHU"
-	cont "at this GYM!"
-
-	para "Electric attacks"
-	line "are harmless to"
-	cont "BROCK's ground-"
-	cont "type #MON."
-	done

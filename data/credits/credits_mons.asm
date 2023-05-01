@@ -11,9 +11,9 @@ CreditsMons:
 	db STARMIE
 	db GYARADOS
 	db DITTO
-	db OMASTAR
-	db VILEPLUME
 	db NIDOKING
+	db VILEPLUME
+	db OMASTAR
 	db PARASECT
 
 REPT 9

@@ -96,8 +96,23 @@ SSAnne2Script1:
 	call Delay3
 	ld a, OPP_RIVAL2
 	ld [wCurOpponent], a
+
+	; select which team to use during the encounter
+	ld a, [wRivalStarter]
+	cp STARTER2
+	jr nz, .NotSquirtle
 	ld a, $1
+	jr .done
+.NotSquirtle
+	cp STARTER3
+	jr nz, .Charmander
+	ld a, $2
+	jr .done
+.Charmander
+	ld a, $3
+.done
 	ld [wTrainerNo], a
+
 	call SSAnne2Script_61416
 	ld a, $2
 	ld [wSSAnne2FCurScript], a

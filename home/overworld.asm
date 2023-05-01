@@ -26,7 +26,6 @@ EnterMap::
 	ld hl, wd72e
 	res 4, [hl]
 .didNotEnterUsingFlyWarpOrDungeonWarp
-	call IsSurfingPikachuInParty
 	farcall CheckForceBikeOrSurf ; handle currents in SF islands and forced bike riding in cycling road
 	ld hl, wd732
 	bit 4, [hl]
@@ -44,7 +43,6 @@ OverworldLoop::
 	call DelayFrame
 OverworldLoopLessDelay::
 	call DelayFrame
-	call IsSurfingPikachuInParty
 	call LoadGBPal
 	call HandleMidJump
 	ld a, [wWalkCounter]
@@ -92,10 +90,7 @@ OverworldLoopLessDelay::
 	ldh a, [hItemAlreadyFound]
 	and a
 	jp z, OverworldLoop ; jump if a hidden object or bookshelf was found, but not if a card key door was found
-	xor a
-	ld [wd436], a ; new yellow address
 	call IsSpriteOrSignInFrontOfPlayer
-	call Func_0ffe
 	ldh a, [hSpriteIndexOrTextID]
 	and a
 	jp z, OverworldLoop
@@ -126,8 +121,6 @@ OverworldLoopLessDelay::
 	call UpdateSprites
 	ld hl, wFlags_0xcd60
 	res 2, [hl]
-	xor a
-	ld [wd435], a
 	ld a, 1
 	ld [wCheckFor180DegreeTurn], a
 	ld a, [wPlayerMovingDirection] ; the direction that was pressed last time
@@ -185,8 +178,6 @@ OverworldLoopLessDelay::
 	ld a, [wPlayerLastStopDirection] ; old direction
 	cp b
 	jr z, .noDirectionChange
-	ld a, $8
-	ld [wd435], a
 ; unlike in red/blue, yellow does not have the 180 degrees odd code
 	ld hl, wFlags_0xcd60
 	set 2, [hl]
@@ -228,7 +219,6 @@ OverworldLoopLessDelay::
 .noCollision
 	ld a, $08
 	ld [wWalkCounter], a
-	callfar Func_fcc08
 	jr .moveAhead2
 
 .moveAhead
@@ -238,8 +228,6 @@ OverworldLoopLessDelay::
 .moveAhead2
 	ld hl, wFlags_0xcd60
 	res 2, [hl]
-	xor a
-	ld [wd435], a
 	call DoBikeSpeedup
 	call AdvancePlayerSprite
 	ld a, [wWalkCounter]
@@ -473,7 +461,6 @@ WarpFound2::
 	ld [wMapPalOffset], a
 	call GBFadeOutToBlack
 .notRockTunnel
-	callfar SetPikachuSpawnOutside
 	call PlayMapChangeSound
 	jr .done
 
@@ -500,11 +487,9 @@ WarpFound2::
 	ld hl, wd736
 	res 0, [hl]
 	res 1, [hl]
-	callfar SetPikachuSpawnWarpPad
 	jr .done
 
 .goBackOutside
-	callfar SetPikachuSpawnBackOutside
 	ld a, [wLastMap]
 	ld [wCurMap], a
 	call PlayMapChangeSound
@@ -645,10 +630,6 @@ CheckMapConnections::
 	ld a, h
 	ld [wCurrentTileBlockMapViewPointer + 1], a
 .loadNewMap ; load the connected map that was entered
-	ld hl, wPikachuOverworldStateFlags
-	set 4, [hl]
-	ld a, $2
-	ld [wPikachuSpawnState], a
 	call LoadMapHeader
 	call PlayDefaultMusicFadeOutCurrent
 	ld b, SET_PAL_OVERWORLD
@@ -1164,12 +1145,6 @@ IsSpriteInFrontOfPlayer2::
 	set 7, [hl] ; set flag to make the sprite face the player
 	ld a, e
 	ldh [hSpriteIndexOrTextID], a
-	ldh a, [hSpriteIndexOrTextID] ; possible useless read because a already has the value of the read address
-	cp $f
-	jr nz, .dontwritetowd436
-	ld a, $FF
-	ld [wd436], a
-.dontwritetowd436
 	scf
 	ret
 
@@ -1226,31 +1201,14 @@ CollisionCheckOnLand::
 	ld d, a
 	ld a, [wSpritePlayerStateData1CollisionData]
 	and d ; check if a sprite is in the direction the player is trying to go
-	nop ; ??? why is this in the code
 	jr nz, .collision
 	xor a
 	ldh [hSpriteIndexOrTextID], a
 	call IsSpriteInFrontOfPlayer ; check for sprite collisions again? when does the above check fail to detect a sprite collision?
-	jr nc, .asm_0a5c
-	res 7, [hl]
 	ldh a, [hSpriteIndexOrTextID]
 	and a ; was there a sprite collision?
-	jr z, .asm_0a5c
+	jr nz, .collision
 ; if no sprite collision
-	cp $f
-	jr nz, .collision
-	call CheckPikachuFollowingPlayer
-	jr nz, .collision
-	ldh a, [hJoyHeld]
-	and $2
-	jr nz, .asm_0a5c
-	ld hl, wd435
-	ld a, [hl]
-	and a
-	jr z, .asm_0a5c
-	dec [hl]
-	jr nz, .collision
-.asm_0a5c
 	ld hl, TilePairCollisionsLand
 	call CheckForJumpingAndTilePairCollisions
 	jr c, .collision
@@ -1700,10 +1658,6 @@ CollisionCheckOnWater::
 	jr nz, .noCollision ; keep surfing if it's not the boarding platform tile
 	jr .stopSurfing ; if it is the boarding platform tile, stop surfing
 .stopSurfing ; based game freak
-	ld a, $3
-	ld [wPikachuSpawnState], a
-	ld hl, wPikachuOverworldStateFlags
-	set 5, [hl]
 	xor a
 	ld [wWalkBikeSurfState], a
 	call LoadPlayerSpriteGraphics
@@ -1745,24 +1699,23 @@ RunMapScript::
 LoadWalkingPlayerSpriteGraphics::
 ; new sprite copy stuff
 	xor a
-	ld [wd473], a
+	ld [wSurfSpriteID], a
 	ld b, BANK(RedSprite)
 	ld de, RedSprite
 	jr LoadPlayerSpriteGraphicsCommon
 
 LoadSurfingPlayerSpriteGraphics2::
-	ld a, [wd473]
+	ld a, [wSurfSpriteID]
 	and a
-	jr z, .asm_0d75
-	dec a
 	jr z, LoadSurfingPlayerSpriteGraphics
 	dec a
-	jr z, .asm_0d7c
-.asm_0d75
-	ld a, [wd472]
-	bit 6, a
-	jr z, LoadSurfingPlayerSpriteGraphics
-.asm_0d7c
+	jr z, .loadPikachuSprite
+	
+	ld b, BANK(LaprasSprite)
+	ld de, LaprasSprite
+	jr LoadPlayerSpriteGraphicsCommon	
+	
+.loadPikachuSprite
 	ld b, BANK(SurfingPikachuSprite)
 	ld de, SurfingPikachuSprite
 	jr LoadPlayerSpriteGraphicsCommon
@@ -1799,11 +1752,6 @@ LoadPlayerSpriteGraphicsCommon::
 ; function to load data from the map header
 LoadMapHeader::
 	farcall MarkTownVisitedAndLoadMissableObjects
-	jr asm_0dbd
-
-Func_0db5:: ; XXX
-	farcall LoadMissableObjectData
-asm_0dbd:
 	ld a, [wCurMapTileset]
 	ld [wUnusedD119], a
 	ld a, [wCurMap]
@@ -1897,11 +1845,6 @@ asm_0dbd:
 	call InitSprites
 .finishUp
 	predef LoadTilesetHeader
-	ld a, [wd72e]
-	bit 5, a ; did a battle happen immediately before this?
-	jr nz, .skip_pika_spawn
-	callfar SchedulePikachuSpawnForAfterText
-.skip_pika_spawn
 	callfar LoadWildData
 	pop hl ; restore hl from before going to the warp/sign/sprite data (this value was saved for seemingly no purpose)
 	ld a, [wCurMapHeight] ; map height in 4x4 tile blocks
@@ -2136,9 +2079,6 @@ IsSpinning::
 	ret z ; no spinning
 	farjp LoadSpinnerArrowTiles ; spin while moving
 
-Func_0ffe::
-	jpfar IsPlayerTalkingToPikachu
-
 InitSprites::
 	ld a, [hli]
 	ld [wNumSprites], a ; save the number of sprites
@@ -2194,12 +2134,11 @@ InitSprites::
 	ret
 
 ZeroSpriteStateData::
-; zero out sprite state data for sprites 01-14
-; sprite 15 is used for Pikachu
+; zero out sprite state data for sprites 01-15
 	ld hl, wSprite01StateData1
 	ld de, wSprite01StateData2
 	xor a
-	ld b, 14 * $10
+	ld b, 15 * $10
 .loop
 	ld [hli], a
 	ld [de], a
@@ -2209,10 +2148,10 @@ ZeroSpriteStateData::
 	ret
 
 DisableRegularSprites::
-; disable SPRITESTATEDATA1_IMAGEINDEX (set to $ff) for sprites 01-14
+; disable SPRITESTATEDATA1_IMAGEINDEX (set to $ff) for sprites 01-15
 	ld hl, wSprite01StateData1ImageIndex
 	ld de, $10
-	ld c, $e
+	ld c, $f
 .loop
 	ld [hl], $ff
 	add hl, de

@@ -360,21 +360,6 @@ LearnMoveFromLevelUp:
 	call GetMoveName
 	call CopyToStringBuffer
 	predef LearnMove
-	ld a, b
-	and a
-	jr z, .done
-	callfar IsThisPartymonStarterPikachu_Party
-	jr nc, .done
-	ld a, [wMoveNum]
-	cp THUNDERBOLT
-	jr z, .foundThunderOrThunderbolt
-	cp THUNDER
-	jr nz, .done
-.foundThunderOrThunderbolt
-	ld a, $5
-	ld [wd49c], a
-	ld a, $85
-	ld [wPikachuMood], a
 .done
 	ld a, [wcf91]
 	ld [wd11e], a

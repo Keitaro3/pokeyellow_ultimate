@@ -1,13 +1,4 @@
 DisplayPokemonCenterDialogue_::
-	ld a, [wCurMap]
-	cp PEWTER_POKECENTER
-	jr nz, .regularCenter
-	call CheckPikachuFollowingPlayer
-	jr z, .regularCenter
-	ld hl, LooksContentText ; if pikachu is sleeping, don't heal
-	call PrintText
-	ret
-.regularCenter
 	call SaveScreenTilesToBuffer1 ; save screen
 	ld hl, PokemonCenterWelcomeText
 	call PrintText
@@ -20,34 +11,16 @@ DisplayPokemonCenterDialogue_::
 	call PrintText
 .skipShallWeHealYourPokemon
 	call YesNoChoicePokeCenter ; yes/no menu
-	call UpdateSprites
 	ld a, [wCurrentMenuItem]
 	and a
 	jp nz, .declinedHealing ; if the player chose No
 	call SetLastBlackoutMap
-	callfar IsStarterPikachuInOurParty
-	jr nc, .notHealingPlayerPikachu
-	call CheckPikachuFollowingPlayer
-	jr nz, .notHealingPlayerPikachu
-	call LoadCurrentMapView
-	call Delay3
-	call UpdateSprites
-	callfar PikachuWalksToNurseJoy ; todo
-.notHealingPlayerPikachu
+	call LoadScreenTilesFromBuffer1
 	ld hl, NeedYourPokemonText
 	call PrintText
-	ld c, 64
-	call DelayFrames
-	call CheckPikachuFollowingPlayer
-	jr nz, .playerPikachuNotOnScreen
-	call DisablePikachuOverworldSpriteDrawing
-	callfar IsStarterPikachuInOurParty
-	call c, Func_6eaa
-.playerPikachuNotOnScreen
-	lb bc, 1, 8
-	call Func_6ebb
-	ld c, 30
-	call DelayFrames
+	ld a, $18
+	ld [wSprite01StateData1ImageIndex], a ; make the nurse turn to face the machine
+	call Delay3
 	farcall AnimateHealingMachine ; do the healing machine animation
 	predef HealParty
 	xor a
@@ -58,69 +31,19 @@ DisplayPokemonCenterDialogue_::
 	ld [wLastMusicSoundID], a
 	ld [wNewSoundID], a
 	call PlaySound
-	call CheckPikachuFollowingPlayer
-	jr nz, .doNotReturnPikachu
-	callfar IsStarterPikachuInOurParty
-	call c, Func_6eaa
-	ld a, $5
-	ld [wPikachuSpawnState], a
-	call EnablePikachuOverworldSpriteDrawing
-.doNotReturnPikachu
-	lb bc, 1, 0
-	call Func_6ebb
 	ld hl, PokemonFightingFitText
 	call PrintText
-	callfar IsStarterPikachuInOurParty
-	jr nc, .notInParty
-	lb bc, 15, 0
-	call Func_6ebb
-.notInParty
-	call LoadCurrentMapView
-	call Delay3
-	call UpdateSprites
-	callfar ReloadWalkingTilePatterns
-	ld a, $1
-	ldh [hSpriteIndex], a
-	ld a, $1
-	ldh [hSpriteImageIndex], a
-	call SpriteFunc_34a1
-	ld c, 40
+	ld a, $14
+	ld [wSprite01StateData1ImageIndex], a ; make the nurse bow
+	ld c, a
 	call DelayFrames
-	call UpdateSprites
-	call LoadFontTilePatterns
 	jr .done
 .declinedHealing
 	call LoadScreenTilesFromBuffer1 ; restore screen
 .done
 	ld hl, PokemonCenterFarewellText
 	call PrintText
-	call UpdateSprites
-	ret
-
-Func_6eaa:
-	ld a, $1
-	ldh [hSpriteIndex], a
-	ld a, $4
-	ldh [hSpriteImageIndex], a
-	call SpriteFunc_34a1
-	ld c, 64
-	call DelayFrames
-	ret
-
-Func_6ebb:
-	ld a, b
-	ldh [hSpriteIndex], a
-	ld a, c
-	ldh [hSpriteImageIndex], a
-	push bc
-	call SetSpriteFacingDirectionAndDelay
-	pop bc
-	ld a, b
-	ldh [hSpriteIndex], a
-	ld a, c
-	ldh [hSpriteImageIndex], a
-	call SpriteFunc_34a1
-	ret
+	jp UpdateSprites
 
 PokemonCenterWelcomeText:
 	text_far _PokemonCenterWelcomeText
@@ -142,8 +65,4 @@ PokemonFightingFitText:
 PokemonCenterFarewellText:
 	text_pause
 	text_far _PokemonCenterFarewellText
-	text_end
-
-LooksContentText:
-	text_far _LooksContentText
 	text_end

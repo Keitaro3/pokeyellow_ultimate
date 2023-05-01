@@ -190,11 +190,6 @@ _PokemonCenterFarewellText::
 	line "you again!"
 	done
 
-_LooksContentText::
-	text "It looks very"
-	line "content asleep."
-	done
-
 _CableClubNPCAreaReservedFor2FriendsLinkedByCableText::
 	text "This area is"
 	line "reserved for 2"

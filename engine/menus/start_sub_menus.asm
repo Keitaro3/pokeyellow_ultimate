@@ -144,14 +144,11 @@ StartMenu_Pokemon::
 	call ChooseFlyDestination
 	ld a, [wd732]
 	bit 3, a ; did the player decide to fly?
-	jr nz, .asm_5d4c
+	jp nz, .goBackToMap
 	call LoadFontTilePatterns
 	ld hl, wd72e
 	set 1, [hl]
 	jp StartMenu_Pokemon
-.asm_5d4c
-	call Func_1510
-	jp .goBackToMap
 .cut
 	bit BIT_CASCADEBADGE, a
 	jp z, .newBadgeRequired
@@ -169,14 +166,19 @@ StartMenu_Pokemon::
 	res 1, [hl]
 	jp z, .loop
 	ld a, [wcf91]
-	cp STARTER_PIKACHU
+	cp PIKACHU ; is this surfing pikachu?
 	jr z, .surfingPikachu
-	ld a, $1
+	cp LAPRAS
+	jr z, .surfingLapras
+	xor a
 	jr .continue
 .surfingPikachu
+	ld a, $1
+	jr .continue
+.surfingLapras
 	ld a, $2
 .continue
-	ld [wd473], a
+	ld [wSurfSpriteID], a
 	ld a, SURFBOARD
 	ld [wcf91], a
 	ld [wPseudoItemID], a
@@ -188,7 +190,7 @@ StartMenu_Pokemon::
 	jp .goBackToMap
 .reloadNormalSprite
 	xor a
-	ld [wd473], a
+	ld [wSurfSpriteID], a
 	jp .loop
 .strength
 	bit BIT_RAINBOWBADGE, a
@@ -233,7 +235,6 @@ StartMenu_Pokemon::
 	ld hl, wd732
 	set 3, [hl]
 	set 6, [hl]
-	call Func_1510
 	ld hl, wd72e
 	set 1, [hl]
 	res 4, [hl]

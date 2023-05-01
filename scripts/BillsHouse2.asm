@@ -8,7 +8,7 @@ Func_f2418::
 .asm_f2427
 	ld hl, BillsHouseText_f2440
 	call PrintText
-	ld a, $2
+	ld a, $1
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -82,77 +82,3 @@ Func_f24a2::
 BillsHouseText_f24a9:
 	text_far _BillsHouseText_1e8da
 	text_end
-
-Func_f24ae::
-	ld a, [wCurMap]
-	cp BILLS_HOUSE
-	jr nz, .asm_f24d2
-	call CheckPikachuFollowingPlayer
-	jr z, .asm_f24d2
-	ld a, [wBillsHouseCurScript]
-	cp $5
-	ld e, $1b
-	ret z
-	cp $0
-	ld e, $17
-	ret z
-	CheckEventHL EVENT_MET_BILL_2
-	ld e, $20
-	ret z
-	ld e, $1f
-	ret
-
-.asm_f24d2
-	ld e, $ff
-	ret
-
-Func_f24d5::
-	ld a, $ff
-	ld [wJoyIgnore], a
-	xor a
-	ld [wPlayerMovingDirection], a
-	call UpdateSprites
-	call UpdateSprites
-	ld hl, Data_f2505
-	call ApplyPikachuMovementData
-	ld a, $f ; pikachu
-	ld [wEmotionBubbleSpriteIndex], a
-	ld a, QUESTION_BUBBLE
-	ld [wWhichEmotionBubble], a
-	predef EmotionBubble
-	call DisablePikachuFollowingPlayer
-	callfar InitializePikachuTextID
-	ret
-
-Data_f2505:
-	db $00
-	db $20
-	db $20
-	db $20
-	db $1e
-	db $3f
-
-Func_f250b::
-	ld hl, Data_f251c
-	ld b, SPRITE_FACING_UP
-	call TryApplyPikachuMovementData
-	ld hl, Data_f2521
-	ld b, SPRITE_FACING_RIGHT
-	call TryApplyPikachuMovementData
-	ret
-
-Data_f251c:
-	db $00
-	db $1f
-	db $1d
-	db $38
-	db $3f
-
-Data_f2521:
-	db $00
-	db $1e
-	db $1f
-	db $1f
-	db $1d
-	db $38
-	db $3f

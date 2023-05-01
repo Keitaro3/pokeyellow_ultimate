@@ -159,16 +159,10 @@ StartBattle:
 	call DelayFrames
 	call SaveScreenTilesToBuffer1
 .checkAnyPartyAlive
-	ld a, [wBattleType]
-	cp BATTLE_TYPE_RUN
-	jp z, .specialBattle
-	cp BATTLE_TYPE_PIKACHU
-	jp z, .specialBattle
 	call AnyPartyAlive
 	ld a, d
 	and a
 	jp z, HandlePlayerBlackOut ; jump if no mon is alive
-.specialBattle
 	call LoadScreenTilesFromBuffer1
 	ld a, [wBattleType]
 	and a ; is it a normal battle?
@@ -1051,36 +1045,10 @@ RemoveFaintedPlayerMon:
 	and a ; was this called by HandleEnemyMonFainted?
 	ret z ; if so, return
 
-	ld a, [wPlayerMonNumber]
-	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
-	jr nc, .notPlayerPikachu
-	ld e, $3
-	callfar PlayPikachuSoundClip
-	jr .printText
-.notPlayerPikachu
 	ld a, [wBattleMonSpecies]
 	call PlayCry
-.printText
 	ld hl, PlayerMonFaintedText
-	call PrintText
-	ld a, [wPlayerMonNumber]
-	ld [wWhichPokemon], a
-	ld a, [wBattleMonLevel]
-	ld b, a
-	ld a, [wEnemyMonLevel]
-	sub b ; enemylevel - playerlevel
-	      ; are we stronger than the opposing pokemon?
-	jr c, .regularFaint ; if so, deduct happiness regularly
-
-	cp 30 ; is the enemy 30 levels greater than us?
-	jr nc, .carelessTrainer ; if so, punish the player for being careless, as they shouldn't be fighting a very high leveled trainer with such a level difference
-.regularFaint
-	callabd_ModifyPikachuHappiness PIKAHAPPY_FAINTED
-	ret
-.carelessTrainer
-	callabd_ModifyPikachuHappiness PIKAHAPPY_CARELESSTRAINER
-	ret
+	jp PrintText
 
 PlayerMonFaintedText:
 	text_far _PlayerMonFaintedText
@@ -1537,8 +1505,6 @@ TryRunningFromBattle:
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
 	jp z, .canEscape ; jump if it's a safari battle
-	cp BATTLE_TYPE_RUN
-	jp z, .canEscape ; hurry, get away?
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jp z, .canEscape
@@ -1794,46 +1760,19 @@ SendOutMon:
 	call RunPaletteCommand
 	ld hl, wEnemyBattleStatus1
 	res USING_TRAPPING_MOVE, [hl]
-	callfar IsThisPartymonStarterPikachu
-	jr c, .starterPikachu
 	ld a, $1
 	ldh [hWhoseTurn], a
 	ld a, POOF_ANIM
 	call PlayMoveAnimation
 	hlcoord 4, 11
 	predef AnimateSendingOutMon
-	jr .playRegularCry
-.starterPikachu
-	xor a
-	ldh [hWhoseTurn], a
-	ld a, $1
-	ldh [hAutoBGTransferEnabled], a
-	callfar StarterPikachuBattleEntranceAnimation
-	callfar IsPlayerPikachuAsleepInParty
-	ld e, $24
-	jr c, .asm_3cd81
-	ld e, $a
-.asm_3cd81
-	callfar PlayPikachuSoundClip
-	jr .done
-.playRegularCry
 	ld a, [wcf91]
 	call PlayCry
-.done
 	call PrintEmptyString
 	jp SaveScreenTilesToBuffer1
 
 ; show 2 stages of the player mon getting smaller before disappearing
 AnimateRetreatingPlayerMon:
-	ld a, [wWhichPokemon]
-	push af
-	ld a, [wPlayerMonNumber]
-	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu
-	pop bc
-	ld a, b
-	ld [wWhichPokemon], a
-	jr c, .starterPikachu
 	hlcoord 1, 5
 	lb bc, 7, 7
 	call ClearScreenArea
@@ -1857,12 +1796,6 @@ AnimateRetreatingPlayerMon:
 	call .clearScreenArea
 	ld a, $4c
 	ldcoord_a 5, 11
-	jr .clearScreenArea
-.starterPikachu
-	xor a
-	ldh [hWhoseTurn], a
-	callfar AnimationSlideMonOff
-	ret
 .clearScreenArea
 	hlcoord 1, 5
 	lb bc, 7, 7
@@ -2088,15 +2021,10 @@ DisplayBattleMenu::
 .menuselected
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
- ; handle menu input if it's not the old man tutorial or prof. oak pikachu battle
+ ; handle menu input if it's not the old man tutorial
 	ld a, [wBattleType]
-	cp BATTLE_TYPE_OLD_MAN
-	jr z, .doSimulatedMenuInput
-	cp BATTLE_TYPE_PIKACHU
-	jr z, .doSimulatedMenuInput
-	jp .handleBattleMenuInput
-; the following happens for the old man tutorial and prof. oak pikachu battle
-.doSimulatedMenuInput
+	dec a
+	jp nz, .handleBattleMenuInput
 	; Temporarily save the player name in wLinkEnemyTrainerName.
 	; Since wLinkEnemyTrainerName == wGrassRate, this affects wild encounters.
 	; The wGrassRate byte and following wGrassMons buffer are supposed
@@ -2109,11 +2037,6 @@ DisplayBattleMenu::
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, .oldManName
-	ld a, [wBattleType]
-	dec a
-	jr z, .useOldManName
-	ld hl, .profOakName
-.useOldManName
 	ld de, wPlayerName
 	ld bc, NAME_LENGTH
 	call CopyData
@@ -2132,8 +2055,6 @@ DisplayBattleMenu::
 	jp .upperLeftMenuItemWasNotSelected
 .oldManName
 	db "OLD MAN@"
-.profOakName
-	db "PROF.OAK@"
 .handleBattleMenuInput
 	ld a, [wBattleAndStartSavedMenuItem]
 	ld [wCurrentMenuItem], a
@@ -2216,8 +2137,6 @@ DisplayBattleMenu::
 .AButtonPressed
 	call PlaceUnfilledArrowMenuCursor
 	ld a, [wBattleType]
-	cp BATTLE_TYPE_RUN
-	jr z, .handleUnusedBattle
 	ld a, [wBattleType]
 	cp BATTLE_TYPE_SAFARI
 	ld a, [wCurrentMenuItem]
@@ -2250,18 +2169,7 @@ DisplayBattleMenu::
 .throwSafariBallWasSelected
 	ld a, SAFARI_BALL
 	ld [wcf91], a
-	jp UseBagItem
-.handleUnusedBattle
-	ld a, [wCurrentMenuItem]
-	cp $3
-	jp z, BattleMenu_RunWasSelected
-	ld hl, .RunAwayText
-	call PrintText
-	jp DisplayBattleMenu
-
-.RunAwayText
-	text_far _RunAwayText
-	text_end
+	jr UseBagItem
 
 .upperLeftMenuItemWasNotSelected ; a menu item other than the upper left item was selected
 	cp $2
@@ -2298,22 +2206,18 @@ BagWasSelected:
 	call DrawHUDsAndHPBars
 .next
 	ld a, [wBattleType]
-	cp BATTLE_TYPE_OLD_MAN ; is it the old man tutorial?
-	jr z, .simulatedInputBattle
-	cp BATTLE_TYPE_PIKACHU ; is it the prof oak battle with pikachu?
-	jr z, .simulatedInputBattle
-	jr DisplayPlayerBag
-.simulatedInputBattle
-	ld hl, SimulatedInputBattleItemList
+	dec a ; is it the old man tutorial?
+	jr nz, DisplayPlayerBag ; no, it is a normal battle
+	ld hl, OldManItemList
 	ld a, l
 	ld [wListPointer], a
 	ld a, h
 	ld [wListPointer + 1], a
 	jr DisplayBagMenu
 
-SimulatedInputBattleItemList:
+OldManItemList:
 	db 1 ; # items
-	db POKE_BALL, 1
+	db POKE_BALL, 50
 	db -1 ; end
 
 DisplayPlayerBag:
@@ -6499,17 +6403,13 @@ SwapPlayerAndEnemyLevels:
 ; (for use when scrolling the player sprite and enemy's silhouettes on screen)
 LoadPlayerBackPic:
 	ld a, [wBattleType]
-	ld de, OldManPicBack
-	cp BATTLE_TYPE_OLD_MAN ; is it the old man tutorial?
-	jr z, .next
-	ld de, ProfOakPicBack
-	cp BATTLE_TYPE_PIKACHU ; is it the pikachu battle at the beginning of the game?
-	jr z, .next
+	dec a ; is it the old man tutorial?
 	ld de, RedPicBack
+	jr nz, .next
+	ld de, OldManPicBack
 .next
 	ld a, BANK(RedPicBack)
 	ASSERT BANK(RedPicBack) == BANK(OldManPicBack)
-	ASSERT BANK(RedPicBack) == BANK(ProfOakPicBack)
 	call UncompressSpriteFromDE
 	predef ScaleSpriteByTwo
 	ld hl, wShadowOAM

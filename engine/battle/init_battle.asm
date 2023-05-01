@@ -49,12 +49,6 @@ InitBattleCommon:
 	ld [wEnemyMonPartyPos], a
 	ld a, $2
 	ld [wIsInBattle], a
-
-; Is this a major story battle?
-	ld a, [wLoneAttackNo]
-	and a
-	jp z, _InitBattleCommon
-	callabd_ModifyPikachuHappiness PIKAHAPPY_GYMLEADER ; useless since already in bank3d
 	jp _InitBattleCommon
 
 InitWildBattle:

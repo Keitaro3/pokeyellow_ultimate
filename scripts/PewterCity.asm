@@ -1,7 +1,5 @@
 PewterCity_Script:
 	call EnableAutoTextBoxDrawing
-	ld hl, wd492
-	res 7, [hl]
 	ld hl, PewterCity_ScriptPointers
 	ld a, [wPewterCityCurScript]
 	call CallFunctionInTable

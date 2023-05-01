@@ -121,32 +121,14 @@ MtMoon3Script4:
 	ld a, $1
 	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
-	ld hl, CoordsData_49dc7
-	call ArePlayerCoordsInArray
-	jr c, .asm_49da8
 	ld hl, CoordsData_49dc0
 	call ArePlayerCoordsInArray
 	jr c, .asm_49db0
-	ld hl, CoordsData_49dd5
-	call ArePlayerCoordsInArray
-	jr c, .asm_49d9b
 	ld hl, CoordsData_49dce
 	call ArePlayerCoordsInArray
-	jr c, .asm_49da3
-	jp CheckFightingMapTrainers
-
-.asm_49d9b
-	ld b, SPRITE_FACING_LEFT
-	ld hl, PikachuMovementData_49dd8
-	call MtMoon3Script_4a325
-.asm_49da3
+	jp nc, CheckFightingMapTrainers
 	ld de, MovementData_49ddd
 	jr .asm_49db3
-
-.asm_49da8
-	ld b, SPRITE_FACING_RIGHT
-	ld hl, PikachuMovementData_49dca
-	call MtMoon3Script_4a325
 .asm_49db0
 	ld de, MovementData_49ddc
 .asm_49db3
@@ -163,31 +145,11 @@ CoordsData_49dc0:
 	dbmapcoord 12,  5
 	db -1 ; end
 
-CoordsData_49dc7:
-	dbmapcoord 12,  7
-	db -1 ; end
-
-PikachuMovementData_49dca:
-	db $00
-	db $35
-	db $33
-	db $3f
-
 CoordsData_49dce:
 	dbmapcoord 13,  7
 	dbmapcoord 14,  6
 	dbmapcoord 14,  5
 	db -1 ; end
-
-CoordsData_49dd5:
-	dbmapcoord 13,  7
-	db -1 ; end
-
-PikachuMovementData_49dd8:
-	db $00
-	db $35
-	db $34
-	db $3f
 
 MovementData_49ddc:
 	db NPC_MOVEMENT_RIGHT

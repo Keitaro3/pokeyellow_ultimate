@@ -60,18 +60,12 @@ CinnabarGymScript0:
 	jr nz, .asm_757c3
 	ld a, PLAYER_DIR_DOWN
 	ld [wPlayerMovingDirection], a
-	ld hl, PikachuMovementData_74f97
-	ld b, SPRITE_FACING_DOWN
-	call CinnabarGymScript_74fa3
 	ld de, MovementNpcToLeftAndUp
 	jr .MoveSprite
 .asm_757c3
+	ld de, MovementNpcToLeft
 	ld a, PLAYER_DIR_RIGHT
 	ld [wPlayerMovingDirection], a
-	ld hl, PikachuMovementData_74f9e
-	ld b, SPRITE_FACING_RIGHT
-	call CinnabarGymScript_74fa3
-	ld de, MovementNpcToLeft
 .MoveSprite
 	call MoveSprite
 	ld a, $1
@@ -84,38 +78,9 @@ MovementNpcToLeftAndUp:
 	db NPC_MOVEMENT_UP
 	db -1 ; end
 
-PikachuMovementData_74f97:
-	db $00
-	db $20
-	db $1e
-	db $35
-	db $3f
-
 MovementNpcToLeft:
 	db NPC_MOVEMENT_LEFT
 	db -1 ; end
-
-PikachuMovementData_74f9e:
-	db $00
-	db $1d
-	db $1f
-	db $38
-	db $3f
-
-CinnabarGymScript_74fa3:
-	ld a, [wd472]
-	bit 7, a
-	ret z
-	push hl
-	push bc
-	callfar GetPikachuFacingDirectionAndReturnToE
-	pop bc
-	pop hl
-	ld a, b
-	cp e
-	ret nz
-	call ApplyPikachuMovementData
-	ret
 
 CinnabarGymScript1:
 	ld a, [wd730]

@@ -12,7 +12,6 @@ rom_obj := \
 	ram.o \
 	text.o \
 	gfx/pics.o \
-	gfx/pikachu.o \
 	gfx/sprites.o \
 	gfx/tilesets.o
 

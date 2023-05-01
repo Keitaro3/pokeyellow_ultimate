@@ -992,10 +992,6 @@ _GotAwayText::
 	text "Got away safely!"
 	prompt
 
-_RunAwayText::
-	text "Hurry, get away!"
-	prompt
-
 _ItemsCantBeUsedHereText::
 	text "Items can't be"
 	line "used here."

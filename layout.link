@@ -153,16 +153,11 @@ ROMX $20
 	"Sound Effects 4"
 	"Audio Engine 4"
 	"Music 4"
-ROMX $21
-	"Pikachu Cries 1"
-ROMX $22
-	"Pikachu Cries 2"
-ROMX $23
-	"Pikachu Cries 3"
-ROMX $24
-	"Pikachu Cries 4"
-ROMX $25
-	"Pikachu Cries 5"
+; bank $21 is empty
+; bank $22 is empty
+; bank $23 is empty
+; bank $24 is empty
+; bank $25 is empty
 ROMX $26
 	"Text 1"
 ROMX $27
@@ -188,32 +183,21 @@ ROMX $2f
 	"BG Map Attributes"
 ROMX $30
 	"bank30"
-ROMX $31
-	"Pikachu Cries 6"
-ROMX $32
-	"Pikachu Cries 7"
-ROMX $33
-	"Pikachu Cries 8"
-ROMX $34
-	"Pikachu Cries 9"
-ROMX $35
-	"Pikachu Cries 10"
-ROMX $36
-	"Pikachu Cries 11"
-ROMX $37
-	"Pikachu Cries 12"
-ROMX $38
-	"Pikachu Cries 13"
-ROMX $39
-	"Pikachu Graphics 1"
+; bank $31 is empty
+; bank $32 is empty
+; bank $33 is empty
+; bank $34 is empty
+; bank $35 is empty
+; bank $36 is empty
+; bank $37 is empty
+; bank $38 is empty
+; bank $39 is empty
 ROMX $3A
 	"bank3A"
 ; bank $3B is empty
 ROMX $3C
-	"Pikachu PCM"
+	"Specific Script Flags"
 	"Tilesets 4"
-	"Try Pikachu Movement"
-	"Pikachu Graphics 2"
 	"Credits"
 	"Maps 22"
 	"Hidden Objects Core"
@@ -224,7 +208,7 @@ ROMX $3D
 ROMX $3E
 	"Surfing Minigame"
 ROMX $3F
-	"Overworld Pikachu"
+	"Map Header Pointers"
 	"NPC Sprites 3"
 WRAM0
 	"Audio RAM"

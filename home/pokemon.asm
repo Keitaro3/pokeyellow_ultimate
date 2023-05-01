@@ -245,23 +245,12 @@ HandlePartyMenuInput::
 	ld a, $40
 	ld [wPartyMenuAnimMonEnabled], a
 	call HandleMenuInput_
-	push af ; save hJoy5 OR wMenuWrapping enabled, if no inputs were selected within a certain period of time
-	bit 1, a ; was B button pressed?
-	ld a, $0
+	call PlaceUnfilledArrowMenuCursor
+	ld b, a
+	xor a
 	ld [wPartyMenuAnimMonEnabled], a
 	ld a, [wCurrentMenuItem]
 	ld [wPartyAndBillsPCSavedMenuItem], a
-	jr nz, .asm_1258
-	ld a, [wCurrentMenuItem]
-	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
-	jr nc, .asm_1258
-	call CheckPikachuFollowingPlayer
-	jr nz, .asm_128f
-.asm_1258
-	pop af
-	call PlaceUnfilledArrowMenuCursor
-	ld b, a
 	ld hl, wd730
 	res 6, [hl] ; turn on letter printing delay
 	ld a, [wMenuItemToSwap]
@@ -286,14 +275,6 @@ HandlePartyMenuInput::
 	call BankswitchBack
 	and a
 	ret
-.asm_128f
-	pop af
-	ld hl, PartyMenuText_12cc
-	call PrintText
-	xor a
-	ld [wMenuItemToSwap], a
-	pop af
-	ldh [hTileAnimations], a
 .noPokemonChosen
 	call BankswitchBack
 	scf
@@ -313,10 +294,6 @@ HandlePartyMenuInput::
 	ld [wWhichPokemon], a
 	farcall SwitchPartyMon
 	jp HandlePartyMenuInput
-
-PartyMenuText_12cc::
-	text_far _SleepingPikachuText1
-	text_end
 
 DrawPartyMenu::
 	ld hl, DrawPartyMenu_

@@ -103,11 +103,10 @@ wSpriteStateData1::
 ; - E
 ; - F
 wSpritePlayerStateData1::  spritestatedata1 wSpritePlayerStateData1 ; player is struct 0
-; wSprite01StateData1 - wSprite14StateData1
-FOR n, 1, NUM_SPRITESTATEDATA_STRUCTS - 1
+; wSprite01StateData1 - wSprite15StateData1
+FOR n, 1, NUM_SPRITESTATEDATA_STRUCTS
 wSprite{02d:n}StateData1:: spritestatedata1 wSprite{02d:n}StateData1
 ENDR
-wSpritePikachuStateData1:: spritestatedata1 wSpritePikachuStateData1 ; pikachu is struct 15
 
 ; more data for all sprites on the current map
 ; holds info for 16 sprites with $10 bytes each
@@ -130,11 +129,10 @@ wSpriteStateData2::
 ; - E: sprite image base offset (in video ram, player always has value 1, used to compute sprite image index)
 ; - F
 wSpritePlayerStateData2::  spritestatedata2 wSpritePlayerStateData2 ; player is struct 0
-; wSprite01StateData2 - wSprite14StateData2
-FOR n, 1, NUM_SPRITESTATEDATA_STRUCTS - 1
+; wSprite01StateData2 - wSprite15StateData2
+FOR n, 1, NUM_SPRITESTATEDATA_STRUCTS
 wSprite{02d:n}StateData2:: spritestatedata2 wSprite{02d:n}StateData2
 ENDR
-wSpritePikachuStateData2:: spritestatedata2 wSpritePikachuStateData2 ; pikachu is struct 15
 
 ; The high byte of a pointer to anywhere within wSpriteStateData1 can be incremented
 ; to reach within wSpriteStateData2, and vice-versa for decrementing.
@@ -650,28 +648,6 @@ NEXTU
 	ds 2
 wTrainerCardBadgeAttributes:: ds 6 * 9 + 1
 
-NEXTU
-wPikaPicUsedGFXCount:: db
-
-wPikaPicUsedGFX:: ds 8 * 2
-wPikaPicUsedGFXEnd::
-
-	ds 43
-
-wPikaPicAnimObjectDataBufferSize:: db
-
-wPikaPicAnimObjectDataBuffer::
-; 4 structs each of length 8
-;     0: buffer index
-;     1: script index
-;     2: frame index
-;     3: frame timer
-;     4: vtile offset
-;     5: x offset
-;     6: y offset
-;     7: unused
-	ds 4 * 8
-wPikaPicAnimObjectDataBufferEnd::
 ENDU
 
 ; This union spans 39 bytes.
@@ -2008,74 +1984,16 @@ wWarpEntries:: ds 32 * 4 ; Y, X, warp ID, map ID
 ; if $ff, the player's coordinates are not updated when entering the map
 wDestinationWarpID:: db
 
-wPikachuOverworldStateFlags:: db
-wPikachuSpawnState:: db
-wd432:: db
-wd433:: db
-wd434:: db
-wd435:: db
-wd436:: db
-wPikachuFollowCommandBufferSize:: db
-wPikachuFollowCommandBuffer:: ds 16
+	ds 66
 
-wExpressionNumber:: db
-wPikaPicAnimNumber:: db
-
-wPikachuMovementScriptBank:: db
-wPikachuMovementScriptAddress:: dw
-; bit 6 - spawn shadow
-; bit 7 - signal end of command
-wPikachuMovementFlags:: db
-
-UNION
-wCurPikaMovementData::
-wCurPikaMovementParam1:: db
-wCurPikaMovementFunc1:: db
-wCurPikaMovementParam2:: db
-wCurPikaMovementFunc2:: db
-wd451:: db
-wCurPikaMovementSpriteImageIdx:: db
-wPikaSpriteX:: db
-wPikaSpriteY:: db
-wPikachuMovementXOffset:: db
-wPikachuMovementYOffset:: db
-wPikachuStepTimer:: db
-wPikachuStepSubtimer:: db
-	ds 5
-wCurPikaMovementDataEnd::
-
-NEXTU
-wPikaPicAnimPointer:: dw
-wPikaPicAnimPointerSetupFinished:: db
-wPikaPicAnimCurGraphicID:: db
-wPikaPicAnimTimer:: dw
-wPikaPicAnimDelay:: db
-wPikaPicPikaDrawStartX:: db
-wPikaPicPikaDrawStartY:: db
-
-wCurPikaPicAnimObject::
-wCurPikaPicAnimObjectVTileOffset:: db
-wCurPikaPicAnimObjectXOffset:: db
-wCurPikaPicAnimObjectYOffset:: db
-wCurPikaPicAnimObjectScriptIdx:: db
-wCurPikaPicAnimObjectFrameIdx:: db
-wCurPikaPicAnimObjectFrameTimer:: db
+wIsSurfingPikachuInParty:: db ; bit 6: has surfing pika, bit 7: pikachu in party
+wSurfSpriteID:: db ; What Sprite ID to use for surfing
 	ds 1
-wCurPikaPicAnimObjectEnd::
-
-	ds 18
-ENDU
-
-wPikachuHappiness:: db
-wPikachuMood:: db
-wd472:: db
-wd473:: db
-	ds 1
-wd475:: db
+wd475:: db ; something to do with Cinnabar Gym
 	ds 4
-wd47a:: db
+wd47a:: db ; something to do with the play time counter
 	ds 24
-wd492:: db
+wAlreadySpokeToSurfinDude:: db
 	ds 1
 wSurfingMinigameHiScore:: dw ; little-endian BCD
 	ds 1
@@ -2083,9 +2001,8 @@ wPrinterSettings:: db
 wUnknownSerialFlag_d499:: db
 wPrinterConnectionOpen:: db
 wPrinterOpcode:: db
-wd49c:: db
 
-	ds 19
+	ds 20
 
 ; number of signs in the current map (up to 16)
 wNumSigns:: db

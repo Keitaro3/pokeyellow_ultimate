@@ -9,11 +9,6 @@ Route25_Script:
 	ret
 
 Route25Script_515e1:
-	ld hl, wd492
-	res 2, [hl]
-	res 3, [hl]
-	res 4, [hl]
-	res 7, [hl]
 	xor a
 	ld [wBillsHouseCurScript], a
 	ld hl, wCurrentMapScriptFlags

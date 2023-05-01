@@ -154,17 +154,8 @@ HoFDisplayAndRecordMonInfo:
 	ld hl, wPartyMonNicks
 	call GetPartyMonName
 	call HoFDisplayMonInfo
-	ld a, [wHoFPartyMonIndex]
-	ld [wWhichPokemon], a
-	callfar IsThisPartymonStarterPikachu_Party
-	jr nc, .asm_70336
-	ld e, $22
-	callfar PlayPikachuSoundClip
-	jr .asm_7033c
-.asm_70336
 	ld a, [wHoFMonSpecies]
 	call PlayCry
-.asm_7033c
 	jp HoFRecordMonInfo
 
 Func_7033f:
