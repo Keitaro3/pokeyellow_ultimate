@@ -94,7 +94,7 @@ SSAnne2Script1:
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
 	call Delay3
-	ld a, OPP_RIVAL2
+	ld a, RIVAL2
 	ld [wCurOpponent], a
 
 	; select which team to use during the encounter
@@ -112,6 +112,8 @@ SSAnne2Script1:
 	ld a, $3
 .done
 	ld [wTrainerNo], a
+	ld a, $1
+	ld [wIsTrainerBattle], a
 
 	call SSAnne2Script_61416
 	ld a, $2
@@ -122,6 +124,8 @@ SSAnne2Script2:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SSAnne2Script_613ab
+	xor a
+	ld [wIsTrainerBattle], a
 	call SSAnne2Script_61416
 	ld a, $f0
 	ld [wJoyIgnore], a

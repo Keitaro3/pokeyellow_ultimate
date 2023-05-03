@@ -64,6 +64,8 @@ PokemonTower2Script1:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, PokemonTower2Script_604fe
+	xor a
+	ld [wIsTrainerBattle], a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_POKEMON_TOWER_RIVAL
@@ -142,7 +144,7 @@ PokemonTower2Text1:
 	ld hl, PokemonTower2Text_60632
 	ld de, PokemonTower2Text_60637
 	call SaveEndBattleTextPointers
-	ld a, OPP_RIVAL2
+	ld a, RIVAL2
 	ld [wCurOpponent], a
 
 	; select which team to use during the encounter
@@ -160,8 +162,9 @@ PokemonTower2Text1:
 	ld a, $6
 .done
 	ld [wTrainerNo], a
-
 	ld a, $1
+	ld [wIsTrainerBattle], a
+
 	ld [wPokemonTower2FCurScript], a
 	ld [wCurMapScript], a
 .asm_41852

@@ -181,7 +181,7 @@ SilphCo7Script3:
 	ld hl, SilphCo7Text14
 	ld de, SilphCo7Text_51ecd
 	call SaveEndBattleTextPointers
-	ld a, OPP_RIVAL2
+	ld a, RIVAL2
 	ld [wCurOpponent], a
 	ld a, [wRivalStarter]
 	cp STARTER2
@@ -197,6 +197,8 @@ SilphCo7Script3:
 	ld a, $9
 .asm_51cc0
 	ld [wTrainerNo], a
+	ld a, $1
+	ld [wIsTrainerBattle], a
 	ld a, $4
 	jp SilphCo7Text_51c10
 
@@ -204,6 +206,8 @@ SilphCo7Script4:
 	ld a, [wIsInBattle]
 	cp $ff
 	jp z, SilphCo7Text_51c0c
+	xor a
+	ld [wIsTrainerBattle], a
 	ld a, $f0
 	ld [wJoyIgnore], a
 	SetEvent EVENT_BEAT_SILPH_CO_RIVAL

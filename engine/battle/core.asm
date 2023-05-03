@@ -951,6 +951,12 @@ TrainerBattleVictory:
 ; win money
 	ld hl, MoneyForWinningText
 	call PrintText
+	
+	xor a
+	ld [wIsTrainerBattle], a
+	ld a, 1
+	ld [wWasTrainerBattle], a
+	
 	ld de, wPlayerMoney + 2
 	ld hl, wAmountMoneyWon + 2
 	ld c, $3
@@ -1137,11 +1143,13 @@ ChooseNextMon:
 ; called when player is out of usable mons.
 ; prints appropriate lose message, sets carry flag if player blacked out (special case for initial rival fight)
 HandlePlayerBlackOut:
+	xor a
+	ld [wIsTrainerBattle], a
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	jr z, .notRival1Battle
 	ld a, [wCurOpponent]
-	cp OPP_RIVAL1
+	cp RIVAL1
 	jr nz, .notRival1Battle
 	hlcoord 0, 0  ; rival 1 battle
 	lb bc, 8, 21
