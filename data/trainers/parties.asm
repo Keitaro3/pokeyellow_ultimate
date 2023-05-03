@@ -77,14 +77,12 @@ YoungsterData:
 	db 18, NIDORAN_M, NIDORINO, 0
 ; Unused
 	db 17, SPEAROW, RATTATA, RATTATA, SPEAROW, 0
-; Route 9
-	db 24, SANDSHREW, 0
 
 BugCatcherData:
 ; Viridian Forest
-	db 7, CATERPIE, CATERPIE, 0
-	db 6, METAPOD, CATERPIE, METAPOD, 0
-	db 10, CATERPIE, 0
+	db 6, WEEDLE, CATERPIE, 0
+	db 7, WEEDLE, KAKUNA, WEEDLE, 0
+	db 9, WEEDLE, 0
 ; Route 3
 	db 10, CATERPIE, WEEDLE, CATERPIE, 0
 	db 9, WEEDLE, KAKUNA, CATERPIE, METAPOD, 0
@@ -102,8 +100,6 @@ BugCatcherData:
 ; Route 9
 	db 19, BEEDRILL, BEEDRILL, 0
 	db 20, CATERPIE, WEEDLE, VENONAT, 0
-; Viridian Forest
-	db 8, CATERPIE, METAPOD, 0
 
 LassData:
 ; Route 3
@@ -124,17 +120,15 @@ LassData:
 ; SS Anne 1F Rooms
 	db 18, PIDGEY, NIDORAN_F, 0
 ; SS Anne 2F Rooms
-	db 20, JIGGLYPUFF, 0
+	db 18, RATTATA, PIKACHU, 0
 ; Route 8
 	db 23, NIDORAN_F, NIDORINA, 0
 	db 24, MEOWTH, MEOWTH, MEOWTH, 0
-	db 19, PIDGEY, RATTATA, NIDORAN_F, MEOWTH, NIDORAN_M, 0
+	db 19, PIDGEY, RATTATA, NIDORAN_M, MEOWTH, PIKACHU, 0
 	db 22, CLEFAIRY, CLEFAIRY, 0
 ; Celadon Gym
 	db 23, BELLSPROUT, WEEPINBELL, 0
 	db 23, ODDISH, GLOOM, 0
-; Viridian Forest
-	db 6, NIDORAN_F, NIDORAN_M, 0
 
 SailorData:
 ; SS Anne Stern
@@ -147,35 +141,31 @@ SailorData:
 	db 17, HORSEA, HORSEA, HORSEA, 0
 	db 20, MACHOP, 0
 ; Vermilion Gym
-	db 24, MAGNEMITE, 0
+	db 21, PIKACHU, PIKACHU, 0
 
 JrTrainerMData:
 ; Pewter Gym
-	db 9, DIGLETT, SANDSHREW, 0
+	db 11, DIGLETT, SANDSHREW, 0
 ; Route 24/Route 25
 	db 14, RATTATA, EKANS, 0
 ; Route 24
 	db 18, MANKEY, 0
-; Unused
-	db 20, SQUIRTLE, 0
 ; Route 6
+	db 20, SQUIRTLE, 0
 	db 16, SPEAROW, RATICATE, 0
 ; Unused
 	db 18, DIGLETT, DIGLETT, SANDSHREW, 0
-	db 21, GROWLITHE, CHARMANDER, 0
 ; Route 9
+	db 21, GROWLITHE, CHARMANDER, 0
 	db 19, RATTATA, DIGLETT, EKANS, SANDSHREW, 0
 ; Route 12
 	db 29, NIDORAN_M, NIDORINO, 0
-; Route 6
-	db 16, WEEPINBELL, 0
 
 JrTrainerFData:
 ; Cerulean Gym
 	db 19, GOLDEEN, 0
-; Unused
-	db 16, ODDISH, BELLSPROUT, 0
 ; Route 6
+	db 16, RATTATA, PIKACHU, 0
 	db 16, PIDGEY, PIDGEY, PIDGEY, 0
 ; Unused
 	db 22, BULBASAUR, 0
@@ -183,7 +173,7 @@ JrTrainerFData:
 	db 18, ODDISH, BELLSPROUT, ODDISH, BELLSPROUT, 0
 	db 23, MEOWTH, 0
 ; Route 10
-	db 20, JIGGLYPUFF, CLEFAIRY, 0
+	db 20, PIKACHU, CLEFAIRY, 0
 	db 21, PIDGEY, PIDGEOTTO, 0
 ; Rock Tunnel B1F
 	db 21, JIGGLYPUFF, PIDGEY, MEOWTH, 0
@@ -191,7 +181,7 @@ JrTrainerFData:
 ; Celadon Gym
 	db 24, BULBASAUR, IVYSAUR, 0
 ; Route 13
-	db 24, PIDGEY, MEOWTH, RATTATA, PIDGEY, MEOWTH, 0
+	db 24, PIDGEY, MEOWTH, RATTATA, PIKACHU, MEOWTH, 0
 	db 30, POLIWAG, POLIWAG, 0
 	db 27, PIDGEY, MEOWTH, PIDGEY, PIDGEOTTO, 0
 	db 28, GOLDEEN, POLIWAG, HORSEA, 0
@@ -203,13 +193,11 @@ JrTrainerFData:
 	db 19, PIDGEY, RATTATA, RATTATA, BELLSPROUT, 0
 ; Route 15
 	db 28, GLOOM, ODDISH, ODDISH, 0
-	db 29, PIDGEY, PIDGEOTTO, 0
+	db 29, PIKACHU, RAICHU, 0
 	db 33, CLEFAIRY, 0
 	db 29, BELLSPROUT, ODDISH, TANGELA, 0
 ; Route 20
 	db 30, TENTACOOL, HORSEA, SEEL, 0
-; Route 6
-	db 20, CUBONE, 0
 
 PokemaniacData:
 ; Route 10
@@ -279,6 +267,14 @@ BikerData:
 	db 33, WEEZING, 0
 	db 26, GRIMER, GRIMER, GRIMER, GRIMER, 0
 ; Route 17
+	; From https://www.smogon.com/smog/issue27/glitch:
+	; 0E:5FC2 is offset of the ending 0 for this first Biker on Route 17.
+	; BaseStats + (BASE_DATA_SIZE) * (000 - 1) = $5FC2;
+	; that's the formula from GetMonHeader for the base stats of mon #000.
+	; (BaseStats = $43DE and BANK(BaseStats) = $0E.)
+	; Finally, PokedexOrder lists 0 as the dex ID for every MissingNo.
+	; The result is that this data gets interpreted as the base stats
+	; for MissingNo: 0, 33, MUK, 0, 29, VOLTORB, VOLTORB, 0, ..., 28, GRIMER, GRIMER.
 	db 28, WEEZING, KOFFING, WEEZING, 0
 	db 33, MUK, 0
 	db 29, VOLTORB, VOLTORB, 0
@@ -387,7 +383,7 @@ BeautyData:
 	db 24, BELLSPROUT, BELLSPROUT, 0
 	db 26, EXEGGCUTE, 0
 ; Route 13
-	db 27, RATTATA, VULPIX, RATTATA, 0
+	db 27, RATTATA, PIKACHU, RATTATA, 0
 	db 29, CLEFAIRY, MEOWTH, 0
 ; Route 20
 	db 35, SEAKING, 0
@@ -414,7 +410,7 @@ PsychicData:
 
 RockerData:
 ; Vermilion Gym
-	db 20, VOLTORB, VOLTORB, VOLTORB, 0
+	db 20, VOLTORB, MAGNEMITE, VOLTORB, 0
 ; Route 12
 	db 29, VOLTORB, ELECTRODE, 0
 
@@ -487,7 +483,6 @@ BlackbeltData:
 	db 43, MACHOKE, MACHOP, MACHOKE, 0
 
 Rival1Data:
-; Oak's Lab
 	db 5, SQUIRTLE, 0
 	db 5, BULBASAUR, 0
 	db 5, CHARMANDER, 0
@@ -538,18 +533,17 @@ ScientistData:
 
 GiovanniData:
 ; Rocket Hideout B4F
-	db $FF, 25, ONIX, 24, RHYHORN, 29, PERSIAN, 0
+	db $FF, 25, ONIX, 24, RHYHORN, 29, KANGASKHAN, 0
 ; Silph Co. 11F
-	db $FF, 37, NIDORINO, 35, PERSIAN, 37, RHYHORN, 41, NIDOQUEEN, 0
+	db $FF, 37, NIDORINO, 35, KANGASKHAN, 37, RHYHORN, 41, NIDOQUEEN, 0
 ; Viridian Gym
-	db $FF, 50, DUGTRIO, 53, PERSIAN, 53, NIDOQUEEN, 55, NIDOKING, 55, RHYDON, 0
+	db $FF, 45, RHYHORN, 42, DUGTRIO, 44, NIDOQUEEN, 45, NIDOKING, 50, RHYDON, 0
 
 RocketData:
 ; Mt. Moon B2F
 	db 13, RATTATA, ZUBAT, 0
 	db 11, SANDSHREW, RATTATA, ZUBAT, 0
 	db 12, ZUBAT, EKANS, 0
-; Unused
 	db 16, RATICATE, 0
 ; Cerulean City
 	db 17, MACHOP, DROWZEE, 0
@@ -568,15 +562,15 @@ RocketData:
 ; Rocket Hideout B3F
 	db 20, RATTATA, RATICATE, DROWZEE, 0
 	db 21, MACHOP, MACHOP, 0
-; Unused
+; Rocket Hideout B4F
 	db 23, SANDSHREW, EKANS, SANDSLASH, 0
 	db 23, EKANS, SANDSHREW, ARBOK, 0
-; Rocket Hideout B4F
 	db 21, KOFFING, ZUBAT, 0
-; Unused
+; Pokémon Tower 7F
 	db 25, ZUBAT, ZUBAT, GOLBAT, 0
 	db 26, KOFFING, DROWZEE, 0
 	db 23, ZUBAT, RATTATA, RATICATE, ZUBAT, 0
+; Unused
 	db 26, DROWZEE, KOFFING, 0
 ; Silph Co. 2F
 	db 29, CUBONE, ZUBAT, 0
@@ -606,18 +600,7 @@ RocketData:
 	db 33, MACHOKE, 0
 ; Silph Co. 11F
 	db 25, RATTATA, RATTATA, ZUBAT, RATTATA, EKANS, 0
-; Unused
 	db 32, CUBONE, DROWZEE, MAROWAK, 0
-; Jessie & James
-	db 14, EKANS, MEOWTH, KOFFING, 0 ; Mt. Moon B2F
-	db 25, KOFFING, MEOWTH, EKANS, 0 ; Rocket Hideout B4F
-	db 27, MEOWTH, ARBOK, WEEZING, 0 ; Pokémon Tower 7F
-	db 31, WEEZING, ARBOK, MEOWTH, 0 ; Silph Co. 11F
-; Unused
-	db 16, KOFFING, 0
-	db 27, KOFFING, 0
-	db 29, WEEZING, 0
-	db 33, WEEZING, 0
 
 CooltrainerMData:
 ; Viridian Gym
@@ -656,32 +639,32 @@ BrunoData:
 	db $FF, 53, ONIX, 55, HITMONCHAN, 55, HITMONLEE, 56, ONIX, 58, MACHAMP, 0
 
 BrockData:
-	db $FF, 10, GEODUDE, 12, ONIX, 0
+	db $FF, 12, GEODUDE, 14, ONIX, 0
 
 MistyData:
 	db $FF, 18, STARYU, 21, STARMIE, 0
 
 LtSurgeData:
-	db $FF, 28, RAICHU, 0
+	db $FF, 21, VOLTORB, 18, PIKACHU, 24, RAICHU, 0
 
 ErikaData:
-	db $FF, 30, TANGELA, 32, WEEPINBELL, 32, GLOOM, 0
+	db $FF, 29, VICTREEBEL, 24, TANGELA, 29, VILEPLUME, 0
 
 KogaData:
-	db $FF, 44, VENONAT, 46, VENONAT, 48, VENONAT, 50, VENOMOTH, 0
+	db $FF, 37, KOFFING, 39, MUK, 37, KOFFING, 43, WEEZING, 0
 
 BlaineData:
-	db $FF, 48, NINETALES, 50, RAPIDASH, 54, ARCANINE, 0
+	db $FF, 42, GROWLITHE, 40, PONYTA, 42, RAPIDASH, 47, ARCANINE, 0
 
 SabrinaData:
-	db $FF, 50, ABRA, 50, KADABRA, 50, ALAKAZAM, 0
+	db $FF, 38, KADABRA, 37, MR_MIME, 38, VENOMOTH, 43, ALAKAZAM, 0
 
 GentlemanData:
 ; SS Anne 1F Rooms
 	db 18, GROWLITHE, GROWLITHE, 0
 	db 19, NIDORAN_M, NIDORAN_F, 0
 ; SS Anne 2F Rooms/Vermilion Gym
-	db 22, VOLTORB, MAGNEMITE, 0
+	db 23, PIKACHU, 0
 ; Unused
 	db 48, PRIMEAPE, 0
 ; SS Anne 2F Rooms
@@ -706,7 +689,6 @@ Rival2Data:
 	db $FF, 47, PIDGEOT, 45, RHYHORN, 45, EXEGGCUTE, 47, GYARADOS, 50, ALAKAZAM, 53, CHARIZARD, 0
 
 Rival3Data:
-; Champion's Room
 	db $FF, 61, PIDGEOT, 59, ALAKAZAM, 61, RHYDON, 61, ARCANINE, 63, EXEGGUTOR, 65, BLASTOISE, 0
 	db $FF, 61, PIDGEOT, 59, ALAKAZAM, 61, RHYDON, 61, GYARADOS, 63, ARCANINE, 65, VENUSAUR, 0
 	db $FF, 61, PIDGEOT, 59, ALAKAZAM, 61, RHYDON, 61, EXEGGUTOR, 63, GYARADOS, 65, CHARIZARD, 0
