@@ -163,11 +163,18 @@ InGameTrade_PrepareTradeData:
 	ld de, wTradedPlayerMonOT
 	ld bc, NAME_LENGTH
 	call InGameTrade_CopyData
-	ld hl, InGameTrade_TrainerString
+	
+	ld hl, TradeMonOTs
+	ld bc, NAME_LENGTH + 2
+	ld a, [wWhichTrade]
+	call AddNTimes
 	ld de, wTradedEnemyMonOT
+	ld bc, NAME_LENGTH
 	call InGameTrade_CopyData
 	ld de, wLinkEnemyTrainerName
 	call InGameTrade_CopyData
+	push hl
+	
 	ld hl, wPartyMon1OTID
 	ld bc, wPartyMon2 - wPartyMon1
 	ld a, [wWhichPokemon]
@@ -175,9 +182,11 @@ InGameTrade_PrepareTradeData:
 	ld de, wTradedPlayerMonOTID
 	ld bc, $2
 	call InGameTrade_CopyData
-	call Random
-	ld hl, hRandomAdd
+	pop hl
+	ld bc, NAME_LENGTH
+	add hl, bc
 	ld de, wTradedEnemyMonOTID
+	ld bc, $2
 	jp CopyData
 
 InGameTrade_CopyData:
@@ -198,7 +207,7 @@ InGameTrade_CopyDataToReceivedMon:
 	ld hl, wPartyMonOT
 	ld bc, NAME_LENGTH
 	call InGameTrade_GetReceivedMonPointer
-	ld hl, InGameTrade_TrainerString
+	ld hl, wTradedEnemyMonOT ;InGameTrade_TrainerString
 	ld bc, NAME_LENGTH
 	call CopyData
 	ld hl, wPartyMon1OTID
@@ -206,7 +215,24 @@ InGameTrade_CopyDataToReceivedMon:
 	call InGameTrade_GetReceivedMonPointer
 	ld hl, wTradedEnemyMonOTID
 	ld bc, $2
-	jp CopyData
+	call CopyData
+	ld hl, wPartyMon1DVs
+	ld bc, wPartyMon2 - wPartyMon1
+	call InGameTrade_GetReceivedMonPointer
+	ld hl, TradeMonIVs
+	ld bc, $3
+	ld a, [wWhichTrade]
+	call AddNTimes
+	ld bc, $2
+	call CopyData
+	push hl
+	ld hl, wPartyMon1CatchRate
+	ld bc, wPartyMon2 - wPartyMon1
+	call InGameTrade_GetReceivedMonPointer
+	pop hl
+	ld a, [hl]
+	ld [de], a
+	ret
 
 ; the received mon's index is (partyCount - 1),
 ; so this adds bc to hl (partyCount - 1) times and moves the result to de
@@ -248,9 +274,6 @@ InGameTrade_CheckForTradeEvo:
 	xor a ; LINK_STATE_NONE
 	ld [wLinkState], a
 	jp PlayDefaultMusic
-
-InGameTrade_TrainerString:
-	db "<TRAINER>@@@@@@@@@@"
 
 InGameTradeTextPointers:
 ; entries correspond to TRADE_DIALOGSET_* constants

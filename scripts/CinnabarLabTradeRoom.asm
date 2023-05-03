@@ -12,13 +12,13 @@ Lab2Text1:
 
 Lab2Text2:
 	text_asm
-	ld a, TRADE_FOR_BUFFY
+	ld a, TRADE_FOR_PEBBLES
 	ld [wWhichTrade], a
 	jr Lab2DoTrade
 
 Lab2Text3:
 	text_asm
-	ld a, TRADE_FOR_CEZANNE
+	ld a, TRADE_FOR_OSCAR
 	ld [wWhichTrade], a
 Lab2DoTrade:
 	predef DoInGameTradeDialogue
