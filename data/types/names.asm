@@ -10,11 +10,19 @@ TypeNames:
 	dw .Bird
 	dw .Bug
 	dw .Ghost
-
-REPT UNUSED_TYPES_END - UNUSED_TYPES
+	dw .Steel
+	assert_table_length UNUSED_TYPES
 	dw .Normal
-ENDR
-
+	dw .Normal
+	dw .Normal
+	dw .Normal
+	dw .Normal
+	dw .Normal
+	dw .Normal
+	dw .Normal
+	dw .Normal
+	dw .CurseType
+	assert_table_length UNUSED_TYPES_END
 	dw .Fire
 	dw .Water
 	dw .Grass
@@ -22,22 +30,26 @@ ENDR
 	dw .Psychic
 	dw .Ice
 	dw .Dragon
+	dw .Dark
 
 	assert_table_length NUM_TYPES
 
-.Normal:   db "NORMAL@"
-.Fighting: db "FIGHTING@"
-.Flying:   db "FLYING@"
-.Poison:   db "POISON@"
-.Fire:     db "FIRE@"
-.Water:    db "WATER@"
-.Grass:    db "GRASS@"
-.Electric: db "ELECTRIC@"
-.Psychic:  db "PSYCHIC@"
-.Ice:      db "ICE@"
-.Ground:   db "GROUND@"
-.Rock:     db "ROCK@"
-.Bird:     db "BIRD@"
-.Bug:      db "BUG@"
-.Ghost:    db "GHOST@"
-.Dragon:   db "DRAGON@"
+.Normal:    db "NORMAL@"
+.Fighting:  db "FIGHTING@"
+.Flying:    db "FLYING@"
+.Poison:    db "POISON@"
+.CurseType: db "???@"
+.Fire:      db "FIRE@"
+.Water:     db "WATER@"
+.Grass:     db "GRASS@"
+.Electric:  db "ELECTRIC@"
+.Psychic:   db "PSYCHIC@"
+.Ice:       db "ICE@"
+.Ground:    db "GROUND@"
+.Rock:      db "ROCK@"
+.Bird:      db "BIRD@"
+.Bug:       db "BUG@"
+.Ghost:     db "GHOST@"
+.Steel:     db "STEEL@"
+.Dragon:    db "DRAGON@"
+.Dark:      db "DARK@"
