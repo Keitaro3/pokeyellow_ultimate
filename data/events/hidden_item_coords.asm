@@ -9,8 +9,7 @@ HiddenItemCoords:
 	hidden_item POKEMON_MANSION_3F,             1,   9
 	hidden_item POKEMON_MANSION_B1F,            1,   9
 	hidden_item SAFARI_ZONE_WEST,               6,   5
-	hidden_item CERULEAN_CAVE_2F,              16,  13
-	hidden_item CERULEAN_CAVE_B1F,              8,  14
+	hidden_item CERULEAN_CAVE_B1F,             27,   3
 	hidden_item UNUSED_MAP_6F,                 14,  11
 	hidden_item SEAFOAM_ISLANDS_B2F,           15,  15
 	hidden_item SEAFOAM_ISLANDS_B3F,            9,  16
@@ -53,7 +52,7 @@ HiddenItemCoords:
 	hidden_item COPYCATS_HOUSE_2F,              1,   1
 	hidden_item VIRIDIAN_CITY,                 14,   4
 	hidden_item CERULEAN_CITY,                 15,   8
-	hidden_item CERULEAN_CAVE_1F,              18,   7
+	hidden_item CERULEAN_CAVE_1F,              14,  11
 	hidden_item POKEMON_TOWER_5F,               4,  12
 	hidden_item VERMILION_CITY,                14,  11
 	hidden_item CELADON_CITY,                  48,  15

@@ -93,7 +93,7 @@ Route2TradeHouse_Blocks:
 SaffronPidgeyHouse_Blocks:
 VermilionPidgeyHouse_Blocks:
 LavenderCuboneHouse_Blocks:
-CeruleanMelaniesHouse_Blocks:
+CeruleanTradeHouse_Blocks:
 PewterNidoranHouse_Blocks:
 PewterSpeechHouse_Blocks:
 ViridianNicknameHouse_Blocks: INCBIN "maps/ViridianNicknameHouse.blk"
@@ -143,9 +143,9 @@ INCLUDE "data/maps/headers/CeruleanTrashedHouse.asm"
 INCLUDE "scripts/CeruleanTrashedHouse.asm"
 INCLUDE "data/maps/objects/CeruleanTrashedHouse.asm"
 
-INCLUDE "data/maps/headers/CeruleanMelaniesHouse.asm"
-INCLUDE "scripts/CeruleanMelaniesHouse.asm"
-INCLUDE "data/maps/objects/CeruleanMelaniesHouse.asm"
+INCLUDE "data/maps/headers/CeruleanTradeHouse.asm"
+INCLUDE "scripts/CeruleanTradeHouse.asm"
+INCLUDE "data/maps/objects/CeruleanTradeHouse.asm"
 
 INCLUDE "data/maps/headers/BikeShop.asm"
 INCLUDE "scripts/BikeShop.asm"
@@ -1224,9 +1224,6 @@ AgathasRoom_Blocks: INCBIN "maps/AgathasRoom.blk"
 
 SECTION "Maps 22", ROMX
 
-INCLUDE "scripts/ViridianCity2.asm"
-INCLUDE "scripts/VermilionCity2.asm"
-INCLUDE "scripts/CeladonCity2.asm"
 INCLUDE "scripts/Route1_2.asm"
 INCLUDE "scripts/Route22_2.asm"
 INCLUDE "scripts/RedsHouse1F2.asm"
@@ -1249,4 +1246,3 @@ INCLUDE "scripts/SummerBeachHouse2.asm"
 INCLUDE "scripts/BillsHouse2.asm"
 INCLUDE "scripts/ViridianForest2.asm"
 INCLUDE "scripts/SSAnne2FRooms_2.asm"
-INCLUDE "scripts/SilphCo11F_2.asm"

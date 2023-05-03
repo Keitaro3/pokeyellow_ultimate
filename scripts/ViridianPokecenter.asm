@@ -7,7 +7,6 @@ ViridianPokecenter_TextPointers:
 	dw ViridianPokeCenterText2
 	dw ViridianPokeCenterText3
 	dw ViridianTradeNurseText
-	dw ViridianPokeCenterText5
 
 ViridianHealNurseText:
 	script_pokecenter_nurse
@@ -22,8 +21,3 @@ ViridianPokeCenterText3:
 
 ViridianTradeNurseText:
 	script_cable_club_receptionist
-
-ViridianPokeCenterText5:
-	text_asm
-	callfar PokecenterChanseyText
-	jp TextScriptEnd

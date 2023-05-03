@@ -13,6 +13,5 @@ PewterPokecenter_Object:
 	object_event  1,  3, SPRITE_JIGGLYPUFF, STAY, DOWN, 3 ; person
 	object_event 11,  2, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, 4 ; person
 	object_event  4,  3, SPRITE_COOLTRAINER_F, STAY, UP, 5 ; person
-	object_event  4,  1, SPRITE_CHANSEY, STAY, DOWN, 6 ; person
 
 	def_warps_to PEWTER_POKECENTER

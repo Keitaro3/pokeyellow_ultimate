@@ -350,7 +350,6 @@ INCLUDE "engine/overworld/specific_script_flags.asm"
 
 SECTION "Credits", ROMX
 
-INCLUDE "engine/events/pokecenter_chansey.asm"
 INCLUDE "engine/movie/credits.asm"
 
 

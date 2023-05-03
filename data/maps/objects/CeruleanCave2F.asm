@@ -12,9 +12,8 @@ CeruleanCave2F_Object:
 	def_bg_events
 
 	def_object_events
-	object_event  0, 11, SPRITE_POKE_BALL, STAY, NONE, 1, RARE_CANDY
-	object_event 16,  7, SPRITE_POKE_BALL, STAY, NONE, 2, ULTRA_BALL
-	object_event 19, 11, SPRITE_POKE_BALL, STAY, NONE, 3, MAX_REVIVE
-	object_event 27,  9, SPRITE_POKE_BALL, STAY, NONE, 4, FULL_RESTORE
+	object_event  5, 15, SPRITE_POKE_BALL, STAY, NONE, 1, PP_UP
+	object_event 25, 13, SPRITE_POKE_BALL, STAY, NONE, 2, ULTRA_BALL
+	object_event 29,  9, SPRITE_POKE_BALL, STAY, NONE, 3, FULL_RESTORE
 
 	def_warps_to CERULEAN_CAVE_2F

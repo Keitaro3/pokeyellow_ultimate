@@ -6,7 +6,6 @@ HiddenObjectMaps:
 	dbw POKEMON_MANSION_3F,           Mansion3HiddenObjects
 	dbw POKEMON_MANSION_B1F,          Mansion4HiddenObjects
 	dbw SAFARI_ZONE_WEST,             SafariZoneWestHiddenObjects
-	dbw CERULEAN_CAVE_2F,             CeruleanCave2HiddenObjects
 	dbw CERULEAN_CAVE_B1F,            CeruleanCave3HiddenObjects
 	dbw UNUSED_MAP_6F,                UnusedMap6FHiddenObjects
 	dbw SEAFOAM_ISLANDS_B2F,          SeafoamIslands3HiddenObjects
@@ -132,12 +131,8 @@ SafariZoneWestHiddenObjects:
 	hidden_object  6,  5, REVIVE, HiddenItems
 	db -1 ; end
 
-CeruleanCave2HiddenObjects:
-	hidden_object 16, 13, PP_UP, HiddenItems
-	db -1 ; end
-
 CeruleanCave3HiddenObjects:
-	hidden_object  8, 14, PP_UP, HiddenItems
+	hidden_object 27,  3, ULTRA_BALL, HiddenItems
 	db -1 ; end
 
 UnusedMap6FHiddenObjects:
@@ -386,7 +381,7 @@ BikeShopHiddenObjects:
 	db -1 ; end
 
 CeruleanCave1HiddenObjects:
-	hidden_object 18,  7, PP_UP, HiddenItems
+	hidden_object 14, 11, RARE_CANDY, HiddenItems
 	db -1 ; end
 
 LavenderPokecenterHiddenObjects:

@@ -66,8 +66,8 @@ PewterJigglypuff::
 	text_end
 
 JigglypuffFacingDirections:
-	db $40 | SPRITE_FACING_DOWN
-	db $40 | SPRITE_FACING_LEFT
-	db $40 | SPRITE_FACING_UP
-	db $40 | SPRITE_FACING_RIGHT
+	db $30 | SPRITE_FACING_DOWN
+	db $30 | SPRITE_FACING_LEFT
+	db $30 | SPRITE_FACING_UP
+	db $30 | SPRITE_FACING_RIGHT
 JigglypuffFacingDirectionsEnd:

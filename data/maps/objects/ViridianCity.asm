@@ -9,12 +9,12 @@ ViridianCity_Object:
 	warp_event 32,  7, VIRIDIAN_GYM, 1
 
 	def_bg_events
-	bg_event 17, 17, 9 ; ViridianCityText8
-	bg_event 19,  1, 10 ; ViridianCityText9
-	bg_event 21, 29, 11 ; ViridianCityText10
-	bg_event 30, 19, 12 ; MartSignText
-	bg_event 24, 25, 13 ; PokeCenterSignText
-	bg_event 27,  7, 14 ; ViridianCityText13
+	bg_event 17, 17,  8 ; ViridianCityText8
+	bg_event 19,  1,  9 ; ViridianCityText9
+	bg_event 21, 29, 10 ; ViridianCityText10
+	bg_event 30, 19, 11 ; MartSignText
+	bg_event 24, 25, 12 ; PokeCenterSignText
+	bg_event 27,  7, 13 ; ViridianCityText13
 
 	def_object_events
 	object_event 13, 20, SPRITE_YOUNGSTER, WALK, ANY_DIR, 1 ; person
@@ -24,6 +24,5 @@ ViridianCity_Object:
 	object_event 18,  9, SPRITE_GAMBLER_ASLEEP, STAY, NONE, 5 ; person
 	object_event  6, 23, SPRITE_FISHER, STAY, DOWN, 6 ; person
 	object_event 17,  5, SPRITE_GAMBLER, WALK, LEFT_RIGHT, 7 ; person
-	object_event 18,  9, SPRITE_GAMBLER, STAY, NONE, 8
 
 	def_warps_to VIRIDIAN_CITY

@@ -14,7 +14,7 @@ Route9_ScriptPointers:
 
 Route9_TextPointers:
 	dw Route9Text1
-	dw Route9TextAJ
+	dw Route9Text2
 	dw Route9Text3
 	dw Route9Text4
 	dw Route9Text5
@@ -30,7 +30,7 @@ Route9TrainerHeaders:
 Route9TrainerHeader0:
 	trainer EVENT_BEAT_ROUTE_9_TRAINER_0, 3, Route9BattleText1, Route9EndBattleText1, Route9AfterBattleText1
 Route9TrainerHeader1:
-	trainer EVENT_BEAT_ROUTE_9_TRAINER_1, 2, Route9BattleTextAJ, Route9EndBattleTextAJ, Route9AfterBattleTextAJ
+	trainer EVENT_BEAT_ROUTE_9_TRAINER_1, 2, Route9BattleText2, Route9EndBattleText2, Route9AfterBattleText2
 Route9TrainerHeader2:
 	trainer EVENT_BEAT_ROUTE_9_TRAINER_2, 4, Route9BattleText3, Route9EndBattleText3, Route9AfterBattleText3
 Route9TrainerHeader3:
@@ -52,7 +52,7 @@ Route9Text1:
 	ld hl, Route9TrainerHeader0
 	jr Route9TalkToTrainer
 
-Route9TextAJ:
+Route9Text2:
 	text_asm
 	ld hl, Route9TrainerHeader1
 	jr Route9TalkToTrainer
@@ -106,16 +106,16 @@ Route9AfterBattleText1:
 	text_far _Route9AfterBattleText1
 	text_end
 
-Route9BattleTextAJ:
-	text_far _Route9BattleTextAJ
+Route9BattleText2:
+	text_far _Route9BattleText2
 	text_end
 
-Route9EndBattleTextAJ:
-	text_far _Route9EndBattleTextAJ
+Route9EndBattleText2:
+	text_far _Route9EndBattleText2
 	text_end
 
-Route9AfterBattleTextAJ:
-	text_far _Route9AfterBattleTextAJ
+Route9AfterBattleText2:
+	text_far _Route9AfterBattleText2
 	text_end
 
 Route9BattleText3:

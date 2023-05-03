@@ -123,34 +123,34 @@ _CeruleanCityText5::
 	done
 
 _CeruleanCityText6::
-	text "These poor people"
-	line "here were robbed."
+	text "The people here"
+	line "were robbed."
 
-	para "We're positive"
-	line "that TEAM ROCKET"
-	cont "is behind this"
-	cont "terrible deed."
+	para "It's obvious that"
+	line "TEAM ROCKET is"
+	cont "behind this most"
+	cont "heinous crime!"
 
 	para "Even our POLICE"
-	line "FORCE has trouble"
+	line "force has trouble"
 	cont "with the ROCKETs!"
 	done
 
 _CeruleanCityText_19730::
-	text "OK! ELECTRODE!"
-	line "Use SONICBOOM!"
-	cont "Please ELECTRODE,"
+	text "OK! SLOWBRO!"
+	line "Use WATER GUN!"
+	cont "Come on, SLOWBRO"
 	cont "pay attention!"
 	done
 
 _CeruleanCityText_19735::
-	text "ELECTRODE, TACKLE!"
+	text "SLOWBRO punch!"
 	line "No! You blew it"
 	cont "again!"
 	done
 
 _CeruleanCityText_1973a::
-	text "ELECTRODE, SWIFT!"
+	text "SLOWBRO, WITHDRAW!"
 	line "No! That's wrong!"
 
 	para "Training #MON"
@@ -163,22 +163,22 @@ _CeruleanCityText_1973a::
 	done
 
 _CeruleanCityText_1976f::
-	text "ELECTRODE took a"
+	text "SLOWBRO took a"
 	line "snooze..."
 	done
 
 _CeruleanCityText_19774::
-	text "ELECTRODE is"
+	text "SLOWBRO is"
 	line "loafing around..."
 	done
 
 _CeruleanCityText_19779::
-	text "ELECTRODE turned"
+	text "SLOWBRO turned"
 	line "away..."
 	done
 
 _CeruleanCityText_1977e::
-	text "ELECTRODE"
+	text "SLOWBRO"
 	line "ignored orders..."
 	done
 

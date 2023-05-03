@@ -15,20 +15,19 @@ _Route9AfterBattleText1::
 	cont "dark tunnel ahead."
 	done
 
-_Route9BattleTextAJ::
-	text "I aim to be the"
-	line "ultimate trainer!"
+_Route9BattleText2::
+	text "Who's that walking"
+	line "with those good"
+	cont "looking #MON?"
 	done
 
-_Route9EndBattleTextAJ::
-	text "My"
-	line "SANDSHREW lost?"
+_Route9EndBattleText2::
+	text "Out"
+	line "like a light!"
 	prompt
 
-_Route9AfterBattleTextAJ::
-	text "I'll restart my"
-	line "100-win streak"
-	cont "with SANDSHREW."
+_Route9AfterBattleText2::
+	text "Keep walking!"
 	done
 
 _Route9BattleText3::
@@ -133,4 +132,26 @@ _Route9AfterBattleText8::
 	text "Hahahaha!"
 	line "Us hearty guys"
 	cont "always laugh!"
+	done
+
+_Route9BattleText9::
+	text "Go, my super bug"
+	line "#MON!"
+	done
+
+_Route9EndBattleText9::
+	text "My"
+	line "bugs..."
+	prompt
+
+_Route9AfterBattleText9::
+	text "If you don't like"
+	line "bug #MON, you"
+	cont "bug me!"
+	done
+
+_Route9Text11::
+	text "ROUTE 9"
+	line "CERULEAN CITY-"
+	cont "ROCK TUNNEL"
 	done

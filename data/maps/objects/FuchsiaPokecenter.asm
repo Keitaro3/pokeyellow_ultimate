@@ -12,6 +12,5 @@ FuchsiaPokecenter_Object:
 	object_event  4,  3, SPRITE_ROCKER, STAY, UP, 2 ; person
 	object_event  6,  5, SPRITE_COOLTRAINER_F, WALK, LEFT_RIGHT, 3 ; person
 	object_event 11,  2, SPRITE_LINK_RECEPTIONIST, STAY, DOWN, 4 ; person
-	object_event  4,  1, SPRITE_CHANSEY, STAY, DOWN, 5 ; person
 
 	def_warps_to FUCHSIA_POKECENTER

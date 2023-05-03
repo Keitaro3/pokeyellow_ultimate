@@ -16,8 +16,6 @@ CeruleanCaveB1F_TextPointers:
 	dw MewtwoText
 	dw PickUpItemText
 	dw PickUpItemText
-	dw PickUpItemText
-	dw PickUpItemText
 
 CeruleanCaveB1FTrainerHeaders:
 	def_trainers

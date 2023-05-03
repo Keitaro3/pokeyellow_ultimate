@@ -3,7 +3,7 @@ CeruleanCity_Object:
 
 	def_warp_events
 	warp_event 27, 11, CERULEAN_TRASHED_HOUSE, 1
-	warp_event 13, 15, CERULEAN_MELANIES_HOUSE, 1
+	warp_event 13, 15, CERULEAN_TRADE_HOUSE, 1
 	warp_event 19, 17, CERULEAN_POKECENTER, 1
 	warp_event 30, 19, CERULEAN_GYM, 1
 	warp_event 13, 25, BIKE_SHOP, 1
@@ -29,7 +29,7 @@ CeruleanCity_Object:
 	object_event  9, 21, SPRITE_SUPER_NERD, WALK, LEFT_RIGHT, 5 ; person
 	object_event 28, 12, SPRITE_GUARD, STAY, DOWN, 6 ; person
 	object_event 29, 26, SPRITE_COOLTRAINER_F, STAY, LEFT, 7 ; person
-	object_event 28, 26, SPRITE_POKE_BALL, STAY, DOWN, 8 ; person
+	object_event 28, 26, SPRITE_MONSTER, STAY, DOWN, 8 ; person
 	object_event  9, 27, SPRITE_COOLTRAINER_F, WALK, LEFT_RIGHT, 9 ; person
 	object_event  4, 12, SPRITE_SUPER_NERD, STAY, DOWN, 10 ; person
 	object_event 27, 12, SPRITE_GUARD, STAY, DOWN, 11 ; person

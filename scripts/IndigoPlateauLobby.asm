@@ -20,7 +20,6 @@ IndigoPlateauLobby_TextPointers:
 	dw IndigoPlateauLobbyText3
 	dw IndigoCashierText
 	dw IndigoTradeNurseText
-	dw IndigoPlateauLobbyText6
 
 IndigoHealNurseText:
 	script_pokecenter_nurse
@@ -35,8 +34,3 @@ IndigoPlateauLobbyText3:
 
 IndigoTradeNurseText:
 	script_cable_club_receptionist
-
-IndigoPlateauLobbyText6:
-	text_asm
-	callfar PokecenterChanseyText
-	jp TextScriptEnd

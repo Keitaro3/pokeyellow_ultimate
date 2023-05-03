@@ -6,7 +6,7 @@ _SchoolText1::
 
 _SchoolText3::
 	text "Sis says #MON"
-	line "will become tame"
+	line "become friendly"
 	cont "if you treat them"
 	cont "nicely."
 	done

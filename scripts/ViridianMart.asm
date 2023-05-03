@@ -58,19 +58,8 @@ ViridianMartScript1:
 	SetEvent EVENT_GOT_OAKS_PARCEL
 	ld a, $2
 	ld [wViridianMartCurScript], a
-	ret
-
+	; fallthrough
 ViridianMartScript2:
-	CheckEventHL EVENT_02D
-	ret z
-	CheckAndSetEventReuseHL EVENT_02C
-	ret nz
-	ld a, HS_OLD_MAN
-	ld [wMissableObjectIndex], a
-	predef HideObject
-	ld a, HS_OLD_MAN_1
-	ld [wMissableObjectIndex], a
-	predef ShowObject
 	ret
 
 ViridianMart_TextPointers:

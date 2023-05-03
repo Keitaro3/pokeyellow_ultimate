@@ -29,9 +29,9 @@ DEF SLOTS_SOMEONESKEYS EQU $ff
 	const TRADE_FOR_MILES
 	const TRADE_FOR_STINGER ; unused
 	const TRADE_FOR_STICKY
-	const TRADE_FOR_BART    ; unused
+	const TRADE_FOR_DUX    ; unused
 	const TRADE_FOR_SPIKE
-	const TRADE_FOR_MARTY   ; unused
+	const TRADE_FOR_LOLA
 	const TRADE_FOR_BUFFY
 	const TRADE_FOR_CEZANNE
 	const TRADE_FOR_RICKY

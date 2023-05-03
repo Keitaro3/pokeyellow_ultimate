@@ -11,15 +11,15 @@ DisplayPokemonCenterDialogue_::
 	call PrintText
 .skipShallWeHealYourPokemon
 	call YesNoChoicePokeCenter ; yes/no menu
+	call UpdateSprites
 	ld a, [wCurrentMenuItem]
 	and a
 	jp nz, .declinedHealing ; if the player chose No
 	call SetLastBlackoutMap
-	call LoadScreenTilesFromBuffer1
 	ld hl, NeedYourPokemonText
 	call PrintText
-	ld a, $18
-	ld [wSprite01StateData1ImageIndex], a ; make the nurse turn to face the machine
+	lb bc, 1, 8
+	call Func_6ebb
 	call Delay3
 	farcall AnimateHealingMachine ; do the healing machine animation
 	predef HealParty
@@ -31,19 +31,56 @@ DisplayPokemonCenterDialogue_::
 	ld [wLastMusicSoundID], a
 	ld [wNewSoundID], a
 	call PlaySound
+	lb bc, 1, 0
+	call Func_6ebb
 	ld hl, PokemonFightingFitText
 	call PrintText
-	ld a, $14
-	ld [wSprite01StateData1ImageIndex], a ; make the nurse bow
-	ld c, a
+	call LoadCurrentMapView
+	call Delay3
+	call UpdateSprites
+	callfar ReloadWalkingTilePatterns
+	ld a, $1
+	ldh [hSpriteIndex], a
+	ld a, $1
+	ldh [hSpriteImageIndex], a
+	call SpriteFunc_34a1
+	ld c, 40
 	call DelayFrames
+	call UpdateSprites
+	call LoadFontTilePatterns
 	jr .done
 .declinedHealing
 	call LoadScreenTilesFromBuffer1 ; restore screen
 .done
 	ld hl, PokemonCenterFarewellText
 	call PrintText
-	jp UpdateSprites
+	call UpdateSprites
+	ret
+
+Func_6eaa:
+	ld a, $1
+	ldh [hSpriteIndex], a
+	ld a, $4
+	ldh [hSpriteImageIndex], a
+	call SpriteFunc_34a1
+	ld c, 64
+	call DelayFrames
+	ret
+
+Func_6ebb:
+	ld a, b
+	ldh [hSpriteIndex], a
+	ld a, c
+	ldh [hSpriteImageIndex], a
+	push bc
+	call SetSpriteFacingDirectionAndDelay
+	pop bc
+	ld a, b
+	ldh [hSpriteIndex], a
+	ld a, c
+	ldh [hSpriteImageIndex], a
+	call SpriteFunc_34a1
+	ret
 
 PokemonCenterWelcomeText:
 	text_far _PokemonCenterWelcomeText

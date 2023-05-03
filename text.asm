@@ -110,7 +110,6 @@ INCLUDE "text/Route9.asm"
 
 SECTION "Text 4", ROMX
 
-INCLUDE "text/Route9_2.asm"
 INCLUDE "text/Route10.asm"
 INCLUDE "text/Route11.asm"
 INCLUDE "text/Route12.asm"
@@ -152,7 +151,7 @@ INCLUDE "text/PewterMart.asm"
 INCLUDE "text/PewterSpeechHouse.asm"
 INCLUDE "text/PewterPokecenter.asm"
 INCLUDE "text/CeruleanTrashedHouse.asm"
-INCLUDE "text/CeruleanMelaniesHouse.asm"
+INCLUDE "text/CeruleanTradeHouse.asm"
 INCLUDE "text/CeruleanPokecenter.asm"
 INCLUDE "text/CeruleanGym.asm"
 INCLUDE "text/BikeShop.asm"
@@ -181,9 +180,6 @@ INCLUDE "text/VermilionMart.asm"
 INCLUDE "text/VermilionGym.asm"
 INCLUDE "text/VermilionPidgeyHouse.asm"
 INCLUDE "text/VermilionDock.asm"
-
-INCLUDE "data/text/text_6.asm"
-
 INCLUDE "text/VermilionOldRodHouse.asm"
 INCLUDE "text/CeladonMart1F.asm"
 INCLUDE "text/CeladonMart2F.asm"

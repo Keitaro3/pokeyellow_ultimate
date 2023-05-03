@@ -26,7 +26,7 @@ Route6TrainerHeaders:
 Route6TrainerHeader0:
 	trainer EVENT_BEAT_ROUTE_6_TRAINER_0, 0, Route6BattleText1, Route6EndBattleText1, Route6AfterBattleText1
 Route6TrainerHeader1:
-	trainer EVENT_BEAT_ROUTE_6_TRAINER_1, 0, Route6BattleText2, Route6EndBattleText2, Route6AfterBattleText2
+	trainer EVENT_BEAT_ROUTE_6_TRAINER_1, 0, Route6BattleText2, Route6EndBattleText2, Route6AfterBattleText1
 Route6TrainerHeader2:
 	trainer EVENT_BEAT_ROUTE_6_TRAINER_2, 4, Route6BattleText3, Route6EndBattleText3, Route6AfterBattleText3
 Route6TrainerHeader3:
@@ -67,10 +67,6 @@ Route6BattleText2:
 
 Route6EndBattleText2:
 	text_far _Route6EndBattleText2
-	text_end
-
-Route6AfterBattleText2:
-	text_far _Route6AfterBattleText2
 	text_end
 
 Route6Text3:

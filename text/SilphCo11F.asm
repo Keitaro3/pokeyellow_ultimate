@@ -59,7 +59,7 @@ _SilphCo11Text2::
 	done
 
 _SilphCo11Text3::
-	text "Ah, <PLAYER>!"
+	text "Ah <PLAYER>!"
 	line "So we meet again!"
 
 	para "The PRESIDENT and"
@@ -71,7 +71,7 @@ _SilphCo11Text3::
 	line "out of grown-up"
 	cont "matters..."
 
-	para "or, experience a"
+	para "Or, experience a"
 	line "world of pain!"
 	done
 
@@ -97,6 +97,21 @@ _SilphCo10Text_62335::
 	line "shall return!"
 	done
 
+_SilphCo11BattleText1::
+	text "Stop right there!"
+	line "Don't you move!"
+	done
+
+_SilphCo11EndBattleText1::
+	text "Don't..."
+	line "Please!"
+	prompt
+
+_SilphCo11AfterBattleText1::
+	text "So, you want to"
+	line "see my BOSS?"
+	done
+
 _SilphCo11BattleText2::
 	text "Halt! Do you have"
 	line "an appointment"
@@ -112,4 +127,9 @@ _SilphCo11AfterBattleText2::
 	text "Watch your step,"
 	line "my BOSS likes his"
 	cont "#MON tough!"
+	done
+
+_SilphCo10Text_6237b::
+	text "The monitor has"
+	line "#MON on it!"
 	done

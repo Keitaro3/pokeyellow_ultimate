@@ -9,7 +9,6 @@ PewterPokecenter_TextPointers:
 	dw PewterJigglypuffText
 	dw PewterTradeNurseText
 	dw PewterPokecenterText5
-	dw PewterPokecenterText6
 
 PewterHealNurseText:
 	script_pokecenter_nurse
@@ -29,9 +28,4 @@ PewterTradeNurseText:
 PewterPokecenterText5:
 	text_asm
 	farcall Func_f1d98
-	jp TextScriptEnd
-
-PewterPokecenterText6:
-	text_asm
-	callfar PokecenterChanseyText
 	jp TextScriptEnd

@@ -109,9 +109,8 @@ CeladonCityText9:
 	text_end
 
 CeladonCityText10:
-	text_asm
-	farcall Func_f1ac6
-	jp TextScriptEnd
+	text_far _CeladonCityText10
+	text_end
 
 CeladonCityText11:
 	text_far _CeladonCityText11
