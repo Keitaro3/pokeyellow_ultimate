@@ -171,9 +171,100 @@
 	const SLASH        ; a3
 	const SUBSTITUTE   ; a4
 	const STRUGGLE     ; a5
+	const SKETCH       ; a6
+	const TRIPLE_KICK  ; a7
+	const THIEF        ; a8
+	const SPIDER_WEB   ; a9
+	const MIND_READER  ; aa
+	const NIGHTMARE    ; ab
+	const FLAME_WHEEL  ; ac
+	const SNORE        ; ad
+	const CURSE_M      ; ae
+	const FLAIL        ; af
+	const CONVERSION2  ; b0
+	const AEROBLAST    ; b1
+	const COTTON_SPORE ; b2
+	const REVERSAL     ; b3
+	const SPITE        ; b4
+	const POWDER_SNOW  ; b5
+	const PROTECT      ; b6
+	const MACH_PUNCH   ; b7
+	const SCARY_FACE   ; b8
+	const FAINT_ATTACK ; b9
+	const SWEET_KISS   ; ba
+	const BELLY_DRUM   ; bb
+	const SLUDGE_BOMB  ; bc
+	const MUD_SLAP     ; bd
+	const OCTAZOOKA    ; be
+	const SPIKES       ; bf
+	const ZAP_CANNON   ; c0
+	const FORESIGHT    ; c1
+	const DESTINY_BOND ; c2
+	const PERISH_SONG  ; c3
+	const ICY_WIND     ; c4
+	const DETECT       ; c5
+	const BONE_RUSH    ; c6
+	const LOCK_ON      ; c7
+	const OUTRAGE      ; c8
+	const SANDSTORM    ; c9
+	const GIGA_DRAIN   ; ca
+	const ENDURE       ; cb
+	const CHARM        ; cc
+	const ROLLOUT      ; cd
+	const FALSE_SWIPE  ; ce
+	const SWAGGER      ; cf
+	const MILK_DRINK   ; d0
+	const SPARK        ; d1
+	const FURY_CUTTER  ; d2
+	const STEEL_WING   ; d3
+	const MEAN_LOOK    ; d4
+	const ATTRACT      ; d5
+	const SLEEP_TALK   ; d6
+	const HEAL_BELL    ; d7
+	const RETURN       ; d8
+	const PRESENT      ; d9
+	const FRUSTRATION  ; da
+	const SAFEGUARD    ; db
+	const PAIN_SPLIT   ; dc
+	const SACRED_FIRE  ; dd
+	const MAGNITUDE    ; de
+	const DYNAMICPUNCH ; df
+	const MEGAHORN     ; e0
+	const DRAGONBREATH ; e1
+	const BATON_PASS   ; e2
+	const ENCORE       ; e3
+	const PURSUIT      ; e4
+	const RAPID_SPIN   ; e5
+	const SWEET_SCENT  ; e6
+	const IRON_TAIL    ; e7
+	const METAL_CLAW   ; e8
+	const VITAL_THROW  ; e9
+	const MORNING_SUN  ; ea
+	const SYNTHESIS    ; eb
+	const MOONLIGHT    ; ec
+	const HIDDEN_POWER ; ed
+	const CROSS_CHOP   ; ee
+	const TWISTER      ; ef
+	const RAIN_DANCE   ; f0
+	const SUNNY_DAY    ; f1
+	const CRUNCH       ; f2
+	const MIRROR_COAT  ; f3
+	const PSYCH_UP     ; f4
+	const EXTREMESPEED ; f5
+	const ANCIENTPOWER ; f6
+	const SHADOW_BALL  ; f7
+	const FUTURE_SIGHT ; f8
+	const ROCK_SMASH   ; f9
+	const WHIRLPOOL    ; fa
+	const BEAT_UP      ; fb
+	const BLAST_BURN   ; fc
+	const HYDRO_CANNON ; fd
+	const FRENZY_PLANT ; fe
+	const VOLT_TACKLE  ; ff	
 DEF NUM_ATTACKS EQU const_value - 1
 
 	; Moves do double duty as animation identifiers.
+const_value = 166
 
 	const SHOWPIC_ANIM
 	const STATUS_AFFECTED_ANIM

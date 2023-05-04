@@ -176,4 +176,94 @@ Moves:
 	move SLASH,        NO_ADDITIONAL_EFFECT,        70, NORMAL,       100, 20
 	move SUBSTITUTE,   SUBSTITUTE_EFFECT,            0, NORMAL,       100, 10
 	move STRUGGLE,     RECOIL_EFFECT,               50, NORMAL,       100, 10
+	move METRONOME,    SPLASH_EFFECT,                0, NORMAL,       100,  1  ; Sketch
+	move ROLLING_KICK, SPLASH_EFFECT,               10, FIGHTING,      90, 10  ; Triple Kick
+	move TACKLE,       NO_ADDITIONAL_EFFECT,        40, DARK,         100, 10  ; Thief
+	move STRING_SHOT,  SPLASH_EFFECT,                0, BUG,          100, 10  ; Spider Web
+	move FLASH,  	   SPLASH_EFFECT,             	 0, NORMAL,       100,  5  ; Mind Reader
+	move DREAM_EATER,  SPLASH_EFFECT,           	 0, GHOST,        100, 15  ; Nightmare
+	move FIRE_SPIN,    SPLASH_EFFECT,        		60, FIRE,         100, 25  ; Flame Wheel
+	move REST,         SPLASH_EFFECT,               40, NORMAL,       100, 15  ; Snore
+	move AMNESIA,      SPLASH_EFFECT,                0, CURSE,        100, 10  ; Curse
+	move THRASH,       SPLASH_EFFECT,            	 1, NORMAL,       100, 15  ; Flail
+	move CONVERSION,   SPLASH_EFFECT,         		 0, NORMAL,       100, 30  ; Conversion 2
+	move HYPER_BEAM,   NO_ADDITIONAL_EFFECT,       100, FLYING,        95,  5  ; Aeroblast
+	move SPORE, 	   SPEED_DOWN2_EFFECT,      	 0, GRASS,         85, 40  ; Cotton Spore
+	move STRENGTH,     SPLASH_EFFECT,            	 1, FIGHTING,     100, 15  ; Reversal
+	move LEER,         SPLASH_EFFECT,                0, GHOST,        100, 10  ; Spite
+	move BLIZZARD,     SPLASH_EFFECT,         		40, ICE,          100, 25  ; Powder Snow
+	move DEFENSE_CURL, SPLASH_EFFECT,                0, NORMAL,       100, 10  ; Protect
+	move COMET_PUNCH,  NO_ADDITIONAL_EFFECT,       	40, FIGHTING,     100, 30  ; Mach Punch
+	move LEER,   	   SPEED_DOWN2_EFFECT,           0, NORMAL,        90, 10  ; Scary Face
+	move QUICK_ATTACK, SWIFT_EFFECT,         		60, DARK,         100, 20  ; Faint Attack
+	move LOVELY_KISS,  CONFUSION_EFFECT,             0, NORMAL,        75, 10  ; Sweet Kiss
+	move SHARPEN,      SPLASH_EFFECT,          		 0, NORMAL,       100, 10  ; Belly Drum
+	move SLUDGE,  	   POISON_SIDE_EFFECT2,         90, POISON,       100, 10  ; Sludge Bomb
+	move SLUDGE,       SPLASH_EFFECT,  				20, GROUND,       100, 10  ; Mud Slap
+	move BARRAGE,      SPLASH_EFFECT,  				65, WATER,         85, 10  ; Octazooka
+	move SPIKE_CANNON, SPLASH_EFFECT,              	 0, GROUND,       100, 20  ; Spikes
+	move THUNDERBOLT,  SPLASH_EFFECT,      		   100, ELECTRIC,      50,  5  ; Zap Cannon
+	move LEER,         SPLASH_EFFECT,           	 0, NORMAL,       100, 40  ; Foresight
+	move AMNESIA, 	   SPLASH_EFFECT,        		 0, GHOST,        100,  5  ; Destiny Bond
+	move SING,  	   SPLASH_EFFECT,         		 0, NORMAL,       100,  5  ; Perish Song
+	move BLIZZARD,     SPLASH_EFFECT,     			55, ICE,          95,  15  ; Icy Wind
+	move LEER,         SPLASH_EFFECT,             	 0, FIGHTING,     100,  5  ; Detect
+	move BONE_CLUB,    SPLASH_EFFECT,          		25, GROUND,        80, 10  ; Bone Rush
+	move GLARE,        SPLASH_EFFECT,             	 0, NORMAL,       100,  5  ; Lock On
+	move THRASH,       THRASH_PETAL_DANCE_EFFECT,   90, DRAGON,       100, 15  ; Outrage
+	move HAZE,         SPLASH_EFFECT,           	 0, ROCK,         100, 10  ; Sandstorm
+	move MEGA_DRAIN,   SPLASH_EFFECT,          		60, GRASS,        100,  5  ; Giga Drain
+	move DEFENSE_CURL, SPLASH_EFFECT,              	 0, NORMAL,       100, 10  ; Endure
+	move LOVELY_KISS,  ATTACK_DOWN2_EFFECT,       	 0, NORMAL,       100, 20  ; Charm
+	move BARRAGE,      SPLASH_EFFECT,            	30, ROCK,          90, 20  ; Rollout
+	move SLASH,  	   SPLASH_EFFECT,        		40, NORMAL,       100, 40  ; False Swipe
+	move FOCUS_ENERGY, SPLASH_EFFECT,             	 0, NORMAL,        90, 15  ; Swagger
+	move SOFTBOILED,   HEAL_EFFECT,                  0, NORMAL,       100, 10  ; Milk Drink
+	move THUNDERSHOCK, PARALYZE_SIDE_EFFECT2,       65, ELECTRIC,     100, 20  ; Spark
+	move CUT,		   SPLASH_EFFECT,        		10, BUG,           95, 20  ; Fury Cutter
+	move WING_ATTACK,  SPLASH_EFFECT,     			70, STEEL,         90, 25  ; Steel Wing
+	move GLARE,        SPLASH_EFFECT,           	 0, NORMAL,       100,  5  ; Mean Look
+	move LOVELY_KISS,  SPLASH_EFFECT,             	 0, NORMAL,       100, 15  ; Attract
+	move REST,   	   SPLASH_EFFECT,          		 0, NORMAL,       100, 10  ; Sleep Talk
+	move RECOVER,      SPLASH_EFFECT,           	 0, NORMAL,       100,  5  ; Heal Bell
+	move STRENGTH,     SPLASH_EFFECT,              	 1, NORMAL,       100, 20  ; Return
+	move EGG_BOMB,     SPLASH_EFFECT,             	 1, NORMAL,        90, 15  ; Present
+	move STRUGGLE,     SPLASH_EFFECT,         		 1, NORMAL,       100, 20  ; Frustration
+	move REFLECT,      SPLASH_EFFECT,           	 0, NORMAL,       100, 25  ; Safeguard
+	move AMNESIA,      SPLASH_EFFECT,          		 0, NORMAL,       100, 20  ; Pain Split
+	move FIRE_BLAST,   SPLASH_EFFECT,       	   100, FIRE,          95,  5  ; Sacred Fire
+	move EARTHQUAKE,   SPLASH_EFFECT,           	 1, GROUND,       100, 30  ; Magnitude
+	move MEGA_PUNCH,   SPLASH_EFFECT,       	   100, FIGHTING,      50,  5  ; Dynamic Punch
+	move HORN_ATTACK,  NO_ADDITIONAL_EFFECT,       120, BUG,           85, 10  ; Megahorn
+	move DRAGON_RAGE,  PARALYZE_SIDE_EFFECT2,       60, DRAGON,       100, 20  ; Dragonbreath
+	move SPLASH,   	   SPLASH_EFFECT,          		 0, NORMAL,       100, 40  ; Baton Pass
+	move SPLASH,       SPLASH_EFFECT,              	 0, NORMAL,       100,  5  ; Encore
+	move SCRATCH,      SPLASH_EFFECT,            	40, DARK,         100, 20  ; Pursuit
+	move SONICBOOM,    SPLASH_EFFECT,         		20, NORMAL,       100, 40  ; Rapid Spin
+	move RAZOR_LEAF,   SPLASH_EFFECT,        		 0, NORMAL,       100, 20  ; Sweet Scent
+	move SLAM,         DEFENSE_DOWN_SIDE_EFFECT,   100, STEEL,         75, 15  ; Iron Tail
+	move SLASH,   	   SPLASH_EFFECT,      			50, STEEL,         95, 35  ; Metal Claw
+	move SEISMIC_TOSS, SWIFT_EFFECT,        		70, FIGHTING,     100, 10  ; Vital Throw
+	move RECOVER,  	   SPLASH_EFFECT,         		 0, NORMAL,       100,  5  ; Morning Sun
+	move RECOVER,      SPLASH_EFFECT,           	 0, GRASS,        100,  5  ; Synthesis
+	move RECOVER,      SPLASH_EFFECT,           	 0, NORMAL,       100,  5  ; Moonlight
+	move PSYWAVE, 	   SPLASH_EFFECT,        		 1, NORMAL,       100, 15  ; Hidden Power
+	move KARATE_CHOP,  NO_ADDITIONAL_EFFECT,       100, FIGHTING,      80,  5  ; Cross Chop
+	move GUST,         SPLASH_EFFECT,            	40, DRAGON,       100, 20  ; Twister
+	move MIST,   	   SPLASH_EFFECT,          		 0, WATER,         90,  5  ; Rain Dance
+	move FLASH,        SPLASH_EFFECT,           	 0, FIRE,          90,  5  ; Sunny Day
+	move BITE,	       SPLASH_EFFECT,    			80, DARK,         100, 15  ; Crunch
+	move COUNTER,      SPLASH_EFFECT,         		 1, PSYCHIC_TYPE, 100, 20  ; Mirror Coat
+	move FOCUS_ENERGY, SPLASH_EFFECT,            	 0, NORMAL,       100, 10  ; Psych Up
+	move QUICK_ATTACK, NO_ADDITIONAL_EFFECT,       	80, NORMAL,       100,  5  ; Extremespeed
+	move ROCK_SLIDE,   SPLASH_EFFECT,         		60, ROCK,         100,  5  ; Ancientpower
+	move EGG_BOMB,     SPLASH_EFFECT,    			80, GHOST,        100, 15  ; Shadow Ball
+	move LEER,  	   SPLASH_EFFECT,       		80, PSYCHIC_TYPE, 90, 15  ; Future Sight
+	move KARATE_CHOP,  SPLASH_EFFECT,   			20, FIGHTING,     100, 15  ; Rock Smash
+	move GUST,         SPLASH_EFFECT,        		15, WATER,         70, 15  ; Whirlpool
+	move STRENGTH,     SPLASH_EFFECT,            	10, DARK,         100, 10  ; Beat Up
+	move FIRE_BLAST,   HYPER_BEAM_EFFECT,          150, FIRE,          90,  5  ; Blast Burn
+	move HYDRO_PUMP,   HYPER_BEAM_EFFECT,          150, WATER,         90,  5  ; Hydro Cannon
+	move PETAL_DANCE,  HYPER_BEAM_EFFECT,          150, GRASS,         90,  5  ; Frenzy Plant
+	move TAKE_DOWN,    SPLASH_EFFECT,              120, ELECTRIC,     100, 15  ; Volt Tackle
 	assert_table_length NUM_ATTACKS

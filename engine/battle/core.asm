@@ -279,6 +279,53 @@ WildRanText:
 EnemyRanText:
 	text_far _EnemyRanText
 	text_end
+	
+INCLUDE "data/battle/move_priorities.asm"
+
+CompareMovePriority:
+; Compare the priority of the player and enemy's moves.
+; Return carry if the player goes first, or z if they match.
+
+	ld a, [wPlayerSelectedMove]
+	call GetMovePriority
+	ld b, a
+	push bc
+	ld a, [wEnemySelectedMove]
+	call GetMovePriority
+	pop bc
+	cp b
+	ret
+
+GetMovePriority:
+; Return the priority (0-3) of move a.
+
+	ld b, a
+
+	; Vital Throw goes last.
+	cp VITAL_THROW
+	ld a, 0
+	ret z
+
+	ld hl, MovePriorities
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jr nz, .loop
+	ld hl, LinkedMovePriorities
+	
+.loop
+	ld a, [hli]
+	cp b
+	jr z, .done
+	inc hl
+	cp -1
+	jr nz, .loop
+
+	ld a, BASE_PRIORITY
+	ret
+
+.done
+	ld a, [hl]
+	ret	
 
 MainInBattleLoop:
 	call ReadPlayerMonCurHPAndStatus
@@ -370,28 +417,10 @@ MainInBattleLoop:
 .specialMoveNotUsed
 	callfar SwitchEnemyMon
 .noLinkBattle
-	ld a, [wPlayerSelectedMove]
-	cp QUICK_ATTACK
-	jr nz, .playerDidNotUseQuickAttack
-	ld a, [wEnemySelectedMove]
-	cp QUICK_ATTACK
-	jr z, .compareSpeed  ; if both used Quick Attack
-	jp .playerMovesFirst ; if player used Quick Attack and enemy didn't
-.playerDidNotUseQuickAttack
-	ld a, [wEnemySelectedMove]
-	cp QUICK_ATTACK
-	jr z, .enemyMovesFirst ; if enemy used Quick Attack and player didn't
-	ld a, [wPlayerSelectedMove]
-	cp COUNTER
-	jr nz, .playerDidNotUseCounter
-	ld a, [wEnemySelectedMove]
-	cp COUNTER
-	jr z, .compareSpeed ; if both used Counter
-	jr .enemyMovesFirst ; if player used Counter and enemy didn't
-.playerDidNotUseCounter
-	ld a, [wEnemySelectedMove]
-	cp COUNTER
-	jr z, .playerMovesFirst ; if enemy used Counter and player didn't
+	call CompareMovePriority
+	jr z, .compareSpeed
+	jr c, .playerMovesFirst ; player goes first
+	jr .enemyMovesFirst
 .compareSpeed
 	ld de, wBattleMonSpeed ; player speed value
 	ld hl, wEnemyMonSpeed ; enemy speed value
@@ -5231,8 +5260,13 @@ MetronomePickMove:
 	and a
 	jr z, .pickMoveLoop
 	cp STRUGGLE
-	assert NUM_ATTACKS == STRUGGLE ; random numbers greater than STRUGGLE are not moves
-	jr nc, .pickMoveLoop
+	jr c, .notStruggleOrSketch
+	cp TRIPLE_KICK
+	jr c, .pickMoveLoop
+	ld a, [wLinkState]
+	cp LINK_STATE_BATTLING
+	jr z, .pickMoveLoop
+.notStruggleOrSketch
 	cp METRONOME
 	jr z, .pickMoveLoop
 	ld [hl], a
