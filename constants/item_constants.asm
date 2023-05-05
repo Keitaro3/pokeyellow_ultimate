@@ -142,6 +142,8 @@ DEF HM01 EQU const_value
 	add_hm SURF         ; $C6
 	add_hm STRENGTH     ; $C7
 	add_hm FLASH        ; $C8
+	add_hm ROCK_SMASH	; $C9
+	add_hm WATERFALL	; $CA
 DEF NUM_HMS EQU const_value - HM01
 
 DEF __tmhm_value__ = 1
@@ -193,7 +195,7 @@ DEF TM01 EQU const_value
 	add_tm BIDE         ; $EA
 	add_tm METRONOME    ; $EB
 	add_tm SELFDESTRUCT ; $EC
-	add_tm EGG_BOMB     ; $ED
+	add_tm SANDSTORM    ; $ED
 	add_tm FIRE_BLAST   ; $EE
 	add_tm SWIFT        ; $EF
 	add_tm SKULL_BASH   ; $F0

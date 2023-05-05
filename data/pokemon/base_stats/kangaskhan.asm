@@ -18,8 +18,9 @@
 	     DOUBLE_EDGE,  BUBBLEBEAM,   WATER_GUN,    ICE_BEAM,     BLIZZARD,     \
 	     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS, RAGE,         \
 	     THUNDERBOLT,  THUNDER,      EARTHQUAKE,   FISSURE,      MIMIC,        \
-	     DOUBLE_TEAM,  BIDE,         FIRE_BLAST,   SKULL_BASH,   REST,         \
-	     ROCK_SLIDE,   SUBSTITUTE,   SURF,         STRENGTH
+	     DOUBLE_TEAM,  BIDE,         SANDSTORM,    FIRE_BLAST,   SKULL_BASH,   \
+	     REST,         ROCK_SLIDE,   SUBSTITUTE,   SURF,         STRENGTH,     \
+		 ROCK_SMASH
 	; end
 
 	db 0 ; padding
