@@ -5,6 +5,8 @@ SaffronMart_TextPointers:
 	dw SaffronCashierText
 	dw SaffronMartText2
 	dw SaffronMartText3
+	
+INCLUDE "data/items/marts/saffron.asm"
 
 SaffronMartText2:
 	text_far _SaffronMartText2

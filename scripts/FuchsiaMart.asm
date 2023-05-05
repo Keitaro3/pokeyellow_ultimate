@@ -6,6 +6,8 @@ FuchsiaMart_TextPointers:
 	dw FuchsiaCashierText
 	dw FuchsiaMartText2
 	dw FuchsiaMartText3
+	
+INCLUDE "data/items/marts/fuchsia.asm"
 
 FuchsiaMartText2:
 	text_far _FuchsiaMartText2

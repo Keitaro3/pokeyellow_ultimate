@@ -8,6 +8,8 @@ PewterMart_TextPointers:
 	dw PewterCashierText
 	dw PewterMartText2
 	dw PewterMartText3
+	
+INCLUDE "data/items/marts/pewter.asm"
 
 PewterMartText2:
 	text_asm

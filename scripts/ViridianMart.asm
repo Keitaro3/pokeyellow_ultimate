@@ -73,6 +73,8 @@ ViridianMart_TextPointers2:
 	dw ViridianCashierText
 	dw ViridianMartText2
 	dw ViridianMartText3
+	
+INCLUDE "data/items/marts/viridian.asm"	
 
 ViridianMartText1:
 	text_far _ViridianMartText1

@@ -5,6 +5,8 @@ VermilionMart_TextPointers:
 	dw VermilionCashierText
 	dw VermilionMartText2
 	dw VermilionMartText3
+	
+INCLUDE "data/items/marts/vermillion.asm"
 
 VermilionMartText2:
 	text_far _VermilionMartText2

@@ -5,6 +5,8 @@ CeruleanMart_TextPointers:
 	dw CeruleanCashierText
 	dw CeruleanMartText2
 	dw CeruleanMartText3
+	
+INCLUDE "data/items/marts/cerulean.asm"	
 
 CeruleanMartText2:
 	text_far _CeruleanMartText2

@@ -6,6 +6,8 @@ LavenderMart_TextPointers:
 	dw LavenderMartText2
 	dw LavenderMartText3
 
+INCLUDE "data/items/marts/lavender.asm"
+
 LavenderMartText2:
 	text_far _LavenderMartText2
 	text_end

@@ -7,6 +7,8 @@ CeladonMart2F_TextPointers:
 	dw CeladonMart2Text3
 	dw CeladonMart2Text4
 	dw CeladonMart2Text5
+	
+INCLUDE "data/items/marts/celadon_2.asm"
 
 CeladonMart2Text3:
 	text_far _CeladonMart2Text3
