@@ -221,7 +221,7 @@ WRAM0
 	"WRAM"
 	"Party Data"
 	"Main Data"
-	"Current Box Data"
+	"Expanded Features"
 	"GBC Palette Data"
 	org $df15
 	"Stack"
@@ -231,6 +231,7 @@ SRAM $0
 	"Sprite Buffers"
 SRAM $1
 	"Save Data"
+	"Active Box"
 SRAM $2
 	"Saved Boxes 1"
 SRAM $3

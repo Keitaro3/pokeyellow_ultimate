@@ -21,5 +21,3 @@
 	     SKULL_BASH,   DREAM_EATER,  REST,         PSYWAVE,      EXPLOSION,    \
 	     SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

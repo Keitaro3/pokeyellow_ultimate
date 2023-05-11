@@ -19,5 +19,3 @@
 	     THUNDER,      MIMIC,        DOUBLE_TEAM,  BIDE,         SWIFT,        \
 	     SKULL_BASH,   REST,         SUBSTITUTE
 	; end
-
-	db 0 ; padding

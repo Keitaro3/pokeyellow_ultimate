@@ -44,14 +44,14 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [wEvoOldSpecies]
 	dec a
 	ld b, 0
+	ld c, a ; new ???
 	ld hl, EvosMovesPointerTable
-	add a
-	rl b
-	ld c, a
+	add hl, bc
 	add hl, bc
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
+	
 	push hl
 	ld a, [wcf91]
 	push af
@@ -66,53 +66,159 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, [hli]
 	and a ; have we reached the end of the evolution data?
 	jr z, Evolution_PartyMonLoop
+
 	ld b, a ; evolution type
+	
 	cp EV_TRADE
-	jr z, .checkTradeEvo
+	jp z, .checkTradeEvo
+	
 ; not trade evolution
 	ld a, [wLinkState]
-	cp LINK_STATE_TRADING
-	jr z, Evolution_PartyMonLoop ; if trading, go the next mon
+	and a ;cp LINK_STATE_TRADING
+	jp nz, .nextEvoEntry2
+	
 	ld a, b
 	cp EV_ITEM
-	jr z, .checkItemEvo
+	jp z, .checkItemEvo
+	
 	ld a, [wForceEvolution]
 	and a
-	jr nz, Evolution_PartyMonLoop
+	jp nz, .nextEvoEntry2
+	
 	ld a, b
 	cp EV_LEVEL
-	jr z, .checkLevel
+	jp z, .checkLevel
+	
+	cp EV_HAPPINESS
+	jr z, .happiness
+	
+; EV_STAT
+	ld a, [wLoadedMonLevel]
+	cp [hl]
+	jp c, .nextEvoEntry1
+	
+	push hl
+	ld de, wLoadedMonAttack
+	ld hl, wLoadedMonDefense
+	ld c, 2
+	call StringCmp
+	ld a, ATK_EQ_DEF
+	jr z, .got_tyrogue_evo
+	ld a, ATK_LT_DEF
+	jr c, .got_tyrogue_evo
+	ld a, ATK_GT_DEF
+.got_tyrogue_evo
+	pop hl
+
+	inc hl
+	cp [hl]
+	jp nz, .nextEvoEntry2
+
+	inc hl
+	jp .doEvolution
+
+.happiness
+	ld a, [wWhichPokemon]
+	ld e, a
+	ld d, 0
+	push hl
+	ld hl, wPartyMonHappiness
+	add hl, de
+	ld a, [hl]
+	pop hl
+	cp HAPPINESS_TO_EVOLVE
+	jp c, .nextEvoEntry2
+	ld a, [hli]
+	cp TR_ANYTIME
+	jr z, .doEvolution
+	cp TR_MORNDAY
+	jr z, .happiness_daylight
+
+; TR_NITE
+	push hl
+	ld hl, wBagItems ; will be wKeyItems
+	ld c, 0
+.moonLoop
+	ld a, [hli]
+	cp $ff
+	jr z, .noShard
+	cp MOON_SHARD
+	jr z, .foundShard
+	inc c
+	jr .moonLoop
+	
+; TR_DAY	
+.happiness_daylight
+	push hl
+	ld hl, wBagItems ; will be wKeyItems
+	ld c, 0
+.sunLoop
+	ld a, [hli]
+	cp $ff
+	jr z, .noShard
+	cp SUN_SHARD
+	jr z, .foundShard
+	inc c
+	jr .sunLoop
+	
+.noShard
+	pop hl
+	jp .nextEvoEntry3
+.foundShard
+	pop hl
+	jr .doEvolution	
+	
 .checkTradeEvo
 	ld a, [wLinkState]
-	cp LINK_STATE_TRADING
-	jp nz, .nextEvoEntry1 ; if not trading, go to the next evolution entry
-	ld a, [hli] ; level requirement
+	and a ;cp LINK_STATE_TRADING
+	jp z, .nextEvoEntry2 ;jp nz, .nextEvoEntry2 ; if not trading, go to the next evolution entry
+	
+	call IsMonHoldingEverstone
+	jp z, .nextEvoEntry2
+
+	ld a, [hli] ; item requirement
 	ld b, a
-	ld a, [wLoadedMonLevel]
-	cp b ; is the mon's level greater than the evolution requirement?
-	jp c, Evolution_PartyMonLoop ; if so, go the next mon
+	inc a
+	jr z, .doEvolution
+	
+	;ld a, [wLinkState]
+	;cp LINK_TIMECAPSULE
+	;jp nz, .nextEvoEntry3	
+
+	ld a, [wLoadedMonCatchRate] ; Gen 2's items are stored here
+	cp b ; does the mon's item meet the requirement?
+	jp nz, .nextEvoEntry3 ; if not, go to the next evolution
+	
+	xor a
+	ld [wLoadedMonCatchRate], a ; removes held item
 	jr .doEvolution
+	
 .checkItemEvo
 	ld a, [wIsInBattle] ; are we in battle?
 	and a
 	ld a, [hli]
-	jp nz, .nextEvoEntry1 ; don't evolve if we're in a battle as wcf91 could be holding the last mon sent out
-
+	jp nz, .nextEvoEntry2 ; don't evolve if we're in a battle as wcf91 could be holding the last mon sent out
+	
 	ld b, a ; evolution item
 	ld a, [wcf91] ; last item used
 	cp b ; was the evolution item in this entry used?
-	jp nz, .nextEvoEntry1 ; if not, go to the next evolution entry
+	jp nz, .nextEvoEntry3 ; if not, go to the next evolution entry
+	jr .doEvolution
+	
 .checkLevel
 	ld a, [hli] ; level requirement
 	ld b, a
 	ld a, [wLoadedMonLevel]
 	cp b ; is the mon's level greater than the evolution requirement?
-	jp c, .nextEvoEntry2 ; if so, go the next evolution entry
+	jp c, .nextEvoEntry3 ; if so, go the next evolution entry
 .doEvolution
+	ld a, [wLoadedMonLevel]
 	ld [wCurEnemyLVL], a
 	ld a, 1
 	ld [wEvolutionOccurred], a
+	
 	push hl
+	
 	ld a, [hl]
 	ld [wEvoNewSpecies], a
 	ld a, [wWhichPokemon]
@@ -121,13 +227,16 @@ Evolution_PartyMonLoop: ; loop over party mons
 	call CopyToStringBuffer
 	ld hl, IsEvolvingText
 	call PrintText
+	
 	ld c, 50
 	call DelayFrames
+	
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	hlcoord 0, 0
 	lb bc, 12, 20
 	call ClearScreenArea
+	
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld a, $ff
@@ -135,9 +244,12 @@ Evolution_PartyMonLoop: ; loop over party mons
 	call ClearSprites
 	callfar EvolveMon
 	jp c, CancelledEvolution
+	
 	ld hl, EvolvedText
 	call PrintText
+	
 	pop hl
+	
 	ld a, [hl]
 	ld [wd0b5], a
 	ld [wLoadedMonSpecies], a
@@ -147,14 +259,18 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld a, BANK(MonsterNames) ; bank is not used for monster names
 	ld [wPredefBank], a
 	call GetName
+	
 	push hl
 	ld hl, IntoText
 	call PrintText_NoCreatingTextBox
+	
 	ld a, SFX_GET_ITEM_2
 	call PlaySoundWaitForCurrent
 	call WaitForSoundToFinish
+	
 	ld c, 40
 	call DelayFrames
+	
 	call ClearScreen
 	call RenameEvolvedMon
 	ld a, [wd11e]
@@ -173,10 +289,12 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld [wMonHIndex], a
 	pop af
 	ld [wd11e], a
+	
 	ld hl, wLoadedMonHPExp - 1
 	ld de, wLoadedMonStats
 	ld b, $1
 	call CalcStats
+	
 	ld a, [wWhichPokemon]
 	ld hl, wPartyMon1
 	ld bc, wPartyMon2 - wPartyMon1
@@ -235,12 +353,13 @@ Evolution_PartyMonLoop: ; loop over party mons
 	push hl
 	ld l, e
 	ld h, d
-	jr .nextEvoEntry2
+	jp Evolution_PartyMonLoop
 
 .nextEvoEntry1
 	inc hl
-
 .nextEvoEntry2
+	inc hl
+.nextEvoEntry3
 	inc hl
 	jp .evoEntryLoop
 
@@ -251,8 +370,8 @@ Evolution_PartyMonLoop: ; loop over party mons
 	pop af
 	ldh [hTileAnimations], a
 	ld a, [wLinkState]
-	cp LINK_STATE_TRADING
-	ret z
+	and a
+	ret nz
 	ld a, [wIsInBattle]
 	and a
 	ret nz
@@ -298,6 +417,17 @@ CancelledEvolution:
 	pop hl
 	call Evolution_ReloadTilesetTilePatterns
 	jp Evolution_PartyMonLoop
+	
+IsMonHoldingEverstone:
+	push hl
+	ld a, [wWhichPokemon]
+	ld hl, wPartyMon1CatchRate
+	ld bc, PARTYMON_STRUCT_LENGTH
+	call AddNTimes
+	ld a, [hl]
+	cp EVERSTONE_GSC
+	pop hl
+	ret	
 
 EvolvedText:
 	text_far _EvolvedText

@@ -19,5 +19,3 @@
 	     MIMIC,        DOUBLE_TEAM,  BIDE,         SKULL_BASH,   REST,         \
 	     PSYWAVE,      SUBSTITUTE,   SURF,         WATERFALL
 	; end
-
-	db 0 ; padding

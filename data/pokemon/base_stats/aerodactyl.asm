@@ -19,5 +19,3 @@
 	     REFLECT,      BIDE,         SANDSTORM,    FIRE_BLAST,   SWIFT,        \
 	     SKY_ATTACK,   REST,         SUBSTITUTE,   FLY,          ROCK_SMASH
 	; end
-
-	db 0 ; padding

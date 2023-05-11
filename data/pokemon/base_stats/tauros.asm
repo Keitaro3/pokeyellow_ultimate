@@ -20,5 +20,3 @@
 	     BIDE,         FIRE_BLAST,   SKULL_BASH,   REST,         SUBSTITUTE,   \
 	     STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

@@ -19,5 +19,3 @@
 	     BIDE,         REST,         ROCK_SLIDE,   SUBSTITUTE,   CUT,          \
 		 ROCK_SMASH
 	; end
-
-	db 0 ; padding

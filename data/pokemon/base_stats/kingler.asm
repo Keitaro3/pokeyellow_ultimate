@@ -19,5 +19,3 @@
 	     RAGE,         MIMIC,        DOUBLE_TEAM,  BIDE,         REST,         \
 	     SUBSTITUTE,   CUT,          SURF,         STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

@@ -83,4 +83,7 @@ KeyItemFlags:
 	dbit FALSE ; MAX_ETHER
 	dbit FALSE ; ELIXER
 	dbit FALSE ; MAX_ELIXER
+	dbit FALSE ; FRIEND_BALL
+	dbit TRUE  ; SUN_SHARD
+	dbit TRUE  ; MOON_SHARD
 	end_bit_array NUM_ITEMS

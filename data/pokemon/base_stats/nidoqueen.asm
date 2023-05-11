@@ -22,5 +22,3 @@
 	     SANDSTORM,    FIRE_BLAST,   SKULL_BASH,   REST,         ROCK_SLIDE,   \
 	     SUBSTITUTE,   SURF,         STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

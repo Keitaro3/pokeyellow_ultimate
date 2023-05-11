@@ -817,6 +817,28 @@ SwitchPartyMon_InitVarOrSwapData:
 	ld hl, wSwitchPartyMonTempBuffer
 	ld bc, NAME_LENGTH
 	call CopyData
+	ld hl, wPartyMonHappiness
+	ld a, [wCurrentMenuItem]
+	ld b, 0
+	ld c, a
+	add hl, bc
+	push hl
+	ld de, wSwitchPartyMonTempBuffer
+	ld bc, $01
+	call CopyData
+	ld hl, wPartyMonHappiness
+	ld a, [wMenuItemToSwap]
+	ld b, 0
+	ld c, a
+	add hl, bc
+	pop de
+	push hl
+	ld bc, $01
+	call CopyData
+	pop de
+	ld hl, wSwitchPartyMonTempBuffer
+	ld bc, $01
+	call CopyData
 	ld a, [wMenuItemToSwap]
 	ld [wSwappedMenuItem], a
 	xor a

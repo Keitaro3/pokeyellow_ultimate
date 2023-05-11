@@ -19,5 +19,3 @@
 	     MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         SKULL_BASH,   \
 	     REST,         SUBSTITUTE,   CUT,          SURF
 	; end
-
-	db 0 ; padding

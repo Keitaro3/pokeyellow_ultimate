@@ -19,5 +19,3 @@
 	     DOUBLE_TEAM,  REFLECT,      BIDE,         SELFDESTRUCT, REST,	       \
 	     PSYWAVE,      EXPLOSION,    SUBSTITUTE,   STRENGTH
 	; end
-
-	db 0 ; padding

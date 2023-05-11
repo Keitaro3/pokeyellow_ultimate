@@ -16,5 +16,3 @@
 	; tm/hm learnset
 	tmhm
 	; end
-
-	db 0 ; padding

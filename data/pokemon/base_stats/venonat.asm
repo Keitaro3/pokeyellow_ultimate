@@ -18,5 +18,3 @@
 	     SOLARBEAM,    PSYCHIC_M,    MIMIC,        DOUBLE_TEAM,  REFLECT,      \
 	     BIDE,         REST,         PSYWAVE,      SUBSTITUTE,   FLASH
 	; end
-
-	db 0 ; padding

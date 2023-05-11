@@ -70,6 +70,11 @@ MACRO dab ; dwb address, bank
 	ENDR
 ENDM
 
+MACRO dbww
+	db \1
+	dw \2, \3
+ENDM
+
 MACRO sine_table
 ; \1 samples of sin(x) from x=0 to x<0.5 turns (pi radians)
 	for x, \1

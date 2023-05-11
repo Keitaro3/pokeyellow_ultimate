@@ -58,3 +58,8 @@ DEF OAKS_AIDE_BAG_FULL        EQU $00
 DEF OAKS_AIDE_GOT_ITEM        EQU $01
 DEF OAKS_AIDE_NOT_ENOUGH_MONS EQU $80
 DEF OAKS_AIDE_REFUSED         EQU $ff
+
+; wStatusFlags::
+	const_def
+	const STATUSFLAGS_NATIONAL_DEX_F             ; 0
+	const STATUSFLAGS_UNOWN_DEX_F                ; 1

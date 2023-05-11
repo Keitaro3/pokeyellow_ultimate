@@ -164,6 +164,14 @@ UNION
 wTileMapBackup:: ds SCREEN_WIDTH * SCREEN_HEIGHT
 
 NEXTU
+; box save buffer
+; SaveBoxAddress uses this buffer in three steps because it
+; needs more space than the buffer can hold.
+wBoxPartialData:: ds 480
+wBoxPartialDataEnd::
+
+
+NEXTU
 ; list of indexes to patch with SERIAL_NO_DATA_BYTE after transfer
 wSerialPartyMonsPatchList:: ds 200
 
@@ -248,14 +256,40 @@ wYellowIntroAnimatedObjectStructPointer:: db
 wSurfingMinigameDataEnd::
 ENDU
 
-	ds 80
-
 
 SECTION "Overworld Map", WRAM0
 
 UNION
 wOverworldMap:: ds 1300
 wOverworldMapEnd::
+
+NEXTU
+wBoxDataStart::
+
+wBoxCount:: db
+wBoxSpecies:: ds MONS_PER_BOX + 1
+
+wBoxMons::
+; wBoxMon1 - wBoxMon20
+FOR n, 1, MONS_PER_BOX + 1
+wBoxMon{d:n}:: box_struct wBoxMon{d:n}
+ENDR
+
+wBoxMonOT::
+; wBoxMon1OT - wBoxMon20OT
+FOR n, 1, MONS_PER_BOX + 1
+wBoxMon{d:n}OT:: ds NAME_LENGTH
+ENDR
+
+wBoxMonNicks::
+; wBoxMon1Nick - wBoxMon20Nick
+FOR n, 1, MONS_PER_BOX + 1
+wBoxMon{d:n}Nick:: ds NAME_LENGTH
+ENDR
+wBoxMonNicksEnd::
+wBoxMonHappiness:: ds MONS_PER_BOX
+
+wBoxDataEnd::
 
 NEXTU
 wTempPic:: ds 7 * 7 tiles
@@ -712,7 +746,7 @@ ENDU
 	ds 1
 
 wNPCMovementDirections2Index::
-wUnusedCD37::
+wItemBackup::
 ; number of items in wFilteredBagItems list
 wFilteredBagItemsCount:: db
 
@@ -720,8 +754,7 @@ wFilteredBagItemsCount:: db
 ; 0 if the joypad state is not being simulated
 wSimulatedJoypadStatesIndex:: db
 
-; written to but nothing ever reads it
-wWastedByteCD39:: db
+wBaseHappiness:: db
 
 ; written to but nothing ever reads it
 wWastedByteCD3A:: db
@@ -730,7 +763,7 @@ wWastedByteCD3A:: db
 ; XXX is it ever not 0?
 wOverrideSimulatedJoypadStatesMask:: db
 
-	ds 1
+wItemType:: db
 
 ; This union spans 30 bytes.
 UNION
@@ -1026,6 +1059,7 @@ wActionResultOrTookBattleTurn:: db
 ; Set buttons are ignored.
 wJoyIgnore:: db
 
+UNION
 ; size of downscaled mon pic used in pokeball entering/exiting animation
 ; $00 = 5×5
 ; $01 = 3×3
@@ -1033,7 +1067,6 @@ wDownscaledMonSize::
 ; FormatMovesString stores the number of moves minus one here
 wNumMovesMinusOne:: db
 
-UNION
 wcd6d:: ds NAME_BUFFER_LENGTH ; buffer for various data
 
 NEXTU
@@ -1041,7 +1074,7 @@ wEvosMoves:: ds MAX_EVOLUTIONS * EVOLUTION_SIZE + 1
 wEvosMovesEnd::
 
 NEXTU
-	ds 4
+	ds 5
 ; temp variable used to print a move's current PP on the status screen
 wStatusScreenCurrentPP:: db
 	ds 6
@@ -1328,11 +1361,11 @@ wBattleMon:: battle_struct wBattleMon
 
 wTrainerClass:: db
 
-	ds 1
+wBattleMonHappiness:: db
 
 wTrainerPicPointer:: dw
 
-	ds 1
+wEnemyBattleHappiness:: db
 
 UNION
 wTempMoveNameBuffer:: ds 14
@@ -1685,7 +1718,6 @@ wMonHBackSprite:: dw
 wMonHMoves:: ds NUM_MOVES
 wMonHGrowthRate:: db
 wMonHLearnset:: flag_array NUM_TMS + NUM_HMS
-	ds 1
 wMonHeaderEnd::
 
 ; saved at the start of a battle and then written back at the end of the battle
@@ -1706,7 +1738,7 @@ wMoveNum:: db
 
 wMovesString:: ds 56
 
-wUnusedD119:: db
+wHappinessStepCount:: db
 
 ; wWalkBikeSurfState is sometimes copied here, but it doesn't seem to be used for anything
 wWalkBikeSurfStateCopy:: db
@@ -1986,7 +2018,15 @@ wWarpEntries:: ds 32 * 4 ; Y, X, warp ID, map ID
 ; if $ff, the player's coordinates are not updated when entering the map
 wDestinationWarpID:: db
 
-	ds 66
+wStatusFlags:: db
+
+	ds 52
+	
+wPartyMonHappiness:: ds PARTY_LENGTH
+wPartyMonHappinessEnd::
+
+wEnemyMonHappiness:: ds PARTY_LENGTH
+wDayCareMonHappiness:: ds 1
 
 wIsSurfingPikachuInParty:: db ; bit 6: has surfing pika, bit 7: pikachu in party
 wSurfSpriteID:: db ; What Sprite ID to use for surfing
@@ -2472,33 +2512,9 @@ wDayCareMon:: box_struct wDayCareMon
 wMainDataEnd::
 
 
-SECTION "Current Box Data", WRAM0
+SECTION "Expanded Features", WRAM0
 
-wBoxDataStart::
-
-wBoxCount:: db
-wBoxSpecies:: ds MONS_PER_BOX + 1
-
-wBoxMons::
-; wBoxMon1 - wBoxMon20
-FOR n, 1, MONS_PER_BOX + 1
-wBoxMon{d:n}:: box_struct wBoxMon{d:n}
-ENDR
-
-wBoxMonOT::
-; wBoxMon1OT - wBoxMon20OT
-FOR n, 1, MONS_PER_BOX + 1
-wBoxMon{d:n}OT:: ds NAME_LENGTH
-ENDR
-
-wBoxMonNicks::
-; wBoxMon1Nick - wBoxMon20Nick
-FOR n, 1, MONS_PER_BOX + 1
-wBoxMon{d:n}Nick:: ds NAME_LENGTH
-ENDR
-wBoxMonNicksEnd::
-
-wBoxDataEnd::
+	ds 1122
 
 
 SECTION "GBC Palette Data", WRAM0

@@ -19,5 +19,3 @@
 	     BIDE,         SELFDESTRUCT, SANDSTORM,    SKULL_BASH,   REST,         \
 	     EXPLOSION,    ROCK_SLIDE,   SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

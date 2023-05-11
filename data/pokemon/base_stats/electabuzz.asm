@@ -21,5 +21,3 @@
 	     SWIFT,        SKULL_BASH,   REST,         THUNDER_WAVE, PSYWAVE,      \
 	     SUBSTITUTE,   STRENGTH,     FLASH,        ROCK_SMASH
 	; end
-
-	db 0 ; padding

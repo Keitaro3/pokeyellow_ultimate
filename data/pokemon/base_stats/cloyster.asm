@@ -20,5 +20,3 @@
 	     SWIFT,        REST,         EXPLOSION,    TRI_ATTACK,   SUBSTITUTE,   \
 	     SURF
 	; end
-
-	db 0 ; padding

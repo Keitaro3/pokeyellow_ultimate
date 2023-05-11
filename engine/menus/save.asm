@@ -72,12 +72,11 @@ LoadSAV0:
 	call CopyData
 	ld a, [sTileAnimations]
 	ldh [hTileAnimations], a
-	ld hl, sCurBoxData
-	ld de, wBoxDataStart
-	ld bc, wBoxDataEnd - wBoxDataStart
-	call CopyData
+	
+	call DisableSRAMAndPrepareClockData
+	call LoadBox
 	and a
-	jp SAVGoodChecksum
+	ret ; SAVGoodChecksum
 
 LoadSAV1:
 	call EnableSRAMAndLatchClockData
@@ -90,12 +89,10 @@ LoadSAV1:
 	ld a, [sMainDataCheckSum]
 	cp c
 	jr nz, SAVBadCheckSum
-	ld hl, sCurBoxData
-	ld de, wBoxDataStart
-	ld bc, wBoxDataEnd - wBoxDataStart
-	call CopyData
+	call DisableSRAMAndPrepareClockData
+	call LoadBox
 	and a
-	jp SAVGoodChecksum
+	ret ; SAVGoodChecksum
 
 LoadSAV2:
 	call EnableSRAMAndLatchClockData
@@ -210,10 +207,11 @@ SaveSAVtoSRAM0:
 	ld de, sSpriteData
 	ld bc, wSpriteDataEnd - wSpriteDataStart
 	call CopyData
-	ld hl, wBoxDataStart
-	ld de, sCurBoxData
-	ld bc, wBoxDataEnd - wBoxDataStart
-	call CopyData
+	call DisableSRAMAndPrepareClockData
+	
+	call SaveBox
+	
+	call EnableSRAMAndLatchClockData
 	ldh a, [hTileAnimations]
 	ld [sTileAnimations], a
 	ld hl, sGameData
@@ -225,13 +223,8 @@ SaveSAVtoSRAM0:
 
 SaveSAVtoSRAM1:
 ; stored pokémon
+	call SaveBox
 	call EnableSRAMAndLatchClockData
-	ld a, $1
-	ld [MBC1SRamBank], a
-	ld hl, wBoxDataStart
-	ld de, sCurBoxData
-	ld bc, wBoxDataEnd - wBoxDataStart
-	call CopyData
 	ld hl, sGameData
 	ld bc, sGameDataEnd - sGameData
 	call SAVCheckSum
@@ -297,34 +290,47 @@ CalcIndividualBoxCheckSums:
 	jr nz, .loop
 	ret
 
-GetBoxSRAMLocation:
-; in: a = box num
-; out: b = box SRAM bank, hl = pointer to start of box
-	ld hl, BoxSRAMPointerTable
+GetBoxSRAMLocation:	
 	ld a, [wCurrentBoxNum]
 	and $7f
-	cp NUM_BOXES / 2
-	ld b, 2
-	jr c, .next
-	inc b
-	sub NUM_BOXES / 2
-.next
+	cp NUM_BOXES
+	jr c, .ok
+	xor a
+	ld [wCurrentBoxNum], a
+
+.ok
 	ld e, a
 	ld d, 0
+	ld hl, BoxSRAMPointerTable
+rept 5
 	add hl, de
-	add hl, de
+endr
+	ld a, [hli]
+	push af
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
+	pop af
 	ret
-
+	
 BoxSRAMPointerTable:
-	dw sBox1 ; sBox7
-	dw sBox2 ; sBox8
-	dw sBox3 ; sBox9
-	dw sBox4 ; sBox10
-	dw sBox5 ; sBox11
-	dw sBox6 ; sBox12
+; dbww bank, address, address
+	dbww BANK(sBox1),  sBox1,  sBox2 ; sBox1End
+	dbww BANK(sBox2),  sBox2,  sBox3 ; sBox2End
+	dbww BANK(sBox3),  sBox3,  sBox4 ; sBox3End
+	dbww BANK(sBox4),  sBox4,  sBox5 ; sBox4End
+	dbww BANK(sBox5),  sBox5,  sBox6 ; sBox5End
+	dbww BANK(sBox6),  sBox6,  sBoxesEnd1 ; sBox6End
+	dbww BANK(sBox7),  sBox7,  sBox8  ;sBox7End
+	dbww BANK(sBox8),  sBox8,  sBox9  ;sBox8End
+	dbww BANK(sBox9),  sBox9,  sBox10 ;sBox9End
+	dbww BANK(sBox10), sBox10, sBox11 ;sBox10End
+	dbww BANK(sBox11), sBox11, sBox12 ;sBox11End
+	dbww BANK(sBox12), sBox12, sBoxesEnd2 ; sBox12End
 
 ChangeBox::
 	ld hl, WhenYouChangeBoxText
@@ -343,22 +349,18 @@ ChangeBox::
 	call HandleMenuInput
 	ld hl, hUILayoutFlags
 	res 1, [hl]
-	bit BIT_B_BUTTON, a
+	bit 1, a ; pressed b
 	ret nz
 	ld a, $b6
 	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
-	call GetBoxSRAMLocation
-	ld e, l
-	ld d, h
-	ld hl, wBoxDataStart
-	call CopyBoxToOrFromSRAM ; copy old box from WRAM to SRAM
+	call WaitForSoundToFinish	
+	
+	call SaveBox    ; Copy sCurBoxData to box
 	ld a, [wCurrentMenuItem]
 	set 7, a
 	ld [wCurrentBoxNum], a
-	call GetBoxSRAMLocation
-	ld de, wBoxDataStart
-	call CopyBoxToOrFromSRAM ; copy new box from SRAM to WRAM
+	call LoadBox
+	xor a
 	ld hl, wMapTextPtr
 	ld de, wChangeBoxSavedMapTextPointer
 	ld a, [hli]
@@ -375,30 +377,6 @@ ChangeBox::
 WhenYouChangeBoxText:
 	text_far _WhenYouChangeBoxText
 	text_end
-
-CopyBoxToOrFromSRAM:
-; copy an entire box from hl to de with b as the SRAM bank
-	push hl
-	call EnableSRAMAndLatchClockData
-	ld a, b
-	ld [MBC1SRamBank], a
-	ld bc, wBoxDataEnd - wBoxDataStart
-	call CopyData
-	pop hl
-
-; mark the memory that the box was copied from as am empty box
-	xor a
-	ld [hli], a
-	dec a
-	ld [hl], a
-
-	ld hl, sBox1 ; sBox7
-	ld bc, sBank2AllBoxesChecksum - sBox1
-	call SAVCheckSum
-	ld [sBank2AllBoxesChecksum], a ; sBank3AllBoxesChecksum
-	call CalcIndividualBoxCheckSums
-	call DisableSRAMAndPrepareClockData
-	ret
 
 DisplayChangeBoxMenu:
 	xor a
@@ -675,4 +653,152 @@ DisableSRAMAndPrepareClockData:
 	ld a, SRAM_DISABLE
 	ld [MBC1SRamBankingMode], a
 	ld [MBC1SRamEnable], a
+	ret
+
+LoadBox:
+	call GetBoxSRAMLocation
+	call LoadBoxAddress
+	ret
+	
+SaveBox:
+	call GetBoxSRAMLocation
+	call SaveBoxAddress
+	ret	
+	
+SaveBoxAddress:
+; Save box via wBoxPartialData.
+; We do this in three steps because the size of wBoxPartialData is less than
+; the size of sCurBoxData.
+	push hl  ; box address (supposed to be end of box)
+; Load the first part of the active box.
+	push af  ; box bank
+	push de  ; box address $A000
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, sCurBoxData
+	ld de, wBoxPartialData
+	ld bc, (wBoxPartialDataEnd - wBoxPartialData)
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	pop de   ; box address
+	pop af   ; box bank
+; Save it to the target box.
+	push af  ; box bank
+	push de  ; box address
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, wBoxPartialData
+	ld bc, (wBoxPartialDataEnd - wBoxPartialData)
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+
+; Load the second part of the active box.
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, sCurBoxData + (wBoxPartialDataEnd - wBoxPartialData)
+	ld de, wBoxPartialData
+	ld bc, (wBoxPartialDataEnd - wBoxPartialData)
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	pop de ; $A000
+	pop af ; $2
+
+	ld hl, (wBoxPartialDataEnd - wBoxPartialData)
+	add hl, de
+	ld e, l
+	ld d, h ; de = $A1E0
+; Save it to the next part of the target box.
+	push af
+	push de
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, wBoxPartialData
+	ld bc, (wBoxPartialDataEnd - wBoxPartialData)
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+
+; Load the third and final part of the active box.
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, sCurBoxData + (wBoxPartialDataEnd - wBoxPartialData) * 2
+	ld de, wBoxPartialData
+	ld bc, sCurBoxDataEnd - (sCurBoxData + (wBoxPartialDataEnd - wBoxPartialData) * 2) ; $B7
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	pop de
+	pop af
+
+	ld hl, (wBoxPartialDataEnd - wBoxPartialData)
+	add hl, de
+	ld e, l
+	ld d, h
+; Save it to the final part of the target box.
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, wBoxPartialData
+	ld bc, sCurBoxDataEnd - (sCurBoxData + (wBoxPartialDataEnd - wBoxPartialData) * 2) ; $B7
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+
+	pop hl
+	ret
+	
+LoadBoxAddress:
+; Load box via wBoxPartialData.
+; We do this in three steps because the size of wBoxPartialData is less than
+; the size of sBox.
+	push hl
+	ld l, e
+	ld h, d
+; Load part 1
+	push af
+	push hl
+	call SwitchSRAMBankAndLatchClockData
+	ld de, wBoxPartialData
+	ld bc, (wBoxPartialDataEnd - wBoxPartialData)
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, wBoxPartialData
+	ld de, sCurBoxData
+	ld bc, (wBoxPartialDataEnd - wBoxPartialData)
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	pop hl
+	pop af
+
+	ld de, (wBoxPartialDataEnd - wBoxPartialData)
+	add hl, de
+; Load part 2
+	push af
+	push hl
+	call SwitchSRAMBankAndLatchClockData
+	ld de, wBoxPartialData
+	ld bc, (wBoxPartialDataEnd - wBoxPartialData)
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, wBoxPartialData
+	ld de, sCurBoxData + (wBoxPartialDataEnd - wBoxPartialData)
+	ld bc, (wBoxPartialDataEnd - wBoxPartialData)
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	pop hl
+	pop af
+; Load part 3
+	ld de, (wBoxPartialDataEnd - wBoxPartialData)
+	add hl, de
+	call SwitchSRAMBankAndLatchClockData
+	ld de, wBoxPartialData
+	ld bc, sCurBoxDataEnd - (sCurBoxData + (wBoxPartialDataEnd - wBoxPartialData) * 2) ; $8e
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, wBoxPartialData
+	ld de, sCurBoxData + (wBoxPartialDataEnd - wBoxPartialData) * 2
+	ld bc, sCurBoxDataEnd - (sCurBoxData + (wBoxPartialDataEnd - wBoxPartialData) * 2) ; $8e
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	
+	pop hl
 	ret

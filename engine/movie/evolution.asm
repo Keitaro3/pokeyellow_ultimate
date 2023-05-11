@@ -139,10 +139,14 @@ Evolution_CheckForCancel:
 	call DelayFrame
 	push bc
 	call JoypadLowSensitivity
-	ldh a, [hJoy5]
+	ld a, [hJoy5]
 	pop bc
 	and B_BUTTON
 	jr nz, .pressedB
+.nationalDexCheck
+	ld a, [wStatusFlags]
+	bit STATUSFLAGS_NATIONAL_DEX_F, a
+	jr z, .pressedB
 .notAllowedToCancel
 	dec c
 	jr nz, Evolution_CheckForCancel

@@ -19,5 +19,3 @@
 	     DOUBLE_TEAM,  REFLECT,      BIDE,         SKULL_BASH,   REST,         \
 	     SUBSTITUTE,   CUT,			 ROCK_SMASH
 	; end
-
-	db 0 ; padding

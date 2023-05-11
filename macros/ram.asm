@@ -133,3 +133,16 @@ MACRO animated_object
 \1FieldF::         db
 \1End::
 ENDM
+
+MACRO curbox
+\1Count::           db
+\1Species::         ds MONS_PER_BOX + 1
+\1Mons::
+\1Mon1::            box_struct \1Mon1
+\1Mon2::            ds BOX_STRUCT_LENGTH * (MONS_PER_BOX - 1)
+\1MonOT::           ds NAME_LENGTH * MONS_PER_BOX
+\1MonNicknames::    ds NAME_LENGTH * MONS_PER_BOX
+\1MonNicknamesEnd::
+\1MonHappiness:: ds MONS_PER_BOX
+\1End::
+ENDM

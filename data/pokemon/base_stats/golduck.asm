@@ -21,5 +21,3 @@
 	     SWIFT,        SKULL_BASH,   REST,         SUBSTITUTE,   SURF,         \
 	     STRENGTH,     ROCK_SMASH,   WATERFALL
 	; end
-
-	db 0 ; padding

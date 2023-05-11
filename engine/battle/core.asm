@@ -1083,7 +1083,24 @@ RemoveFaintedPlayerMon:
 	ld a, [wBattleMonSpecies]
 	call PlayCry
 	ld hl, PlayerMonFaintedText
-	jp PrintText
+	call PrintText
+	ld a, [wPlayerMonNumber]
+	ld [wWhichPokemon], a
+	ld a, [wBattleMonLevel]
+	ld b, a
+	ld a, [wEnemyMonLevel]
+	sub b ; enemylevel - playerlevel
+	      ; are we stronger than the opposing pokemon?
+	jr c, .regularFaint ; if so, deduct happiness regularly
+
+	cp 30 ; is the enemy 30 levels greater than us?
+	jr nc, .carelessTrainer ; if so, punish the player for being careless, as they shouldn't be fighting a very high leveled trainer with such a level difference
+.regularFaint
+	callabd_ModifyHappiness HAPPINESS_FAINTED
+	ret
+.carelessTrainer
+	callabd_ModifyHappiness HAPPINESS_BEATENBYSTRONGFOE
+	ret
 
 PlayerMonFaintedText:
 	text_far _PlayerMonFaintedText
@@ -1694,6 +1711,13 @@ LoadBattleMonFromParty:
 	ld de, wBattleMonNick
 	ld bc, NAME_LENGTH
 	call CopyData
+	ld hl, wPartyMonHappiness
+	ld a, [wWhichPokemon]
+	ld b, 0
+	ld c, a
+	add hl, bc
+	ld a, [hl]
+	ld [wBattleMonHappiness], a	
 	ld hl, wBattleMonLevel
 	ld de, wPlayerMonUnmodifiedLevel ; block of memory used for unmodified stats
 	ld bc, 1 + NUM_STATS * 2
@@ -1738,6 +1762,13 @@ LoadEnemyMonFromParty:
 	ld de, wEnemyMonNick
 	ld bc, NAME_LENGTH
 	call CopyData
+	ld hl, wEnemyMonHappiness
+	ld a, [wWhichPokemon]
+	ld b, 0
+	ld c, a
+	add hl, bc
+	ld a, [hl]
+	ld [wEnemyBattleHappiness], a
 	ld hl, wEnemyMonLevel
 	ld de, wEnemyMonUnmodifiedLevel ; block of memory used for unmodified stats
 	ld bc, 1 + NUM_STATS * 2
@@ -6351,6 +6382,13 @@ LoadEnemyMonData:
 	ld hl, wMonHBaseStats
 	ld de, wEnemyMonBaseStats
 	ld b, NUM_STATS
+	push hl
+	push bc
+	farcall GetBaseHappiness
+	ld a, [wBaseHappiness]
+	ld [wEnemyMonHappiness], a ; enemy happiness
+	pop bc
+	pop hl
 .copyBaseStatsLoop
 	ld a, [hli]
 	ld [de], a

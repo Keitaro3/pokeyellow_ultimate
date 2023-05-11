@@ -23,5 +23,3 @@
 	     SKULL_BASH,   REST,         PSYWAVE,      ROCK_SLIDE,   SUBSTITUTE,   \
 	     SURF,         STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

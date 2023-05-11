@@ -18,5 +18,3 @@
 	     HYPER_BEAM,   RAGE,         MEGA_DRAIN,   MIMIC,        DOUBLE_TEAM,  \
 	     BIDE,         SWIFT,        REST,         SUBSTITUTE
 	; end
-
-	db 0 ; padding

@@ -276,7 +276,6 @@ INCLUDE "engine/items/town_map.asm"
 INCLUDE "engine/gfx/mon_icons.asm"
 INCLUDE "engine/events/in_game_trades.asm"
 INCLUDE "engine/gfx/palettes.asm"
-INCLUDE "engine/menus/save.asm"
 
 
 SECTION "Itemfinder 1", ROMX
@@ -340,6 +339,10 @@ INCLUDE "engine/events/diploma2.asm"
 INCLUDE "engine/printer/printer2.asm"
 INCLUDE "engine/overworld/npc_movement_2.asm"
 
+SECTION "bank3B", ROMX
+
+INCLUDE "engine/menus/save.asm"
+
 
 SECTION "Specific Script Flags", ROMX
 
@@ -366,7 +369,7 @@ INCLUDE "engine/battle/link_battle_versus_text.asm"
 INCLUDE "engine/battle/unused_stats_functions.asm"
 INCLUDE "engine/battle/scroll_draw_trainer_pic.asm"
 INCLUDE "engine/battle/decrement_pp.asm"
-; happiness code goes here, eventually.
+INCLUDE "engine/pokemon/happiness.asm"
 
 
 SECTION "Battle Engine 9", ROMX

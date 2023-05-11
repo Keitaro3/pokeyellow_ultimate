@@ -18,5 +18,3 @@
 	     RAGE,         MIMIC,        DOUBLE_TEAM,  BIDE,         SWIFT,        \
 	     SKULL_BASH,   REST,         SUBSTITUTE,   CUT,          ROCK_SMASH
 	; end
-
-	db 0 ; padding

@@ -7,8 +7,11 @@ _GivePokemon::
 	ld a, [wPartyCount]
 	cp PARTY_LENGTH
 	jr c, .addToParty
-	ld a, [wBoxCount]
+	ld a, BANK(sCurBoxDataCount)
+	call SwitchSRAMBankAndLatchClockData
+	ld a, [sCurBoxDataCount]
 	cp MONS_PER_BOX
+	call PrepareRTCDataAndDisableSRAM
 	jr nc, .boxFull
 ; add to box
 	xor a

@@ -18,5 +18,3 @@
 	     TELEPORT,     MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         \
 	     SELFDESTRUCT, REST,         PSYWAVE,      EXPLOSION,    SUBSTITUTE	   \
 	; end
-
-	db 0 ; padding

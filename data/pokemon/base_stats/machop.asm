@@ -20,5 +20,3 @@
 	     BIDE,         METRONOME,    FIRE_BLAST,   SKULL_BASH,   REST,         \
 	     ROCK_SLIDE,   SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

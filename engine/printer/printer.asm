@@ -226,6 +226,7 @@ Func_e8d11:
 	ret
 
 PrintPCBox::
+	callfar CopyBoxmonFromSRAM
 	ld a, [wBoxDataStart]
 	and a
 	jp z, Func_e8df4
@@ -781,6 +782,8 @@ SurfingPikachu2GraphicsEnd:
 PrintPCBox_DrawPage1:
 	xor a
 	ld [wBoxNumString], a
+	
+	callfar CopyBoxmonFromSRAM
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
 	hlcoord 0, 0
@@ -820,6 +823,7 @@ PrintPCBox_DrawPage1:
 .BoxString: db "BOX@"
 
 PrintPCBox_DrawPage2:
+	callfar CopyBoxmonFromSRAM
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
 	call PrintPCBox_DrawLeftAndRightBorders
@@ -833,6 +837,7 @@ PrintPCBox_DrawPage2:
 	ret
 
 PrintPCBox_DrawPage3:
+	callfar CopyBoxmonFromSRAM
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
 	call PrintPCBox_DrawLeftAndRightBorders
@@ -846,6 +851,7 @@ PrintPCBox_DrawPage3:
 	ret
 
 PrintPCBox_DrawPage4:
+	callfar CopyBoxmonFromSRAM
 	call ClearScreen
 	call PrintPCBox_PlaceHorizontalLines
 	call PrintPCBox_DrawLeftAndRightBorders

@@ -51,6 +51,23 @@ _AddPartyMon::
 	ld [wNamingScreenType], a
 	predef AskName
 .skipNaming
+	ld hl, wPartyMonHappiness
+	ld a, [wMonDataLocation]
+	and $f
+	jr z, .notEnemy
+	ld hl, wEnemyMonHappiness
+.notEnemy
+	ld a, [hNewPartyLength]
+	dec a
+	ld b, 0
+	ld c, a
+	add hl, bc
+	push hl
+	farcall GetBaseHappiness 
+	pop hl
+	ld a, [wBaseHappiness]     ; default happiness value
+	ld [hl], a
+.partyData
 	ld hl, wPartyMons
 	ld a, [wMonDataLocation]
 	and $f
@@ -328,6 +345,17 @@ _AddEnemyMonToPlayerParty::
 	call SkipFixedLengthTextEntries
 	ld bc, NAME_LENGTH
 	call CopyData    ; write new mon's nickname (from an enemy mon)
+	ld hl, wPartyMonHappiness
+	ld a, [wPartyCount]
+	dec a
+	ld c, a
+	ld b, $0
+	add hl, bc
+	push hl
+	farcall GetBaseHappiness
+	pop hl
+	ld a, [wBaseHappiness]
+	ld [hl], a      ; writes new mon's default happiness	
 	ld a, [wcf91]
 	ld [wd11e], a
 	predef IndexToPokedex
@@ -493,6 +521,41 @@ _MoveMon::
 .copyNick
 	ld bc, NAME_LENGTH
 	call CopyData
+	ld a, [wMoveMonType]
+.findHappinessDestination
+	cp PARTY_TO_DAYCARE
+	ld de, wDayCareMonHappiness
+	jr z, .findHappinessSrc
+	dec a
+	ld hl, wPartyMonHappiness
+	ld a, [wPartyCount]
+	jr nz, .addHappinessOffset
+	ld hl, wBoxMonHappiness
+	ld a, [wBoxCount]
+.addHappinessOffset
+	dec a
+	ld b, 0
+	ld c, a
+	add hl, bc
+	ld d, h
+	ld e, l
+.findHappinessSrc
+	ld hl, wBoxMonHappiness
+	ld a, [wMoveMonType]
+	and a
+	jr z, .addHappinessOffset2
+	ld hl, wDayCareMonHappiness
+	cp DAYCARE_TO_PARTY
+	jr z, .copyHappiness
+	ld hl, wPartyMonHappiness
+.addHappinessOffset2
+	ld a, [wWhichPokemon]
+	ld b, 0
+	ld c, a
+	add hl, bc
+.copyHappiness
+	ld bc, $01
+	call CopyData	
 	pop hl
 	ld a, [wMoveMonType]
 	cp PARTY_TO_BOX

@@ -21,5 +21,3 @@
 	     BIDE,         METRONOME,    SKULL_BASH,   REST,         PSYWAVE,      \
 	     SUBSTITUTE
 	; end
-
-	db 0 ; padding

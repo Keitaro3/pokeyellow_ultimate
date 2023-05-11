@@ -19,5 +19,3 @@
 	     REFLECT,      BIDE,         SWIFT,        REST,         THUNDER_WAVE, \
 	     SUBSTITUTE,   FLASH
 	; end
-
-	db 0 ; padding

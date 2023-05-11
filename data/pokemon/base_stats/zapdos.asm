@@ -20,5 +20,3 @@
 	     SKY_ATTACK,   REST,         THUNDER_WAVE, SUBSTITUTE,   FLY,          \
 		 FLASH,        ROCK_SMASH
 	; end
-
-	db 0 ; padding

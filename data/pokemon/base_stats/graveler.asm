@@ -20,5 +20,3 @@
 	     METRONOME,    SELFDESTRUCT, SANDSTORM,    FIRE_BLAST,   REST,         \
 	     EXPLOSION,    ROCK_SLIDE,   SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

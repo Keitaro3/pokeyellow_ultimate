@@ -19,5 +19,3 @@
 	     DOUBLE_TEAM,  REFLECT,      BIDE,         SANDSTORM,    REST,         \
 	     SUBSTITUTE,   SURF,         ROCK_SMASH
 	; end
-
-	db 0 ; padding

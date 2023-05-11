@@ -14,12 +14,16 @@ InitPlayerData2:
 
 	ld hl, wPartyCount
 	call InitializeEmptyList
-	ld hl, wBoxCount
-	call InitializeEmptyList
 	ld hl, wNumBagItems
 	call InitializeEmptyList
 	ld hl, wNumBoxItems
 	call InitializeEmptyList
+	
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, sCurBoxData
+	call InitializeEmptyList
+	call PrepareRTCDataAndDisableSRAM	
 
 DEF START_MONEY EQU $3000
 	ld hl, wPlayerMoney + 1

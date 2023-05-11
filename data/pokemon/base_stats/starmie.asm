@@ -21,5 +21,3 @@
 	     THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   SURF,         \
 	     FLASH,        WATERFALL
 	; end
-
-	db 0 ; padding

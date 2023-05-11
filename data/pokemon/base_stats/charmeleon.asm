@@ -20,5 +20,3 @@
 	     REFLECT,      BIDE,         FIRE_BLAST,   SWIFT,        SKULL_BASH,   \
 	     REST,         SUBSTITUTE,   CUT,          STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

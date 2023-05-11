@@ -19,5 +19,3 @@
 	     SKULL_BASH,   SKY_ATTACK,   REST,         TRI_ATTACK,   SUBSTITUTE,   \
 	     FLY
 	; end
-
-	db 0 ; padding

@@ -5,16 +5,16 @@ _RemovePokemon::
 	jr z, .usePartyCount
 	ld hl, wBoxCount
 .usePartyCount
-	ld a, [hl]
-	dec a
-	ld [hli], a
-	ld a, [wWhichPokemon]
-	ld c, a
-	ld b, $0
-	add hl, bc
+	ld a, [hl]  ; number of entries (max 20 or 6)
+	dec a       ; 6 - 1 = 5
+	ld [hli], a ; party count reduced, hl = species list
+	ld a, [wWhichPokemon] ; which entry, -1 (so first is 0, etc)
+	ld c, a ; c = entry index
+	ld b, $0 ; bc = 05
+	add hl, bc ; hl = species of that index
 	ld e, l
 	ld d, h
-	inc de
+	inc de ; de = hl + 1
 .shiftMonSpeciesLoop
 	ld a, [de]
 	inc de
@@ -92,4 +92,63 @@ _RemovePokemon::
 	jr z, .copyUntilPartyMonNicksEnd
 	ld bc, wBoxMonNicksEnd
 .copyUntilPartyMonNicksEnd
-	jp CopyDataUntil
+	call CopyDataUntil
+	ld hl, wPartyMonHappiness
+	ld a, [wRemoveMonFromBox]
+	and a
+	jr z, .usePartyMonHappiness
+	ld hl, wBoxMonHappiness
+.usePartyMonHappiness
+	ld b, 0
+	ld c, 1
+	ld a, [wWhichPokemon]
+	call AddNTimes
+	ld d, h
+	ld e, l
+	inc hl
+	
+	push hl
+	ld hl, wPartyMonHappiness
+	ld a, [wPartyCount]
+	ld b, 0
+	ld c, a
+	add hl, bc
+	inc hl
+	ld b, h
+	ld c, l
+	pop hl
+	
+	ld a, [wRemoveMonFromBox]
+	and a
+	jr z, .copyUntilPartyMonHappinessEnd
+	
+	push hl
+	ld hl, wBoxMonHappiness
+	ld a, [wBoxCount]
+	ld b, 0
+	ld c, a
+	add hl, bc
+	inc hl
+	ld b, h
+	ld c, l
+	pop hl
+.copyUntilPartyMonHappinessEnd
+	call CopyDataUntil
+	xor a
+	ld [de], a
+	ret
+	
+; Copies [hl, bc) to [de, de + bc - hl).
+; In other words, the source data is from hl up to but not including bc,
+; and the destination is de.
+CopyDataUntil::
+	ld a, [hli]
+	ld [de], a
+	inc de
+	ld a, h
+	cp b
+	jr nz, CopyDataUntil
+	ld a, l
+	cp c
+	jr nz, CopyDataUntil
+	ret

@@ -20,7 +20,7 @@ DEF BASE_BACKPIC     rw
 DEF BASE_MOVES       rb NUM_MOVES
 DEF BASE_GROWTH_RATE rb
 DEF BASE_TMHM        rb (NUM_TM_HM + 7) / 8
-                     rb_skip
+
 DEF BASE_DATA_SIZE EQU _RS
 
 ; party_struct members (see macros/ram.asm)
@@ -79,11 +79,25 @@ DEF HOF_TEAM_CAPACITY EQU 50
 
 ; Evolution types
 	const_def 1
-	const EV_LEVEL ; 1
-	const EV_ITEM  ; 2
-	const EV_TRADE ; 3
+	const EV_LEVEL     ; 1
+	const EV_ITEM      ; 2
+	const EV_TRADE     ; 3
+	const EV_HAPPINESS ; 4
+	const EV_STAT      ; 5
+	
+; EV_HAPPINESS triggers
+	const_def 1
+	const TR_ANYTIME
+	const TR_MORNDAY
+	const TR_NITE
 
-DEF MAX_EVOLUTIONS EQU 3
+; EV_STAT triggers
+	const_def 1
+	const ATK_GT_DEF
+	const ATK_LT_DEF
+	const ATK_EQ_DEF	
+
+DEF MAX_EVOLUTIONS EQU 5
 DEF EVOLUTION_SIZE EQU 4
 
 
@@ -101,3 +115,30 @@ DEF NUM_GROWTH_RATES EQU const_value
 ; wild data (see data/wild/maps/*.asm)
 DEF NUM_WILDMONS EQU 10
 DEF WILDDATA_LENGTH EQU 1 + NUM_WILDMONS * 2
+
+	const_def 1
+	const HAPPINESS_GAINLEVEL         ; 01
+	const HAPPINESS_USEDITEM          ; 02
+	const HAPPINESS_USEDXITEM         ; 03
+	const HAPPINESS_GYMBATTLE         ; 04
+	const HAPPINESS_LEARNMOVE         ; 05
+	const HAPPINESS_FAINTED           ; 06
+	const HAPPINESS_POISONFAINT       ; 07
+	const HAPPINESS_BEATENBYSTRONGFOE ; 08
+	const HAPPINESS_BITTERPOWDER      ; 09
+	const HAPPINESS_ENERGYROOT        ; 0a
+	const HAPPINESS_REVIVALHERB       ; 0b
+	const HAPPINESS_GROOMING          ; 0c
+	
+; significant happiness values
+BASE_HAPPINESS        EQU 70
+EGG_BASE_HAPPINESS	  EQU 120
+HIGH_BASE_HAPPINESS   EQU 140
+MYTHICAL_BASE_HAPPINESS EQU 100
+LOW_BASE_HAPPINESS	  EQU 35
+NO_BASE_HAPPINESS	  EQU 0
+FRIEND_BALL_HAPPINESS EQU 200
+HAPPINESS_TO_EVOLVE   EQU 220
+HAPPINESS_THRESHOLD_1 EQU 100
+HAPPINESS_THRESHOLD_2 EQU 200
+

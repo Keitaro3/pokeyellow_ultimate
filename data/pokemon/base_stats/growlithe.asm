@@ -19,5 +19,3 @@
 	     BIDE,         FIRE_BLAST,   SWIFT,        SKULL_BASH,   REST,         \
 	     SUBSTITUTE,   ROCK_SMASH
 	; end
-
-	db 0 ; padding

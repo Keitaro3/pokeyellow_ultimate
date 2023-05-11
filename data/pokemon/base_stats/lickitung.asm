@@ -22,5 +22,3 @@
 	     SKULL_BASH,   REST,         SUBSTITUTE,   CUT,          SURF,         \       
 		 STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

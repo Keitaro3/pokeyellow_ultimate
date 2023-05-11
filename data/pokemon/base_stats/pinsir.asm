@@ -19,5 +19,3 @@
 	     DOUBLE_TEAM,  BIDE,         REST,         SUBSTITUTE,   CUT,          \
 	     STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

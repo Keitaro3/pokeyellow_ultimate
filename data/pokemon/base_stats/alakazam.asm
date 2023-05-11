@@ -21,5 +21,3 @@
 	     REST,         THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   \
 	     FLASH
 	; end
-
-	db 0 ; padding

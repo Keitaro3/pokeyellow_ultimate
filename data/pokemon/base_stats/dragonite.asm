@@ -21,5 +21,3 @@
 	     FIRE_BLAST,   SWIFT,        SKULL_BASH,   REST,         THUNDER_WAVE, \
 	     SUBSTITUTE,   SURF,         STRENGTH,     ROCK_SMASH,   WATERFALL
 	; end
-
-	db 0 ; padding

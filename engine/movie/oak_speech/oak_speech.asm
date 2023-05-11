@@ -8,7 +8,7 @@ SetDefaultNames:
 	ld a, [wPrinterSettings]
 	push af
 	ld hl, wPlayerName
-	ld bc, wBoxDataEnd - wPlayerName
+	ld bc, wMainDataEnd - wPlayerName
 	xor a
 	call FillMemory
 	ld hl, wSpriteDataStart

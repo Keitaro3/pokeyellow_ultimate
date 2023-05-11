@@ -23,5 +23,3 @@
 	     PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   SURF,         STRENGTH,     \
 	     FLASH,        ROCK_SMASH
 	; end
-
-	db 0 ; padding

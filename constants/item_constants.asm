@@ -92,6 +92,9 @@ DEF SAFARI_ROCK EQU $16 ; overload
 	const MAX_ETHER     ; $51
 	const ELIXER        ; $52
 	const MAX_ELIXER    ; $53
+	const FRIEND_BALL   ; $54
+	const SUN_SHARD     ; $55
+	const MOON_SHARD    ; $56
 DEF NUM_ITEMS EQU const_value - 1
 
 ; elevator floors use item IDs
@@ -219,5 +222,12 @@ DEF __tmhm_value__ = NUM_TM_HM + 1
 DEF UNUSED_TMNUM EQU __tmhm_value__
 
 ; used for Time Capsule held item compatibility
+DEF KINGS_ROCK_GSC   EQU $52
 DEF TWISTEDSPOON_GSC EQU $60
+DEF EVERSTONE_GSC    EQU $70
+DEF METAL_COAT_GSC   EQU $8f
+DEF DRAGON_SCALE_GSC EQU $97
 DEF LIGHT_BALL_GSC   EQU $a3
+DEF UP_GRADE_GSC     EQU $ac
+
+; EV_TRADE Items

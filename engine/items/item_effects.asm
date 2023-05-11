@@ -100,6 +100,9 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; MAX_ETHER
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
+	dw ItemUseBall		 ; FRIEND_BALL
+	dw UnusableItem      ; SUN_SHARD
+	dw UnusableItem      ; MOON_SHARD
 
 ItemUseBall:
 
@@ -120,8 +123,12 @@ ItemUseBall:
 	ld a, [wPartyCount] ; is party full?
 	cp PARTY_LENGTH
 	jr nz, .canUseBall
-	ld a, [wBoxCount] ; is box full?
+	
+	ld a, BANK(sCurBoxDataCount)
+	call SwitchSRAMBankAndLatchClockData
+	ld a, [sCurBoxDataCount]
 	cp MONS_PER_BOX
+	call PrepareRTCDataAndDisableSRAM
 	jp z, BoxFullCannotThrowBall
 
 .canUseBall
@@ -196,6 +203,8 @@ ItemUseBall:
 
 ; Anything will do for the basic Poké Ball.
 	cp POKE_BALL
+	jr z, .checkForAilments
+	cp FRIEND_BALL
 	jr z, .checkForAilments
 
 ; If it's a Great/Ultra/Safari Ball and Rand1 is greater than 200, try again.
@@ -340,6 +349,8 @@ ItemUseBall:
 	ld a, [wcf91]
 	ld b, 255
 	cp POKE_BALL
+	jr z, .skip4
+	cp FRIEND_BALL
 	jr z, .skip4
 	ld b, 200
 	cp GREAT_BALL
@@ -501,6 +512,7 @@ ItemUseBall:
 	callfar LoadEnemyMonData
 	pop af
 	ld [wcf91], a
+	ld [wItemBackup], a
 	pop hl
 	pop af
 	ld [hld], a
@@ -515,7 +527,7 @@ ItemUseBall:
 	ld [wd11e], a
 	ld a, [wBattleType]
 	dec a ; is this the old man battle?
-	jr z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
+	jp z, .oldManCaughtMon ; if so, don't give the player the caught Pokémon
 
 	ld hl, ItemUseBallText05
 	call PrintText
@@ -557,6 +569,22 @@ ItemUseBall:
 	ld hl, .emptyString
 	call PrintText
 	call AddPartyMon
+	
+	ld a, [wItemBackup]
+	cp FRIEND_BALL
+	jr nz, .SkipPartyMonFriendBall
+
+	ld a, [wPartyCount]
+	dec a
+	ld hl, wPartyMonHappiness
+	ld b, 0
+	ld c, a
+	add hl, bc
+
+	ld a, FRIEND_BALL_HAPPINESS
+	ld [hl], a	
+.SkipPartyMonFriendBall		
+	
 	jr .done
 
 .sendToBox
@@ -748,7 +776,7 @@ ItemUseSurfboard:
 	ld a, b
 	ld [wSimulatedJoypadStatesEnd], a
 	xor a
-	ld [wWastedByteCD39], a
+	;ld [wWastedByteCD39], a
 	inc a
 	ld [wSimulatedJoypadStatesIndex], a
 	ret
@@ -860,8 +888,14 @@ ItemUseVitamin:
 	ld a, [wIsInBattle]
 	and a
 	jp nz, ItemUseNotTime
+	ld a, USED_VITAMIN
+	ld [wItemType],a
+	jr _ItemUseMedicine
 
 ItemUseMedicine:
+	ld a, USED_MEDICINE ; a = $00
+	ld [wItemType],a    ; item type = $00
+_ItemUseMedicine:
 	ld a, [wPartyCount]
 	and a
 	jp z, Func_e4bf
@@ -893,6 +927,39 @@ ItemUseMedicine:
 	ld a, [wcf91]
 	ld e, a
 	ld [wd0b5], a
+	
+; happiness code goes here	
+	pop af
+	push af
+	cp RARE_CANDY	        ; did we use a Rare Candy?
+	jr z, .skipHappiness    ; if so, go here!
+	ld a, [wItemType]	    ; otherwise, what type did we use?
+	cp USED_MEDICINE	    ; cp 0
+	jr z, .skipHappiness	; we did, so happiness doesn't change. otherwise, check stuff below.
+	push hl
+	push de
+	cp USED_VITAMIN
+	jr z, .usedVitamin
+	cp USED_POWDER
+	jr z, .usedPowder
+	cp USED_ROOT
+	jr z, .usedRoot
+.usedHerb
+	callabd_ModifyHappiness HAPPINESS_REVIVALHERB
+	jr .doneHappiness
+.usedVitamin
+	callabd_ModifyHappiness HAPPINESS_USEDITEM
+	jr .doneHappiness
+.usedPowder
+	callabd_ModifyHappiness HAPPINESS_BITTERPOWDER
+	jr .doneHappiness
+.usedRoot
+	callabd_ModifyHappiness HAPPINESS_ENERGYROOT
+.doneHappiness	
+	pop de
+	pop hl
+.skipHappiness
+; happiness code ends here	
 	pop af
 	ld [wcf91], a
 	pop af
@@ -903,7 +970,7 @@ ItemUseMedicine:
 ; if using softboiled
 	ld a, [wWhichPokemon]
 	cp d ; is the pokemon trying to use softboiled on itself?
-	jr z, ItemUseMedicine ; if so, force another choice
+	jp z, ItemUseMedicine ; if so, force another choice
 .checkItemType
 	ld a, [wcf91]
 	cp REVIVE
@@ -1474,6 +1541,7 @@ ItemUseMedicine:
 
 	xor a
 	ld [wForceEvolution], a
+	callabd_ModifyHappiness HAPPINESS_GAINLEVEL
 	
 	callfar TryEvolvingMon
 	ld a, $01
@@ -1611,6 +1679,15 @@ ItemUseXAccuracy:
 	ld a, [wIsInBattle]
 	and a
 	jp z, ItemUseNotTime
+	
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wPlayerMonNumber]
+	ld [wWhichPokemon], a
+	callabd_ModifyHappiness HAPPINESS_USEDXITEM
+	pop af
+	ld [wWhichPokemon], a	
+	
 	ld hl, wPlayerBattleStatus2
 	set USING_X_ACCURACY, [hl] ; X Accuracy bit
 	jp PrintItemUseTextAndRemoveItem
@@ -1685,6 +1762,15 @@ ItemUseGuardSpec:
 	ld a, [wIsInBattle]
 	and a
 	jp z, ItemUseNotTime
+
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wPlayerMonNumber]
+	ld [wWhichPokemon], a
+	callabd_ModifyHappiness HAPPINESS_USEDXITEM
+	pop af
+	ld [wWhichPokemon], a
+
 	ld hl, wPlayerBattleStatus2
 	set PROTECTED_BY_MIST, [hl] ; Mist bit
 	jp PrintItemUseTextAndRemoveItem
@@ -1701,6 +1787,15 @@ ItemUseDireHit:
 	ld a, [wIsInBattle]
 	and a
 	jp z, ItemUseNotTime
+
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wPlayerMonNumber]
+	ld [wWhichPokemon], a
+	callabd_ModifyHappiness HAPPINESS_USEDXITEM
+	pop af
+	ld [wWhichPokemon], a
+
 	ld hl, wPlayerBattleStatus2
 	set GETTING_PUMPED, [hl] ; Focus Energy bit
 	jp PrintItemUseTextAndRemoveItem
@@ -1732,6 +1827,14 @@ ItemUseXStat:
 	xor a
 	ldh [hWhoseTurn], a ; set turn to player's turn
 	farcall StatModifierUpEffect ; do stat increase move
+	
+	ld a, [wWhichPokemon]
+	push af
+	ld a, [wPlayerMonNumber]
+	ld [wWhichPokemon], a
+	callabd_ModifyHappiness HAPPINESS_USEDXITEM
+	pop af
+	ld [wWhichPokemon], a	
 
 	pop hl
 	pop af
@@ -2367,6 +2470,15 @@ ItemUseTMHM:
 	ld a, b
 	and a
 	ret z
+	
+	ld a, [wWhichPokemon]
+	push af
+	ld a, d
+	ld [wWhichPokemon], a
+	callabd_ModifyHappiness HAPPINESS_LEARNMOVE
+	pop af
+	ld [wWhichPokemon], a	
+	
 	ld a, [wcf91]
 	call IsItemHM
 	ret c
@@ -2781,7 +2893,9 @@ IsKeyItem_::
 INCLUDE "data/items/key_items.asm"
 
 SendNewMonToBox:
-	ld de, wBoxCount
+	ld a, BANK(sCurBoxDataCount)
+	call SwitchSRAMBankAndLatchClockData
+	ld de, sCurBoxDataCount
 	ld a, [de]
 	inc a
 	ld [de], a
@@ -2798,9 +2912,9 @@ SendNewMonToBox:
 	cp $ff
 	jr nz, .loop
 	call GetMonHeader
-	ld hl, wBoxMonOT
+	ld hl, sCurBoxDataMonOT
 	ld bc, NAME_LENGTH
-	ld a, [wBoxCount]
+	ld a, [sCurBoxDataCount]
 	dec a
 	jr z, .skip
 	dec a
@@ -2811,7 +2925,7 @@ SendNewMonToBox:
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [wBoxCount]
+	ld a, [sCurBoxDataCount]
 	dec a
 	ld b, a
 .loop2
@@ -2832,10 +2946,10 @@ SendNewMonToBox:
 	ld de, wBoxMonOT
 	ld bc, NAME_LENGTH
 	call CopyData
-	ld a, [wBoxCount]
+	ld a, [sCurBoxDataCount]
 	dec a
 	jr z, .skip2
-	ld hl, wBoxMonNicks
+	ld hl, sCurBoxDataMonNicknames
 	ld bc, NAME_LENGTH
 	dec a
 	call AddNTimes
@@ -2845,7 +2959,7 @@ SendNewMonToBox:
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [wBoxCount]
+	ld a, [sCurBoxDataCount]
 	dec a
 	ld b, a
 .loop3
@@ -2862,35 +2976,35 @@ SendNewMonToBox:
 	dec b
 	jr nz, .loop3
 .skip2
-	ld hl, wBoxMonNicks
+	ld hl, sCurBoxDataMonNicknames
 	ld a, NAME_MON_SCREEN
 	ld [wNamingScreenType], a
 	predef AskName
-	ld a, [wBoxCount]
+	ld a, [sCurBoxDataCount]
 	dec a
 	jr z, .skip3
-	ld hl, wBoxMons
-	ld bc, wBoxMon2 - wBoxMon1
+	ld hl, sCurBoxDataMons
+	ld bc, sCurBoxDataMon2 - sCurBoxDataMon1
 	dec a
 	call AddNTimes
 	push hl
-	ld bc, wBoxMon2 - wBoxMon1
+	ld bc, sCurBoxDataMon2 - sCurBoxDataMon1
 	add hl, bc
 	ld d, h
 	ld e, l
 	pop hl
-	ld a, [wBoxCount]
+	ld a, [sCurBoxDataCount]
 	dec a
 	ld b, a
 .loop4
 	push bc
 	push hl
-	ld bc, wBoxMon2 - wBoxMon1
+	ld bc, sCurBoxDataMon2 - sCurBoxDataMon1
 	call CopyData
 	pop hl
 	ld d, h
 	ld e, l
-	ld bc, wBoxMon1 - wBoxMon2
+	ld bc, sCurBoxDataMon1 - sCurBoxDataMon2
 	add hl, bc
 	pop bc
 	dec b
@@ -2899,7 +3013,7 @@ SendNewMonToBox:
 	ld a, [wEnemyMonLevel]
 	ld [wEnemyMonBoxLevel], a
 	ld hl, wEnemyMon
-	ld de, wBoxMon1
+	ld de, sCurBoxDataMon1
 	ld bc, wEnemyMonDVs - wEnemyMon
 	call CopyData
 	ld hl, wPlayerID
@@ -2948,8 +3062,35 @@ SendNewMonToBox:
 	cp KADABRA
 	jr nz, .notKadabra
 	ld a, TWISTEDSPOON_GSC
-	ld [wBoxMon1CatchRate], a
+	ld [sCurBoxDataMon1CatchRate], a
 .notKadabra
+	ld hl, sCurBoxDataMonNicknames
+	ld de, wcd6d
+	ld bc, NAME_LENGTH
+	call CopyData
+	
+	ld de, sCurBoxDataMonHappiness
+	dec de
+	ld a, [wEnemyMonHappiness]
+	ld c, a
+.happinessLoop
+	inc de     ; de = happiness list
+	ld a, [de] ; first happiness
+	ld b, a    ; b = box happiness
+	ld a, c    ; a = c
+	ld c, b    ; c = box happiness
+	ld [de], a ; de = a
+	cp $ff
+	jr nz, .happinessLoop
+	
+	ld a, [wItemBackup]
+	cp FRIEND_BALL
+	jr nz, .SkipBoxMonFriendBall
+	; The captured mon is now first in the box
+	ld a, FRIEND_BALL_HAPPINESS
+	ld [sCurBoxDataMonHappiness], a
+.SkipBoxMonFriendBall
+	call PrepareRTCDataAndDisableSRAM
 	ret
 
 ; checks if the tile in front of the player is a shore or water tile

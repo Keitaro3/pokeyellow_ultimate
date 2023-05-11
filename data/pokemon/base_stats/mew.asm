@@ -27,5 +27,3 @@
 	     CUT,          FLY,          SURF,         STRENGTH,     FLASH,		   \
 		 ROCK_SMASH,   WATERFALL
 	; end
-
-	db 0 ; padding

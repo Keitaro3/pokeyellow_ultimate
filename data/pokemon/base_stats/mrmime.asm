@@ -21,5 +21,3 @@
 	     METRONOME,    SKULL_BASH,   REST,         THUNDER_WAVE, PSYWAVE,      \
 	     SUBSTITUTE,   FLASH
 	; end
-
-	db 0 ; padding

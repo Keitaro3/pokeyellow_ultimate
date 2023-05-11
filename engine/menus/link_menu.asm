@@ -22,7 +22,7 @@ Func_f531b::
 	call TextBoxBorder
 	call UpdateSprites
 	xor a
-	ld [wUnusedCD37], a
+	ld [wItemBackup], a
 	ld [wd72d], a
 	ld [wd11e], a
 	ld hl, wTopMenuItemY
@@ -650,7 +650,7 @@ LinkMenu:
 	ld de, TradeCenterText
 	call PlaceString
 	xor a
-	ld [wUnusedCD37], a
+	ld [wItemBackup], a
 	ld [wd72d], a
 	ld [wd11e], a
 	ld hl, wTopMenuItemY

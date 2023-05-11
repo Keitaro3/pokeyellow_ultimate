@@ -9,6 +9,7 @@ ApplyOutOfBattlePoisonDamage:
 	and a
 	jp z, .noBlackOut
 	call IncrementDayCareMonExp
+	call StepHappiness
 	ld a, [wStepCounter]
 	and $3 ; is the counter a multiple of 4?
 	jp nz, .skipPoisonEffectAndSound ; only apply poison damage every fourth step
@@ -57,6 +58,7 @@ ApplyOutOfBattlePoisonDamage:
 	ld a, TEXT_MON_FAINTED
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
+	calladb_ModifyHappiness HAPPINESS_POISONFAINT
 	pop de
 	pop hl
 .nextMon
@@ -113,3 +115,38 @@ ApplyOutOfBattlePoisonDamage:
 .done
 	ld [wOutOfBattleBlackout], a
 	ret
+	
+StepHappiness:
+	ld a, [wStepCounter]
+	and a
+	ret nz
+	
+	ld hl, wHappinessStepCount
+	ld a, [hl]
+	inc a
+	and 1
+	ld [hl], a
+	ret nz
+	
+	ld de, wPartyCount
+	ld a, [de]
+	and a
+	ret z
+
+	ld c, a
+	ld hl, wPartyMonHappiness
+.loop
+	inc de
+	ld a, [de]
+	cp EGG
+	jr z, .next
+	inc [hl]
+	jr nz, .next
+	ld [hl], $ff
+
+.next
+	inc hl
+	dec c
+	jr nz, .loop
+	ret
+

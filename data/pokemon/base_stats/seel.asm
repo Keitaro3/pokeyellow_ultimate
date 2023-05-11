@@ -19,5 +19,3 @@
 	     RAGE,         MIMIC,        DOUBLE_TEAM,  BIDE,         SKULL_BASH,   \
 	     REST,         SUBSTITUTE,   SURF,         STRENGTH,     WATERFALL
 	; end
-
-	db 0 ; padding

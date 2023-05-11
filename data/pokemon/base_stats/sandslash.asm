@@ -20,5 +20,3 @@
 	     SANDSTORM,    SWIFT,        SKULL_BASH,   REST,         ROCK_SLIDE,   \
 	     SUBSTITUTE,   CUT,          STRENGTH,     ROCK_SMASH
 	; end
-
-	db 0 ; padding

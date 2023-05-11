@@ -90,6 +90,11 @@ PKMNLeaguePCText: db "<PKMN>LEAGUE@"
 LogOffPCText:     db "LOG OFF@"
 
 BillsPC_::
+	call GBPalWhiteOutWithDelay3
+	call ClearScreen
+	call UpdateSprites
+	call RunDefaultPaletteCommand
+	call GBPalNormal
 	ld hl, wd730
 	set 6, [hl]
 	xor a
@@ -107,7 +112,10 @@ BillsPC_::
 	call PlaySound
 	ld hl, SwitchOnText
 	call PrintText
-
+	
+BillsPCMenu_:
+	call CopyBoxmonToSRAM
+	call ReloadMapAfterPrinter
 BillsPCMenu:
 	ld a, [wParentMenuItem]
 	ld [wCurrentMenuItem], a
@@ -215,18 +223,20 @@ BillsPCDeposit:
 	call PrintText
 	jp BillsPCMenu
 .partyLargeEnough
+	call CopyBoxmonFromSRAM
 	ld a, [wBoxCount]
 	cp MONS_PER_BOX
 	jr nz, .boxNotFull
 	ld hl, BoxFullText
 	call PrintText
-	jp BillsPCMenu
+	jp BillsPCMenu_
 .boxNotFull
+	call CopyBoxmonFromSRAM
 	ld hl, wPartyCount
 	call DisplayMonListMenu
-	jp c, BillsPCMenu
+	jp c, BillsPCMenu_
 	call DisplayDepositWithdrawMenu
-	jp nc, BillsPCMenu
+	jp nc, BillsPCMenu_
 	ld a, [wcf91]
 	call PlayCry
 	ld a, PARTY_TO_BOX
@@ -253,28 +263,29 @@ BillsPCDeposit:
 	ld [hl], "@"
 	ld hl, MonWasStoredText
 	call PrintText
-	jp BillsPCMenu
+	jp BillsPCMenu_
 
 BillsPCWithdraw:
+	call CopyBoxmonFromSRAM
 	ld a, [wBoxCount]
 	and a
 	jr nz, .boxNotEmpty
 	ld hl, NoMonText
 	call PrintText
-	jp BillsPCMenu
+	jp BillsPCMenu_
 .boxNotEmpty
 	ld a, [wPartyCount]
 	cp PARTY_LENGTH
 	jr nz, .partyNotFull
 	ld hl, CantTakeMonText
 	call PrintText
-	jp BillsPCMenu
+	jp BillsPCMenu_
 .partyNotFull
 	ld hl, wBoxCount
 	call DisplayMonListMenu
-	jp c, BillsPCMenu
+	jp c, BillsPCMenu_
 	call DisplayDepositWithdrawMenu
-	jp nc, BillsPCMenu
+	jp nc, BillsPCMenu_
 	ld a, [wWhichPokemon]
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
@@ -289,19 +300,20 @@ BillsPCWithdraw:
 	call WaitForSoundToFinish
 	ld hl, MonIsTakenOutText
 	call PrintText
-	jp BillsPCMenu
+	jp BillsPCMenu_
 
 BillsPCRelease:
+	call CopyBoxmonFromSRAM
 	ld a, [wBoxCount]
 	and a
 	jr nz, .loop
 	ld hl, NoMonText
 	call PrintText
-	jp BillsPCMenu
+	jp BillsPCMenu_
 .loop
 	ld hl, wBoxCount
 	call DisplayMonListMenu
-	jp c, BillsPCMenu
+	jp c, BillsPCMenu_
 	ld hl, OnceReleasedText
 	call PrintText
 	call YesNoChoice
@@ -316,11 +328,33 @@ BillsPCRelease:
 	call PlayCry
 	ld hl, MonWasReleasedText
 	call PrintText
-	jp BillsPCMenu
+	jp BillsPCMenu_
 
 BillsPCChangeBox:
+	call CopyBoxmonFromSRAM
 	farcall ChangeBox
+	call ReloadMapAfterPrinter
 	jp BillsPCMenu
+	
+CopyBoxmonToSRAM:
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, wBoxDataStart
+	ld de, sCurBoxData
+	ld bc, wBoxDataEnd - wBoxDataStart
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	ret
+	
+CopyBoxmonFromSRAM:
+	ld a, BANK(sCurBoxData)
+	call SwitchSRAMBankAndLatchClockData
+	ld hl, sCurBoxData
+	ld de, wBoxDataStart
+	ld bc, wBoxDataEnd - wBoxDataStart
+	call CopyData
+	call PrepareRTCDataAndDisableSRAM
+	ret
 
 DisplayMonListMenu:
 	ld a, l

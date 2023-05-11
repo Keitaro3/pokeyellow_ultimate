@@ -62,12 +62,18 @@ EndOfBattle:
 	ld [hli], a
 	ld [hl], a
 	ld [wListScrollOffset], a
-	ld hl, wPlayerStatsToDouble
-	ld b, $18
+	ld hl, wEnemyMonHappiness
+	ld b, $6
 .loop
 	ld [hli], a
 	dec b
 	jr nz, .loop
+	ld hl, wPlayerStatsToDouble
+	ld b, $18
+.loop2
+	ld [hli], a
+	dec b
+	jr nz, .loop2
 	ld hl, wd72c
 	set 0, [hl]
 	call WaitForSoundToFinish

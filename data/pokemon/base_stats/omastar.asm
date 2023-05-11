@@ -20,5 +20,3 @@
 	     REFLECT,      BIDE,         SANDSTORM,    SKULL_BASH,   REST,         \
 	     SUBSTITUTE,   SURF,         ROCK_SMASH
 	; end
-
-	db 0 ; padding

@@ -63,3 +63,17 @@ MACRO homejp_sf ; homejp but save flags by popping into bc instead of af
 	ld a, b
 	jp BankswitchCommon
 ENDM
+
+MACRO calladb_ModifyHappiness
+	ld hl, ModifyHappiness
+	ld d, \1
+	ld b, BANK(ModifyHappiness)
+	call Bankswitch
+ENDM
+
+MACRO callabd_ModifyHappiness
+	ld hl, ModifyHappiness
+	ld b, BANK(ModifyHappiness)
+	ld d, \1
+	call Bankswitch
+ENDM

@@ -129,6 +129,8 @@ LassData:
 ; Celadon Gym
 	db 23, BELLSPROUT, WEEPINBELL, 0
 	db 23, ODDISH, GLOOM, 0
+; Viridian Forest
+	db 6, CLEFAIRY, DRATINI, PIKACHU, 0
 
 SailorData:
 ; SS Anne Stern

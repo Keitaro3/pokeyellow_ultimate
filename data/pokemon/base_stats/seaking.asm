@@ -19,5 +19,3 @@
 	     MIMIC,        DOUBLE_TEAM,  BIDE,         SWIFT,        SKULL_BASH,   \
 	     REST,         SUBSTITUTE,   SURF,         WATERFALL
 	; end
-
-	db 0 ; padding

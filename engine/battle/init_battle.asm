@@ -50,6 +50,42 @@ InitBattleCommon:
 	ld [wEnemyMonPartyPos], a
 	ld a, $2
 	ld [wIsInBattle], a
+	
+	; Is this a major story battle?
+	ld a,[wLoneAttackNo]
+	and a
+	jp z, _InitBattleCommon
+	xor a
+	ld [wWhichPokemon], a
+	ld a, [wPartyCount]
+	ld b, a	
+.partyloop
+	push bc
+	ld a, (wPartyMon1HP - wPartyMon1)
+; Get the location of HP from wWhichPokemon in hl
+	push bc
+	ld hl, wPartyMons
+	ld c, a
+	ld b, 0
+	add hl, bc
+	ld a, [wWhichPokemon]
+	ld bc, PARTYMON_STRUCT_LENGTH
+	call AddNTimes	
+	pop bc
+; if a Pokemon is fainted, don't increase its happiness.	
+	ld a, [hli]
+	or [hl]
+	jr z, .skipfaintedmon
+	ld d, HAPPINESS_GYMBATTLE
+	call ModifyHappiness	
+.skipfaintedmon
+	pop bc
+	dec b
+	jr z, .done
+	ld hl, wWhichPokemon
+	inc [hl]
+	jr .partyloop
+.done	
 	jp _InitBattleCommon
 
 InitWildBattle:

@@ -21,5 +21,3 @@
 	     METRONOME,    SKULL_BASH,   REST,         PSYWAVE,      SUBSTITUTE,   \
 	     SURF,         STRENGTH,     ROCK_SMASH,   WATERFALL
 	; end
-
-	db 0 ; padding

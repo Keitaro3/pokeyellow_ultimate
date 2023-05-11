@@ -22,5 +22,3 @@
 	     SKULL_BASH,   REST,         THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   \
 	     SUBSTITUTE,   STRENGTH,     FLASH
 	; end
-
-	db 0 ; padding
