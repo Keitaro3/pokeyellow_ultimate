@@ -6,12 +6,15 @@
 	db FIRE, FIRE ; type
 	db 45 ; catch rate
 	db 167 ; base exp
+	db GENDER_F25 ; gender ratio
+	db 25 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/magmar.pic", 0, 1 ; sprite dimensions
 	dw MagmarPicFront, MagmarPicBack
 
 	db EMBER, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -20,3 +23,5 @@
 	     BIDE,         METRONOME,    FIRE_BLAST,   SKULL_BASH,   REST,         \
 	     PSYWAVE,      SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

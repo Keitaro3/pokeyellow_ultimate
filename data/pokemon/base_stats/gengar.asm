@@ -6,12 +6,15 @@
 	db GHOST, POISON ; type
 	db 45 ; catch rate
 	db 190 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/gengar.pic", 0, 1 ; sprite dimensions
 	dw GengarPicFront, GengarPicBack
 
 	db LICK, CONFUSE_RAY, NIGHT_SHADE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
+	dn EGG_INDETERMINATE, EGG_INDETERMINATE ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -21,3 +24,5 @@
 	     SKULL_BASH,   DREAM_EATER,  REST,         PSYWAVE,      EXPLOSION,    \
 	     SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

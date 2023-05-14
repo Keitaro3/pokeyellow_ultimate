@@ -6,12 +6,15 @@
 	db GROUND, GROUND ; type
 	db 90 ; catch rate
 	db 163 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/sandslash.pic", 0, 1 ; sprite dimensions
 	dw SandslashPicFront, SandslashPicBack
 
 	db SCRATCH, SAND_ATTACK, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
@@ -20,3 +23,5 @@
 	     SANDSTORM,    SWIFT,        SKULL_BASH,   REST,         ROCK_SLIDE,   \
 	     SUBSTITUTE,   CUT,          STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

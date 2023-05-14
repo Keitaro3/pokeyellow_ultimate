@@ -6,12 +6,15 @@
 	db NORMAL, NORMAL ; type
 	db 25 ; catch rate
 	db 154 ; base exp
+	db GENDER_F12_5 ; gender ratio
+	db 40 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/snorlax.pic", 0, 1 ; sprite dimensions
 	dw SnorlaxPicFront, SnorlaxPicBack
 
 	db HEADBUTT, AMNESIA, REST, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
+	dn EGG_MONSTER, EGG_MONSTER ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -23,3 +26,5 @@
 	     SKULL_BASH,   REST,         PSYWAVE,      ROCK_SLIDE,   SUBSTITUTE,   \
 	     SURF,         STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

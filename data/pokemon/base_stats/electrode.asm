@@ -6,12 +6,15 @@
 	db ELECTRIC, ELECTRIC ; type
 	db 60 ; catch rate
 	db 150 ; base exp
+	db GENDER_UNKNOWN ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/electrode.pic", 0, 1 ; sprite dimensions
 	dw ElectrodePicFront, ElectrodePicBack
 
 	db TACKLE, SCREECH, SONICBOOM, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        TAKE_DOWN,    HYPER_BEAM,   RAGE,         THUNDERBOLT,  \
@@ -19,3 +22,5 @@
 	     BIDE,         SELFDESTRUCT, SWIFT,        SKULL_BASH,   REST,         \
 	     THUNDER_WAVE, EXPLOSION,    SUBSTITUTE,   FLASH
 	; end
+
+	db 0 ; padding

@@ -6,12 +6,15 @@
 	db GRASS, PSYCHIC_TYPE ; type
 	db 45 ; catch rate
 	db 212 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/exeggutor.pic", 0, 1 ; sprite dimensions
 	dw ExeggutorPicFront, ExeggutorPicBack
 
 	db BARRAGE, HYPNOSIS, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
+	dn EGG_PLANT, EGG_PLANT ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   RAGE,         \
@@ -19,3 +22,5 @@
 	     DOUBLE_TEAM,  REFLECT,      BIDE,         SELFDESTRUCT, REST,	       \
 	     PSYWAVE,      EXPLOSION,    SUBSTITUTE,   STRENGTH
 	; end
+
+	db 0 ; padding

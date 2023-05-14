@@ -6,12 +6,15 @@
 	db FIGHTING, FIGHTING ; type
 	db 190 ; catch rate
 	db 74 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/mankey.pic", 0, 1 ; sprite dimensions
 	dw MankeyPicFront, MankeyPicBack
 
 	db SCRATCH, LEER, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -20,3 +23,5 @@
 	     DOUBLE_TEAM,  BIDE,         METRONOME,    SWIFT,        SKULL_BASH,   \
 	     REST,         ROCK_SLIDE,   SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

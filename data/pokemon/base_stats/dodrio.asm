@@ -6,12 +6,15 @@
 	db NORMAL, FLYING ; type
 	db 45 ; catch rate
 	db 158 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/dodrio.pic", 0, 1 ; sprite dimensions
 	dw DodrioPicFront, DodrioPicBack
 
 	db PECK, GROWL, FURY_ATTACK, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_FLYING, EGG_FLYING ; egg groups
 
 	; tm/hm learnset
 	tmhm WHIRLWIND,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
@@ -19,3 +22,5 @@
 	     BIDE,         SKULL_BASH,   SKY_ATTACK,   REST,         TRI_ATTACK,   \
 	     SUBSTITUTE,   FLY
 	; end
+
+	db 0 ; padding

@@ -6,12 +6,15 @@
 	db FIRE, FIRE ; type
 	db 75 ; catch rate
 	db 178 ; base exp
+	db GENDER_F75 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/ninetales.pic", 0, 1 ; sprite dimensions
 	dw NinetalesPicFront, NinetalesPicBack
 
 	db EMBER, TAIL_WHIP, QUICK_ATTACK, ROAR ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   \
@@ -19,3 +22,5 @@
 	     BIDE,         FIRE_BLAST,   SWIFT,        SKULL_BASH,   REST,         \
 	     SUBSTITUTE
 	; end
+
+	db 0 ; padding

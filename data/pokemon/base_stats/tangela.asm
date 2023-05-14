@@ -6,12 +6,15 @@
 	db GRASS, GRASS ; type
 	db 45 ; catch rate
 	db 166 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/tangela.pic", 0, 1 ; sprite dimensions
 	dw TangelaPicFront, TangelaPicBack
 
 	db CONSTRICT, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_PLANT, EGG_PLANT ; egg groups
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
@@ -19,3 +22,5 @@
 	     DOUBLE_TEAM,  BIDE,         SKULL_BASH,   REST,         SUBSTITUTE,   \
 	     CUT
 	; end
+
+	db 0 ; padding

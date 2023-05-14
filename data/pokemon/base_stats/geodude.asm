@@ -6,12 +6,15 @@
 	db ROCK, GROUND ; type
 	db 255 ; catch rate
 	db 86 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 15 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/geodude.pic", 0, 1 ; sprite dimensions
 	dw GeodudePicFront, GeodudePicBack
 
 	db TACKLE, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
+	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
@@ -20,3 +23,5 @@
 	     METRONOME,    SELFDESTRUCT, SANDSTORM,    FIRE_BLAST,   REST,         \
 	     EXPLOSION,    ROCK_SLIDE,   SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

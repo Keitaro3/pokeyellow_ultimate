@@ -6,12 +6,15 @@
 	db PSYCHIC_TYPE, PSYCHIC_TYPE ; type
 	db 3 ; catch rate
 	db 220 ; base exp
+	db GENDER_UNKNOWN ; gender ratio
+	db 120 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/mewtwo.pic", 0, 1 ; sprite dimensions
 	dw MewtwoPicFront, MewtwoPicBack
 
 	db CONFUSION, DISABLE, SWIFT, PSYCHIC_M ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
+	dn EGG_NONE, EGG_NONE ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -23,3 +26,5 @@
 	     PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   STRENGTH,     FLASH,        \
 		 ROCK_SMASH
 	; end
+
+	db 0 ; padding

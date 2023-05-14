@@ -6,12 +6,15 @@
 	db NORMAL, NORMAL ; type
 	db 45 ; catch rate
 	db 127 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/lickitung.pic", 0, 1 ; sprite dimensions
 	dw LickitungPicFront, LickitungPicBack
 
 	db WRAP, SUPERSONIC, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_MONSTER, EGG_MONSTER ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   SWORDS_DANCE, MEGA_KICK,    TOXIC,        BODY_SLAM,    \
@@ -22,3 +25,5 @@
 	     SKULL_BASH,   REST,         SUBSTITUTE,   CUT,          SURF,         \       
 		 STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

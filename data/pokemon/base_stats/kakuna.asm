@@ -6,13 +6,18 @@
 	db BUG, POISON ; type
 	db 120 ; catch rate
 	db 71 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 15 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/kakuna.pic", 0, 1 ; sprite dimensions
 	dw KakunaPicFront, KakunaPicBack
 
 	db HARDEN, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_BUG, EGG_BUG ; egg groups
 
 	; tm/hm learnset
 	tmhm
 	; end
+
+	db 0 ; padding

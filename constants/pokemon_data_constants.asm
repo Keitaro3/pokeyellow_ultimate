@@ -14,14 +14,44 @@ DEF BASE_TYPE_1      rb
 DEF BASE_TYPE_2      rb
 DEF BASE_CATCH_RATE  rb
 DEF BASE_EXP         rb
+DEF BASE_GENDER      rb
+BASE_EGG_STEPS       rb
 DEF BASE_PIC_SIZE    rb
 DEF BASE_FRONTPIC    rw
 DEF BASE_BACKPIC     rw
 DEF BASE_MOVES       rb NUM_MOVES
 DEF BASE_GROWTH_RATE rb
+DEF BASE_EGG_GROUPS  rb
 DEF BASE_TMHM        rb (NUM_TM_HM + 7) / 8
-
+                     rb_skip
 DEF BASE_DATA_SIZE EQU _RS
+
+; gender ratio constants
+DEF GENDER_F0      EQU   0 percent
+DEF GENDER_F12_5   EQU  12 percent + 1
+DEF GENDER_F25     EQU  25 percent
+DEF GENDER_F50     EQU  50 percent
+DEF GENDER_F75     EQU  75 percent
+DEF GENDER_F100    EQU 100 percent - 1
+DEF GENDER_UNKNOWN EQU -1
+
+; wBaseEggGroups values
+	const_def 1
+	const EGG_MONSTER       ; 1
+	const EGG_WATER_1       ; 2 (Amphibian)
+	const EGG_BUG           ; 3
+	const EGG_FLYING        ; 4
+	const EGG_GROUND        ; 5 (Field)
+	const EGG_FAIRY         ; 6
+	const EGG_PLANT         ; 7 (Grass)
+	const EGG_HUMANSHAPE    ; 8 (Human-Like)
+	const EGG_WATER_3       ; 9 (Invertebrate)
+	const EGG_MINERAL       ; a
+	const EGG_INDETERMINATE ; b (Amorphous)
+	const EGG_WATER_2       ; c (Fish)
+	const EGG_DITTO         ; d
+	const EGG_DRAGON        ; e
+	const EGG_NONE          ; f (Undiscovered)
 
 ; party_struct members (see macros/ram.asm)
 rsreset

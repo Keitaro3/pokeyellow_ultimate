@@ -6,12 +6,15 @@
 	db WATER, ICE ; type
 	db 45 ; catch rate
 	db 219 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 40 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/lapras.pic", 0, 1 ; sprite dimensions
 	dw LaprasPicFront, LaprasPicBack
 
 	db WATER_GUN, GROWL, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
+	dn EGG_MONSTER, EGG_WATER_1 ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        HORN_DRILL,   BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
@@ -21,3 +24,5 @@
 	     SKULL_BASH,   REST,         PSYWAVE,      SUBSTITUTE,   SURF,         \
 	     STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

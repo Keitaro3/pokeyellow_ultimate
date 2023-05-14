@@ -6,12 +6,15 @@
 	db GROUND, GROUND ; type
 	db 75 ; catch rate
 	db 124 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/marowak.pic", 0, 1 ; sprite dimensions
 	dw MarowakPicFront, MarowakPicBack
 
 	db BONE_CLUB, TAIL_WHIP, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_MONSTER, EGG_MONSTER ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -21,3 +24,5 @@
 	     BIDE,         SANDSTORM,    FIRE_BLAST,   SKULL_BASH,   REST,         \
 	     SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

@@ -6,12 +6,15 @@
 	db ELECTRIC, ELECTRIC ; type
 	db 45 ; catch rate
 	db 197 ; base exp
+	db GENDER_F12_5 ; gender ratio
+	db 35 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/jolteon.pic", 0, 1 ; sprite dimensions
 	dw JolteonPicFront, JolteonPicBack
 
 	db TACKLE, TAIL_WHIP, QUICK_ATTACK, THUNDERSHOCK ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   \
@@ -19,3 +22,5 @@
 	     REFLECT,      BIDE,         SWIFT,        SKULL_BASH,   REST,         \
 	     THUNDER_WAVE, SUBSTITUTE,   FLASH
 	; end
+
+	db 0 ; padding

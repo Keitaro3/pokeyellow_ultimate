@@ -6,12 +6,15 @@
 	db FIGHTING, FIGHTING ; type
 	db 45 ; catch rate
 	db 139 ; base exp
+	db GENDER_F0 ; gender ratio
+	db 25 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/hitmonlee.pic", 0, 1 ; sprite dimensions
 	dw HitmonleePicFront, HitmonleePicBack
 
 	db DOUBLE_KICK, MEDITATE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -19,3 +22,5 @@
 	     MIMIC,        DOUBLE_TEAM,  BIDE,         METRONOME,    SWIFT,        \
 	     SKULL_BASH,   REST,         SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

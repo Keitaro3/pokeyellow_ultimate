@@ -160,7 +160,6 @@ SECTION "Battle Engine 6", ROMX
 INCLUDE "data/moves/moves.asm"
 INCLUDE "data/pokemon/base_stats.asm"
 INCLUDE "data/pokemon/cries.asm"
-INCLUDE "engine/battle/trainer_ai.asm"
 INCLUDE "engine/battle/draw_hud_pokeball_gfx.asm"
 INCLUDE "gfx/trade.asm"
 INCLUDE "engine/pokemon/evos_moves.asm"
@@ -342,6 +341,7 @@ INCLUDE "engine/overworld/npc_movement_2.asm"
 SECTION "bank3B", ROMX
 
 INCLUDE "engine/menus/save.asm"
+INCLUDE "engine/battle/trainer_ai.asm"
 
 
 SECTION "Specific Script Flags", ROMX

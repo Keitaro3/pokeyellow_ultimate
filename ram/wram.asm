@@ -1712,22 +1712,22 @@ wMonHType1:: db
 wMonHType2:: db
 wMonHCatchRate:: db
 wMonHBaseEXP:: db
+wMonHBaseGender:: db
+wMonHEggSteps:: db
 wMonHSpriteDim:: db
 wMonHFrontSprite:: dw
 wMonHBackSprite:: dw
 wMonHMoves:: ds NUM_MOVES
 wMonHGrowthRate:: db
+wMonHEggGroups:: db
 wMonHLearnset:: flag_array NUM_TMS + NUM_HMS
+	ds 1
 wMonHeaderEnd::
 
 ; saved at the start of a battle and then written back at the end of the battle
 wSavedTileAnimations:: db
 
-	ds 2
-
 wDamage:: dw
-
-	ds 2
 
 wRepelRemainingSteps:: db
 

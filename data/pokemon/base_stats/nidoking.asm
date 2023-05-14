@@ -6,12 +6,15 @@
 	db POISON, GROUND ; type
 	db 45 ; catch rate
 	db 195 ; base exp
+	db GENDER_F0 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/nidoking.pic", 0, 1 ; sprite dimensions
 	dw NidokingPicFront, NidokingPicBack
 
 	db TACKLE, HORN_ATTACK, POISON_STING, THRASH ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
+	dn EGG_MONSTER, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        HORN_DRILL,   BODY_SLAM,    \
@@ -22,3 +25,5 @@
 	     SANDSTORM,    FIRE_BLAST,   SKULL_BASH,   REST,         ROCK_SLIDE,   \
 	     SUBSTITUTE,   SURF,         STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

@@ -6,12 +6,15 @@
 	db FIGHTING, FIGHTING ; type
 	db 45 ; catch rate
 	db 193 ; base exp
+	db GENDER_F25 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/machamp.pic", 0, 1 ; sprite dimensions
 	dw MachampPicFront, MachampPicBack
 
 	db KARATE_CHOP, LOW_KICK, LEER, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
+	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -20,3 +23,5 @@
 	     DOUBLE_TEAM,  BIDE,         METRONOME,    FIRE_BLAST,   SKULL_BASH,   \
 	     REST,         ROCK_SLIDE,   SUBSTITUTE,   STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

@@ -6,12 +6,15 @@
 	db BUG, POISON ; type
 	db 45 ; catch rate
 	db 159 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 15 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/beedrill.pic", 0, 1 ; sprite dimensions
 	dw BeedrillPicFront, BeedrillPicBack
 
 	db FURY_ATTACK, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_BUG, EGG_BUG ; egg groups
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   \
@@ -19,3 +22,5 @@
 	     BIDE,         SWIFT,        SKULL_BASH,   REST,         SUBSTITUTE,   \
 	     CUT
 	; end
+
+	db 0 ; padding

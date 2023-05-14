@@ -6,12 +6,15 @@
 	db GROUND, GROUND ; type
 	db 50 ; catch rate
 	db 153 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/dugtrio.pic", 0, 1 ; sprite dimensions
 	dw DugtrioPicFront, DugtrioPicBack
 
 	db SCRATCH, GROWL, DIG, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   \
@@ -19,3 +22,5 @@
 	     DOUBLE_TEAM,  BIDE,         REST,         ROCK_SLIDE,   SUBSTITUTE,   \
 	     CUT,          ROCK_SMASH
 	; end
+
+	db 0 ; padding

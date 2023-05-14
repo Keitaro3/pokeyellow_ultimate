@@ -6,12 +6,15 @@
 	db WATER, PSYCHIC_TYPE ; type
 	db 190 ; catch rate
 	db 99 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/slowpoke.pic", 0, 1 ; sprite dimensions
 	dw SlowpokePicFront, SlowpokePicBack
 
 	db CONFUSION, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_MONSTER, EGG_WATER_1 ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  BUBBLEBEAM,   \
@@ -21,3 +24,5 @@
 	     SWIFT,        SKULL_BASH,   REST,         THUNDER_WAVE, PSYWAVE,      \
 	     TRI_ATTACK,   SUBSTITUTE,   SURF,         STRENGTH,     FLASH
 	; end
+
+	db 0 ; padding

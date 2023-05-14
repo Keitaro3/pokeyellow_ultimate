@@ -6,12 +6,15 @@
 	db ELECTRIC, ELECTRIC ; type
 	db 60 ; catch rate
 	db 161 ; base exp
+	db GENDER_UNKNOWN ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/magneton.pic", 0, 1 ; sprite dimensions
 	dw MagnetonPicFront, MagnetonPicBack
 
 	db TACKLE, SONICBOOM, THUNDERSHOCK, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_MINERAL, EGG_MINERAL ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   RAGE,         \
@@ -19,3 +22,5 @@
 	     REFLECT,      BIDE,         SWIFT,        REST,         THUNDER_WAVE, \
 	     SUBSTITUTE,   FLASH
 	; end
+
+	db 0 ; padding

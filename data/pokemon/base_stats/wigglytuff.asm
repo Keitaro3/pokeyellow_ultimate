@@ -6,12 +6,15 @@
 	db NORMAL, NORMAL ; type
 	db 50 ; catch rate
 	db 109 ; base exp
+	db GENDER_F75 ; gender ratio
+	db 10 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/wigglytuff.pic", 0, 1 ; sprite dimensions
 	dw WigglytuffPicFront, WigglytuffPicBack
 
 	db SING, DISABLE, DEFENSE_CURL, DOUBLESLAP ; level 1 learnset
 	db GROWTH_FAST ; growth rate
+	dn EGG_FAIRY, EGG_FAIRY ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -22,3 +25,5 @@
 	     SKULL_BASH,   REST,         THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   \
 	     SUBSTITUTE,   STRENGTH,     FLASH
 	; end
+
+	db 0 ; padding

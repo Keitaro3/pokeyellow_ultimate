@@ -6,15 +6,20 @@
 	db NORMAL, FLYING ; type
 	db 120 ; catch rate
 	db 113 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 15 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/pidgeotto.pic", 0, 1 ; sprite dimensions
 	dw PidgeottoPicFront, PidgeottoPicBack
 
 	db GUST, SAND_ATTACK, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
+	dn EGG_FLYING, EGG_FLYING ; egg groups
 
 	; tm/hm learnset
 	tmhm RAZOR_WIND,   WHIRLWIND,    TOXIC,        TAKE_DOWN,    DOUBLE_EDGE,  \
 	     RAGE,         MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         \
 	     SWIFT,        SKY_ATTACK,   REST,         SUBSTITUTE,   FLY
 	; end
+
+	db 0 ; padding

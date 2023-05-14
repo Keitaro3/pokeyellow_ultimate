@@ -6,12 +6,15 @@
 	db PSYCHIC_TYPE, PSYCHIC_TYPE ; type
 	db 75 ; catch rate
 	db 165 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/hypno.pic", 0, 1 ; sprite dimensions
 	dw HypnoPicFront, HypnoPicBack
 
 	db POUND, HYPNOSIS, DISABLE, CONFUSION ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_HUMANSHAPE, EGG_HUMANSHAPE ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -21,3 +24,5 @@
 	     REST,         THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   \
 	     FLASH
 	; end
+
+	db 0 ; padding

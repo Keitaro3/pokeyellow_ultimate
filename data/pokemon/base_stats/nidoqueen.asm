@@ -6,12 +6,15 @@
 	db POISON, GROUND ; type
 	db 45 ; catch rate
 	db 194 ; base exp
+	db GENDER_F100 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/nidoqueen.pic", 0, 1 ; sprite dimensions
 	dw NidoqueenPicFront, NidoqueenPicBack
 
 	db TACKLE, SCRATCH, TAIL_WHIP, BODY_SLAM ; level 1 learnset
 	db GROWTH_MEDIUM_SLOW ; growth rate
+	dn EGG_NONE, EGG_NONE ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        HORN_DRILL,   BODY_SLAM,    \
@@ -22,3 +25,5 @@
 	     SANDSTORM,    FIRE_BLAST,   SKULL_BASH,   REST,         ROCK_SLIDE,   \
 	     SUBSTITUTE,   SURF,         STRENGTH,     ROCK_SMASH
 	; end
+
+	db 0 ; padding

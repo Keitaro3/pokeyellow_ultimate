@@ -6,12 +6,15 @@
 	db WATER, WATER ; type
 	db 45 ; catch rate
 	db 196 ; base exp
+	db GENDER_F12_5 ; gender ratio
+	db 35 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/vaporeon.pic", 0, 1 ; sprite dimensions
 	dw VaporeonPicFront, VaporeonPicBack
 
 	db TACKLE, TAIL_WHIP, QUICK_ATTACK, WATER_GUN ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
 	tmhm TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  BUBBLEBEAM,   \
@@ -19,3 +22,5 @@
 	     MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         SWIFT,        \
 	     SKULL_BASH,   REST,         SUBSTITUTE,   SURF,         WATERFALL
 	; end
+
+	db 0 ; padding

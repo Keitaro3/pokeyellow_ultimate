@@ -6,12 +6,15 @@
 	db FIGHTING, FIGHTING ; type
 	db 75 ; catch rate
 	db 149 ; base exp
+	db GENDER_F50 ; gender ratio
+	db 20 ; step cycles to hatch
 
 	INCBIN "gfx/pokemon/front/primeape.pic", 0, 1 ; sprite dimensions
 	dw PrimeapePicFront, PrimeapePicBack
 
 	db SCRATCH, LEER, LOW_KICK, KARATE_CHOP ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
+	dn EGG_GROUND, EGG_GROUND ; egg groups
 
 	; tm/hm learnset
 	tmhm MEGA_PUNCH,   MEGA_KICK,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    \
@@ -21,3 +24,5 @@
 	     SKULL_BASH,   REST,         ROCK_SLIDE,   SUBSTITUTE,   STRENGTH,     \
 		 ROCK_SMASH
 	; end
+
+	db 0 ; padding
