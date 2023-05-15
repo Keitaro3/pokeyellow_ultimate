@@ -69,18 +69,14 @@ ROMX $8
 	"Audio Engine 2"
 	"Music 2"
 ROMX $9
-	"Pics 1"
 	"Battle Engine 3"
 ROMX $A
-	"Pics 2"
 	"Battle Engine 4"
 ROMX $B
-	"Pics 3"
 	"Battle Engine 5"
 ROMX $C
-	"Pics 4"
+	"Pic Banks"
 ROMX $D
-	"Pics 5"
 	"Slot Machines"
 ROMX $E
 	"Battle Engine 6"
@@ -97,7 +93,7 @@ ROMX $12
 	"Maps 7"
 	"Maps 8"
 ROMX $13
-	"Pics 6"
+	"Trainer Pics"
 	"Maps 9"
 ROMX $14
 	"Maps 10"
@@ -183,15 +179,22 @@ ROMX $2f
 	"BG Map Attributes"
 ROMX $30
 	"bank30"
-; bank $31 is empty
-; bank $32 is empty
-; bank $33 is empty
-; bank $34 is empty
-; bank $35 is empty
-; bank $36 is empty
-; bank $37 is empty
-; bank $38 is empty
-; bank $39 is empty
+ROMX $31
+	"Pics 1"
+ROMX $32
+	"Pics 2"
+ROMX $33
+	"Pics 3"
+ROMX $34
+	"Pics 4"
+ROMX $35
+	"Pics 5"
+ROMX $36
+	"Pics 6"
+ROMX $37
+	"Pics 7"
+ROMX $39
+	"Unown Pics"
 ROMX $3A
 	"bank3A"
 ; bank $3B is empty
@@ -203,7 +206,7 @@ ROMX $3C
 	"Hidden Objects Core"
 ROMX $3D
 	"Battle Engine 8"
-	"Pics 7"
+	"Trainer Back Pics"
 	"Battle Engine 9"
 ROMX $3E
 	"Surfing Minigame"

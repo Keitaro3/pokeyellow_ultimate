@@ -2,43 +2,51 @@
 ; assumes the corresponding mon header is already loaded
 ; hl contains offset to sprite pointer ($b for front or $d for back)
 UncompressMonSprite::
-	ld bc, wMonHeader
-	add hl, bc
-	ld a, [hli]
-	ld [wSpriteInputPtr], a    ; fetch sprite input pointer
-	ld a, [hl]
-	ld [wSpriteInputPtr+1], a
-; define (by index number) the bank that a pokemon's image is in
-; index = MEW:             bank $1
-; index = FOSSIL_KABUTOPS: bank $B
-;       index < $1F:       bank $9 ("Pics 1")
-; $1F ≤ index < $4A:       bank $A ("Pics 2")
-; $4A ≤ index < $74:       bank $B ("Pics 3")
-; $74 ≤ index < $99:       bank $C ("Pics 4")
-; $99 ≤ index:             bank $D ("Pics 5")
 	ld a, [wcf91]
+	and a
+	ret z
+	ld bc,wMonHeader
+	add hl,bc
+	cp UNOWN
+	jr z,.uncompress_unown
+	ld a,[hli]
+	ld [wSpriteInputPtr],a    ; fetch sprite input pointer
+	ld a,[hl]
+	ld [wSpriteInputPtr+1],a
+	ld hl, MonSpriteBankList
+	ld a,[wcf91] ; XXX name for this ram location
 	ld b, a
-	cp FOSSIL_KABUTOPS
-	ld a, BANK(FossilKabutopsPic)
-	jr z, .GotBank
-	ld a, b
-	cp TANGELA + 1
-	ld a, BANK("Pics 1")
-	jr c, .GotBank
-	ld a, b
-	cp MOLTRES + 1
-	ld a, BANK("Pics 2")
-	jr c, .GotBank
-	ld a, b
-	cp BEEDRILL + 2
-	ld a, BANK("Pics 3")
-	jr c, .GotBank
-	ld a, b
-	cp STARMIE + 1
-	ld a, BANK("Pics 4")
-	jr c, .GotBank
-	ld a, BANK("Pics 5")
-.GotBank
+	; get Pokémon picture bank pointer from list
+.loop
+	ld a, BANK(MonSpriteBankList)
+	call GetFarByte
+	inc hl
+	inc hl
+	cp b
+	jr c, .loop
+	dec hl
+	ld a, BANK(MonSpriteBankList)
+	call GetFarByte
+	jp UncompressSpriteData
+.uncompress_unown
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld a, [wUnownLetter]
+	dec a
+	add a
+	add a
+	ld c, a
+	ld b, $00
+	add hl, bc
+	ld a, BANK(UnownPicPtrs)
+	call GetFarByte
+	ld [wSpriteInputPtr], a
+	inc hl
+	ld a, BANK(UnownPicPtrs)
+	call GetFarByte
+	ld [wSpriteInputPtr + 1], a
+	ld a, BANK(UnownPics)
 	jp UncompressSpriteData
 
 ; de: destination location
@@ -48,6 +56,7 @@ LoadMonFrontSprite::
 	call UncompressMonSprite
 	ld hl, wMonHSpriteDim
 	ld a, [hli]
+LoadUncompressedBackSprite::
 	ld c, a
 	pop de
 	; fall through
@@ -102,21 +111,23 @@ LoadUncompressedSpriteData::
 	call AlignSpriteDataCentered    ; copy and align buffer 2 to 1 (containing the LSB of the 2bpp sprite)
 	call PrepareRTCDataAndDisableSRAM
 	pop de
-	jp InterlaceMergeSpriteBuffers
+	call InterlaceMergeSpriteBuffers
+	ret
 
 ; copies and aligns the sprite data properly inside the sprite buffer
 ; sprite buffers are 7*7 tiles in size, the loaded sprite is centered within this area
 AlignSpriteDataCentered::
 	ldh a, [hSpriteOffset]
-	ld b, $0
 	ld c, a
+	ld b, $0
 	add hl, bc
 	ldh a, [hSpriteWidth]
-.columnLoop
-	push af
-	push hl
+	ld b, a
 	ldh a, [hSpriteHeight]
 	ld c, a
+.columnLoop
+	push bc
+	push hl
 .columnInnerLoop
 	ld a, [de]
 	inc de
@@ -126,22 +137,16 @@ AlignSpriteDataCentered::
 	pop hl
 	ld bc, 7*8    ; 7 tiles
 	add hl, bc    ; advance one full column
-	pop af
-	dec a
+	pop bc
+	dec b
 	jr nz, .columnLoop
 	ret
 
 ; fills the sprite buffer (pointed to in hl) with zeros
 ZeroSpriteBuffer::
 	ld bc, SPRITEBUFFERSIZE
-.nextByteLoop
 	xor a
-	ld [hli], a
-	dec bc
-	ld a, b
-	or c
-	jr nz, .nextByteLoop
-	ret
+	jp FillMemory
 
 ; combines the (7*7 tiles, 1bpp) sprite chunks in buffer 0 and 1 into a 2bpp sprite located in buffer 1 through 2
 ; in the resulting sprite, the rows of the two source sprites are interlaced
@@ -150,6 +155,24 @@ InterlaceMergeSpriteBuffers::
 	ld a, $0
 	call SwitchSRAMBankAndLatchClockData
 	push de
+	call _InterlaceMergeSpriteBuffers
+	pop hl
+	ld de, sSpriteBuffer1
+	ld c, (2 * SPRITEBUFFERSIZE) / 16 ; $31, number of 16 byte chunks to be copied
+	ldh a, [hLoadedROMBank]
+	ld b, a
+	call CopyVideoDataAlternate
+	call PrepareRTCDataAndDisableSRAM
+	ret
+
+; actual implementation of InterlaceMergeSpriteBuffers
+; sprite flipping is now done during interlace merge loop
+; and not as second loop after regular interlace merge
+; to save time
+_InterlaceMergeSpriteBuffers::
+	ld a, [wSpriteFlipped]
+	and a
+	jr nz, .flipped
 	ld hl, sSpriteBuffer2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
 	ld de, sSpriteBuffer1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
 	ld bc, sSpriteBuffer0 + (SPRITEBUFFERSIZE - 1) ; source 1: end of buffer 0
@@ -172,7 +195,7 @@ InterlaceMergeSpriteBuffers::
 	dec a
 	ldh [hSpriteInterlaceCounter], a
 	jr nz, .interlaceLoop
-	ld a, [wSpriteFlipped]
+	ld a, [wSpriteFlipped] ; always notFlipped; flip routine was optimized
 	and a
 	jr z, .notFlipped
 	ld bc, 2*SPRITEBUFFERSIZE
@@ -185,10 +208,32 @@ InterlaceMergeSpriteBuffers::
 	or c
 	jr nz, .swapLoop
 .notFlipped
-	pop hl
-	ld de, sSpriteBuffer1
-	ld c, (2*SPRITEBUFFERSIZE)/16 ; $31, number of 16 byte chunks to be copied
-	ldh a, [hLoadedROMBank]
-	ld b, a
-	call CopyVideoData
-	jp PrepareRTCDataAndDisableSRAM
+	ret
+.flipped
+	ld hl, sSpriteBuffer2 + (SPRITEBUFFERSIZE - 1) ; destination: end of buffer 2
+	ld de, sSpriteBuffer1 + (SPRITEBUFFERSIZE - 1) ; source 2: end of buffer 1
+	ld bc, sSpriteBuffer0 + (SPRITEBUFFERSIZE - 1) ; source 1: end of buffer 0
+	ld a, SPRITEBUFFERSIZE / 2 ; $c4
+	ldh [hSpriteInterlaceCounter], a
+.interlaceLoopFlipped
+	ld a, [de]
+	dec de
+	swap a
+	ld [hld], a   ; write byte of source 2
+	ld a, [bc]
+	dec bc
+	swap a
+	ld [hld], a   ; write byte of source 1
+	ld a, [de]
+	dec de
+	swap a
+	ld [hld], a   ; write byte of source 2
+	ld a, [bc]
+	dec bc
+	swap a
+	ld [hld], a   ; write byte of source 1
+	ldh a, [hSpriteInterlaceCounter]
+	dec a
+	ldh [hSpriteInterlaceCounter], a
+	jr nz, .interlaceLoopFlipped
+	ret

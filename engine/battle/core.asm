@@ -6491,7 +6491,7 @@ LoadPlayerBackPic:
 	ld a, BANK(RedPicBack)
 	ASSERT BANK(RedPicBack) == BANK(OldManPicBack)
 	call UncompressSpriteFromDE
-	predef ScaleSpriteByTwo
+	farcall LoadBackspriteUnzoomed
 	ld hl, wShadowOAM
 	xor a
 	ldh [hOAMTile], a ; initial tile number
@@ -6512,8 +6512,6 @@ LoadPlayerBackPic:
 	ld [hli], a ; OAM tile number
 	inc a ; increment tile number
 	ldh [hOAMTile], a
-	ld a, $2
-	ld [hl], a
 	inc hl
 	dec c
 	jr nz, .innerLoop
@@ -6525,8 +6523,6 @@ LoadPlayerBackPic:
 	ld e, a
 	dec b
 	jr nz, .loop
-	ld de, vBackPic
-	call InterlaceMergeSpriteBuffers
 	ld a, $0
 	call SwitchSRAMBankAndLatchClockData
 	ld hl, vSprites

@@ -485,7 +485,7 @@ wMenuWrappingEnabled:: db
 ; whether to check for 180-degree turn (0 = don't, 1 = do)
 wCheckFor180DegreeTurn:: db
 
-	ds 1
+wUnownLetter:: db
 
 wMissableObjectIndex:: db
 

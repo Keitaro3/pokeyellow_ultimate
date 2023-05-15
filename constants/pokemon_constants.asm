@@ -188,9 +188,9 @@
 	const WARTORTLE          ; $B3
 	const CHARIZARD          ; $B4
 	const_skip               ; $B5
-	const FOSSIL_KABUTOPS    ; $B6
-	const FOSSIL_AERODACTYL  ; $B7
-	const MON_GHOST          ; $B8
+	const_skip               ; $B6
+	const_skip               ; $B7
+	const_skip               ; $B8
 	const ODDISH             ; $B9
 	const GLOOM              ; $BA
 	const VILEPLUME          ; $BB
@@ -208,5 +208,10 @@ DEF STARTER3 EQU BULBASAUR
 ; ghost Marowak in Pokémon Tower
 DEF RESTLESS_SOUL EQU MAROWAK
 
+DEF UNOWN EQU 240
 DEF WOBBUFFET EQU 241
+
+DEF MON_GHOST EQU 252
 DEF EGG EQU 253
+DEF FOSSIL_KABUTOPS EQU 254
+DEF FOSSIL_AERODACTYL EQU 255
