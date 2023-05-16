@@ -19,8 +19,8 @@
 	; tm/hm learnset
 	tmhm WHIRLWIND,    TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
 	     HYPER_BEAM,   RAGE,         MIMIC,        DOUBLE_TEAM,  REFLECT,      \
-	     BIDE,         SKULL_BASH,   SKY_ATTACK,   REST,         TRI_ATTACK,   \
-	     SUBSTITUTE,   FLY
+	     BIDE,         SWIFT,        SKULL_BASH,   SKY_ATTACK,   REST,         \
+	     TRI_ATTACK,   SUBSTITUTE,   FLY
 	; end
 
 	db 0 ; padding

@@ -22,9 +22,9 @@
 	     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS, RAGE,         \
 	     SOLARBEAM,    THUNDERBOLT,  THUNDER,      PSYCHIC_M,    TELEPORT,     \
 	     MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         METRONOME,    \
-	     SELFDESTRUCT, FIRE_BLAST,   SKULL_BASH,   REST,         THUNDER_WAVE, \
-	     PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   STRENGTH,     FLASH,        \
-		 ROCK_SMASH
+	     SELFDESTRUCT, FIRE_BLAST,   SWIFT,        SKULL_BASH,   DREAM_EATER,  \
+	     REST,         THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   \
+		 STRENGTH,     FLASH,        ROCK_SMASH
 	; end
 
 	db 0 ; padding

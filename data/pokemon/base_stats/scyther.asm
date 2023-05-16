@@ -17,9 +17,10 @@
 	dn EGG_BUG, EGG_BUG ; egg groups
 
 	; tm/hm learnset
-	tmhm SWORDS_DANCE, TOXIC,        TAKE_DOWN,    DOUBLE_EDGE,  HYPER_BEAM,   \
-	     RAGE,         MIMIC,        DOUBLE_TEAM,  BIDE,         SWIFT,        \
-	     SKULL_BASH,   REST,         SUBSTITUTE,   CUT,          ROCK_SMASH
+	tmhm RAZOR_WIND,   SWORDS_DANCE, TOXIC,        TAKE_DOWN,    DOUBLE_EDGE,  \
+	     HYPER_BEAM,   COUNTER,      RAGE,         MIMIC,        DOUBLE_TEAM,  \
+	     BIDE,         SWIFT,        SKULL_BASH,   REST,         SUBSTITUTE,   \
+		 CUT,          ROCK_SMASH
 	; end
 
 	db 0 ; padding

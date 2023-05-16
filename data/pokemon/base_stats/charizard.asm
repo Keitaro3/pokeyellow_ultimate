@@ -22,7 +22,8 @@
 	     SEISMIC_TOSS, RAGE,         DRAGON_RAGE,  EARTHQUAKE,   FISSURE,      \
 	     DIG,          MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         \
 	     SANDSTORM,    FIRE_BLAST,   SWIFT,        SKULL_BASH,   REST,         \
-	     SUBSTITUTE,   CUT,          FLY,          STRENGTH,     ROCK_SMASH
+	     ROCK_SLIDE,   SUBSTITUTE,   CUT,          FLY,          STRENGTH,     \
+		 ROCK_SMASH
 	; end
 
 	db 0 ; padding

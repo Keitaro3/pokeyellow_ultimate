@@ -12,7 +12,7 @@
 	INCBIN "gfx/pokemon/front/lickitung.pic", 0, 1 ; sprite dimensions
 	dw LickitungPicFront, LickitungPicBack
 
-	db WRAP, SUPERSONIC, NO_MOVE, NO_MOVE ; level 1 learnset
+	db LICK, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_MONSTER, EGG_MONSTER ; egg groups
 
@@ -22,8 +22,8 @@
 	     BLIZZARD,     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS, \
 	     RAGE,         THUNDERBOLT,  THUNDER,      EARTHQUAKE,   FISSURE,      \
 	     MIMIC,        DOUBLE_TEAM,  BIDE,         SANDSTORM,    FIRE_BLAST,   \
-	     SKULL_BASH,   REST,         SUBSTITUTE,   CUT,          SURF,         \       
-		 STRENGTH,     ROCK_SMASH
+	     SKULL_BASH,   DREAM_EATER,  REST,         SUBSTITUTE,   CUT,          \       
+		 SURF,         STRENGTH,     ROCK_SMASH
 	; end
 
 	db 0 ; padding

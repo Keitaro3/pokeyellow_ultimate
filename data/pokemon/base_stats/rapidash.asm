@@ -12,7 +12,7 @@
 	INCBIN "gfx/pokemon/front/rapidash.pic", 0, 1 ; sprite dimensions
 	dw RapidashPicFront, RapidashPicBack
 
-	db EMBER, TAIL_WHIP, STOMP, GROWL ; level 1 learnset
+	db TACKLE, GROWL, TAIL_WHIP, EMBER ; level 1 learnset
 	db GROWTH_MEDIUM_FAST ; growth rate
 	dn EGG_GROUND, EGG_GROUND ; egg groups
 

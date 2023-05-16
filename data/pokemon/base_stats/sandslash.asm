@@ -18,10 +18,10 @@
 
 	; tm/hm learnset
 	tmhm SWORDS_DANCE, TOXIC,        BODY_SLAM,    TAKE_DOWN,    DOUBLE_EDGE,  \
-	     HYPER_BEAM,   SUBMISSION,   SEISMIC_TOSS, RAGE,         EARTHQUAKE,   \
-	     FISSURE,      DIG,          MIMIC,        DOUBLE_TEAM,  BIDE,         \
-	     SANDSTORM,    SWIFT,        SKULL_BASH,   REST,         ROCK_SLIDE,   \
-	     SUBSTITUTE,   CUT,          STRENGTH,     ROCK_SMASH
+	     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS, RAGE,         \
+	     EARTHQUAKE,   FISSURE,      DIG,          MIMIC,        DOUBLE_TEAM,  \
+	     BIDE,         SANDSTORM,    SWIFT,        SKULL_BASH,   REST,         \
+	     ROCK_SLIDE,   SUBSTITUTE,   CUT,          STRENGTH,     ROCK_SMASH
 	; end
 
 	db 0 ; padding

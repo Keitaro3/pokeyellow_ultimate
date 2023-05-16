@@ -20,9 +20,9 @@
 	tmhm RAZOR_WIND,   SWORDS_DANCE, MEGA_KICK,    TOXIC,        BODY_SLAM,    \
 	     TAKE_DOWN,    DOUBLE_EDGE,  BUBBLEBEAM,   WATER_GUN,    ICE_BEAM,     \
 	     BLIZZARD,     HYPER_BEAM,   SUBMISSION,   SEISMIC_TOSS, RAGE,         \
-	     MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         SANDSTORM,    \
-	     SKULL_BASH,   REST,         SUBSTITUTE,   CUT,          SURF,         \
-		 ROCK_SMASH
+	     MEGA_DRAIN,   MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         \
+	     SANDSTORM,    SKULL_BASH,   REST,         SUBSTITUTE,   CUT,          \
+		 SURF,         ROCK_SMASH
 	; end
 
 	db 0 ; padding

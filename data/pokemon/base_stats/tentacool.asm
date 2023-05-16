@@ -12,7 +12,7 @@
 	INCBIN "gfx/pokemon/front/tentacool.pic", 0, 1 ; sprite dimensions
 	dw TentacoolPicFront, TentacoolPicBack
 
-	db ACID, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
+	db POISON_STING, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_SLOW ; growth rate
 	dn EGG_WATER_3, EGG_WATER_3 ; egg groups
 

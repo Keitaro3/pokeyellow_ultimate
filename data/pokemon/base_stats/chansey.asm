@@ -12,7 +12,7 @@
 	INCBIN "gfx/pokemon/front/chansey.pic", 0, 1 ; sprite dimensions
 	dw ChanseyPicFront, ChanseyPicBack
 
-	db POUND, TAIL_WHIP, NO_MOVE, NO_MOVE ; level 1 learnset
+	db POUND, NO_MOVE, NO_MOVE, NO_MOVE ; level 1 learnset
 	db GROWTH_FAST ; growth rate
 	dn EGG_FAIRY, EGG_FAIRY ; egg groups
 
@@ -22,9 +22,9 @@
 	     HYPER_BEAM,   SUBMISSION,   COUNTER,      SEISMIC_TOSS, RAGE,         \
 	     SOLARBEAM,    THUNDERBOLT,  THUNDER,      PSYCHIC_M,    TELEPORT,     \
 	     MIMIC,        DOUBLE_TEAM,  REFLECT,      BIDE,         METRONOME,    \
-	     SANDSTORM,    FIRE_BLAST,   SKULL_BASH,   SOFTBOILED,   REST,         \
-	     THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   STRENGTH,     \
-		 FLASH,        ROCK_SMASH
+	     SANDSTORM,    FIRE_BLAST,   SKULL_BASH,   SOFTBOILED,   DREAM_EATER,  \
+	     REST,         THUNDER_WAVE, PSYWAVE,      TRI_ATTACK,   SUBSTITUTE,   \
+		 STRENGTH,     FLASH,        ROCK_SMASH
 	; end
 
 	db 0 ; padding
