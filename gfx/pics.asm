@@ -3,8 +3,9 @@ SECTION "Pic Banks", ROMX
 INCLUDE "gfx/pkmn_pic_banks.asm"
 
 
-SECTION "Trainer Pics", ROMX
+SECTION "Trainer Pics 1", ROMX
 
+TrainerPics::
 YoungsterPic::     INCBIN "gfx/trainers/youngster.pic"
 BugCatcherPic::    INCBIN "gfx/trainers/bugcatcher.pic"
 LassPic::          INCBIN "gfx/trainers/lass.pic"
@@ -17,21 +18,22 @@ HikerPic::         INCBIN "gfx/trainers/hiker.pic"
 BikerPic::         INCBIN "gfx/trainers/biker.pic"
 BurglarPic::       INCBIN "gfx/trainers/burglar.pic"
 EngineerPic::      INCBIN "gfx/trainers/engineer.pic"
+SwimmerFPic::      INCBIN "gfx/trainers/swimmerf.pic"
 FisherPic::        INCBIN "gfx/trainers/fisher.pic"
 SwimmerPic::       INCBIN "gfx/trainers/swimmer.pic"
 CueBallPic::       INCBIN "gfx/trainers/cueball.pic"
 GamblerPic::       INCBIN "gfx/trainers/gambler.pic"
 BeautyPic::        INCBIN "gfx/trainers/beauty.pic"
 PsychicPic::       INCBIN "gfx/trainers/psychic.pic"
-RockerPic::        INCBIN "gfx/trainers/rocker.pic"
+GuitaristPic::     INCBIN "gfx/trainers/guitarist.pic"
 JugglerPic::       INCBIN "gfx/trainers/juggler.pic"
 TamerPic::         INCBIN "gfx/trainers/tamer.pic"
 BirdKeeperPic::    INCBIN "gfx/trainers/birdkeeper.pic"
 BlackbeltPic::     INCBIN "gfx/trainers/blackbelt.pic"
 Rival1Pic::        INCBIN "gfx/trainers/rival1.pic"
 ProfOakPic::       INCBIN "gfx/trainers/prof.oak.pic"
-ChiefPic::
 ScientistPic::     INCBIN "gfx/trainers/scientist.pic"
+BossPic::
 GiovanniPic::      INCBIN "gfx/trainers/giovanni.pic"
 RocketPic::        INCBIN "gfx/trainers/rocket.pic"
 CooltrainerMPic::  INCBIN "gfx/trainers/cooltrainerm.pic"
@@ -46,11 +48,40 @@ BlainePic::        INCBIN "gfx/trainers/blaine.pic"
 SabrinaPic::       INCBIN "gfx/trainers/sabrina.pic"
 GentlemanPic::     INCBIN "gfx/trainers/gentleman.pic"
 Rival2Pic::        INCBIN "gfx/trainers/rival2.pic"
-Rival3Pic::        INCBIN "gfx/trainers/rival3.pic"
+Rival3Pic::
+Rival4Pic::        INCBIN "gfx/trainers/rival3.pic"
 LoreleiPic::       INCBIN "gfx/trainers/lorelei.pic"
 ChannelerPic::     INCBIN "gfx/trainers/channeler.pic"
 AgathaPic::        INCBIN "gfx/trainers/agatha.pic"
 LancePic::         INCBIN "gfx/trainers/lance.pic"
+
+SECTION "Trainer Pics 2", ROMX
+
+TrainerPics2::
+SchoolboyPic::	   INCBIN "gfx/trainers/schoolboy.pic"
+SkierPic::	   	   INCBIN "gfx/trainers/skier.pic"
+TeacherPic::	   INCBIN "gfx/trainers/teacher.pic"
+FirebreatherPic::  INCBIN "gfx/trainers/firebreather.pic"
+ExecutiveMPic::	   INCBIN "gfx/trainers/executivem.pic"
+ExecutiveFPic::	   INCBIN "gfx/trainers/executivef.pic"
+SagePic::	   	   INCBIN "gfx/trainers/sage.pic"
+BoarderPic::	   INCBIN "gfx/trainers/boarder.pic"
+PokefanMPic::	   INCBIN "gfx/trainers/pokefanm.pic"
+KimonoGirlPic::	   INCBIN "gfx/trainers/kimonogirl.pic"
+TwinsPic::		   INCBIN "gfx/trainers/twins.pic"
+PokefanFPic::	   INCBIN "gfx/trainers/pokefanf.pic"
+OfficerPic::	   INCBIN "gfx/trainers/officer.pic"
+RocketFPic::	   INCBIN "gfx/trainers/rocketf.pic"
+TrainerPics3::
+CrushGirlPic::	   INCBIN "gfx/trainers/crushgirl.pic"
+TuberPic::		   INCBIN "gfx/trainers/tuber.pic"
+PkMnRangerMPic::   INCBIN "gfx/trainers/pkmnrangerm.pic"
+PkMnRangerFPic::   INCBIN "gfx/trainers/pkmnrangerf.pic"
+RuinManiacPic::    INCBIN "gfx/trainers/ruinmaniac.pic"
+LadyPic::   	   INCBIN "gfx/trainers/lady.pic"
+PainterPic::   	   INCBIN "gfx/trainers/painter.pic"
+KeiPic::		   INCBIN "gfx/trainers/kei.pic"
+LeafPic::		   INCBIN "gfx/trainers/leaf.pic"
 
 
 SECTION "Trainer Back Pics", ROMX

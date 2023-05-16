@@ -20,21 +20,21 @@
 	const BIKER          ; $0A
 	const BURGLAR        ; $0B
 	const ENGINEER       ; $0C
-	const UNUSED_JUGGLER ; $0D
+	const SWIMMER_F      ; $0D
 	const FISHER         ; $0E
 	const SWIMMER        ; $0F
 	const CUE_BALL       ; $10
 	const GAMBLER        ; $11
 	const BEAUTY         ; $12
 	const PSYCHIC_TR     ; $13
-	const ROCKER         ; $14
+	const GUITARIST      ; $14
 	const JUGGLER        ; $15
 	const TAMER          ; $16
 	const BIRD_KEEPER    ; $17
 	const BLACKBELT      ; $18
 	const RIVAL1         ; $19
 	const PROF_OAK       ; $1A
-	const CHIEF          ; $1B
+	const BOSS           ; $1B
 	const SCIENTIST      ; $1C
 	const GIOVANNI       ; $1D
 	const ROCKET         ; $1E
@@ -55,4 +55,31 @@
 	const CHANNELER      ; $2D
 	const AGATHA         ; $2E
 	const LANCE          ; $2F
+	const RIVAL4		 ; $30
+	
+	const SCHOOLBOY      ; $31
+	const SKIER			 ; $32
+	const TEACHER		 ; $33
+	const FIREBREATHER   ; $34
+	const EXECUTIVE_M    ; $35
+	const EXECUTIVE_F    ; $36
+	const SAGE			 ; $37
+	const BOARDER		 ; $38
+	const POKEFAN_M		 ; $39
+	const KIMONO_GIRL    ; $3a
+	const TWINS			 ; $3b
+	const POKEFAN_F		 ; $3c
+	const OFFICER		 ; $3d
+	const GRUNT_F		 ; $3e
+	
+	const CRUSH_GIRL	 ; $3f
+	const TUBER			 ; $40
+	const PKMN_RANGER_M  ; $41
+	const PKMN_RANGER_F  ; $42
+	const RUIN_MANIAC	 ; $43
+	const LADY			 ; $44
+	const PAINTER		 ; $45
+	
+	const KEI			 ; $46
+	const LEAF			 ; $47	
 DEF NUM_TRAINERS EQU const_value - 1

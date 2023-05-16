@@ -10,7 +10,7 @@ VermilionGym_Object:
 	def_object_events
 	object_event  5,  1, SPRITE_ROCKER, STAY, DOWN, 1, LT_SURGE, 1
 	object_event  9,  6, SPRITE_GENTLEMAN, STAY, LEFT, 2, GENTLEMAN, 3
-	object_event  3,  8, SPRITE_SUPER_NERD, STAY, LEFT, 3, ROCKER, 1
+	object_event  3,  8, SPRITE_SUPER_NERD, STAY, LEFT, 3, GUITARIST, 1
 	object_event  0, 10, SPRITE_SAILOR, STAY, RIGHT, 4, SAILOR, 8
 	object_event  4, 14, SPRITE_GYM_GUIDE, STAY, DOWN, 5 ; person
 

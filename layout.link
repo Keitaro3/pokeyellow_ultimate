@@ -93,7 +93,7 @@ ROMX $12
 	"Maps 7"
 	"Maps 8"
 ROMX $13
-	"Trainer Pics"
+	"Trainer Pics 1"
 	"Maps 9"
 ROMX $14
 	"Maps 10"
@@ -197,7 +197,8 @@ ROMX $39
 	"Unown Pics"
 ROMX $3A
 	"bank3A"
-; bank $3B is empty
+ROMX $3B
+	"Trainer Pics 2"
 ROMX $3C
 	"Specific Script Flags"
 	"Tilesets 4"

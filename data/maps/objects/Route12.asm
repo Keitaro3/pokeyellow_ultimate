@@ -16,7 +16,7 @@ Route12_Object:
 	object_event 14, 31, SPRITE_FISHER, STAY, LEFT, 2, FISHER, 3
 	object_event  5, 39, SPRITE_FISHER, STAY, UP, 3, FISHER, 4
 	object_event 11, 92, SPRITE_COOLTRAINER_M, STAY, LEFT, 4, JR_TRAINER_M, 9
-	object_event 14, 76, SPRITE_SUPER_NERD, STAY, UP, 5, ROCKER, 2
+	object_event 14, 76, SPRITE_SUPER_NERD, STAY, UP, 5, GUITARIST, 2
 	object_event 12, 40, SPRITE_FISHER, STAY, LEFT, 6, FISHER, 5
 	object_event  9, 52, SPRITE_FISHER, STAY, RIGHT, 7, FISHER, 6
 	object_event  6, 87, SPRITE_FISHER, STAY, DOWN, 8, FISHER, 11
