@@ -35,6 +35,15 @@ _RemovePokemon::
 	cp d ; are we removing the last pokemon?
 	jr nz, .notRemovingLastMon ; if not, shift the pokemon below
 	ld [hl], $ff ; else, write the terminator and return
+	ld hl, wPartyMonHappinessEnd - 1
+	ld a, [wRemoveMonFromBox]
+	and a
+	ld a, $00
+	jr z, .wasPartyMon
+	ld hl, wBoxDataEnd - 1
+	ld a, $FF
+.wasPartyMon	
+	ld [hl], a ; blank out and return	
 	ret
 .notRemovingLastMon
 	ld d, h
@@ -106,36 +115,23 @@ _RemovePokemon::
 	ld d, h
 	ld e, l
 	inc hl
-	
-	push hl
-	ld hl, wPartyMonHappiness
-	ld a, [wPartyCount]
-	ld b, 0
-	ld c, a
-	add hl, bc
-	inc hl
-	ld b, h
-	ld c, l
-	pop hl
-	
+	ld bc, wPartyMonHappinessEnd
 	ld a, [wRemoveMonFromBox]
 	and a
 	jr z, .copyUntilPartyMonHappinessEnd
-	
-	push hl
-	ld hl, wBoxMonHappiness
-	ld a, [wBoxCount]
-	ld b, 0
-	ld c, a
-	add hl, bc
-	inc hl
-	ld b, h
-	ld c, l
-	pop hl
+	ld bc, wBoxDataEnd
 .copyUntilPartyMonHappinessEnd
 	call CopyDataUntil
-	xor a
-	ld [de], a
+	
+	ld hl, wPartyMonHappinessEnd - 1
+	ld a, [wRemoveMonFromBox]
+	and a
+	ld a, $00
+	jr z, .gotPartyData	
+	ld hl, wBoxDataEnd - 1
+	ld a, $FF
+.gotPartyData	
+	ld [hl], a
 	ret
 	
 ; Copies [hl, bc) to [de, de + bc - hl).
