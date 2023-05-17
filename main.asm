@@ -273,7 +273,7 @@ INCLUDE "engine/battle/battle_transitions.asm"
 INCLUDE "engine/items/town_map.asm"
 INCLUDE "engine/gfx/mon_icons.asm"
 INCLUDE "engine/events/in_game_trades.asm"
-INCLUDE "engine/gfx/palettes.asm"
+INCLUDE "engine/menus/save.asm"
 
 
 SECTION "Itemfinder 1", ROMX
@@ -339,7 +339,7 @@ INCLUDE "engine/overworld/npc_movement_2.asm"
 
 SECTION "bank3B", ROMX
 
-INCLUDE "engine/menus/save.asm"
+INCLUDE "engine/gfx/palettes.asm"
 INCLUDE "engine/battle/trainer_ai.asm"
 
 

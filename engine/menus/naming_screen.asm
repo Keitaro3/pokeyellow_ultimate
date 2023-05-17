@@ -91,7 +91,7 @@ DisplayNamingScreen:
 	call RunPaletteCommand
 	call LoadHpBarAndStatusTilePatterns
 	call LoadEDTile
-	farcall LoadMonPartySpriteGfx
+	farcall NamingScreen_InitAnimatedMonIcon
 	hlcoord 0, 4
 	lb bc, 9, 18
 	call TextBoxBorder

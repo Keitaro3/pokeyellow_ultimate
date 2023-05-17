@@ -143,8 +143,8 @@ LoadTownMap_Fly::
 	ldh [hJoy7], a
 	call LoadPlayerSpriteGraphics
 	call LoadFontTilePatterns
-	ld de, BirdSprite
-	ld b, BANK(BirdSprite)
+	farcall GetIconPointer
+	ld b, BANK(Icons)
 	ld c, 12
 	ld hl, vSprites tile $04
 	call CopyVideoData
@@ -483,48 +483,6 @@ WriteAsymmetricMonPartySpriteOAM:
 	jr nz, .innerLoop
 	pop bc
 	pop de
-	ld a, 8
-	add b
-	ld b, a
-	dec d
-	jr nz, .loop
-	ret
-
-WriteSymmetricMonPartySpriteOAM:
-; Writes 4 OAM blocks for a mon party sprite other than a helix. All the
-; sprites other than the helix one have a vertical line of symmetry which allows
-; the X-flip OAM bit to be used so that only 2 rather than 4 tile patterns are
-; needed.
-	xor a
-	ld [wSymmetricSpriteOAMAttributes], a
-	lb de, 2, 2
-.loop
-	push de
-	push bc
-.innerLoop
-	ld a, b
-	ld [hli], a ; Y
-	ld a, c
-	ld [hli], a ; X
-	ld a, [wOAMBaseTile]
-	ld [hli], a ; tile
-	ld a, [wSymmetricSpriteOAMAttributes]
-	ld [hli], a ; attributes
-	xor (1 << OAM_X_FLIP)
-	ld [wSymmetricSpriteOAMAttributes], a
-	inc d
-	ld a, 8
-	add c
-	ld c, a
-	dec e
-	jr nz, .innerLoop
-	pop bc
-	pop de
-	push hl
-	ld hl, wOAMBaseTile
-	inc [hl]
-	inc [hl]
-	pop hl
 	ld a, 8
 	add b
 	ld b, a

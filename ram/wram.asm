@@ -1026,7 +1026,7 @@ wStandingOnWarpPadOrHole::
 wOAMBaseTile::
 wGymTrashCanIndex:: db
 
-wSymmetricSpriteOAMAttributes:: db
+wCurIcon:: db
 
 wMonPartySpriteSpecies:: db
 
@@ -1043,7 +1043,9 @@ wRightGBMonSpecies:: db
 ; bit 6: tried pushing against boulder once (you need to push twice before it will move)
 wFlags_0xcd60:: db
 
-	ds 9
+wCurIconTile:: db
+	
+	ds 8
 
 ; This has overlapping related uses.
 ; When the player tries to use an item or use certain field moves, 0 is stored

@@ -149,7 +149,8 @@ ROMX $20
 	"Sound Effects 4"
 	"Audio Engine 4"
 	"Music 4"
-; bank $21 is empty
+ROMX $21
+	"Trainer Pics 2"
 ; bank $22 is empty
 ; bank $23 is empty
 ; bank $24 is empty
@@ -198,7 +199,7 @@ ROMX $39
 ROMX $3A
 	"bank3A"
 ROMX $3B
-	"Trainer Pics 2"
+	"bank3B"
 ROMX $3C
 	"Specific Script Flags"
 	"Tilesets 4"
