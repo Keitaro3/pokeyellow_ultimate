@@ -408,4 +408,3 @@ SECTION "Map Header Pointers", ROMX
 INCLUDE "data/maps/songs.asm"
 INCLUDE "data/maps/map_header_pointers.asm"
 INCLUDE "data/maps/map_header_banks.asm"
-INCLUDE "engine/debug/debug_menu.asm"

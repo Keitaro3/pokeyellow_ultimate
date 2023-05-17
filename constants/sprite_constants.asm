@@ -49,13 +49,13 @@
 	const SPRITE_WARDEN                  ; $2d
 	const SPRITE_CAPTAIN                 ; $2e
 	const SPRITE_FISHER                  ; $2f
-	const SPRITE_KOGA                    ; $30
+	const SPRITE_BLACKBELT               ; $30
 	const SPRITE_GUARD                   ; $31
 	const SPRITE_UNUSED_RED_2            ; $32
 	const SPRITE_MOM                     ; $33
 	const SPRITE_BALDING_GUY             ; $34
 	const SPRITE_LITTLE_BOY              ; $35
-	const SPRITE_UNUSED_RED_3            ; $36
+	const SPRITE_GAMEBOY_GIRL            ; $36
 	const SPRITE_GAMEBOY_KID             ; $37
 	const SPRITE_FAIRY                   ; $38
 	const SPRITE_AGATHA                  ; $39
@@ -73,17 +73,45 @@
 	const SPRITE_JESSIE                  ; $45
 	const SPRITE_JAMES                   ; $46
 	const SPRITE_LAPRAS					 ; $47
+	const SPRITE_SEEL_2					 ; $48
+	const SPRITE_POLIWRATH				 ; $49
+	const SPRITE_BILL					 ; $4a
+	const SPRITE_BLAINE					 ; $4b
+	const SPRITE_BROCK					 ; $4c
+	const SPRITE_MISTY					 ; $4d
+	const SPRITE_SURGE					 ; $4e
+	const SPRITE_ERIKA					 ; $4f
+	const SPRITE_KOGA  					 ; $50
+	const SPRITE_SABRINA				 ; $51
+	const SPRITE_SCHOOLBOY				 ; $52
+	const SPRITE_TAMER  				 ; $53
+	const SPRITE_SWIMMER_F  			 ; $54
+	const SPRITE_ROCKET_F  				 ; $55
+	const SPRITE_KIMONO_GIRL  			 ; $56
+	const SPRITE_SAGE		  			 ; $57
+	const SPRITE_RECEPTIONIST  			 ; $58
+	const SPRITE_CELIO					 ; $59
+	const SPRITE_SLOWPOKE_2				 ; $5a
+	const SPRITE_LEAF					 ; $5b
 DEF FIRST_STILL_SPRITE EQU const_value
-	const SPRITE_POKE_BALL               ; $48
-	const SPRITE_FOSSIL                  ; $49
-	const SPRITE_BOULDER                 ; $4a
-	const SPRITE_PAPER                   ; $4b
-	const SPRITE_POKEDEX                 ; $4c
-	const SPRITE_CLIPBOARD               ; $4d
-	const SPRITE_SNORLAX                 ; $4e
-	const SPRITE_UNUSED_OLD_AMBER        ; $4f
-	const SPRITE_OLD_AMBER               ; $50
-	const SPRITE_UNUSED_GAMBLER_ASLEEP_1 ; $51
-	const SPRITE_UNUSED_GAMBLER_ASLEEP_2 ; $52
-	const SPRITE_GAMBLER_ASLEEP          ; $53
+	const SPRITE_POKE_BALL               ; $5c
+	const SPRITE_FOSSIL                  ; $5d
+	const SPRITE_BOULDER                 ; $5e
+	const SPRITE_PAPER                   ; $5f
+	const SPRITE_POKEDEX                 ; $60
+	const SPRITE_CLIPBOARD               ; $61
+	const SPRITE_ROCK_SMASH              ; $62
+	const SPRITE_UNUSED_OLD_AMBER        ; $63
+	const SPRITE_OLD_AMBER               ; $64
+	const SPRITE_UNUSED_GAMBLER_ASLEEP_1 ; $65
+	const SPRITE_UNUSED_GAMBLER_ASLEEP_2 ; $66
+	const SPRITE_GAMBLER_ASLEEP          ; $67
+	const SPRITE_SLOWPOKE				 ; $68
+	const SPRITE_N64		             ; $69
+	const SPRITE_VIRTUAL_BOY	         ; $6a
+	const SPRITE_SNES					 ; $6b
+	const SPRITE_NES		             ; $6c
+	const SPRITE_GOLD_TROPHY		     ; $6d
+	const SPRITE_SILVER_TROPHY		     ; $6e
+	
 DEF NUM_SPRITES EQU const_value - 1

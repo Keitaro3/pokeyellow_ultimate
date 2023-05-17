@@ -54,13 +54,13 @@ SpriteSheetPointerTable:
 	overworld_sprite WardenSprite, 12           ; SPRITE_WARDEN
 	overworld_sprite CaptainSprite, 12          ; SPRITE_CAPTAIN
 	overworld_sprite FisherSprite, 12           ; SPRITE_FISHER
-	overworld_sprite KogaSprite, 12             ; SPRITE_KOGA
+	overworld_sprite BlackbeltSprite, 12        ; SPRITE_BLACKBELT
 	overworld_sprite GuardSprite, 12            ; SPRITE_GUARD
 	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_RED_2
 	overworld_sprite MomSprite, 12              ; SPRITE_MOM
 	overworld_sprite BaldingGuySprite, 12       ; SPRITE_BALDING_GUY
 	overworld_sprite LittleBoySprite, 12        ; SPRITE_LITTLE_BOY
-	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_RED_3
+	overworld_sprite GameboyGirlSprite, 12      ; SPRITE_GAMEBOY_GIRL
 	overworld_sprite GameboyKidSprite, 12       ; SPRITE_GAMEBOY_KID
 	overworld_sprite FairySprite, 12            ; SPRITE_FAIRY
 	overworld_sprite AgathaSprite, 12           ; SPRITE_AGATHA
@@ -77,17 +77,44 @@ SpriteSheetPointerTable:
 	overworld_sprite ChanseySprite, 12          ; SPRITE_CHANSEY
 	overworld_sprite JessieSprite, 12           ; SPRITE_JESSIE
 	overworld_sprite JamesSprite, 12            ; SPRITE_JAMES
-	overworld_sprite LaprasSprite, 12			; SPRITE_LAPRAS
+	overworld_sprite LaprasSprite, 12           ; SPRITE_LAPRAS
+	overworld_sprite Seel2Sprite, 12            ; SPRITE_SEEL_2
+	overworld_sprite PoliwrathSprite, 12        ; SPRITE_POLIWRATH
+	overworld_sprite BillSprite, 12             ; SPRITE_BILL
+	overworld_sprite BlaineSprite, 12           ; SPRITE_BLAINE
+	overworld_sprite BrockSprite, 12            ; SPRITE_BROCK
+	overworld_sprite MistySprite, 12            ; SPRITE_MISTY
+	overworld_sprite SurgeSprite, 12            ; SPRITE_SURGE
+	overworld_sprite ErikaSprite, 12            ; SPRITE_ERIKA
+	overworld_sprite KogaSprite, 12             ; SPRITE_KOGA
+	overworld_sprite SabrinaSprite, 12          ; SPRITE_SABRINA
+	overworld_sprite SchoolboySprite, 12        ; SPRITE_SCHOOLBOY
+	overworld_sprite TamerSprite, 12            ; SPRITE_TAMER
+	overworld_sprite SwimmerGirlSprite, 12      ; SPRITE_SWIMMER_F
+	overworld_sprite RocketGirlSprite, 12       ; SPRITE_ROCKET_F
+	overworld_sprite KimonoGirlSprite, 12       ; SPRITE_KIMONO_GIRL
+	overworld_sprite SageSprite, 12             ; SPRITE_SAGE
+	overworld_sprite ReceptionistSprite, 12     ; SPRITE_RECEPTIONIST
+	overworld_sprite CelioSprite, 12            ; SPRITE_CELIO
+	overworld_sprite SlowpokeSprite, 12         ; SPRITE_SLOWPOKE
+	overworld_sprite LeafSprite, 12             ; SPRITE_LEAF
 	overworld_sprite PokeBallSprite, 4          ; SPRITE_POKE_BALL
 	overworld_sprite FossilSprite, 4            ; SPRITE_FOSSIL
 	overworld_sprite BoulderSprite, 4           ; SPRITE_BOULDER
 	overworld_sprite PaperSprite, 4             ; SPRITE_PAPER
 	overworld_sprite PokedexSprite, 4           ; SPRITE_POKEDEX
 	overworld_sprite ClipboardSprite, 4         ; SPRITE_CLIPBOARD
-	overworld_sprite SnorlaxSprite, 4           ; SPRITE_SNORLAX
+	overworld_sprite RockSmashSprite, 4         ; SPRITE_ROCK_SMASH
 	overworld_sprite OldAmberSprite, 4          ; SPRITE_UNUSED_OLD_AMBER
 	overworld_sprite OldAmberSprite, 4          ; SPRITE_OLD_AMBER
 	overworld_sprite GamblerAsleepSprite, 4     ; SPRITE_UNUSED_GAMBLER_ASLEEP_1
 	overworld_sprite GamblerAsleepSprite, 4     ; SPRITE_UNUSED_GAMBLER_ASLEEP_2
 	overworld_sprite GamblerAsleepSprite, 4     ; SPRITE_GAMBLER_ASLEEP
-	assert_table_length NUM_SPRITES
+	overworld_sprite SlowpokeSprite, 4
+	overworld_sprite N64Sprite, 4
+	overworld_sprite VirtualBoySprite, 4
+	overworld_sprite SnesSprite, 4
+	overworld_sprite FamicomSprite, 4
+	overworld_sprite GoldTrophySprite, 4
+	overworld_sprite SilverTrophySprite, 4
+	assert_table_length NUM_SPRITES, 4
