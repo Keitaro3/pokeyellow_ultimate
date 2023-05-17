@@ -179,9 +179,6 @@ LoadTradingGFXAndMonNames:
 	ld a, [wOnSGB]
 	and a
 	ld a, $e4 ; non-SGB OBP0
-	jr z, .next
-	ld a, $f0 ; SGB OBP0
-.next
 	ldh [rOBP0], a
 	call UpdateGBCPal_OBP0
 	call EnableLCD
@@ -200,9 +197,19 @@ LoadTradingGFXAndMonNames:
 
 Trade_LoadMonPartySpriteGfx:
 	ld a, %11010000
+	ld [rOBP0], a
 	ldh [rOBP1], a
+	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
-	farjp LoadMonPartySpriteGfx
+	farjp Trade_LoadMonIconGFX
+	
+Trade_LoadBubbleGFX:
+	ld b, BANK(TradeBubbleIconGFX)
+	ld c, 8
+	ld de, TradeBubbleIconGFX
+	ld hl, vChars0 + $720
+	call CopyVideoData
+	ret
 
 Trade_SwapNames:
 	ld hl, wPlayerName
@@ -379,18 +386,18 @@ Trade_ShowEnemyMon:
 
 Trade_AnimLeftToRight:
 ; Animates the mon moving from the left GB to the right one.
+	ld a, [wLeftGBMonSpecies]
+    ld [wMonPartySpriteSpecies], a
 	call Trade_InitGameboyTransferGfx
 	ld a, $1
 	ld [wTradedMonMovingRight], a
-	ld a, %11100100
-	ldh [rOBP0], a
-	call UpdateGBCPal_OBP0
+	;ld a, %11100100
+	;ldh [rOBP0], a
+	;call UpdateGBCPal_OBP0
 	ld a, $54
 	ld [wBaseCoordX], a
 	ld a, $1c
 	ld [wBaseCoordY], a
-	ld a, [wLeftGBMonSpecies]
-	ld [wMonPartySpriteSpecies], a
 	call Trade_WriteCircledMonOAM
 	call Trade_DrawLeftGameboy
 	call Trade_CopyTileMapToVRAM
@@ -414,6 +421,8 @@ Trade_AnimLeftToRight:
 
 Trade_AnimRightToLeft:
 ; Animates the mon moving from the right GB to the left one.
+	ld a, [wRightGBMonSpecies]
+	ld [wMonPartySpriteSpecies], a
 	call Trade_InitGameboyTransferGfx
 	xor a
 	ld [wTradedMonMovingRight], a
@@ -421,8 +430,6 @@ Trade_AnimRightToLeft:
 	ld [wBaseCoordX], a
 	ld a, $44
 	ld [wBaseCoordY], a
-	ld a, [wRightGBMonSpecies]
-	ld [wMonPartySpriteSpecies], a
 	call Trade_WriteCircledMonOAM
 	call Trade_DrawRightGameboy
 	call Trade_CopyTileMapToVRAM
@@ -454,6 +461,7 @@ Trade_InitGameboyTransferGfx:
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	call Trade_LoadMonPartySpriteGfx
+	call Trade_LoadBubbleGFX
 	call DelayFrame
 	ld a, %10101011
 	ldh [rLCDC], a
@@ -567,6 +575,12 @@ Trade_CopyCableTilesOffScreen:
 	jp DelayFrames
 
 Trade_AnimMonMoveHorizontal:
+	call Trade_AnimMonMoveHorizontalCommon
+	call Trade_MoveHorizontalIncFrame
+	call Trade_MoveHorizontalDecFrame
+	ret
+
+Trade_AnimMonMoveHorizontalCommon:
 ; Animates the mon going through the link cable horizontally over a distance of
 ; b 16-pixel units.
 	ld a, [wTradedMonMovingRight]
@@ -588,7 +602,16 @@ Trade_AnimMonMoveHorizontal:
 	call DelayFrame
 	dec d
 	jr nz, .scrollLoop
-	call Trade_AnimCircledMon
+	ret
+	
+Trade_MoveHorizontalIncFrame:
+	call AnimCircledMon_IncFrame
+	dec b
+	jr nz, Trade_AnimMonMoveHorizontalCommon
+	ret
+	
+Trade_MoveHorizontalDecFrame:
+	call AnimCircledMon_DecFrame
 	dec b
 	jr nz, Trade_AnimMonMoveHorizontal
 	ret
@@ -596,23 +619,44 @@ Trade_AnimMonMoveHorizontal:
 Trade_AnimCircledMon:
 ; Cycles between the two animation frames of the mon party sprite, cycles
 ; between a circle and an oval around the mon sprite, and makes the cable flash.
-	push de
-	push bc
-	push hl
 	ldh a, [rBGP]
 	xor $3c ; make link cable flash
 	ldh [rBGP], a
-	call UpdateGBCPal_BGP
-	ld hl, wShadowOAMSprite00TileID
+	ld hl, wShadowOAM + $02
 	ld de, $4
+	ld b, $4 ; amount to increase the tile id by
 	ld c, $14
+	ret	
+
+AnimCircledMon_IncFrame:
+	push de
+	push bc
+	push hl
+	call Trade_AnimCircledMon
 .loop
-	ld a, [hl]
-	xor ICONOFFSET
-	ld [hl], a
-	add hl, de
-	dec c
-	jr nz, .loop
+	ld a, [hl]   ; a = current frame no.
+	add b		 ; increase frame amount
+	ld [hl], a	 ; ld new frame no. back
+	add hl, de	 ; go to next frame
+	dec c		 ; how many times
+	jr nz, .loop ; loop 20 times
+	pop hl
+	pop bc
+	pop de
+	ret
+	
+AnimCircledMon_DecFrame:
+	push de
+	push bc
+	push hl
+	call Trade_AnimCircledMon
+.loop
+	ld a, [hl]   ; a = current frame no.
+	sub b		 ; increase frame amount
+	ld [hl], a	 ; ld new frame no. back
+	add hl, de	 ; go to next frame
+	dec c		 ; how many times
+	jr nz, .loop ; loop 20 times
 	pop hl
 	pop bc
 	pop de
@@ -667,12 +711,19 @@ Trade_AnimMonMoveVertical:
 	ld d, $4
 .loop
 	call Trade_AddOffsetsToOAMCoords
-	call Trade_AnimCircledMon
+	call AnimCircledMon_IncFrame
+	ld c, 8
+	call DelayFrames
+	dec d
+	ret z
+.resetSprites
+	call Trade_AddOffsetsToOAMCoords
+	call AnimCircledMon_DecFrame
 	ld c, 8
 	call DelayFrames
 	dec d
 	jr nz, .loop
-	ret
+	ret	
 
 Trade_WriteCircleOAM:
 ; Writes the OAM blocks for the circle around the traded mon as it passes
@@ -713,21 +764,22 @@ Trade_CircleOAMPointers:
 	trade_circle_oam Trade_CircleOAM2, $08, $18
 	trade_circle_oam Trade_CircleOAM3, $18, $18
 
+
 Trade_CircleOAM0:
-	dbsprite  2,  7,  0,  0, ICON_TRADEBUBBLE << 2 + 1, OAM_OBP1
-	dbsprite  2,  7,  0,  2, ICON_TRADEBUBBLE << 2 + 3, OAM_OBP1
+	db $72,$10,$73,$10
+	db $74,$10,$75,$10
 
 Trade_CircleOAM1:
-	dbsprite  6,  7,  0,  1, ICON_TRADEBUBBLE << 2 + 0, OAM_OBP1 | OAM_HFLIP
-	dbsprite  6,  7,  0,  3, ICON_TRADEBUBBLE << 2 + 2, OAM_OBP1 | OAM_HFLIP
+	db $73,$30,$72,$30
+	db $75,$30,$74,$30
 
 Trade_CircleOAM2:
-	dbsprite 10,  7,  0,  2, ICON_TRADEBUBBLE << 2 + 3, OAM_OBP1 | OAM_VFLIP
-	dbsprite 10,  7,  0,  0, ICON_TRADEBUBBLE << 2 + 1, OAM_OBP1 | OAM_VFLIP
+	db $74,$50,$75,$50
+	db $72,$50,$73,$50
 
 Trade_CircleOAM3:
-	dbsprite 14,  7,  0,  3, ICON_TRADEBUBBLE << 2 + 2, OAM_OBP1 | OAM_HFLIP | OAM_VFLIP
-	dbsprite 14,  7,  0,  1, ICON_TRADEBUBBLE << 2 + 0, OAM_OBP1 | OAM_HFLIP | OAM_VFLIP
+	db $75,$70,$74,$70
+	db $73,$70,$72,$70
 
 ; a = species
 Trade_LoadMonSprite:

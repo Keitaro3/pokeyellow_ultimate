@@ -746,6 +746,8 @@ ENDU
 	ds 1
 
 wNPCMovementDirections2Index::
+; which entry from TradeMons to select
+wWhichTrade::
 wItemBackup::
 ; number of items in wFilteredBagItems list
 wFilteredBagItemsCount:: db
@@ -993,8 +995,6 @@ wChangeBoxSavedMapTextPointer:: dw
 NEXTU
 wSavedY::
 wTempSCX::
-; which entry from TradeMons to select
-wWhichTrade::
 wDexMaxSeenMon::
 wPPRestoreItem::
 wWereAnyMonsAsleep::
