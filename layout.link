@@ -35,12 +35,7 @@ ROM0
 	"Home"
 ROMX $1
 	"bank1"
-ROMX $2
-	"Sound Effect Headers 1"
-	"Music Headers 1"
-	"Sound Effects 1"
-	"Audio Engine 1"
-	"Music 1"
+; Bank $2 is empty
 ROMX $3
 	"bank3"
 ROMX $4
@@ -61,13 +56,7 @@ ROMX $7
 	"Maps 4"
 	"Hidden Objects 1"
 ROMX $8
-	"Sound Effect Headers 2"
-	"Music Headers 2"
-	"Sound Effects 2"
-	"Low Health Alarm (Audio Engine 2)"
 	"Bill's PC"
-	"Audio Engine 2"
-	"Music 2"
 ROMX $9
 	"Battle Engine 3"
 ROMX $A
@@ -137,18 +126,9 @@ ROMX $1D
 	"Itemfinder 2"
 ROMX $1E
 	"bank1E"
-ROMX $1F
-	"Sound Effect Headers 3"
-	"Music Headers 3"
-	"Sound Effects 3"
-	"Audio Engine 3"
-	"Music 3"
+; bank $1F is empty
 ROMX $20
-	"Sound Effect Headers 4"
-	"Music Headers 4"
-	"Sound Effects 4"
-	"Audio Engine 4"
-	"Music 4"
+	"Surfing Pikachu GFX"
 ROMX $21
 	"Trainer Pics 2"
 ; bank $22 is empty
@@ -215,6 +195,23 @@ ROMX $3E
 ROMX $3F
 	"Map Header Pointers"
 	"NPC Sprites 3"
+	
+ROMX $40
+	"Audio"
+	"Songs 1"
+ROMX $41
+	"Songs 2"
+ROMX $42
+	"Songs 3"
+	"Sound Effects"
+	"Cries"
+ROMX $43
+	"Songs 4"
+ROMX $44
+	"Extra Songs 1"
+	"Songs 5"
+	
+	
 WRAM0
 	"Audio RAM"
 	org $c100

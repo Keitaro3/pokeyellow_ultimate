@@ -9,8 +9,8 @@ PlayerPC::
 	bit 3, a ; accessing player's PC through another PC?
 	jr nz, PlayerPCMenu
 ; accessing it directly
-	ld a, SFX_TURN_ON_PC
-	call PlaySound
+	ld de, SFX_TURN_ON_PC
+	call PlaySFX
 	ld hl, TurnedOnPC2Text
 	call PrintText
 
@@ -66,9 +66,9 @@ ExitPlayerPC:
 	bit 3, a ; accessing player's PC through another PC?
 	jr nz, .next
 ; accessing it directly
-	ld a, SFX_TURN_OFF_PC
-	call PlaySound
-	call WaitForSoundToFinish
+	ld de, SFX_TURN_OFF_PC
+	call PlaySFX
+	call WaitSFX
 .next
 	ld hl, wFlags_0xcd60
 	res 5, [hl]
@@ -128,10 +128,10 @@ PlayerPCDeposit:
 .roomAvailable
 	ld hl, wNumBagItems
 	call RemoveItemFromInventory
-	call WaitForSoundToFinish
-	ld a, SFX_WITHDRAW_DEPOSIT
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_WITHDRAW_DEPOSIT
+	call PlaySFX
+	call WaitSFX
 	ld hl, ItemWasStoredText
 	call PrintText
 	jp .loop
@@ -182,10 +182,10 @@ PlayerPCWithdraw:
 .roomAvailable
 	ld hl, wNumBoxItems
 	call RemoveItemFromInventory
-	call WaitForSoundToFinish
-	ld a, SFX_WITHDRAW_DEPOSIT
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_WITHDRAW_DEPOSIT
+	call PlaySFX
+	call WaitSFX
 	ld hl, WithdrewItemText
 	call PrintText
 	jp .loop

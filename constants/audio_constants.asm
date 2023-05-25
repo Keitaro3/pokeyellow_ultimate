@@ -1,23 +1,22 @@
 ; pitch
-; Audio[1|2|3]_Pitches indexes (see audio/notes.asm)
-	const_def
-	const C_ ; 0
-	const C# ; 1
-	const D_ ; 2
-	const D# ; 3
-	const E_ ; 4
-	const F_ ; 5
-	const F# ; 6
-	const G_ ; 7
-	const G# ; 8
-	const A_ ; 9
-	const A# ; A
-	const B_ ; B
-DEF NUM_NOTES EQU const_value
+; FrequencyTable indexes (see audio/notes.asm)
+	const_def 1
+	const C_ ; 1
+	const C# ; 2
+	const D_ ; 3
+	const D# ; 4
+	const E_ ; 5
+	const F_ ; 6
+	const F# ; 7
+	const G_ ; 8
+	const G# ; 9
+	const A_ ; a
+	const A# ; b
+	const B_ ; c
+DEF NUM_NOTES EQU const_value - 1
 
 ; channel
-; Audio[1|2|3]_HWChannelBaseAddresses, Audio[1|2|3]_HWChannelDisableMasks,
-; and Audio[1|2|3]_HWChannelEnableMasks indexes (see audio/engine_[1|2|3].asm)
+; ChannelPointers indexes (see audio/engine.asm)
 	const_def
 	const CHAN1 ; 0
 	const CHAN2 ; 1
@@ -31,48 +30,105 @@ DEF NUM_MUSIC_CHANS EQU const_value
 DEF NUM_NOISE_CHANS EQU const_value - NUM_MUSIC_CHANS
 DEF NUM_CHANNELS EQU const_value
 
-; HW sound channel register base addresses
-DEF HW_CH1_BASE EQU LOW(rNR10)
-DEF HW_CH2_BASE EQU LOW(rNR21) - 1
-DEF HW_CH3_BASE EQU LOW(rNR30)
-DEF HW_CH4_BASE EQU LOW(rNR41) - 1
+; channel_struct members (see macros/ram.asm)
+rsreset
+DEF CHANNEL_MUSIC_ID                    rw
+DEF CHANNEL_MUSIC_BANK                  rb
+DEF CHANNEL_FLAGS1                      rb
+DEF CHANNEL_FLAGS2                      rb
+DEF CHANNEL_FLAGS3                      rb
+DEF CHANNEL_MUSIC_ADDRESS               rw
+DEF CHANNEL_LAST_MUSIC_ADDRESS          rw
+                                        rb_skip 2
+DEF CHANNEL_NOTE_FLAGS                  rb
+DEF CHANNEL_CONDITION                   rb
+DEF CHANNEL_DUTY_CYCLE                  rb
+DEF CHANNEL_VOLUME_ENVELOPE             rb
+DEF CHANNEL_FREQUENCY                   rw
+DEF CHANNEL_PITCH                       rb
+DEF CHANNEL_OCTAVE                      rb
+DEF CHANNEL_TRANSPOSITION               rb
+DEF CHANNEL_NOTE_DURATION               rb
+DEF CHANNEL_FIELD16                     rb
+                                        rb_skip
+DEF CHANNEL_LOOP_COUNT                  rb
+DEF CHANNEL_TEMPO                       rw
+DEF CHANNEL_TRACKS                      rb
+DEF CHANNEL_DUTY_CYCLE_PATTERN          rb
+DEF CHANNEL_VIBRATO_DELAY_COUNT         rb
+DEF CHANNEL_VIBRATO_DELAY               rb
+DEF CHANNEL_VIBRATO_EXTENT              rb
+DEF CHANNEL_VIBRATO_RATE                rb
+DEF CHANNEL_PITCH_SLIDE_TARGET          rw
+DEF CHANNEL_PITCH_SLIDE_AMOUNT          rb
+DEF CHANNEL_PITCH_SLIDE_AMOUNT_FRACTION rb
+DEF CHANNEL_FIELD25                     rb
+                                        rb_skip
+DEF CHANNEL_PITCH_OFFSET                rw
+DEF CHANNEL_FIELD29                     rb
+DEF CHANNEL_FIELD2A                     rw
+DEF CHANNEL_FIELD2C                     rb
+DEF CHANNEL_NOTE_LENGTH                 rb
+DEF CHANNEL_FIELD2E                     rb
+DEF CHANNEL_FIELD2F                     rb
+DEF CHANNEL_FIELD30                     rb
+                                        rb_skip
+DEF CHANNEL_STRUCT_LENGTH EQU _RS
 
-; HW sound channel enable bit masks
-DEF HW_CH1_ENABLE_MASK EQU %00010001
-DEF HW_CH2_ENABLE_MASK EQU %00100010
-DEF HW_CH3_ENABLE_MASK EQU %01000100
-DEF HW_CH4_ENABLE_MASK EQU %10001000
+DEF NOISE_CHAN_F EQU 2 ; bit set in CHAN5-CHAN7
 
-DEF HW_CH1_LEFT_ENABLE_MASK EQU %00010000
-DEF HW_CH2_LEFT_ENABLE_MASK EQU %00100000
-DEF HW_CH3_LEFT_ENABLE_MASK EQU %01000000
-DEF HW_CH4_LEFT_ENABLE_MASK EQU %10000000
-
-DEF HW_CH1_RIGHT_ENABLE_MASK EQU %00000001
-DEF HW_CH2_RIGHT_ENABLE_MASK EQU %00000010
-DEF HW_CH3_RIGHT_ENABLE_MASK EQU %00000100
-DEF HW_CH4_RIGHT_ENABLE_MASK EQU %00001000
-
-; HW sound channel disable bit masks
-DEF HW_CH1_DISABLE_MASK EQU (~HW_CH1_ENABLE_MASK & $ff)
-DEF HW_CH2_DISABLE_MASK EQU (~HW_CH2_ENABLE_MASK & $ff)
-DEF HW_CH3_DISABLE_MASK EQU (~HW_CH3_ENABLE_MASK & $ff)
-DEF HW_CH4_DISABLE_MASK EQU (~HW_CH4_ENABLE_MASK & $ff)
-
-	const_def 1
-	const REG_DUTY_SOUND_LEN  ; 1
-	const REG_VOLUME_ENVELOPE ; 2
-	const REG_FREQUENCY_LO    ; 3
-
-; wChannelFlags1 constants
+; Flags1
 	const_def
-	const BIT_PERFECT_PITCH          ; 0 ; controlled by toggle_perfect_pitch command
-	const BIT_SOUND_CALL             ; 1 ; if in sound call
-	const BIT_NOISE_OR_SFX           ; 2 ; if channel is the music noise channel or an SFX channel
-	const BIT_VIBRATO_DIRECTION      ; 3 ; if the pitch is above or below normal (cycles)
-	const BIT_PITCH_SLIDE_ON         ; 4 ; if pitch slide is active
-	const BIT_PITCH_SLIDE_DECREASING ; 5 ; if the pitch slide frequency is decreasing (instead of increasing)
-	const BIT_ROTATE_DUTY_CYCLE      ; 6 ; if rotating duty cycle
+	const SOUND_CHANNEL_ON ; 0
+	const SOUND_SUBROUTINE ; 1
+	const SOUND_LOOPING    ; 2
+	const SOUND_SFX        ; 3
+	const SOUND_NOISE      ; 4
+	const SOUND_CRY        ; 5
 
-; wChannelFlags2 constant (only has one flag)
-DEF BIT_EXECUTE_MUSIC EQU 0 ; if in execute music
+; Flags2
+	const_def
+	const SOUND_VIBRATO      ; 0
+	const SOUND_PITCH_SLIDE  ; 1
+	const SOUND_DUTY_LOOP    ; 2
+	const SOUND_UNKN_0B      ; 3
+	const SOUND_PITCH_OFFSET ; 4
+	const SOUND_UNKN_0D      ; 5
+	const SOUND_UNKN_0E      ; 6
+	const SOUND_UNKN_0F      ; 7
+
+; Flags3
+	const_def
+	const SOUND_VIBRATO_DIR     ; 0
+	const SOUND_PITCH_SLIDE_DIR ; 1
+
+; NoteFlags
+	const_def
+	const NOTE_DUTY_OVERRIDE    ; 0
+	const NOTE_FREQ_OVERRIDE    ; 1
+	const NOTE_UNUSED           ; 2
+	const NOTE_PITCH_SWEEP      ; 3
+	const NOTE_NOISE_SAMPLING   ; 4
+	const NOTE_REST             ; 5
+	const NOTE_VIBRATO_OVERRIDE ; 6
+
+; wVolume
+DEF VOLUME_SO1_F     EQU 3
+DEF VOLUME_SO2_F     EQU 7
+DEF VOLUME_SO1_LEVEL EQU %00000111
+DEF VOLUME_SO2_LEVEL EQU %01110000
+DEF MAX_VOLUME       EQU $77
+
+; wSoundInput
+DEF SOUND_INPUT_CH1_F    EQU 0
+DEF SOUND_INPUT_CH2_F    EQU 1
+DEF SOUND_INPUT_CH3_F    EQU 2
+DEF SOUND_INPUT_CH4_F    EQU 3
+DEF SOUND_INPUT_GLOBAL_F EQU 7
+
+; wLowHealthAlarm
+DEF DANGER_PITCH_F EQU 4
+DEF DANGER_ON_F    EQU 7
+
+; wMusicFade
+DEF MUSIC_FADE_IN_F EQU 7

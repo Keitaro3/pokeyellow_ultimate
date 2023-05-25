@@ -3,8 +3,8 @@ DisplayStartMenu::
 	call BankswitchCommon
 	ld a, [wWalkBikeSurfState] ; walking/biking/surfing
 	ld [wWalkBikeSurfStateCopy], a
-	ld a, SFX_START_MENU
-	call PlaySound
+	ld de, SFX_START_MENU
+	call PlaySFX
 
 RedisplayStartMenu::
 	farcall DrawStartMenu

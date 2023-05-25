@@ -171,7 +171,7 @@ StatusScreen:
 	hlcoord 1, 0
 	call LoadFlippedFrontSpriteByMonIndex ; draw Pokémon picture
 	ld a, [wcf91]
-	call PlayCry ; play Pokémon cry
+	call PlayMonCry ; play Pokémon cry
 	call WaitForTextScrollButtonPress ; wait for button
 	pop af
 	ldh [hTileAnimations], a

@@ -390,7 +390,8 @@ PrinterDebug:
 	push bc
 	push de
 	push hl
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 	ldh a, [rIE]
 	push af
 	xor a
@@ -489,29 +490,12 @@ Printer_ResetJoypadHRAM:
 	ret
 
 Printer_PlayPrinterMusic:
-	call Printer_FadeOutMusicAndWait
-	ld a, [wAudioROMBank]
-	ld [wAudioSavedROMBank], a
-	ld a, BANK(Music_GBPrinter)
-	ld [wAudioROMBank], a
-	ld a, MUSIC_GB_PRINTER
-	ld [wNewSoundID], a
-	call PlaySound
+	ld de, MUSIC_GB_PRINTER
+	call PlayMusic2
 	ret
 
 Printer_PlayMapMusic:
-	call Printer_FadeOutMusicAndWait
-	call PlayDefaultMusic
-	ret
-
-Printer_FadeOutMusicAndWait:
-	ld a, $4
-	ld [wAudioFadeOutControl], a
-	call StopAllMusic
-.wait_music_stop
-	ld a, [wAudioFadeOutControl]
-	and a
-	jr nz, .wait_music_stop
+	call RestartMapMusic
 	ret
 
 GBPrinter_CheckForErrors:

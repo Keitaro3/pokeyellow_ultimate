@@ -56,14 +56,14 @@ LavenderHouse1Text3:
 	text_far _LavenderHouse1Text3
 	text_asm
 	ld a, PSYDUCK
-	call PlayCry
+	call PlayMonCry
 	jp TextScriptEnd
 
 LavenderHouse1Text4:
 	text_far _LavenderHouse1Text4
 	text_asm
 	ld a, NIDORINO
-	call PlayCry
+	call PlayMonCry
 	jp TextScriptEnd
 
 LavenderHouse1Text5:

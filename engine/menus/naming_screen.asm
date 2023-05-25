@@ -258,8 +258,8 @@ DisplayNamingScreen:
 	ld a, [wNamingScreenLetter]
 	ld [hli], a
 	ld [hl], "@"
-	ld a, SFX_PRESS_AB
-	call PlaySound
+	ld de, SFX_PRESS_AB
+	call PlaySFX
 	ret
 .pressedB
 	ld a, [wNamingScreenNameLength]

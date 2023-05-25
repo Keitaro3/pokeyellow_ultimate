@@ -118,7 +118,8 @@ CableClub_DoBattleOrTradeAgain:
 	ldh [rSC], a
 .skipSendingTwoZeroBytes
 	call Delay3
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 	ld a, (1 << SERIAL)
 	ldh [rIE], a
 	ld hl, wSerialRandomNumberListBlock
@@ -261,7 +262,8 @@ CableClub_DoBattleOrTradeAgain:
 	ld [wUnusedCF8D + 1], a
 	xor a
 	ld [wTradeCenterPointerTableIndex], a
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 	ldh a, [hSerialConnectionStatus]
 	cp USING_INTERNAL_CLOCK
 	ld c, 66
@@ -291,8 +293,7 @@ CableClub_DoBattleOrTradeAgain:
 	predef HealParty
 	jp ReturnToCableClubRoom
 .trading
-	ld c, BANK(Music_GameCorner)
-	ld a, MUSIC_GAME_CORNER
+	ld de, MUSIC_GAME_CORNER
 	call PlayMusic
 	jr CallCurrentTradeCenterFunction
 
@@ -830,13 +831,8 @@ TradeCenter_Trade:
 	add hl, bc
 	ld a, [hl]
 	ld [wTradedEnemyMonSpecies], a
-	ld a, 10
-	ld [wAudioFadeOutControl], a
-	ld a, BANK(Music_SafariZone)
-	ld [wAudioSavedROMBank], a
-	ld a, MUSIC_SAFARI_ZONE
-	ld [wNewSoundID], a
-	call PlaySound
+	ld de, MUSIC_SAFARI_ZONE
+	call PlayMusic2
 	ld c, 100
 	call DelayFrames
 	call ClearScreen
@@ -924,13 +920,13 @@ CableClub_Run:
 	inc a ; LINK_STATE_IN_CABLE_CLUB
 	ld [wLinkState], a
 	ldh [hJoy5], a
-	ld a, 10
-	ld [wAudioFadeOutControl], a
-	ld a, BANK(Music_Celadon)
-	ld [wAudioSavedROMBank], a
-	ld a, MUSIC_CELADON
-	ld [wNewSoundID], a
-	jp PlaySound
+	ld a, 10 ; fade time
+	ld [wMusicFade], a
+	ld a, LOW(MUSIC_CELADON)
+	ld [wMusicFadeID], a
+	ld a, HIGH(MUSIC_CELADON)
+	ld [wMusicFadeID + 1], a
+	ret
 
 EmptyFunc:
 	ret

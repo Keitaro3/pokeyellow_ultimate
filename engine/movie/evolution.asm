@@ -6,14 +6,14 @@ EvolveMon:
 	push af
 	ld a, [wd0b5]
 	push af
+	ld de, MUSIC_NONE
+	call PlayMusic	
 	xor a
 	ld [wLowHealthAlarm], a
-	ld [wChannelSoundIDs + CHAN5], a
-	call StopAllMusic
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
-	ld a, SFX_TINK
-	call PlaySound
+	ld de, SFX_TINK
+	call PlaySFX
 	call Delay3
 	xor a
 	ldh [hAutoBGTransferEnabled], a
@@ -37,10 +37,9 @@ EvolveMon:
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld a, [wEvoOldSpecies]
-	call PlayCry
-	call WaitForSoundToFinish
-	ld c, BANK(Music_SafariZone)
-	ld a, MUSIC_SAFARI_ZONE
+	call PlayMonCry
+	call WaitSFX
+	ld de, MUSIC_SAFARI_ZONE
 	call PlayMusic
 	ld c, 80
 	call DelayFrames
@@ -65,9 +64,10 @@ EvolveMon:
 	ld a, [wEvoNewSpecies]
 .done
 	ld [wWholeScreenPaletteMonSpecies], a
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 	ld a, [wWholeScreenPaletteMonSpecies]
-	call PlayCry
+	call PlayMonCry
 	ld c, 0
 	call EvolutionSetWholeScreenPalette
 	pop af
@@ -146,12 +146,30 @@ Evolution_CheckForCancel:
 .nationalDexCheck
 	ld a, [wStatusFlags]
 	bit STATUSFLAGS_NATIONAL_DEX_F, a
-	jr z, .pressedB
+	jr z, .CheckEvoSpecies
 .notAllowedToCancel
 	dec c
 	jr nz, Evolution_CheckForCancel
 	and a
 	ret
+.CheckEvoSpecies
+	ld a, [wEvoNewSpecies]
+	cp SCIZOR
+	jr z, .pressedB
+	cp KINGDRA
+	jr z, .pressedB
+	cp PORYGON2
+	jr z, .pressedB
+	cp BLISSEY
+	jr nz, .notAllowedToCancel
+	;cp CROBAT
+	;jr z, .pressedB
+	;cp BELLOSSOM
+	;jr z, .pressedB
+	;cp ESPEON
+	;jr z, .pressedB
+	;cp UMBREON
+	;jr nz, .notAllowedToCancel
 .pressedB
 	ld a, [wForceEvolution]
 	and a

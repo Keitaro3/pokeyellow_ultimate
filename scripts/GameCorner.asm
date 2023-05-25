@@ -448,10 +448,10 @@ CeladonGameCornerText12:
 	ld [wDoNotWaitForButtonPressAfterDisplayingText], a
 	ld hl, CeladonGameCornerText_48f09
 	call PrintText
-	call WaitForSoundToFinish
-	ld a, SFX_GO_INSIDE
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_GO_INSIDE
+	call PlaySFX
+	call WaitSFX
 	SetEvent EVENT_FOUND_ROCKET_HIDEOUT
 	ld a, $43
 	ld [wNewTileBlockID], a
@@ -462,9 +462,9 @@ CeladonGameCornerText12:
 CeladonGameCornerText_48f09:
 	text_far _CeladonGameCornerText_48f09
 	text_asm
-	ld a, SFX_SWITCH
-	call PlaySound
-	call WaitForSoundToFinish
+	ld de, SFX_SWITCH
+	call PlaySFX
+	call WaitSFX
 	jp TextScriptEnd
 
 CeladonGameCornerText_48f19:

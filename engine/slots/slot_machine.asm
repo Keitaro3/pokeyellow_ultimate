@@ -116,9 +116,9 @@ MainSlotMachineLoop:
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	call WaitForSoundToFinish
-	ld a, SFX_SLOTS_NEW_SPIN
-	call PlaySound
+	call WaitSFX
+	ld de, SFX_SLOTS_NEW_SPIN
+	call PlaySFX
 	ld hl, StartSlotMachineText
 	call PrintText
 	call SlotMachine_SpinWheels
@@ -411,8 +411,8 @@ SlotMachine_CheckForMatches:
 	ld hl, NotThisTimeText
 	call PrintText
 .done
-	xor a
-	ld [wMuteAudioAndPauseMusic], a
+	ld a, 1
+	ld [wMusicPlaying], a
 	ret
 .rollWheel3DownByOneSymbol
 	call SlotMachine_AnimWheel3
@@ -587,8 +587,8 @@ SlotReward15Func:
 	ret
 
 SlotReward100Func:
-	ld a, SFX_GET_KEY_ITEM
-	call PlaySound
+	ld de, SFX_GET_KEY_ITEM
+	call PlaySFX
 	xor a
 	ld [wSlotMachineFlags], a
 	ld b, $8
@@ -598,8 +598,8 @@ SlotReward100Func:
 SlotReward300Func:
 	ld hl, YeahText
 	call PrintText
-	ld a, SFX_GET_ITEM_2
-	call PlaySound
+	ld de, SFX_GET_ITEM_2
+	call PlaySFX
 	call Random
 	cp $80
 	ld a, $0
@@ -657,9 +657,9 @@ SlotMachine_PrintPayoutCoins:
 	jp PrintNumber
 
 SlotMachine_PayCoinsToPlayer:
-	ld a, $1
-	ld [wMuteAudioAndPauseMusic], a
-	call WaitForSoundToFinish
+	xor a
+	ld [wMusicPlaying], a
+	call WaitSFX
 
 ; Put 1 in the temp coins variable. This value is added to the player's coins
 ; repeatedly so the player can watch the value go up 1 coin at a time.
@@ -693,8 +693,8 @@ SlotMachine_PayCoinsToPlayer:
 	predef AddBCDPredef
 	call SlotMachine_PrintCreditCoins
 	call SlotMachine_PrintPayoutCoins
-	ld a, SFX_SLOTS_REWARD
-	call PlaySound
+	ld de, SFX_SLOTS_REWARD
+	call PlaySFX
 	ld a, [wAnimCounter]
 	dec a
 	jr nz, .skip1
@@ -842,8 +842,8 @@ SlotMachine_HandleInputWhileWheelsSpin:
 	jr z, .skip
 .loop
 	inc [hl]
-	ld a, SFX_SLOTS_STOP_WHEEL
-	jp PlaySound
+	ld de, SFX_SLOTS_STOP_WHEEL
+	jp PlaySFX
 .skip
 	ld a, [de]
 	and a

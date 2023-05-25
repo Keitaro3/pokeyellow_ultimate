@@ -51,8 +51,8 @@ PrintCardKeyText:
 	predef ReplaceTileBlock
 	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
-	ld a, SFX_GO_INSIDE
-	jp PlaySound
+	ld de, SFX_GO_INSIDE
+	jp PlaySFX
 .noCardKey
 	tx_pre_id CardKeyFailText
 	ldh [hSpriteIndexOrTextID], a

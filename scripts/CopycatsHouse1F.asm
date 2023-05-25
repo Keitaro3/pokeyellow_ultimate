@@ -18,5 +18,5 @@ CopycatsHouse1FText3:
 	text_far _CopycatsHouse1FText3
 	text_asm
 	ld a, CHANSEY
-	call PlayCry
+	call PlayMonCry
 	jp TextScriptEnd

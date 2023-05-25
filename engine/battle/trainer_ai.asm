@@ -466,8 +466,8 @@ DecrementAICount:
 	ret
 
 AIPlayRestoringSFX:
-	ld a, SFX_HEAL_AILMENT
-	jp PlaySoundWaitForCurrent
+	ld de, SFX_HEAL_AILMENT
+	jp WaitPlaySFX
 
 AIUseFullRestore:
 	call AICureStatus

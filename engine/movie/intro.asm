@@ -47,15 +47,15 @@ PlayIntroScene:
 	ret c
 
 ; hip
-	ld a, SFX_INTRO_HIP
-	call PlaySound
+	ld de, SFX_INTRO_HIP
+	call PlaySFX
 	xor a
 	ld [wIntroNidorinoBaseTile], a
 	ld de, IntroNidorinoAnimation1
 	call AnimateIntroNidorino
 ; hop
-	ld a, SFX_INTRO_HOP
-	call PlaySound
+	ld de, SFX_INTRO_HOP
+	call PlaySFX
 	ld de, IntroNidorinoAnimation2
 	call AnimateIntroNidorino
 	ld c, 10
@@ -63,13 +63,13 @@ PlayIntroScene:
 	ret c
 
 ; hip
-	ld a, SFX_INTRO_HIP
-	call PlaySound
+	ld de, SFX_INTRO_HIP
+	call PlaySFX
 	ld de, IntroNidorinoAnimation1
 	call AnimateIntroNidorino
 ; hop
-	ld a, SFX_INTRO_HOP
-	call PlaySound
+	ld de, SFX_INTRO_HOP
+	call PlaySFX
 	ld de, IntroNidorinoAnimation2
 	call AnimateIntroNidorino
 	ld c, 30
@@ -79,8 +79,8 @@ PlayIntroScene:
 ; raise
 	ld b, GENGAR_INTRO_TILES2
 	call IntroCopyTiles
-	ld a, SFX_INTRO_RAISE
-	call PlaySound
+	ld de, SFX_INTRO_RAISE
+	call PlaySFX
 	lb de, 8 / 2, MOVE_GENGAR_LEFT
 	call IntroMoveMon
 	ld c, 30
@@ -90,13 +90,13 @@ PlayIntroScene:
 ; slash
 	ld b, GENGAR_INTRO_TILES3
 	call IntroCopyTiles
-	ld a, SFX_INTRO_CRASH
-	call PlaySound
+	ld de, SFX_INTRO_CRASH
+	call PlaySFX
 	lb de, 16 / 2, MOVE_GENGAR_RIGHT
 	call IntroMoveMon
 ; hip
-	ld a, SFX_INTRO_HIP
-	call PlaySound
+	ld de, SFX_INTRO_HIP
+	call PlaySFX
 	ld a, (FightIntroFrontMon2 - FightIntroFrontMon) / BYTES_PER_TILE
 	ld [wIntroNidorinoBaseTile], a
 	ld de, IntroNidorinoAnimation3
@@ -114,15 +114,15 @@ PlayIntroScene:
 	ret c
 
 ; hip
-	ld a, SFX_INTRO_HIP
-	call PlaySound
+	ld de, SFX_INTRO_HIP
+	call PlaySFX
 	xor a
 	ld [wIntroNidorinoBaseTile], a
 	ld de, IntroNidorinoAnimation4
 	call AnimateIntroNidorino
 ; hop
-	ld a, SFX_INTRO_HOP
-	call PlaySound
+	ld de, SFX_INTRO_HOP
+	call PlaySFX
 	ld de, IntroNidorinoAnimation5
 	call AnimateIntroNidorino
 	ld c, 20
@@ -138,8 +138,8 @@ PlayIntroScene:
 	ret c
 
 ; lunge
-	ld a, SFX_INTRO_LUNGE
-	call PlaySound
+	ld de, SFX_INTRO_LUNGE
+	call PlaySFX
 	ld a, (FightIntroFrontMon3 - FightIntroFrontMon) / BYTES_PER_TILE
 	ld [wIntroNidorinoBaseTile], a
 	ld de, IntroNidorinoAnimation7
@@ -330,12 +330,8 @@ PlayShootingStar:
 	ld c, 40
 	call DelayFrames
 .next
-	ld a, BANK(Music_IntroBattle)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	ld a, MUSIC_INTRO_BATTLE
-	ld [wNewSoundID], a
-	call PlaySound
+	ld de, MUSIC_INTRO_BATTLE
+	call PlayMusic
 	call IntroClearMiddleOfScreen
 	call ClearSprites
 	jp Delay3

@@ -27,12 +27,8 @@ PalletTownScript0:
 	ldh [hJoyHeld], a
 	ld a, PLAYER_DIR_DOWN
 	ld [wPlayerMovingDirection], a
-	ld a, SFX_STOP_ALL_MUSIC
-	call PlaySound
-	ld a, BANK(Music_MeetProfOak)
-	ld c, a
-	ld a, MUSIC_MEET_PROF_OAK ; "oak appears" music
-	call PlayMusic
+	ld de, MUSIC_MEET_PROF_OAK ; "oak appears" music
+	call PlayMusic2
 	ld a, $FC
 	ld [wJoyIgnore], a
 	SetEvent EVENT_OAK_APPEARED_IN_PALLET

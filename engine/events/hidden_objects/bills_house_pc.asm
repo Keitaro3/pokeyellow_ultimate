@@ -17,25 +17,25 @@ BillsHousePC:
 	tx_pre BillsHouseInitiatedText
 	ld c, 32
 	call DelayFrames
-	ld a, SFX_TINK
-	call PlaySound
-	call WaitForSoundToFinish
+	ld de, SFX_TINK
+	call PlaySFX
+	call WaitSFX
 	ld c, 80
 	call DelayFrames
-	ld a, SFX_SHRINK
-	call PlaySound
-	call WaitForSoundToFinish
+	ld de, SFX_SHRINK
+	call PlaySFX
+	call WaitSFX
 	ld c, 48
 	call DelayFrames
-	ld a, SFX_TINK
-	call PlaySound
-	call WaitForSoundToFinish
+	ld de, SFX_TINK
+	call PlaySFX
+	call WaitSFX
 	ld c, 32
 	call DelayFrames
-	ld a, SFX_GET_ITEM_1
-	call PlaySound
-	call WaitForSoundToFinish
-	call PlayDefaultMusic
+	ld de, SFX_GET_ITEM_1
+	call PlaySFX
+	call WaitSFX
+	call RestartMapMusic
 	SetEvent EVENT_USED_CELL_SEPARATOR_ON_BILL
 	ret
 .displayBillsHousePokemonList
@@ -52,12 +52,13 @@ BillsHouseInitiatedText::
 	text_far _BillsHouseInitiatedText
 	text_promptbutton
 	text_asm
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 	ld c, 16
 	call DelayFrames
-	ld a, SFX_SWITCH
-	call PlaySound
-	call WaitForSoundToFinish
+	ld de, SFX_SWITCH
+	call PlaySFX
+	call WaitSFX
 	ld c, 60
 	call DelayFrames
 	jp TextScriptEnd

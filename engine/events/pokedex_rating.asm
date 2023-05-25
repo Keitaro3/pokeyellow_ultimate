@@ -1,77 +1,130 @@
+MACRO rating
+; count, sfx, text
+	dbww \1, \2, \3
+ENDM
+
 DisplayDexRating:
+	ld hl, DexCompletionText
+	call PrintText
+	call Rate
+	call PlaySFX ; sfx loaded by previous Rate function call
+	call WaitForTextScrollButtonPress
+	call WaitSFX
+	ret	
+	
+ProfOaksPCRating:
+	call Rate
+	push de
+	ld de, MUSIC_NONE
+	call PlayMusic
+	pop de
+	call PlaySFX
+	call WaitForTextScrollButtonPress
+	call WaitSFX
+	ret	
+	
+Rate:
+; calculate Seen/Owned
 	ld hl, wPokedexSeen
 	ld b, wPokedexSeenEnd - wPokedexSeen
 	call CountSetBits
 	ld a, [wNumSetBits]
-	ldh [hDexRatingNumMonsSeen], a
+	ld [hDexRatingNumMonsSeen], a
 	ld hl, wPokedexOwned
 	ld b, wPokedexOwnedEnd - wPokedexOwned
 	call CountSetBits
 	ld a, [wNumSetBits]
-	ldh [hDexRatingNumMonsOwned], a
-	ld hl, DexRatingsTable
-.findRating
+	ld [hDexRatingNumMonsOwned], a
+
+; print appropriate rating
+	ld hl, DexNumSeenOwned
+	call PrintText
+	call WaitForTextScrollButtonPress
+	ld hl, OakRatings
+	ld a, [wStatusFlags]
+	bit STATUSFLAGS_NATIONAL_DEX_F, a
+	jr z, .gotDexType
+	ld hl, OakRatingsNational
+.gotDexType
+	ld a, [hDexRatingNumMonsOwned]
+	call FindOakRating
+	push de
+	call PrintText
+	pop de
+	ret
+	
+FindOakRating:
+; return sound effect in de
+; return text pointer in hl
+	nop
+	ld c, a
+.loop
 	ld a, [hli]
-	ld b, a
-	ldh a, [hDexRatingNumMonsOwned]
-	cp b
-	jr c, .foundRating
+	cp c
+	jr nc, .match
+rept 4
 	inc hl
-	inc hl
-	jr .findRating
-.foundRating
+endr
+	jr .loop
+
+.match
+	ld a, [hli]
+	ld e, a
+	ld a, [hli]
+	ld d, a
 	ld a, [hli]
 	ld h, [hl]
-	ld l, a ; load text pointer into hl
-	CheckAndResetEventA EVENT_HALL_OF_FAME_DEX_RATING
-	jr nz, .hallOfFame
-	push hl
-	ld hl, DexCompletionText
-	call PrintText
-	pop hl
-	call PrintText
-	farcall PlayPokedexRatingSfx
-	jp WaitForTextScrollButtonPress
-.hallOfFame
-	ld de, wDexRatingNumMonsSeen
-	ldh a, [hDexRatingNumMonsSeen]
-	ld [de], a
-	inc de
-	ldh a, [hDexRatingNumMonsOwned]
-	ld [de], a
-	inc de
-.copyRatingTextLoop
-	ld a, [hli]
-	cp "@"
-	jr z, .doneCopying
-	ld [de], a
-	inc de
-	jr .copyRatingTextLoop
-.doneCopying
-	ld [de], a
+	ld l, a
 	ret
 
 DexCompletionText:
 	text_far _DexCompletionText
 	text_end
+	
+DexNumSeenOwned:
+	text_far _DexNumSeenOwned
+	text_end
 
-DexRatingsTable:
-	dbw 10, DexRatingText_Own0To9
-	dbw 20, DexRatingText_Own10To19
-	dbw 30, DexRatingText_Own20To29
-	dbw 40, DexRatingText_Own30To39
-	dbw 50, DexRatingText_Own40To49
-	dbw 60, DexRatingText_Own50To59
-	dbw 70, DexRatingText_Own60To69
-	dbw 80, DexRatingText_Own70To79
-	dbw 90, DexRatingText_Own80To89
-	dbw 100, DexRatingText_Own90To99
-	dbw 110, DexRatingText_Own100To109
-	dbw 120, DexRatingText_Own110To119
-	dbw 130, DexRatingText_Own120To129
-	dbw 140, DexRatingText_Own130To139
-	dbw 150, DexRatingText_Own140To149
-	dbw NUM_POKEMON + 1, DexRatingText_Own150To151
+OakRatings:
+; if you caught at most this many, play this sound, load this text  
+	rating   9, SFX_DEX_FANFARE_LESS_THAN_20, DexRatingText_Own0To9
+	rating  19, SFX_DEX_FANFARE_LESS_THAN_20, DexRatingText_Own10To19
+	rating  29, SFX_POKEDEX_RATING, 		  DexRatingText_Own20To29
+	rating  39, SFX_POKEDEX_RATING, 		  DexRatingText_Own30To39
+	rating  49, SFX_POKEDEX_RATING, 		  DexRatingText_Own40To49
+	rating  59, SFX_GET_KEY_ITEM, 	  	  	  DexRatingText_Own50To59
+	rating  69, SFX_GET_KEY_ITEM, 	  		  DexRatingText_Own60To69
+	rating  79, SFX_DEX_FANFARE_140_169, 	  DexRatingText_Own70To79
+	rating  89, SFX_DEX_FANFARE_140_169, 	  DexRatingText_Own80To89
+	rating  99, SFX_DEX_FANFARE_140_169, 	  DexRatingText_Own90To99
+	rating 109, SFX_DEX_FANFARE_170_199, 	  DexRatingText_Own100To109
+	rating 119, SFX_DEX_FANFARE_170_199, 	  DexRatingText_Own110To119
+	rating 129, SFX_DEX_FANFARE_170_199, 	  DexRatingText_Own120To129
+	rating 139, SFX_DEX_FANFARE_200_229, 	  DexRatingText_Own130To139
+	rating 149, SFX_DEX_FANFARE_200_229, 	  DexRatingText_Own140To149
+	rating 255, SFX_DEX_FANFARE_230_PLUS, 	  DexRatingText_Own150To151
+	
+OakRatingsNational:
+; if you caught at most this many, play this sound, load this text
+	rating   9, SFX_DEX_FANFARE_LESS_THAN_20, DexRatingText_Own0To9
+	rating  19, SFX_DEX_FANFARE_LESS_THAN_20, OakRating02
+	rating  34, SFX_POKEDEX_RATING,        	  OakRating03
+	rating  49, SFX_POKEDEX_RATING,        	  DexRatingText_Own20To29
+	rating  64, SFX_GET_ITEM_1,        		  OakRating05
+	rating  79, SFX_GET_ITEM_1,        		  OakRating06
+	rating  94, SFX_GET_KEY_ITEM,       	  DexRatingText_Own70To79
+	rating 109, SFX_GET_KEY_ITEM,       	  DexRatingText_Own80To89
+	rating 124, SFX_GET_ITEM_2,               DexRatingText_Own90To99
+	rating 139, SFX_GET_ITEM_2,               OakRating10
+	rating 154, SFX_DEX_FANFARE_140_169,      DexRatingText_Own110To119
+	rating 169, SFX_DEX_FANFARE_140_169,      DexRatingText_Own60To69
+	rating 184, SFX_DEX_FANFARE_170_199,      DexRatingText_Own130To139
+	rating 199, SFX_DEX_FANFARE_170_199,      DexRatingText_Own120To129
+	rating 214, SFX_DEX_FANFARE_200_229,      OakRating15
+	rating 229, SFX_DEX_FANFARE_200_229,      OakRating16
+	rating 239, SFX_DEX_FANFARE_230_PLUS,     OakRating17
+	rating 248, SFX_DEX_FANFARE_230_PLUS,     OakRating18
+	rating 255, SFX_DEX_FANFARE_230_PLUS,     OakRating19
 
 DexRatingText_Own0To9:
 	text_far _DexRatingText_Own0To9
@@ -135,4 +188,44 @@ DexRatingText_Own140To149:
 
 DexRatingText_Own150To151:
 	text_far _DexRatingText_Own150To151
+	text_end
+	
+OakRating02:
+	text_far _OakRating02
+	text_end
+	
+OakRating03:
+	text_far _OakRating03
+	text_end
+	
+OakRating05:
+	text_far _OakRating05
+	text_end
+
+OakRating06:
+	text_far _OakRating06
+	text_end
+
+OakRating10:
+	text_far _OakRating10
+	text_end
+
+OakRating15:
+	text_far _OakRating15
+	text_end
+
+OakRating16:
+	text_far _OakRating16
+	text_end
+
+OakRating17:
+	text_far _OakRating17
+	text_end
+
+OakRating18:
+	text_far _OakRating18
+	text_end
+
+OakRating19:
+	text_far _OakRating19
 	text_end

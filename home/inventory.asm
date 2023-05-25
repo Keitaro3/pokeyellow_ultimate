@@ -12,9 +12,9 @@ AddAmountSoldToMoney::
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID ; redraw money text box
-	ld a, SFX_PURCHASE
-	call PlaySoundWaitForCurrent
-	jp WaitForSoundToFinish
+	ld de, SFX_PURCHASE
+	call WaitPlaySFX
+	jp WaitSFX
 
 ; function to remove an item (in varying quantities) from the player's bag or PC box
 ; INPUT:

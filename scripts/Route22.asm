@@ -90,10 +90,10 @@ Route22Script0:
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .asm_50f4e
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 .asm_50f4e
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
+	ld de, MUSIC_MEET_RIVAL
 	call PlayMusic
 	ld a, $1
 	ldh [hSpriteIndex], a
@@ -177,8 +177,8 @@ Route22Script2:
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	call StopAllMusic
-	farcall Music_RivalAlternateStart
+	ld de, MUSIC_RIVAL_AFTER
+	call PlayMusic2
 	ld a, [wcf0d]
 	cp $1
 	jr nz, .asm_50fff
@@ -234,7 +234,7 @@ Route22Script3:
 	ld a, HS_ROUTE_22_RIVAL_1
 	ld [wMissableObjectIndex], a
 	predef HideObject
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ResetEvents EVENT_1ST_ROUTE22_RIVAL_BATTLE, EVENT_ROUTE22_RIVAL_WANTS_BATTLE
 	ld a, $0
 	ld [wRoute22CurScript], a
@@ -249,10 +249,11 @@ Route22Script_5104e:
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .skipYVisibilityTesta
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 .skipYVisibilityTesta
-	call StopAllMusic
-	farcall Music_RivalAlternateTempo
+	ld de, MUSIC_MEET_RIVAL_2
+	call PlayMusic2
 	ld a, $2
 	ldh [hSpriteIndex], a
 	call Route22MoveRivalSprite
@@ -340,8 +341,8 @@ Route22Script5:
 	ld a, $2
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	call StopAllMusic
-	farcall Music_RivalAlternateStartAndTempo
+	ld de, MUSIC_RIVAL_AFTER_2
+	call PlayMusic2
 	ld a, [wcf0d]
 	cp $1
 	jr nz, .asm_51134
@@ -382,7 +383,7 @@ Route22Script6:
 	ld a, HS_ROUTE_22_RIVAL_2
 	ld [wMissableObjectIndex], a
 	predef HideObject
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ResetEvents EVENT_2ND_ROUTE22_RIVAL_BATTLE, EVENT_ROUTE22_RIVAL_WANTS_BATTLE
 	ld a, $7
 	ld [wRoute22CurScript], a

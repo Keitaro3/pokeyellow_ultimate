@@ -10,7 +10,7 @@ LavenderHouse2Text1:
 	text_far _LavenderHouse2Text1
 	text_asm
 	ld a, CUBONE
-	call PlayCry
+	call PlayMonCry
 	jp TextScriptEnd
 
 LavenderHouse2Text2:

@@ -340,7 +340,7 @@ NextTextCommand::
 	push hl
 	cp TX_FAR
 	jp z, TextCommand_FAR
-	cp TX_SOUND_POKEDEX_RATING
+	cp TX_SOUND_GET_BADGE
 	jp nc, TextCommand_SOUND
 	ld hl, TextCommandJumpTable
 	push bc
@@ -527,11 +527,13 @@ TextCommand_SOUND::
 	jr z, .pokemonCry
 	cp TX_SOUND_CRY_PIDGEOT
 	jr z, .pokemonCry
-	cp TX_SOUND_CRY_DEWGONG
-	jr z, .pokemonCry
-	ld a, [hl]
-	call PlaySound
-	call WaitForSoundToFinish
+	push de
+	ld a,[hl]
+	ld e, a
+	ld d, 0
+	call PlaySFX
+	call WaitSFX
+	pop de
 	pop hl
 	pop bc
 	jp NextTextCommand
@@ -539,7 +541,7 @@ TextCommand_SOUND::
 .pokemonCry
 	push de
 	ld a, [hl]
-	call PlayCry
+	call PlayMonCry
 	pop de
 	pop hl
 	pop bc
@@ -548,14 +550,14 @@ TextCommand_SOUND::
 TextCommandSounds::
 	db TX_SOUND_GET_ITEM_1,           SFX_GET_ITEM_1 ; actually plays SFX_LEVEL_UP when the battle music engine is loaded
 	db TX_SOUND_CAUGHT_MON,           SFX_CAUGHT_MON
-	db TX_SOUND_POKEDEX_RATING,       SFX_POKEDEX_RATING ; unused
-	db TX_SOUND_GET_ITEM_1_DUPLICATE, SFX_GET_ITEM_1 ; unused
+	db TX_SOUND_GET_BADGE,            SFX_GET_BADGE
+	db TX_SOUND_GET_TM,               SFX_GET_TM
 	db TX_SOUND_GET_ITEM_2,           SFX_GET_ITEM_2
 	db TX_SOUND_GET_KEY_ITEM,         SFX_GET_KEY_ITEM
 	db TX_SOUND_DEX_PAGE_ADDED,       SFX_DEX_PAGE_ADDED
 	db TX_SOUND_CRY_NIDORINO,         NIDORINO ; used in OakSpeech
 	db TX_SOUND_CRY_PIDGEOT,          PIDGEOT ; used in SaffronCityText12
-	db TX_SOUND_CRY_DEWGONG,          DEWGONG ; unused
+	db TX_SOUND_LEVEL_UP,             SFX_LEVEL_UP
 
 TextCommand_DOTS::
 ; wait for button press or 30 frames while printing "…"s

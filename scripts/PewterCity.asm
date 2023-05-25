@@ -56,7 +56,7 @@ PewterCityScript1:
 	ld a, SPRITE_FACING_UP
 	ldh [hSpriteImageIndex], a
 	call SpriteFunc_34a1
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ld hl, wFlags_0xcd60
 	set 4, [hl]
 	ld a, $d
@@ -121,7 +121,7 @@ PewterCityScript4:
 	ld a, SPRITE_FACING_LEFT
 	ldh [hSpriteFacingDirection], a
 	call SpriteFunc_34a1
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ld hl, wFlags_0xcd60
 	set 4, [hl]
 	ld a, $e

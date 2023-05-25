@@ -23,14 +23,7 @@ DisplayPokemonCenterDialogue_::
 	call Delay3
 	farcall AnimateHealingMachine ; do the healing machine animation
 	predef HealParty
-	xor a
-	ld [wAudioFadeOutControl], a
-	ld a, [wAudioSavedROMBank]
-	ld [wAudioROMBank], a
-	ld a, [wMapMusicSoundID]
-	ld [wLastMusicSoundID], a
-	ld [wNewSoundID], a
-	call PlaySound
+	call RestartMapMusic
 	lb bc, 1, 0
 	call Func_6ebb
 	ld hl, PokemonFightingFitText
@@ -39,13 +32,7 @@ DisplayPokemonCenterDialogue_::
 	call Delay3
 	call UpdateSprites
 	callfar ReloadWalkingTilePatterns
-	ld a, $1
-	ldh [hSpriteIndex], a
-	ld a, $1
-	ldh [hSpriteImageIndex], a
-	call SpriteFunc_34a1
-	ld c, 40
-	call DelayFrames
+	call Func_6eaa
 	call UpdateSprites
 	call LoadFontTilePatterns
 	jr .done
@@ -63,7 +50,7 @@ Func_6eaa:
 	ld a, $4
 	ldh [hSpriteImageIndex], a
 	call SpriteFunc_34a1
-	ld c, 64
+	ld c, $14
 	call DelayFrames
 	ret
 

@@ -71,8 +71,8 @@ LanceScript0:
 	ret nz
 	ld hl, wCurrentMapScriptFlags
 	set 5, [hl]
-	ld a, SFX_GO_INSIDE
-	call PlaySound
+	ld de, SFX_GO_INSIDE
+	call PlaySFX
 	jp LanceShowOrHideEntranceBlocks
 
 LanceTriggerMovementCoords:

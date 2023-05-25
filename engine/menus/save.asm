@@ -158,9 +158,9 @@ SaveSAV:
 	call PrintText
 	ld c, 10
 	call DelayFrames
-	ld a, SFX_SAVE
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
+	ld de, SFX_SAVE
+	call WaitPlaySFX
+	call WaitSFX
 	ld c, 30
 	call DelayFrames
 	ret
@@ -351,9 +351,9 @@ ChangeBox::
 	res 1, [hl]
 	bit 1, a ; pressed b
 	ret nz
-	ld a, $b6
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish	
+	ld de, SFX_SAVE
+	call WaitPlaySFX
+	call WaitSFX
 	
 	call SaveBox    ; Copy sCurBoxData to box
 	ld a, [wCurrentMenuItem]

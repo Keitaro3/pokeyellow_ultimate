@@ -109,6 +109,6 @@ ZapdosBattleText:
 	text_far _ZapdosBattleText
 	text_asm
 	ld a, ZAPDOS
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	jp TextScriptEnd

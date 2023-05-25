@@ -210,31 +210,10 @@ OneTwoAndText:
 	text_far _OneTwoAndText
 	text_pause
 	text_asm
-	push af
-	push bc
 	push de
-	push hl
-	ld a, $1
-	ld [wMuteAudioAndPauseMusic], a
-	call DelayFrame
-	ld a, [wAudioROMBank]
-	push af
-	ld a, BANK(SFX_Swap_1)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	call WaitForSoundToFinish
-	ld a, SFX_SWAP
-	call PlaySound
-	call WaitForSoundToFinish
-	pop af
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	xor a
-	ld [wMuteAudioAndPauseMusic], a
-	pop hl
+	ld de, SFX_SWAP
+	call PlaySFX
 	pop de
-	pop bc
-	pop af
 	ld hl, PoofText
 	ret
 

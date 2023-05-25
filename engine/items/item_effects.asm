@@ -684,7 +684,7 @@ ItemUseBicycle:
 	call ItemUseReloadOverworldData
 	xor a
 	ld [wWalkBikeSurfState], a ; change player state to walking
-	call PlayDefaultMusic ; play walking music
+	call RestartMapMusic ; play walking music
 	ld hl, GotOffBicycleText
 	jp PrintText
 
@@ -696,7 +696,7 @@ ItemUseBicycle:
 	ldh [hJoyHeld], a ; current joypad state
 	ld a, $1
 	ld [wWalkBikeSurfState], a ; change player state to bicycling
-	call PlayDefaultMusic ; play bike riding music
+	call RestartMapMusic ; play bike riding music
 	xor a
 	ld [wWalkBikeSurfState], a
 	ld hl, GotOnBicycleText
@@ -723,7 +723,7 @@ ItemUseSurfboard:
 	set 7, [hl]
 	ld a, 2
 	ld [wWalkBikeSurfState], a ; change player state to surfing
-	call PlayDefaultMusic ; play surfing music
+	call RestartMapMusic ; play surfing music
 	ld hl, SurfingGotOnText
 	jp PrintText
 
@@ -755,7 +755,7 @@ ItemUseSurfboard:
 	ld [wWalkBikeSurfState], a ; change player state to walking
 	dec a
 	ld [wJoyIgnore], a
-	call PlayDefaultMusic ; play walking music
+	call RestartMapMusic ; play walking music
 	call GBPalWhiteOutWithDelay3
 	jp LoadWalkingPlayerSpriteGraphics
 
@@ -814,9 +814,9 @@ ItemUseEvoStone:
 	ld [wcf91], a
 	call Func_d85d
 	jr nc, .noEffect
-	ld a, SFX_HEAL_AILMENT
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
+	ld de, SFX_HEAL_AILMENT
+	call WaitPlaySFX
+	call WaitSFX
 	ld a, $01
 	ld [wForceEvolution], a
 	callfar TryEvolvingMon ; try to evolve pokemon
@@ -1112,7 +1112,7 @@ _ItemUseMedicine:
 .notFullHP ; if the pokemon's current HP doesn't equal its max HP
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
-	ld [wChannelSoundIDs + CHAN5], a
+	ld [wChannel5MusicID], a
 	push hl
 	push de
 	ld bc, wPartyMon1MaxHP - (wPartyMon1HP + 1)
@@ -1170,8 +1170,8 @@ _ItemUseMedicine:
 	ld a, [wWhichPokemon]
 	ld bc, 2 * SCREEN_WIDTH
 	call AddNTimes ; calculate coordinates of HP bar of pokemon that used Softboiled
-	ld a, SFX_HEAL_HP
-	call PlaySoundWaitForCurrent
+	ld de, SFX_HEAL_HP
+	call WaitPlaySFX
 	ldh a, [hUILayoutFlags]
 	set 0, a
 	ldh [hUILayoutFlags], a
@@ -1325,8 +1325,8 @@ _ItemUseMedicine:
 	jr c, .playStatusAilmentCuringSound
 	cp FULL_HEAL
 	jr z, .playStatusAilmentCuringSound
-	ld a, SFX_HEAL_HP
-	call PlaySoundWaitForCurrent
+	ld de, SFX_HEAL_HP
+	call WaitPlaySFX
 	ldh a, [hUILayoutFlags]
 	set 0, a
 	ldh [hUILayoutFlags], a
@@ -1348,8 +1348,8 @@ _ItemUseMedicine:
 	jr .showHealingItemMessage
 
 .playStatusAilmentCuringSound
-	ld a, SFX_HEAL_AILMENT
-	call PlaySoundWaitForCurrent
+	ld de, SFX_HEAL_AILMENT
+	call WaitPlaySFX
 .showHealingItemMessage
 	xor a
 	ldh [hAutoBGTransferEnabled], a
@@ -1440,8 +1440,8 @@ _ItemUseMedicine:
 	ld de, wStringBuffer
 	ld bc, 10
 	call CopyData ; copy the stat's name to wStringBuffer
-	ld a, SFX_HEAL_AILMENT
-	call PlaySound
+	ld de, SFX_HEAL_AILMENT
+	call PlaySFX
 	ld hl, VitaminStatRoseText
 	call PrintText
 	jp RemoveUsedItem
@@ -1920,10 +1920,11 @@ ItemUsePokeflute:
 	ld a, [wLowHealthAlarm]
 	and $80
 	jr nz, .skipMusic
-	call WaitForSoundToFinish ; wait for sound to end
-	farcall Music_PokeFluteInBattle ; play in-battle pokeflute music
+	call WaitSFX ; wait for sound to end
+	ld de, SFX_POKEFLUTE_2
+	call WaitPlaySFX ; play in-battle pokeflute music
 .musicWaitLoop ; wait for music to finish playing
-	ld a, [wChannelSoundIDs + CHAN7]
+	ld a, [wChannel7MusicID]
 	and a ; music off?
 	jr nz, .musicWaitLoop
 .skipMusic
@@ -1984,15 +1985,15 @@ PlayedFluteHadEffectText:
 	and a
 	jr nz, .done
 ; play out-of-battle pokeflute music
-	call StopAllMusic
-	ld a, SFX_POKEFLUTE
-	ld c, BANK(SFX_Pokeflute)
-	call PlayMusic
+	ld de, MUSIC_NONE
+	call PlayMusic ; turn off music
+	ld de, SFX_POKEFLUTE
+	call PlaySFX
 .musicWaitLoop ; wait for music to finish playing
-	ld a, [wChannelSoundIDs + CHAN3]
+	ld a, [wChannel7MusicID]
 	cp SFX_POKEFLUTE
 	jr z, .musicWaitLoop
-	call PlayDefaultMusic ; start playing normal music again
+	call RestartMapMusic ; start playing normal music again
 .done
 	jp TextScriptEnd ; end text
 
@@ -2105,8 +2106,8 @@ FishingInit:
 	call ItemUseReloadOverworldData
 	ld hl, ItemUseText00
 	call PrintText
-	ld a, SFX_HEAL_AILMENT
-	call PlaySound
+	ld de, SFX_HEAL_AILMENT
+	call PlaySFX
 	ld c, 80
 	call DelayFrames
 	and a
@@ -2129,10 +2130,10 @@ ItemUseItemfinder:
 	jr nc, .printText ; if no hidden items
 	ld c, 4
 .loop
-	ld a, SFX_HEALING_MACHINE
-	call PlaySoundWaitForCurrent
-	ld a, SFX_PURCHASE
-	call PlaySoundWaitForCurrent
+	ld de, SFX_HEALING_MACHINE
+	call WaitPlaySFX
+	ld de, SFX_PURCHASE
+	call WaitPlaySFX
 	dec c
 	jr nz, .loop
 	ld hl, ItemfinderFoundItemText
@@ -2229,8 +2230,8 @@ ItemUsePPRestore:
 	ld a, 1 ; 1 PP Up used
 	ld [wd11e], a
 	call RestoreBonusPP ; add the bonus PP to current PP
-	ld a, SFX_HEAL_AILMENT
-	call PlaySound
+	ld de, SFX_HEAL_AILMENT
+	call PlaySFX
 	ld hl, PPIncreasedText
 	call PrintText
 .done
@@ -2253,8 +2254,8 @@ ItemUsePPRestore:
 	ld bc, 4
 	call CopyData ; copy party data to in-battle data
 .skipUpdatingInBattleData
-	ld a, SFX_HEAL_AILMENT
-	call PlaySound
+	ld de, SFX_HEAL_AILMENT
+	call PlaySFX
 	ld hl, PPRestoredText
 	call PrintText
 	jr .done
@@ -2453,8 +2454,8 @@ ItemUseTMHM:
 	and a ; can the pokemon learn the move?
 	jr nz, .checkIfAlreadyLearnedMove
 ; if the pokemon can't learn the move
-	ld a, SFX_DENIED
-	call PlaySoundWaitForCurrent
+	ld de, SFX_DENIED
+	call WaitPlaySFX
 	ld hl, MonCannotLearnMachineMoveText
 	call PrintText
 	jr .chooseMon
@@ -2503,8 +2504,8 @@ MonCannotLearnMachineMoveText:
 PrintItemUseTextAndRemoveItem:
 	ld hl, ItemUseText00
 	call PrintText
-	ld a, SFX_HEAL_AILMENT
-	call PlaySound
+	ld de, SFX_HEAL_AILMENT
+	call PlaySFX
 	call WaitForTextScrollButtonPress ; wait for button press
 
 RemoveUsedItem:

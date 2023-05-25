@@ -104,8 +104,8 @@ Mansion1Text4:
 	set 5, [hl]
 	ld hl, MansionSwitchPressedText
 	call PrintText
-	ld a, SFX_GO_INSIDE
-	call PlaySound
+	ld de, SFX_GO_INSIDE
+	call PlaySFX
 	CheckAndSetEvent EVENT_MANSION_SWITCH_ON
 	jr z, .asm_44392
 	ResetEventReuseHL EVENT_MANSION_SWITCH_ON

@@ -1,81 +1,98 @@
 SECTION "Audio RAM", WRAM0
 
-wUnusedC000:: db
+; nonzero if playing
+wMusicPlaying:: db
 
-wSoundID:: db
+wAudio::
 
-; bit 7: whether sound has been muted
-; all bits: whether the effective is active
-; Store 1 to activate effect (any value in the range [1, 127] works).
-; All audio is muted and music is paused. Sfx continues playing until it
-; ends normally.
-; Store 0 to resume music.
-wMuteAudioAndPauseMusic:: db
+	ds 1
 
-wDisableChannelOutputWhenSfxEnds:: db
+wCurTrackDuty:: db
+wCurTrackVolumeEnvelope:: db
+wCurTrackFrequency:: dw
+wUnusedBCDNumber:: db ; BCD value, dummied out
+wCurNoteDuration:: db ; used in MusicE0 and LoadNote
 
-wStereoPanning:: db
+wCurMusicByte:: db
+wCurChannel:: db
+wVolume::
+; corresponds to rNR50
+; Channel control / ON-OFF / Volume (R/W)
+;   bit 7 - Vin->SO2 ON/OFF
+;   bit 6-4 - SO2 output level (volume) (# 0-7)
+;   bit 3 - Vin->SO1 ON/OFF
+;   bit 2-0 - SO1 output level (volume) (# 0-7)
+	db
+wSoundOutput::
+; corresponds to rNR51
+; bit 4-7: ch1-4 so2 on/off
+; bit 0-3: ch1-4 so1 on/off
+	db
+wPitchSweep::
+; corresponds to rNR10
+; bit 7:   unused
+; bit 4-6: sweep time
+; bit 3:   sweep direction
+; but 0-2: sweep shift
+	db
 
-wSavedVolume:: db
+wMusicID:: dw
+wMusicBank:: db
+wNoiseSampleAddress:: dw
+wNoiseSampleDelay:: db
+	ds 1
+wMusicNoiseSampleSet:: db
+wSFXNoiseSampleSet:: db
 
-wChannelCommandPointers:: ds NUM_CHANNELS * 2
-wChannelReturnAddresses:: ds NUM_CHANNELS * 2
+	ds 1 ; wLowHealthAlarm
 
-wChannelSoundIDs:: ds NUM_CHANNELS
+wMusicFade::
+; fades volume over x frames
+; bit 7: fade in/out
+; bit 0-5: number of frames for each volume level
+; $00 = none (default)
+	db
+wMusicFadeCount:: db
+wMusicFadeID:: dw
 
-wChannelFlags1:: ds NUM_CHANNELS
-wChannelFlags2:: ds NUM_CHANNELS
+	ds 5
 
-wChannelDutyCycles:: ds NUM_CHANNELS
-wChannelDutyCyclePatterns:: ds NUM_CHANNELS
+wCryPitch:: dw
+wCryLength:: dw
 
-; reloaded at the beginning of a note. counts down until the vibrato begins.
-wChannelVibratoDelayCounters:: ds NUM_CHANNELS
-wChannelVibratoExtents:: ds NUM_CHANNELS
-; high nybble is rate (counter reload value) and low nybble is counter.
-; time between applications of vibrato.
-wChannelVibratoRates:: ds NUM_CHANNELS
-wChannelFrequencyLowBytes:: ds NUM_CHANNELS
-; delay of the beginning of the vibrato from the start of the note
-wChannelVibratoDelayCounterReloadValues:: ds NUM_CHANNELS
+wLastVolume:: db
+wUnusedMusicF9Flag:: db
 
-wChannelPitchSlideLengthModifiers:: ds NUM_CHANNELS
-wChannelPitchSlideFrequencySteps:: ds NUM_CHANNELS
-wChannelPitchSlideFrequencyStepsFractionalPart:: ds NUM_CHANNELS
-wChannelPitchSlideCurrentFrequencyFractionalPart:: ds NUM_CHANNELS
-wChannelPitchSlideCurrentFrequencyHighBytes:: ds NUM_CHANNELS
-wChannelPitchSlideCurrentFrequencyLowBytes:: ds NUM_CHANNELS
-wChannelPitchSlideTargetFrequencyHighBytes:: ds NUM_CHANNELS
-wChannelPitchSlideTargetFrequencyLowBytes:: ds NUM_CHANNELS
+wSFXPriority::
+; if nonzero, turn off music when playing sfx
+	db
 
-; Note delays are stored as 16-bit fixed-point numbers where the integer part
-; is 8 bits and the fractional part is 8 bits.
-wChannelNoteDelayCounters:: ds NUM_CHANNELS
-wChannelLoopCounters:: ds NUM_CHANNELS
-wChannelNoteSpeeds:: ds NUM_CHANNELS
-wChannelNoteDelayCountersFractionalPart:: ds NUM_CHANNELS
+	ds 1
 
-wChannelOctaves:: ds NUM_CHANNELS
-; also includes fade for hardware channels that support it
-wChannelVolumes:: ds NUM_CHANNELS
+wChannel1JumpCondition:: db
+wChannel2JumpCondition:: db
+wChannel3JumpCondition:: db
+wChannel4JumpCondition:: db
 
-wMusicWaveInstrument:: db
-wSfxWaveInstrument:: db
-wMusicTempo:: dw
-wSfxTempo:: dw
-wSfxHeaderPointer:: dw
+wStereoPanningMask:: db
 
-wNewSoundID:: db
+wCryTracks::
+; plays only in left or right track depending on what side the monster is on
+; both tracks active outside of battle
+	db
 
-wAudioROMBank:: db
-wAudioSavedROMBank:: db
+wSFXDuration:: db
+wCurSFX::
+; id of sfx currently playing
+	db
 
-wFrequencyModifier:: db
-wTempoModifier:: db
+wAudioEnd::
 
-wc0f3:: dw
+wMapMusic:: db
 
-	ds 11
+wDontPlayMapMusicOnReload:: db
+
+	ds 206
 
 
 SECTION "Sprite State Data", WRAM0
@@ -1301,31 +1318,7 @@ wWalkCounter:: db
 ; background tile number in front of the player (either 1 or 2 steps ahead)
 wTileInFrontOfPlayer:: db
 
-; The desired fade counter reload value is stored here prior to calling
-; PlaySound in order to cause the current music to fade out before the new
-; music begins playing. Storing 0 causes no fade out to occur and the new music
-; to begin immediately.
-; This variable has another use related to fade-out, as well. PlaySound stores
-; the sound ID of the music that should be played after the fade-out is finished
-; in this variable. FadeOutAudio checks if it's non-zero every V-Blank and
-; fades out the current audio if it is. Once it has finished fading out the
-; audio, it zeroes this variable and starts playing the sound ID stored in it.
-wAudioFadeOutControl:: db
-
-wAudioFadeOutCounterReloadValue:: db
-
-wAudioFadeOutCounter:: db
-
-; This is used to determine whether the default music is already playing when
-; attempting to play the default music (in order to avoid restarting the same
-; music) and whether the music has already been stopped when attempting to
-; fade out the current music (so that the new music can be begin immediately
-; instead of waiting).
-; It sometimes contains the sound ID of the last music played, but it may also
-; contain $ff (if the music has been stopped) or 0 (because some routines zero
-; it in order to prevent assumptions from being made about the current state of
-; the music).
-wLastMusicSoundID:: db
+	ds 4 ; old audio engine stuff
 
 ; $00 = causes sprites to be hidden and the value to change to $ff
 ; $01 = enabled
@@ -1384,7 +1377,7 @@ wTrainerBaseMoney:: dw ; BCD
 
 wMissableObjectCounter:: db
 
-	ds 1
+wWasInBattle:: db
 
 ; 13 bytes for the letters of the opposing trainer
 ; the name is terminated with $50 with possible
@@ -1981,7 +1974,7 @@ wXBlockCoord:: db
 
 wLastMap:: db
 
-wUnusedD366:: db
+wCurMapSong:: db
 
 wCurMapTileset:: db
 
@@ -2516,7 +2509,14 @@ wMainDataEnd::
 
 SECTION "Expanded Features", WRAM0
 
-	ds 1122
+wChannels::
+; wChannel1 - wChannel8
+for n, 1, NUM_CHANNELS + 1
+wChannel{d:n}:: channel_struct wChannel{d:n}
+endr
+wChannelsEnd::
+
+	ds 722
 
 
 SECTION "GBC Palette Data", WRAM0

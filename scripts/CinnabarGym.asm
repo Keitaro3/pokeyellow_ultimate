@@ -114,10 +114,10 @@ CinnabarGymScript2:
 	call DelayFrames
 	call CinnabarGymScript_75023
 	call CinnabarGymScript_75041
-	call WaitForSoundToFinish
-	ld a, SFX_GO_INSIDE
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_GO_INSIDE
+	call PlaySFX
+	call WaitSFX
 	jr .asm_75013
 .asm_7500d
 	call CinnabarGymScript_75023

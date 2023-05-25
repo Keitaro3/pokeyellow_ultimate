@@ -118,7 +118,7 @@ OaksLabScript4:
 	call UpdateSprites
 	ld hl, wFlags_D733
 	res 1, [hl]
-	call PlayDefaultMusic
+	call RestartMapMusic
 
 	ld a, $5
 	ld [wOaksLabCurScript], a
@@ -350,8 +350,7 @@ OaksLabScript10:
 	call SetSpriteFacingDirectionAndDelay
 	ld a, PLAYER_DIR_UP
 	ld [wPlayerMovingDirection], a
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
+	ld de, MUSIC_MEET_RIVAL
 	call PlayMusic
 	ld a, $f
 	ldh [hSpriteIndexOrTextID], a
@@ -443,7 +442,8 @@ OaksLabScript13:
 	ld a, $10
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	farcall Music_RivalAlternateStart
+	ld de, MUSIC_RIVAL_AFTER
+	call PlayMusic
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld de, .RivalExitMovement
@@ -481,7 +481,7 @@ OaksLabScript14:
 	predef HideObject
 	xor a
 	ld [wJoyIgnore], a
-	call PlayDefaultMusic ; reset to map music
+	call RestartMapMusic ; reset to map music
 	ld a, $12
 	ld [wOaksLabCurScript], a
 	jr .done
@@ -512,10 +512,8 @@ OaksLabScript15:
 	xor a
 	ldh [hJoyHeld], a
 	call EnableAutoTextBoxDrawing
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
-	farcall Music_RivalAlternateStart
+	ld de, MUSIC_RIVAL_AFTER
+	call PlayMusic2
 	ld a, $15
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -557,7 +555,7 @@ OaksLabScript16:
 	bit 0, a
 	ret nz
 	call EnableAutoTextBoxDrawing
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ld a, $fc
 	ld [wJoyIgnore], a
 	call OaksLabScript_1cefd
@@ -613,10 +611,8 @@ OaksLabScript16:
 	xor a ; NPC_MOVEMENT_DOWN
 	call FillMemory
 	ld [hl], $ff
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-	call PlaySound
-	farcall Music_RivalAlternateStart
+	ld de, MUSIC_RIVAL_AFTER
+	call PlayMusic2
 	ld a, $1
 	ldh [hSpriteIndex], a
 	ld de, wNPCMovementDirections2
@@ -630,7 +626,7 @@ OaksLabScript17:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ld a, HS_OAKS_LAB_RIVAL
 	ld [wMissableObjectIndex], a
 	predef HideObject

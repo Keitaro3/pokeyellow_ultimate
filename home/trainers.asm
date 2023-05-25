@@ -344,19 +344,20 @@ EngageMapTrainer::
 	add hl, de     ; seek to engaged trainer data
 	ld a, [hli]    ; load trainer class
 	ld [wEngagedTrainerClass], a
+	ld e, a
 	ld a, [hl]     ; load trainer mon set
 	bit 7, a
 	jr nz, .pokemon
 	ld [wEngagedTrainerSet], a
 	ld a, 1
 	ld [wIsTrainerBattle], a
-	jp PlayTrainerMusic
+	farjp PlayTrainerEncounterMusic
 .pokemon
 	and $7F
 	ld [wEngagedTrainerSet], a
 	xor a
 	ld [wIsTrainerBattle], a
-	jp PlayTrainerMusic
+	farjp PlayTrainerEncounterMusic
 
 PrintEndBattleText::
 	push hl
@@ -379,7 +380,7 @@ PrintEndBattleText::
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	farcall FreezeEnemyTrainerSprite
-	jp WaitForSoundToFinish
+	jp WaitSFX
 
 GetSavedEndBattleTextPointer::
 	ld a, [wBattleResult]
@@ -404,49 +405,3 @@ TrainerEndBattleText::
 	call GetSavedEndBattleTextPointer
 	call TextCommandProcessor
 	jp TextScriptEnd
-
-PlayTrainerMusic::
-	ld a, [wEngagedTrainerClass]
-	cp RIVAL1
-	ret z
-	cp RIVAL2
-	ret z
-	cp RIVAL3
-	ret z
-	ld a, [wGymLeaderNo]
-	and a
-	ret nz
-	xor a
-	ld [wAudioFadeOutControl], a
-	call StopAllMusic
-	ld a, BANK(Music_MeetEvilTrainer)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	ld a, [wEngagedTrainerClass]
-	ld b, a
-	ld hl, EvilTrainerList
-.evilTrainerListLoop
-	ld a, [hli]
-	cp $ff
-	jr z, .noEvilTrainer
-	cp b
-	jr nz, .evilTrainerListLoop
-	ld a, MUSIC_MEET_EVIL_TRAINER
-	jr .PlaySound
-.noEvilTrainer
-	ld hl, FemaleTrainerList
-.femaleTrainerListLoop
-	ld a, [hli]
-	cp $ff
-	jr z, .maleTrainer
-	cp b
-	jr nz, .femaleTrainerListLoop
-	ld a, MUSIC_MEET_FEMALE_TRAINER
-	jr .PlaySound
-.maleTrainer
-	ld a, MUSIC_MEET_MALE_TRAINER
-.PlaySound
-	ld [wNewSoundID], a
-	jp PlaySound
-
-INCLUDE "data/trainers/encounter_types.asm"

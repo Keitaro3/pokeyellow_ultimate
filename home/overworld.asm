@@ -279,6 +279,8 @@ OverworldLoopLessDelay::
 	and a
 	jr z, AllPokemonFainted
 .noFaintCheck
+	ld a, 1
+	ld [wWasInBattle], a
 	ld c, 10
 	call DelayFrames
 	jp EnterMap
@@ -451,8 +453,6 @@ WarpFound2::
 ; this is for handling "outside" maps that can't have the 0xFF destination map
 	ld a, [wCurMap]
 	ld [wLastMap], a
-	ld a, [wCurMapWidth]
-	ld [wUnusedD366], a ; not read
 	ldh a, [hWarpDestinationMap]
 	ld [wCurMap], a
 	cp ROCK_TUNNEL_1F
@@ -631,7 +631,7 @@ CheckMapConnections::
 	ld [wCurrentTileBlockMapViewPointer + 1], a
 .loadNewMap ; load the connected map that was entered
 	call LoadMapHeader
-	call PlayDefaultMusicFadeOutCurrent
+	call FadeToMapMusic
 	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
 ; Since the sprite set shouldn't change, this will just update VRAM slots at
@@ -653,12 +653,12 @@ PlayMapChangeSound::
 	lda_coord 8, 8 ; upper left tile of the 4x4 square the player's sprite is standing on
 	cp $0b ; door tile in tileset 0
 	jr nz, .didNotGoThroughDoor
-	ld a, SFX_GO_INSIDE
-	jr .playSound
+	ld de, SFX_GO_INSIDE
+	jr .playSFX
 .didNotGoThroughDoor
-	ld a, SFX_GO_OUTSIDE
-.playSound
-	call PlaySound
+	ld de, SFX_GO_OUTSIDE
+.playSFX
+	call PlaySFX
 	ld a, [wMapPalOffset]
 	and a
 	ret nz
@@ -728,17 +728,20 @@ HandleBlackOut::
 	call BankswitchCommon
 	callfar ResetStatusAndHalveMoneyOnBlackout
 	call SpecialWarpIn
-	call PlayDefaultMusicFadeOutCurrent
+	;call FadeToMapMusic
 	jp SpecialEnterMap
 
 StopMusic::
-	ld [wAudioFadeOutControl], a
-	call StopAllMusic
+	ld [wMusicFade], a
+	ld e, LOW(MUSIC_NONE)
+	ld a, [wMusicFadeID]
+	ld d, HIGH(MUSIC_NONE)
+	ld a, [wMusicFadeID + 1]
 .wait
-	ld a, [wAudioFadeOutControl]
+	ld a, [wMusicFade]
 	and a
 	jr nz, .wait
-	jp StopAllSounds
+	jp InitSound
 
 HandleFlyWarpOrDungeonWarp::
 	call UpdateSprites
@@ -769,7 +772,7 @@ Func_07c4::
 	ld hl, wd732
 	bit 4, [hl]
 	ret z
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ret
 
 LoadPlayerSpriteGraphics::
@@ -1215,12 +1218,10 @@ CollisionCheckOnLand::
 	call CheckTilePassable
 	jr nc, .noCollision
 .collision
-	ld a, [wChannelSoundIDs + CHAN5]
-	cp SFX_COLLISION ; check if collision sound is already playing
-	jr z, .setCarry
-	ld a, SFX_COLLISION
-	call PlaySound ; play collision sound (if it's not already playing)
-.setCarry
+	call CheckSFX
+	ret c
+	ld de, SFX_COLLISION
+	call PlaySFX
 	scf
 	ret
 .noCollision
@@ -1644,12 +1645,10 @@ CollisionCheckOnWater::
 	call IsTilePassable
 	jr nc, .stopSurfing
 .collision
-	ld a, [wChannelSoundIDs + CHAN5]
-	cp SFX_COLLISION ; check if collision sound is already playing
-	jr z, .setCarry
-	ld a, SFX_COLLISION
-	call PlaySound ; play collision sound (if it's not already playing)
-.setCarry
+	call CheckSFX
+	ret c
+	ld de, SFX_COLLISION
+	call PlaySFX
 	scf
 	jr .done
 .checkIfVermilionDockTileset
@@ -1661,7 +1660,7 @@ CollisionCheckOnWater::
 	xor a
 	ld [wWalkBikeSurfState], a
 	call LoadPlayerSpriteGraphics
-	call PlayDefaultMusic
+	call RestartMapMusic
 	jr .noCollision
 
 .noCollision ; ...and they do the same mistake twice
@@ -1762,9 +1761,9 @@ LoadMapHeader::
 	bit 7, b
 	ret nz
 	call GetMapHeaderPointer
-; copy the first 10 bytes (the fixed area) of the map data to D367-D370
-	ld de, wCurMapTileset
-	ld c, $0a
+; copy the first 11 bytes (the fixed area) of the map data to D366-D370
+	ld de, wCurMapSong
+	ld c, $0b
 .copyFixedHeaderLoop
 	ld a, [hli]
 	ld [de], a
@@ -1851,22 +1850,6 @@ LoadMapHeader::
 	ld a, [wCurMapWidth] ; map width in 4x4 tile blocks
 	add a ; double it
 	ld [wCurrentMapWidth2], a ; map width in 2x2 tile blocks
-	ld a, [wCurMap]
-	ld c, a
-	ld b, $00
-	ldh a, [hLoadedROMBank]
-	push af
-	ld a, BANK(MapSongBanks)
-	call BankswitchCommon
-	ld hl, MapSongBanks
-	add hl, bc
-	add hl, bc
-	ld a, [hli]
-	ld [wMapMusicSoundID], a ; music 1
-	ld a, [hl]
-	ld [wMapMusicROMBank], a ; music 2
-	pop af
-	call BankswitchCommon
 	ret
 
 ; function to copy map connection data from ROM to WRAM
@@ -1924,8 +1907,15 @@ LoadMapData::
 	ld a, [wFlags_D733]
 	bit 1, a
 	jr nz, .restoreRomBank
-	call UpdateMusic6Times ; music related
-	call PlayDefaultMusicFadeOutCurrent ; music related
+	ld a, [wWasInBattle]
+	cp 1
+	jr z, .returnFromBattle	
+	call FadeToMapMusic ; music related
+	jr .restoreRomBank
+.returnFromBattle
+	xor a
+	ld [wWasInBattle], a
+	call ForceMapMusic	
 .restoreRomBank
 	pop af
 	call BankswitchCommon
@@ -2059,7 +2049,7 @@ ForceBikeOrSurf::
 	ld b, BANK(RedSprite)
 	ld hl, LoadPlayerSpriteGraphics ; in bank 0
 	call Bankswitch
-	jp PlayDefaultMusic ; update map/player state?
+	jp RestartMapMusic ; update map/player state?
 
 ; Handle the player jumping down
 ; a ledge in the overworld.
@@ -2268,3 +2258,20 @@ LoadDestinationWarpPosition::
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a
 	ret
+	
+GetMapMusic::
+	ld a,[wCurMapSong]
+	ld e, a
+	ld d, 0
+	ret
+	
+ForceMapMusic:
+	ld a, [wWalkBikeSurfState]
+	cp $1 ;PLAYER_BIKE
+	jr nz, .notbiking
+	call MinVolume
+	ld a, $88
+	ld [wMusicFade], a
+.notbiking
+	call TryRestartMapMusic
+	ret	

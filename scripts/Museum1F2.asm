@@ -67,9 +67,9 @@ Func_f1c1b::
 	ld a, $13
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
-	ld a, SFX_PURCHASE
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
+	ld de, SFX_PURCHASE
+	call WaitPlaySFX
+	call WaitSFX
 	jr .asm_f1cd7
 
 .asm_f1cbf

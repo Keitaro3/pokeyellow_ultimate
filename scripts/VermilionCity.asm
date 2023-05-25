@@ -239,8 +239,8 @@ VermilionCityText5:
 	text_far _VermilionCityText5
 	text_asm
 	ld a, MACHOP
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	ld hl, VermilionCityText14
 	ret
 

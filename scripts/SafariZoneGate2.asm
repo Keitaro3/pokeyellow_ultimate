@@ -44,9 +44,9 @@ Func_f1f77::
 	ld de, wPlayerMoney + 2
 	ld c, 3
 	predef SubBCDPredef
-	ld a, SFX_PURCHASE
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
+	ld de, SFX_PURCHASE
+	call WaitPlaySFX
+	call WaitSFX
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID

@@ -22,11 +22,10 @@ Route25Script_515e1:
 	ResetEventReuseHL EVENT_BILL_SAID_USE_CELL_SEPARATOR
 	ld a, HS_BILL_POKEMON
 	ld [wMissableObjectIndex], a
-	predef ShowObject
-	jr .asm_5165c
+	predef_jump ShowObject
 .asm_51638
 	CheckEventAfterBranchReuseHL EVENT_GOT_SS_TICKET, EVENT_MET_BILL_2
-	jr z, .asm_5165c
+	ret z
 	SetEventReuseHL EVENT_LEFT_BILLS_HOUSE_AFTER_HELPING
 	ld a, HS_NUGGET_BRIDGE_GUY
 	ld [wMissableObjectIndex], a
@@ -36,9 +35,7 @@ Route25Script_515e1:
 	predef HideObject
 	ld a, HS_BILL_2
 	ld [wMissableObjectIndex], a
-	predef ShowObject
-.asm_5165c
-	ret
+	predef_jump ShowObject
 
 Route25_ScriptPointers:
 	dw CheckFightingMapTrainers

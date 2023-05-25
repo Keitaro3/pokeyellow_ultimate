@@ -1,5 +1,5 @@
 SoftReset::
-	call StopAllSounds
+	call InitSound
 	call GBPalWhiteOut
 	ld c, 32
 	call DelayFrames
@@ -70,8 +70,6 @@ DEF rLCDC_DEFAULT EQU %11100011
 	ldh [hSCX], a
 	ldh [hSCY], a
 	ldh [rIF], a
-	ld [wc0f3], a
-	ld [wc0f3 + 1], a
 	ld a, 1 << VBLANK + 1 << TIMER + 1 << SERIAL
 	ldh [rIE], a
 
@@ -93,15 +91,15 @@ DEF rLCDC_DEFAULT EQU %11100011
 	ldh [rLCDC], a
 	ld a, 16
 	ldh [hSoftReset], a
-	call StopAllSounds
 
 	ei
 
 	predef LoadSGB
 
-	ld a, BANK(SFX_Shooting_Star)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
+	call InitSound
+	xor a
+	ld [wMapMusic], a
+
 	ld a, $9c
 	ldh [hAutoBGTransferDest + 1], a
 	xor a
@@ -125,14 +123,3 @@ ClearVram::
 	ld bc, VRAM_End - VRAM_Begin
 	xor a
 	jp FillMemory
-
-
-StopAllSounds::
-	ld a, BANK("Audio Engine 1")
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	xor a
-	ld [wAudioFadeOutControl], a
-	ld [wNewSoundID], a
-	ld [wLastMusicSoundID], a
-	jp StopAllMusic

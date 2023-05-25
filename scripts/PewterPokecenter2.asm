@@ -13,7 +13,8 @@ PewterJigglypuff::
 	ld hl, .JigglypuffText
 	call PrintText
 
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 	ld c, 32
 	call DelayFrames
 
@@ -31,8 +32,7 @@ PewterJigglypuff::
 	dec hl
 
 	push hl
-	ld c, BANK(Music_JigglypuffSong)
-	ld a, MUSIC_JIGGLYPUFF_SONG
+	ld de, MUSIC_JIGGLYPUFF_SONG
 	call PlayMusic
 	pop hl
 
@@ -50,15 +50,15 @@ PewterJigglypuff::
 	pop hl
 	ld c, 24
 	call DelayFrames
-	ld a, [wChannelSoundIDs]
+	ld a, [wChannel1MusicID]
 	ld b, a
-	ld a, [wChannelSoundIDs + CHAN2]
+	ld a, [wChannel2MusicID]
 	or b
 	jr nz, .spinMovementLoop
 
 	ld c, 48
 	call DelayFrames
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ret
 
 .JigglypuffText:

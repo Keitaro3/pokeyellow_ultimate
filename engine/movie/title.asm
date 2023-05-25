@@ -12,9 +12,6 @@ SetDefaultNamesBeforeTitlescreen::
 	ld [hli], a
 	ld [hli], a
 	ld [hl], a
-	ld a, BANK(Music_TitleScreen)
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
 
 DisplayTitleScreen:
 	call GBPalWhiteOut
@@ -146,8 +143,10 @@ DisplayTitleScreen:
 	ld d, a
 	cp -3
 	jr nz, .skipPlayingSound
-	ld a, SFX_INTRO_CRASH
-	call PlaySound
+	push de
+	ld de, SFX_INTRO_CRASH
+	call PlaySFX
+	pop de
 .skipPlayingSound
 	ld a, [hli]
 	ld e, a
@@ -180,8 +179,8 @@ DisplayTitleScreen:
 	call LoadScreenTilesFromBuffer1
 	ld c, 36
 	call DelayFrames
-	ld a, SFX_INTRO_WHOOSH
-	call PlaySound
+	ld de, SFX_INTRO_WHOOSH
+	call PlaySFX
 
 ; scroll game version in from the right
 	call PrintGameVersionOnTitleScreen
@@ -206,12 +205,9 @@ DisplayTitleScreen:
 	call LoadScreenTilesFromBuffer2
 	call PrintGameVersionOnTitleScreen
 	call Delay3
-	call WaitForSoundToFinish
-	ld a, MUSIC_TITLE_SCREEN
-	ld [wNewSoundID], a
-	call PlaySound
-	xor a
-	ld [wUnusedCC5B], a
+	call WaitSFX
+	ld de, MUSIC_TITLE_SCREEN
+	call PlayMusic
 
 ; Keep scrolling in new mons indefinitely until the user performs input.
 .awaitUserInterruptionLoop
@@ -228,8 +224,8 @@ DisplayTitleScreen:
 
 .finishedWaiting
 	ld a, [wTitleMonSpecies]
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	call GBPalWhiteOutWithDelay3
 	call ClearSprites
 	xor a

@@ -85,8 +85,8 @@ FanClubText3:
 	ld hl, .text
 	call PrintText
 	ld a, PIKACHU
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	jp TextScriptEnd
 
 .text
@@ -100,7 +100,7 @@ FanClubText4:
 	call PrintText
 	ld a, SEEL
 	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
 	jp TextScriptEnd
 
 .text

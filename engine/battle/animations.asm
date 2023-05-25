@@ -229,7 +229,6 @@ PlayAnimation:
 	push hl
 	push de
 	call GetMoveSound
-	call PlaySound
 	pop de
 	pop hl
 .skipPlayingSound
@@ -420,7 +419,7 @@ MoveAnimation:
 	push de
 	push bc
 	push af
-	call WaitForSoundToFinish
+	call WaitSFX
 	call SetAnimationPalette
 	ld a, [wAnimationID]
 	and a
@@ -448,7 +447,7 @@ MoveAnimation:
 	vc_hook Stop_reducing_move_anim_flashing_Reflect
 	call PlayApplyingAttackAnimation ; shake the screen or flash the pic in and out (to show damage)
 .animationFinished
-	call WaitForSoundToFinish
+	call WaitSFX
 	xor a
 	vc_hook Stop_reducing_move_anim_flashing_Haze_Hyper_Beam
 	ld [wSubAnimSubEntryAddr], a
@@ -621,7 +620,6 @@ PlaySubanimation:
 	cp NO_MOVE - 1
 	jr z, .skipPlayingSound
 	call GetMoveSound
-	call PlaySound
 .skipPlayingSound
 	ld hl, wShadowOAM
 	ld a, l
@@ -735,8 +733,8 @@ DoBallTossSpecialEffects:
 	cp 11 ; is it the beginning of the subanimation?
 	jr nz, .skipPlayingSound
 ; if it is the beginning of the subanimation, play a sound
-	ld a, SFX_BALL_TOSS
-	call PlaySound
+	ld de, SFX_BALL_TOSS
+	call PlaySFX
 .skipPlayingSound
 	ld a, [wIsInBattle]
 	cp 2 ; is it a trainer battle?
@@ -781,8 +779,8 @@ DoBallShakeSpecialEffects:
 	cp 4 ; is it the beginning of a shake?
 	jr nz, .skipPlayingSound
 ; if it is the beginning of a shake, play a sound and wait 2/3 of a second
-	ld a, SFX_TINK
-	call PlaySound
+	ld de, SFX_TINK
+	call PlaySFX
 	ld c, 40
 	call DelayFrames
 .skipPlayingSound
@@ -814,8 +812,8 @@ DoPoofSpecialEffects:
 	ld a, [wSubAnimCounter]
 	cp 5
 	ret nz
-	ld a, SFX_BALL_POOF
-	jp PlaySound
+	ld de, SFX_BALL_POOF
+	jp PlaySFX
 
 DoRockSlideSpecialEffects:
 	ld a, [wSubAnimCounter]
@@ -915,8 +913,8 @@ TradeShakePokeball:
 	jr .loop
 .done
 	call AnimationCleanOAM
-	ld a, SFX_TRADE_MACHINE
-	jp PlaySound
+	ld de, SFX_TRADE_MACHINE
+	jp PlaySFX
 
 BallMoveDistances1:
 	db -12, -12, -8
@@ -942,12 +940,12 @@ TradeJumpPokeball:
 	push de
 	ld a, [de]
 	cp 12
-	jr z, .playSound
+	jr z, .playSFX
 	cp $ff
 	jr nz, .skipPlayingSound
-.playSound ; play sound if next move distance is 12 or this is the last one
-	ld a, SFX_SWAP
-	call PlaySound
+.playSFX ; play sound if next move distance is 12 or this is the last one
+	ld de, SFX_SWAP
+	call PlaySFX
 .skipPlayingSound
 	push bc
 	ld c, 5
@@ -2350,24 +2348,16 @@ AnimCopyRowRight:
 	jr nz, AnimCopyRowRight
 	ret
 
-; get the sound of the move id in b
-GetMoveSoundB:
-	ld a, b
-	call GetMoveSound
-	ld b, a
-	ret
-
 GetMoveSound:
 	ld hl, MoveSoundTable
 	ld e, a
 	ld d, 0
 	add hl, de
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld b, a
+	ld a, [hl]
+	ld e, a
+	ld d, 0
 	call IsCryMove
-	jr nc, .NotCryMove
+	jr nc, .done
 	ldh a, [hWhoseTurn]
 	and a
 	jr nz, .next
@@ -2376,25 +2366,23 @@ GetMoveSound:
 .next
 	ld a, [wEnemyMonSpecies]
 .Continue
-	push hl
-	call GetCryData
-	ld b, a
-	pop hl
-	ld a, [wFrequencyModifier]
-	add [hl]
-	ld [wFrequencyModifier], a
-	inc hl
-	ld a, [wTempoModifier]
-	add [hl]
-	ld [wTempoModifier], a
-	jr .done
-.NotCryMove
-	ld a, [hli]
-	ld [wFrequencyModifier], a
-	ld a, [hli]
-	ld [wTempoModifier], a
+	ld [wCryPitch], a
+	farcall LoadCry
+	ld a, [wAnimationID]
+	cp GROWL
+	jr z, .notRoar
+	ld b, $40
+	jr .setTempo
+.notRoar
+	ld b, $c0
+.setTempo	
+	ld a, [wCryLength]
+	add b
+	ld [wCryLength], a
+	farcall _PlayCry
+	ret
 .done
-	ld a, b
+	call PlaySFX
 	ret
 
 IsCryMove:
@@ -2825,8 +2813,8 @@ TossBallAnimation:
 	ld a, TOSS_ANIM
 	ld [wAnimationID], a
 	call PlayAnimation
-	ld a, SFX_FAINT_THUD
-	call PlaySound
+	ld de, SFX_FAINT_THUD
+	call PlaySFX
 	ld a, BLOCKBALL_ANIM
 	ld [wAnimationID], a
 	jp PlayAnimation
@@ -2834,25 +2822,17 @@ TossBallAnimation:
 PlayApplyingAttackSound:
 ; play a different sound depending if move is not very effective, neutral, or super-effective
 ; don't play any sound at all if move is ineffective
-	call WaitForSoundToFinish
+	call WaitSFX
 	ld a, [wDamageMultipliers]
 	and $7f
 	ret z
 	cp 10
-	ld a, $20
-	ld b, $30
 	ld c, SFX_DAMAGE
-	jr z, .playSound
-	ld a, $e0
-	ld b, $ff
+	jr z, .playSFX
 	ld c, SFX_SUPER_EFFECTIVE
-	jr nc, .playSound
-	ld a, $50
-	ld b, $1
+	jr nc, .playSFX
 	ld c, SFX_NOT_VERY_EFFECTIVE
-.playSound
-	ld [wFrequencyModifier], a
-	ld a, b
-	ld [wTempoModifier], a
-	ld a, c
-	jp PlaySound
+.playSFX
+	ld e, c
+	ld d, 0
+	jp PlaySFX

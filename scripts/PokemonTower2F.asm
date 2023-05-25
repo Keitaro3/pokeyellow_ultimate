@@ -26,10 +26,8 @@ ENDC
 	ld hl, CoordsData_6055e
 	call ArePlayerCoordsInArray
 	ret nc
-	call StopAllMusic
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
-	call PlayMusic
+	ld de, MUSIC_MEET_RIVAL
+	call PlayMusic2
 	ResetEvent EVENT_POKEMON_TOWER_RIVAL_ON_LEFT
 	ld a, [wCoordIndex]
 	cp $1
@@ -80,8 +78,8 @@ PokemonTower2Script1:
 	ld a, $1
 	ldh [hSpriteIndex], a
 	call MoveSprite
-	call StopAllMusic
-	farcall Music_RivalAlternateStart
+	ld de, MUSIC_RIVAL_AFTER
+	call PlayMusic2
 	ld a, $2
 	ld [wPokemonTower2FCurScript], a
 	ld [wCurMapScript], a
@@ -118,7 +116,7 @@ PokemonTower2Script2:
 	predef HideObject
 	xor a
 	ld [wJoyIgnore], a
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ld a, $0
 	ld [wPokemonTower2FCurScript], a
 	ld [wCurMapScript], a

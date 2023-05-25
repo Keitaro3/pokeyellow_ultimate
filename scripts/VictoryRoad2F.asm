@@ -140,8 +140,8 @@ MoltresBattleText:
 	text_far _MoltresBattleText
 	text_asm
 	ld a, MOLTRES
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	jp TextScriptEnd
 
 VictoryRoad2BattleText1:

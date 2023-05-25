@@ -92,9 +92,9 @@ ManualTextScroll::
 	cp LINK_STATE_BATTLING
 	jr z, .inLinkBattle
 	call WaitForTextScrollButtonPress
-	call WaitForSoundToFinish
-	ld a, SFX_PRESS_AB
-	jp PlaySound
+	call WaitSFX
+	ld de, SFX_PRESS_AB
+	jp PlaySFX
 .inLinkBattle
 	ld c, 65
 	jp DelayFrames

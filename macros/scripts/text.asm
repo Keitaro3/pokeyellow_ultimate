@@ -83,9 +83,6 @@ MACRO sound_get_item_1
 	db TX_SOUND_GET_ITEM_1
 ENDM
 
-DEF TX_SOUND_LEVEL_UP EQU TX_SOUND_GET_ITEM_1
-DEF sound_level_up EQUS "sound_get_item_1"
-
 	const TX_DOTS ; $0c
 MACRO text_dots
 	db TX_DOTS
@@ -97,14 +94,14 @@ MACRO text_waitbutton
 	db TX_WAIT_BUTTON
 ENDM
 
-	const TX_SOUND_POKEDEX_RATING ; $0e
-MACRO sound_pokedex_rating
-	db TX_SOUND_POKEDEX_RATING
+	const TX_SOUND_GET_BADGE ; $0e
+MACRO sound_get_badge
+	db TX_SOUND_GET_BADGE
 ENDM
 
-	const TX_SOUND_GET_ITEM_1_DUPLICATE ; $0f
-MACRO sound_get_item_1_duplicate
-	db TX_SOUND_GET_ITEM_1_DUPLICATE
+	const TX_SOUND_GET_TM ; $0f
+MACRO sound_get_tm
+	db TX_SOUND_GET_TM
 ENDM
 
 	const TX_SOUND_GET_ITEM_2 ; $10
@@ -137,9 +134,9 @@ MACRO sound_cry_pidgeot
 	db TX_SOUND_CRY_PIDGEOT
 ENDM
 
-	const TX_SOUND_CRY_DEWGONG ; $16
-MACRO sound_cry_dewgong
-	db TX_SOUND_CRY_DEWGONG
+	const TX_SOUND_LEVEL_UP ; $16
+MACRO sound_level_up
+	db TX_SOUND_LEVEL_UP
 ENDM
 
 	const TX_FAR ; $17

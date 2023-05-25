@@ -20,8 +20,8 @@ ViridianHouseText3:
 	ld hl, ViridianHouseText_1d5b1
 	call PrintText
 	ld a, SPEAROW
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	jp TextScriptEnd
 
 ViridianHouseText_1d5b1:

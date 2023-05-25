@@ -158,7 +158,6 @@ SECTION "Battle Engine 6", ROMX
 
 INCLUDE "data/moves/moves.asm"
 INCLUDE "data/pokemon/base_stats.asm"
-INCLUDE "data/pokemon/cries.asm"
 INCLUDE "engine/battle/draw_hud_pokeball_gfx.asm"
 INCLUDE "gfx/trade.asm"
 INCLUDE "engine/pokemon/evos_moves.asm"
@@ -304,6 +303,11 @@ INCLUDE "data/battle_anims/subanimations.asm"
 INCLUDE "data/battle_anims/frame_blocks.asm"
 
 
+Section "Surfing Pikachu GFX", ROMX
+
+INCLUDE "gfx/surfing_pikachu.asm"
+
+
 SECTION "BG Map Attributes (Debug)", ROMX
 
 IF DEF(_DEBUG)
@@ -374,7 +378,6 @@ INCLUDE "engine/pokemon/happiness.asm"
 SECTION "Battle Engine 9", ROMX
 
 INCLUDE "engine/menus/link_menu.asm"
-INCLUDE "engine/menus/unused_input.asm"
 INCLUDE "engine/overworld/field_move_messages.asm"
 INCLUDE "engine/items/inventory.asm"
 INCLUDE "gfx/trainer_card.asm"
@@ -405,6 +408,5 @@ INCLUDE "engine/gfx/animated_objects.asm"
 
 SECTION "Map Header Pointers", ROMX
 
-INCLUDE "data/maps/songs.asm"
 INCLUDE "data/maps/map_header_pointers.asm"
 INCLUDE "data/maps/map_header_banks.asm"

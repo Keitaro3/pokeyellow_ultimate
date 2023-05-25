@@ -158,8 +158,8 @@ ArticunoBattleText:
 	text_far _ArticunoBattleText
 	text_asm
 	ld a, ARTICUNO
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	jp TextScriptEnd
 
 SeafoamIslands5Text4:

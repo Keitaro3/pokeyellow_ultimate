@@ -11,8 +11,8 @@ PewterHouse1Text1:
 	text_far _PewterHouse1Text1
 	text_asm
 	ld a, NIDORAN_M
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	jp TextScriptEnd
 
 PewterHouse1Text2:

@@ -81,7 +81,7 @@ SSAnne10Text8:
 	text_far _SSAnne10Text8
 	text_asm
 	ld a, MACHOKE
-	call PlayCry
+	call PlayMonCry
 	jp TextScriptEnd
 
 SSAnne10BattleText1:

@@ -29,16 +29,11 @@ SafariZoneGameStillGoing:
 
 SafariZoneGameOver:
 	call EnableAutoTextBoxDrawing
-	xor a
-	ld [wAudioFadeOutControl], a
-	call StopAllMusic
-	ld c, BANK(SFX_Safari_Zone_PA)
-	ld a, SFX_SAFARI_ZONE_PA
+	ld de, MUSIC_NONE
 	call PlayMusic
-.waitForMusicToPlay
-	ld a, [wChannelSoundIDs + CHAN5]
-	cp SFX_SAFARI_ZONE_PA
-	jr nz, .waitForMusicToPlay
+	ld de, SFX_SAFARI_ZONE_PA
+	call PlaySFX
+	call WaitSFX
 	ld a, TEXT_SAFARI_GAME_OVER
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID

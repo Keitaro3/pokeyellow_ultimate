@@ -40,10 +40,8 @@ VermilionDock_1db9b:
 	SetEventForceReuseHL EVENT_SS_ANNE_LEFT
 	ld a, $ff
 	ld [wJoyIgnore], a
-	call StopAllMusic
-	ld c, BANK(Music_Surfing)
-	ld a, MUSIC_SURFING
-	call PlayMusic
+	ld de, MUSIC_SURFING
+	call PlayMusic2
 	farcall LoadSmokeTileFourTimes
 	xor a
 	ld [wSpritePlayerStateData1ImageIndex], a
@@ -71,8 +69,8 @@ VermilionDock_1db9b:
 	ld b, [hl]
 	push bc
 	push hl
-	ld a, SFX_SS_ANNE_HORN
-	call PlaySoundWaitForCurrent
+	ld de, SFX_SS_ANNE_HORN
+	call WaitPlaySFX
 	ld a, $ff
 	ld [wUpdateSpritesEnabled], a
 	ld d, $0
@@ -202,8 +200,8 @@ VermilionDock_EraseSSAnne:
 	ld [hli], a
 	ld [hl], a
 
-	ld a, SFX_SS_ANNE_HORN
-	call PlaySound
+	ld de, SFX_SS_ANNE_HORN
+	call PlaySFX
 	ld c, 120
 	call DelayFrames
 	ret

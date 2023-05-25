@@ -57,17 +57,13 @@ VBlank::
 	ldh [hFrameCounter], a
 
 .skipDec
-	call FadeOutAudio
-
-	ld a, BANK(Music_DoLowHealthAlarm)
-	call BankswitchCommon
-	call Music_DoLowHealthAlarm
-	ld a, BANK(Audio1_UpdateMusic)
-	call BankswitchCommon
-	call Audio1_UpdateMusic
-
 	call SerialFunction
 
+	ld a, BANK(_UpdateSound)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+	call _UpdateSound
+	
 	ld a, [wVBlankSavedROMBank]
 	ldh [hLoadedROMBank], a
 	ld [MBC1RomBank], a

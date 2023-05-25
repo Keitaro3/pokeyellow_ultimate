@@ -1,10 +1,8 @@
 BillsHouse_Script:
-	call BillsHouseScript_1e09e
 	call EnableAutoTextBoxDrawing
 	ld a, [wBillsHouseCurScript]
 	ld hl, BillsHouse_ScriptPointers
-	call CallFunctionInTable
-	ret
+	jp CallFunctionInTable
 
 BillsHouse_ScriptPointers:
 	dw BillsHouseScript0
@@ -13,24 +11,6 @@ BillsHouse_ScriptPointers:
 	dw BillsHouseScript3
 	dw BillsHouseScript4
 	dw BillsHouseScript5
-	dw BillsHouseScript6
-	dw BillsHouseScript7
-	dw BillsHouseScript8
-
-BillsHouseScript_1e09e:
-	CheckEventHL EVENT_MET_BILL_2
-	jr z, .asm_1e0af
-	jr .asm_1e0b3
-
-.asm_1e0af
-	ld a, $1
-	jr .asm_1e0b5
-
-.asm_1e0b3
-	ld a, $9
-.asm_1e0b5
-	ld [wBillsHouseCurScript], a
-	ret
 
 BillsHouseScript0:
 	ret
@@ -81,13 +61,8 @@ BillsHouseScript2:
 BillsHouseScript3:
 	CheckEvent EVENT_USED_CELL_SEPARATOR_ON_BILL
 	ret z
-	ld a, $fc
+	ld a, $f0
 	ld [wJoyIgnore], a
-	ld a, $4
-	ld [wBillsHouseCurScript], a
-	ret
-
-BillsHouseScript4:
 	ld a, $2
 	ld [wSpriteIndex], a
 	ld a, $c
@@ -108,7 +83,7 @@ BillsHouseScript4:
 	ldh [hSpriteIndex], a
 	ld de, MovementData_1e807
 	call MoveSprite
-	ld a, $5
+	ld a, $4
 	ld [wBillsHouseCurScript], a
 	ret
 
@@ -120,60 +95,24 @@ MovementData_1e807:
 	db NPC_MOVEMENT_DOWN
 	db -1 ; end
 
-BillsHouseScript5:
+BillsHouseScript4:
 	ld a, [wd730]
 	bit 0, a
 	ret nz
+	xor a
+	ld [wJoyIgnore], a
 	SetEvent EVENT_MET_BILL_2 ; this event seems redundant
 	SetEvent EVENT_MET_BILL
-	ld a, $6
+	ld a, $0
 	ld [wBillsHouseCurScript], a
 	ret
 
-BillsHouseScript6:
-	xor a
-	ld [wPlayerMovingDirection], a
-	ld a, SPRITE_FACING_UP
-	ld [wSpritePlayerStateData1FacingDirection], a
-	ld a, ~(A_BUTTON | B_BUTTON)
-	ld [wJoyIgnore], a
-	ld de, RLE_1e219
-	ld hl, wSimulatedJoypadStatesEnd
-	call DecodeRLEList
-	dec a
-	ld [wSimulatedJoypadStatesIndex], a
-	call StartSimulatingJoypadStates
-	ld a, $7
-	ld [wBillsHouseCurScript], a
-	ret
-
-RLE_1e219:
-	db D_RIGHT, $3
-	db $FF
-
-BillsHouseScript7:
-	ld a, [wSimulatedJoypadStatesIndex]
-	and a
-	ret nz
-	xor a
-	ld [wPlayerMovingDirection], a
-	ld a, SPRITE_FACING_UP
-	ld [wSpritePlayerStateData1FacingDirection], a
-	ld a, $2
-	ldh [hSpriteIndex], a
-	ld a, SPRITE_FACING_DOWN
-	ldh [hSpriteFacingDirection], a
-	call SetSpriteFacingDirectionAndDelay
-	xor a
-	ld [wJoyIgnore], a
-	ld a, $2
+BillsHouseScript5:
+	ld a, $4
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	ld a, $8
+	ld a, $0
 	ld [wBillsHouseCurScript], a
-	ret
-
-BillsHouseScript8:
 	ret
 
 BillsHouse_TextPointers:
@@ -183,20 +122,93 @@ BillsHouse_TextPointers:
 	dw BillsHouseText4
 
 BillsHouseText4:
-	text_far _BillsHouseDontLeaveText
-	text_end
+	script_bills_pc
 
 BillsHouseText1:
 	text_asm
-	farcall Func_f2418
+	ld hl, BillsHouseText_1e865
+	call PrintText
+	call YesNoChoice
+	ld a, [wCurrentMenuItem]
+	and a
+	jr nz, .asm_1e85a
+.asm_1e84d
+	ld hl, BillsHouseText_1e86a
+	call PrintText
+	ld a, $1
+	ld [wBillsHouseCurScript], a
+	jr .asm_1e862
+.asm_1e85a
+	ld hl, BillsHouseText_1e86f
+	call PrintText
+	jr .asm_1e84d
+.asm_1e862
 	jp TextScriptEnd
+
+BillsHouseText_1e865:
+	text_far _BillsHouseText_1e865
+	text_end
+
+BillsHouseText_1e86a:
+	text_far _BillsHouseText_1e86a
+	text_end
+
+BillsHouseText_1e86f:
+	text_far _BillsHouseText_1e86f
+	text_end
 
 BillsHouseText2:
 	text_asm
-	farcall Func_f244a
+	CheckEvent EVENT_GOT_SS_TICKET
+	jr nz, .asm_1e8a9
+	ld hl, BillThankYouText
+	call PrintText
+	lb bc, S_S_TICKET, 1
+	call GiveItem
+	jr nc, .BagFull
+	ld hl, SSTicketReceivedText
+	call PrintText
+	SetEvent EVENT_GOT_SS_TICKET
+	ld a, HS_CERULEAN_GUARD_1
+	ld [wMissableObjectIndex], a
+	predef ShowObject
+	ld a, HS_CERULEAN_GUARD_2
+	ld [wMissableObjectIndex], a
+	predef HideObject
+.asm_1e8a9
+	ld hl, BillsHouseText_1e8cb
+	call PrintText
+	jr .asm_1e8b7
+.BagFull
+	ld hl, SSTicketNoRoomText
+	call PrintText
+.asm_1e8b7
 	jp TextScriptEnd
+
+BillThankYouText:
+	text_far _BillThankYouText
+	text_end
+
+SSTicketReceivedText:
+	text_far _SSTicketReceivedText
+	sound_get_key_item
+	text_promptbutton
+	text_end
+
+SSTicketNoRoomText:
+	text_far _SSTicketNoRoomText
+	text_end
+
+BillsHouseText_1e8cb:
+	text_far _BillsHouseText_1e8cb
+	text_end
 
 BillsHouseText3:
 	text_asm
-	farcall Func_f24a2
+	ld hl, BillsHouseText_1e8da
+	call PrintText
 	jp TextScriptEnd
+
+BillsHouseText_1e8da:
+	text_far _BillsHouseText_1e8da
+	text_end

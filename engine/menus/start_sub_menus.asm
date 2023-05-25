@@ -706,9 +706,9 @@ SwitchPartyMon_ClearGfx:
 	add hl, de
 	dec c
 	jr nz, .clearMonOAMLoop
-	call WaitForSoundToFinish
-	ld a, SFX_SWAP
-	jp PlaySound
+	call WaitSFX
+	ld de, SFX_SWAP
+	jp PlaySFX
 
 SwitchPartyMon_InitVarOrSwapData:
 ; This is used to initialise [wMenuItemToSwap] and to actually swap the data.

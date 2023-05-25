@@ -1,297 +1,435 @@
-PlayDefaultMusic::
-	call WaitForSoundToFinish
-	xor a
-	ld c, a
-	ld d, a
-	ld [wLastMusicSoundID], a
-	jr PlayDefaultMusicCommon
+; Audio interfaces.
 
-PlayDefaultMusicFadeOutCurrent::
-; Fade out the current music and then play the default music.
-	ld c, 10
-	ld d, 0
-	ld a, [wd72e]
-	bit 5, a ; has a battle just ended?
-	jr z, PlayDefaultMusicCommon
-	xor a
-	ld [wLastMusicSoundID], a
-	ld c, 8
-	ld d, c
-
-PlayDefaultMusicCommon::
-	ld a, [wWalkBikeSurfState]
-	and a
-	jr z, .walking
-	cp $2
-	jr z, .surfing
-	call CheckForNoBikingMusicMap
-	jr c, .walking
-	ld a, MUSIC_BIKE_RIDING
-	jr .next
-
-.surfing
-	ld a, MUSIC_SURFING
-
-.next
-	ld b, a
-	ld a, d
-	and a ; should current music be faded out first?
-	ld a, BANK(Music_BikeRiding)
-	jr nz, .next2
-
-; Only change the audio ROM bank if the current music isn't going to be faded
-; out before the default music begins.
-	ld [wAudioROMBank], a
-
-.next2
-; [wAudioSavedROMBank] will be copied to [wAudioROMBank] after fading out the
-; current music (if the current music is faded out).
-	ld [wAudioSavedROMBank], a
-	jr .next3
-
-.walking
-	ld a, [wMapMusicSoundID]
-	ld b, a
-	call CompareMapMusicBankWithCurrentBank
-	jr c, .next4
-
-.next3
-	ld a, [wLastMusicSoundID]
-	cp b ; is the default music already playing?
-	ret z ; if so, do nothing
-
-.next4
-	ld a, c
-	ld [wAudioFadeOutControl], a
-	ld a, b
-	ld [wLastMusicSoundID], a
-	ld [wNewSoundID], a
-	jp PlaySound
-
-CheckForNoBikingMusicMap::
-; probably used to not change music upon getting on bike
-	ld a, [wCurMap]
-	cp ROUTE_23
-	jr z, .found
-	cp VICTORY_ROAD_1F
-	jr z, .found
-	cp VICTORY_ROAD_2F
-	jr z, .found
-	cp VICTORY_ROAD_3F
-	jr z, .found
-	cp INDIGO_PLATEAU
-	jr z, .found
-	and a
-	ret
-.found
-	scf
-	ret
-
-UpdateMusic6Times::
-	ld c, 6
-UpdateMusicCTimes::
-.loop
-	push bc
+InitSound::
 	push hl
-	farcall Audio1_UpdateMusic
-	pop hl
+	push de
+	push bc
+	push af
+
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, BANK(_InitSound)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	call _InitSound
+
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	pop af
 	pop bc
-	dec c
-	jr nz, .loop
+	pop de
+	pop hl
 	ret
 
-CompareMapMusicBankWithCurrentBank::
-; Compares the map music's audio ROM bank with the current audio ROM bank
-; and updates the audio ROM bank variables.
-; Returns whether the banks are different in carry.
-	ld a, [wMapMusicROMBank]
-	ld e, a
-	ld a, [wAudioROMBank]
-	cp e
-	jr nz, .differentBanks
-	ld [wAudioSavedROMBank], a
-	and a
+UpdateSound::
+	push hl
+	push de
+	push bc
+	push af
+
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, BANK(_UpdateSound)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	call _UpdateSound
+
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	pop af
+	pop bc
+	pop de
+	pop hl
 	ret
-.differentBanks
-	ld a, c ; this is a fade-out counter value and it's always non-zero
-	and a
-	ld a, e
-	jr nz, .next
-; If the fade-counter is non-zero, we don't change the audio ROM bank because
-; it's needed to keep playing the music as it fades out. The FadeOutAudio
-; routine will take care of copying [wAudioSavedROMBank] to [wAudioROMBank]
-; when the music has faded out.
-	ld [wAudioROMBank], a
-.next
-	ld [wAudioSavedROMBank], a
-	scf
+
+_LoadMusicByte::
+; [wCurMusicByte] = [a:de]
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	ld a, [de]
+	ld [wCurMusicByte], a
+	ld a, BANK(LoadMusicByte)
+
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
 	ret
 
 PlayMusic::
-	ld b, a
-	ld [wNewSoundID], a
-	xor a
-	ld [wAudioFadeOutControl], a
-	ld a, c
-	ld [wAudioROMBank], a
-	ld [wAudioSavedROMBank], a
-	ld a, b
-	jr PlaySound
+; Play music de.
 
-Func_2223::
-	xor a
-	ld [wChannelSoundIDs + CHAN5], a
-	ld [wChannelSoundIDs + CHAN6], a
-	ld [wChannelSoundIDs + CHAN7], a
-	ld [wChannelSoundIDs + CHAN8], a
-	ldh [rNR10], a
-	ret
-
-StopAllMusic::
-	ld a, SFX_STOP_ALL_MUSIC
-	ld [wNewSoundID], a
-; plays music specified by a. If value is $ff, music is stopped
-PlaySound::
 	push hl
 	push de
 	push bc
-	ld b, a
-	ld a, [wNewSoundID]
-	and a
-	jr z, .next
-	xor a
-	ld [wChannelSoundIDs + CHAN5], a
-	ld [wChannelSoundIDs + CHAN6], a
-	ld [wChannelSoundIDs + CHAN7], a
-	ld [wChannelSoundIDs + CHAN8], a
-.next
-	ld a, [wAudioFadeOutControl]
-	and a ; has a fade-out length been specified?
-	jr z, .noFadeOut
-	ld a, [wNewSoundID]
-	and a ; is the new sound ID 0?
-	jr z, .done ; if so, do nothing
-	xor a
-	ld [wNewSoundID], a
-	ld a, [wLastMusicSoundID]
-	cp $ff ; has the music been stopped?
-	jr nz, .fadeOut ; if not, fade out the current music
-; If it has been stopped, start playing the new music immediately.
-	xor a
-	ld [wAudioFadeOutControl], a
-.noFadeOut
-	xor a
-	ld [wNewSoundID], a
-	call DetermineAudioFunction
-	jr .done
+	push af
 
-.fadeOut
-	ld a, b
-	ld [wLastMusicSoundID], a
-	ld a, [wAudioFadeOutControl]
-	ld [wAudioFadeOutCounterReloadValue], a
-	ld [wAudioFadeOutCounter], a
-	ld a, b
-	ld [wAudioFadeOutControl], a
-.done
-	pop bc
-	pop de
-	pop hl
-	ret
-
-GetNextMusicByte::
 	ldh a, [hLoadedROMBank]
 	push af
-	ld a, [wAudioROMBank]
-	call BankswitchCommon
-	ld d, $0
-	ld a, c
-	add a
-	ld e, a
-	ld hl, wChannelCommandPointers
-	add hl, de
-	ld a, [hli]
-	ld e, a
-	ld a, [hld]
-	ld d, a
-	ld a, [de]
-	inc de
-	ld [hl], e
-	inc hl
-	ld [hl], d
-	ld e, a
-	pop af
-	call BankswitchCommon
+	ld a, BANK(_PlayMusic) ; aka BANK(_InitSound)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
 	ld a, e
-	ret
+	and a
+	jr z, .nomusic
 
-InitMusicVariables::
-	push hl
-	push de
-	push bc
-	homecall Audio2_InitMusicVariables
+	call _PlayMusic
+	jr .end
+
+.nomusic
+	call _InitSound
+
+.end
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+	pop af
 	pop bc
 	pop de
 	pop hl
 	ret
 
-InitSFXVariables::
+PlayMusic2::
+; Stop playing music, then play music de.
+
 	push hl
 	push de
 	push bc
-	homecall Audio2_InitSFXVariables
-	pop bc
-	pop de
-	pop hl
-	ret
+	push af
 
-StopAllAudio::
-	push hl
-	push de
-	push bc
-	homecall Audio2_StopAllAudio
-	pop bc
-	pop de
-	pop hl
-	ret
-
-DetermineAudioFunction::
 	ldh a, [hLoadedROMBank]
 	push af
-	ld a, [wAudioROMBank]
-	call BankswitchCommon
-; determine the audio function, based on the bank
-	cp BANK(Audio1_PlaySound)
-	jr nz, .checkForAudio2
-; audio 1
-	ld a, b
-	call Audio1_PlaySound
-	jr .done
+	ld a, BANK(_PlayMusic)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
 
-.checkForAudio2
-	cp BANK(Audio2_PlaySound)
-	jr nz, .checkForAudio3
-; audio 2
-	ld a, b
-	call Audio2_PlaySound
-	jr .done
+	push de
+	ld de, MUSIC_NONE
+	call _PlayMusic
+	call DelayFrame
+	pop de
+	call _PlayMusic
 
-.checkForAudio3
-	cp BANK(Audio3_PlaySound)
-	jr nz, .audio4
-; audio 3
-	ld a, b
-	call Audio3_PlaySound
-	jr .done
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
 
-.audio4
-; invalid banks will default to audio 4
-; this is seen when encountering Missingno,
-; as its sprite dimensions overflow to wAudioROMBank
-	ld a, b
-	call Audio4_PlaySound
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+
+PlayCry::
+; Play cry de.
+
+	push hl
+	push de
+	push bc
+	push af
+
+	ldh a, [hLoadedROMBank]
+	push af
+
+	; Cries are stuck in one bank.
+	ld a, BANK(PokemonCries)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	ld hl, PokemonCries
+rept MON_CRY_LENGTH
+	add hl, de
+endr
+
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	inc hl
+
+	ld a, [hli]
+	ld [wCryPitch], a
+	ld a, [hli]
+	ld [wCryPitch + 1], a
+	ld a, [hli]
+	ld [wCryLength], a
+	ld a, [hl]
+	ld [wCryLength + 1], a
+
+	ld a, BANK(_PlayCry)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	call _PlayCry
+
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+
+PlaySFX::
+; Play sound effect de.
+; Sound effects are ordered by priority (highest to lowest)
+
+	push hl
+	push de
+	push bc
+	push af
+
+	; Is something already playing?
+	call CheckSFX
+	jr nc, .play
+
+	; Does it have priority?
+	ld a, [wCurSFX]
+	cp e
+	jr c, .done
+
+.play
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, BANK(_PlaySFX)
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
+
+	ld a, e
+	ld [wCurSFX], a
+	call _PlaySFX
+
+	pop af
+	ldh [hLoadedROMBank], a
+	ld [MBC1RomBank], a
 
 .done
 	pop af
-	call BankswitchCommon
+	pop bc
+	pop de
+	pop hl
+	ret
+
+WaitPlaySFX::
+	call WaitSFX
+	call PlaySFX
+	ret
+
+WaitSFX::
+; infinite loop until sfx is done playing
+
+	push hl
+
+.wait
+	ld hl, wChannel5Flags1
+	bit 0, [hl]
+	jr nz, .wait
+	ld hl, wChannel6Flags1
+	bit 0, [hl]
+	jr nz, .wait
+	ld hl, wChannel7Flags1
+	bit 0, [hl]
+	jr nz, .wait
+	ld hl, wChannel8Flags1
+	bit 0, [hl]
+	jr nz, .wait
+
+	pop hl
+	ret
+
+MaxVolume::
+	ld a, MAX_VOLUME
+	ld [wVolume], a
+	ret
+
+LowVolume::
+	ld a, $33 ; 50%
+	ld [wVolume], a
+	ret
+
+MinVolume::
+	xor a
+	ld [wVolume], a
+	ret
+
+SkipMusic::
+; Skip a frames of music.
+.loop
+	and a
+	ret z
+	dec a
+	call UpdateSound
+	jr .loop
+
+FadeToMapMusic::
+	push hl
+	push de
+	push bc
+	push af
+
+	call GetMapMusic_MaybeSpecial
+	ld a, [wMapMusic]
+	cp e
+	jr z, .done
+
+	ld a, 8
+	ld [wMusicFade], a
+	ld a, e
+	ld [wMusicFadeID], a
+	ld a, d
+	ld [wMusicFadeID + 1], a
+	ld a, e
+	ld [wMapMusic], a
+
+.done
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+
+PlayMapMusic::
+	push hl
+	push de
+	push bc
+	push af
+
+	call GetMapMusic_MaybeSpecial
+	ld a, [wMapMusic]
+	cp e
+	jr z, .done
+
+	push de
+	ld de, MUSIC_NONE
+	call PlayMusic
+	call DelayFrame
+	pop de
+	ld a, e
+	ld [wMapMusic], a
+	call PlayMusic
+
+.done
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+
+PlayMapMusicBike::
+; If the player's on a bike, play the bike music instead of the map music
+	push hl
+	push de
+	push bc
+	push af
+
+	xor a
+	ld [wDontPlayMapMusicOnReload], a
+	ld de, MUSIC_BIKE_RIDING
+	ld a, [wWalkBikeSurfState]
+	cp $1 ;PLAYER_BIKE
+	jr z, .play
+	call GetMapMusic_MaybeSpecial
+.play
+	push de
+	ld de, MUSIC_NONE
+	call PlayMusic
+	call DelayFrame
+	pop de
+
+	ld a, e
+	ld [wMapMusic], a
+	call PlayMusic
+
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+
+TryRestartMapMusic::
+	ld a, [wDontPlayMapMusicOnReload]
+	and a
+	jr z, RestartMapMusic
+	xor a
+	ld [wMapMusic], a
+	ld de, MUSIC_NONE
+	call PlayMusic
+	call DelayFrame
+	xor a
+	ld [wDontPlayMapMusicOnReload], a
+	ret
+
+RestartMapMusic::
+	push hl
+	push de
+	push bc
+	push af
+	ld de, MUSIC_NONE
+	call PlayMusic
+	call DelayFrame
+	ld a, [wMapMusic]
+	ld e, a
+	ld d, 0
+	call PlayMusic
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+
+SpecialMapMusic::
+	ld a, [wWalkBikeSurfState]
+	cp $2 ; PLAYER_SURF
+	jr z, .surf
+	
+	and a
+	ret
+
+.surf
+	ld de, MUSIC_SURFING
+	scf
+	ret
+
+GetMapMusic_MaybeSpecial::
+	call SpecialMapMusic
+	ret c
+	call GetMapMusic
+	ret
+
+CheckSFX::
+; Return carry if any SFX channels are active.
+	ld a, [wChannel5Flags1]
+	bit 0, a
+	jr nz, .playing
+	ld a, [wChannel6Flags1]
+	bit 0, a
+	jr nz, .playing
+	ld a, [wChannel7Flags1]
+	bit 0, a
+	jr nz, .playing
+	ld a, [wChannel8Flags1]
+	bit 0, a
+	jr nz, .playing
+	and a
+	ret
+.playing
+	scf
+	ret
+
+TerminateExpBarSound::
+	xor a
+	ld [wChannel5Flags1], a
+	ld [wPitchSweep], a
+	ldh [rNR10], a
+	ldh [rNR11], a
+	ldh [rNR12], a
+	ldh [rNR13], a
+	ldh [rNR14], a
 	ret

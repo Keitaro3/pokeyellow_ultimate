@@ -54,7 +54,7 @@ DayCareMText1:
 	ld [wRemoveMonFromBox], a
 	call RemovePokemon
 	ld a, [wcf91]
-	call PlayCry
+	call PlayMonCry
 	ld hl, DayCareComeSeeMeInAWhileText
 	jp .done
 
@@ -157,8 +157,8 @@ DayCareMText1:
 	ld de, wPlayerMoney + 2
 	ld c, $3
 	predef SubBCDPredef
-	ld a, SFX_PURCHASE
-	call PlaySoundWaitForCurrent
+	ld de, SFX_PURCHASE
+	call WaitPlaySFX
 	ld a, MONEY_BOX
 	ld [wTextBoxID], a
 	call DisplayTextBoxID
@@ -198,7 +198,7 @@ DayCareMText1:
 	ld [de], a
 
 	ld a, [wcf91]
-	call PlayCry
+	call PlayMonCry
 	ld hl, DayCareGotMonBackText
 	jr .done
 

@@ -1243,6 +1243,5 @@ SummerBeachHouse_Blocks: INCBIN "maps/SummerBeachHouse.blk"
 INCLUDE "data/maps/objects/SummerBeachHouse.asm"
 INCLUDE "scripts/SummerBeachHouse2.asm"
 
-INCLUDE "scripts/BillsHouse2.asm"
 INCLUDE "scripts/ViridianForest2.asm"
 INCLUDE "scripts/SSAnne2FRooms_2.asm"

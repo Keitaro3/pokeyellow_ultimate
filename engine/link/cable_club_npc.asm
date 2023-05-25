@@ -65,9 +65,9 @@ CableClubNPC::
 	jr nz, .choseNo
 	vc_hook Wireless_TryQuickSave_block_input
 	callfar SaveSAVtoSRAM
-	call WaitForSoundToFinish
-	ld a, SFX_SAVE
-	call PlaySoundWaitForCurrent
+	call WaitSFX
+	ld de, SFX_SAVE
+	call WaitPlaySFX
 	ld hl, CableClubNPCPleaseWaitText
 	call PrintText
 	ld hl, wUnknownSerialCounter

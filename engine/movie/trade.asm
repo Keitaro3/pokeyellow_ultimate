@@ -268,7 +268,12 @@ Trade_ShowPlayerMon:
 	ld a, TRADE_BALL_DROP_ANIM
 	call Trade_ShowAnimation ; clears mon pic
 	ld a, [wTradedPlayerMonSpecies]
+	call GetCryIndex
+	jr c, .skip_cry
+	ld e, c
+	ld d, b
 	call PlayCry
+.skip_cry
 	xor a
 	ldh [hAutoBGTransferEnabled], a
 	ret
@@ -294,8 +299,8 @@ Trade_DrawOpenEndOfLinkCable:
 	ld b, TILEMAP_LINK_CABLE
 	call CopyTileIDsFromList_ZeroBaseTileID
 	call Trade_CopyTileMapToVRAM
-	ld a, SFX_HEAL_HP
-	call PlaySound
+	ld de, SFX_HEAL_HP
+	call PlaySFX
 	ld c, 20
 .loop
 	ldh a, [hSCX]
@@ -340,8 +345,8 @@ Trade_AnimateBallEnteringLinkCable:
 	ld c, a
 	cp $a0
 	jr nc, .ballSpriteReachedEdgeOfScreen
-	ld a, SFX_TINK
-	call PlaySound
+	ld de, SFX_TINK
+	call PlaySFX
 	jr .moveBallInsideLinkCableLoop
 .ballSpriteReachedEdgeOfScreen
 	call ClearSprites
@@ -377,7 +382,12 @@ Trade_ShowEnemyMon:
 	ld a, $1
 	ldh [hAutoBGTransferEnabled], a
 	ld a, [wTradedEnemyMonSpecies]
+	call GetCryIndex
+	jr c, .skip_cry
+	ld e, c
+	ld d, b
 	call PlayCry
+.skip_cry
 	call Trade_Delay100
 	hlcoord 4, 10
 	lb bc, 8, 12

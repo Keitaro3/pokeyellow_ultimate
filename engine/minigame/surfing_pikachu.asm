@@ -51,7 +51,7 @@ SurfingPikachuMinigame::
 	ldh [rSTAT], a
 	call RunDefaultPaletteCommand
 	call ReloadMapAfterSurfingMinigame
-	call PlayDefaultMusic
+	call RestartMapMusic
 	call GBPalNormal
 	pop af
 	ld [wUpdateSpritesEnabled], a
@@ -108,14 +108,16 @@ SurfingMinigame_UpdateMusicTempo:
 	ret z
 
 	; check that all channels are on their last frame of note delay
-	ld hl, wChannelNoteDelayCounters
+	ld e, $32
+	ld d, 0
+	ld hl, wChannel1NoteDuration
 	ld a, $1
 	cp [hl]
 	ret nz
-	inc hl
+	add hl, de
 	cp [hl]
 	ret nz
-	inc hl
+	add hl, de
 	cp [hl]
 	ret nz
 
@@ -133,9 +135,15 @@ SurfingMinigame_UpdateMusicTempo:
 	add hl, de
 	add hl, de
 	ld a, [hli]
-	ld [wMusicTempo + 1], a
+	ld [wChannel1Tempo], a
+	ld [wChannel2Tempo], a
+	ld [wChannel3Tempo], a
+	ld [wChannel4Tempo], a
 	ld a, [hl]
-	ld [wMusicTempo], a
+	ld [wChannel1Tempo + 1], a
+	ld [wChannel2Tempo + 1], a
+	ld [wChannel3Tempo + 1], a
+	ld [wChannel4Tempo + 1], a
 	ret
 
 .Tempos:
@@ -146,20 +154,30 @@ SurfingMinigame_UpdateMusicTempo:
 	dw  85
 
 SurfingMinigame_ResetMusicTempo:
-	ld hl, wChannelNoteDelayCounters
+	ret
+
+	ld e, $32
+	ld d, 0
+	ld hl, wChannel1NoteDuration
 	ld a, $1
 	cp [hl]
 	ret nz
-	inc hl
+	add hl, de
 	cp [hl]
 	ret nz
-	inc hl
+	add hl, de
 	cp [hl]
 	ret nz
 	ld a, 117
-	ld [wMusicTempo + 1], a
+	ld [wChannel1Tempo], a
+	ld [wChannel2Tempo], a
+	ld [wChannel3Tempo], a
+	ld [wChannel4Tempo], a
 	xor a
-	ld [wMusicTempo], a
+	ld [wChannel1Tempo + 1], a
+	ld [wChannel2Tempo + 1], a
+	ld [wChannel3Tempo + 1], a
+	ld [wChannel4Tempo + 1], a
 	ret
 
 SurfingPikachuMinigame_LoadGFXAndLayout:
@@ -714,10 +732,8 @@ Func_f848d:
 	ld [hl], a
 	ld [wSurfingMinigameRadnessMeter], a
 	ld [wSurfingMinigameTrickFlags], a
-	xor a
-	ld [wChannelSoundIDs + CHAN8], a
-	ld a, SFX_SURFING_JUMP
-	call PlaySound
+	ld de, SFX_SURFING_JUMP
+	call PlaySFX
 	ret
 
 .asm_f84d2
@@ -750,10 +766,8 @@ SurfingMinigame_ScoreCurrentWave:
 	ld [wc5e1], a
 	ld a, $10
 	call SetCurrentAnimatedObjectCallbackAndResetFrameStateRegisters
-	xor a
-	ld [wChannelSoundIDs + CHAN8], a
-	ld a, SFX_SURFING_CRASH
-	call PlaySound
+	ld de, SFX_SURFING_CRASH
+	call PlaySFX
 	ret
 
 Func_f8516:
@@ -914,8 +928,8 @@ SurfingMinigame_DPadAction:
 	ld hl, ANIM_OBJ_FIELD_E
 	add hl, bc
 	ld [hl], a
-	ld a, SFX_SURFING_FLIP
-	call PlaySound
+	ld de, SFX_SURFING_FLIP
+	call PlaySFX
 	ret
 
 SurfingMinigame_TileInteraction:
@@ -1009,10 +1023,8 @@ SurfingMinigame_TileInteraction:
 .action_2
 	call SufingMinigame_ReduceSpeedBy64
 .action_3
-	xor a
-	ld [wChannelSoundIDs + CHAN8], a
-	ld a, SFX_SURFING_LAND
-	call PlaySound
+	ld de, SFX_SURFING_LAND
+	call PlaySFX
 	and a
 	ret
 
@@ -1559,8 +1571,8 @@ SurfingMinigame_AddRemainingHPToTotal:
 	pop bc
 	dec c
 	jr nz, .loop
-	ld a, SFX_PRESS_AB
-	call PlaySound
+	ld de, SFX_PRESS_AB
+	call PlaySFX
 	and a
 	ret
 
@@ -1621,8 +1633,8 @@ SurfingMinigame_AddRadnessToTotal:
 	pop bc
 	dec c
 	jr nz, .loop
-	ld a, SFX_PRESS_AB
-	call PlaySound
+	ld de, SFX_PRESS_AB
+	call PlaySFX
 	and a
 	ret
 
@@ -1702,7 +1714,7 @@ DidPlayerGetAHighScore:
 	jr c, .not_high_score
 	jr nz, .high_score
 .not_high_score
-	;call WaitForSoundToFinish
+	;call WaitSFX
 	;ldpikacry e, PikachuCry28
 	;call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
 	and a
@@ -1713,11 +1725,11 @@ DidPlayerGetAHighScore:
 	ld [wSurfingMinigameHiScore], a
 	ld a, [wSurfingMinigameTotalScore + 1]
 	ld [wSurfingMinigameHiScore + 1], a
-	call WaitForSoundToFinish
+	call WaitSFX
 	;ldpikacry e, PikachuCry34
 	;call SurfingMinigame_PlayPikaCryIfSurfingPikaInParty
-	ld a, SFX_GET_ITEM2_4_2
-	call PlaySound
+	ld de, SFX_GET_ITEM_2
+	call PlaySFX
 	scf
 	ret
 
@@ -2371,8 +2383,7 @@ SurfingPikachuMinigameIntro:
 	call UpdateGBCPal_OBP0
 	call UpdateGBCPal_OBP1
 	call DelayFrame
-	ld a, MUSIC_SURFING_PIKACHU
-	ld c, BANK(Music_SurfingPikachu)
+	ld de, MUSIC_SURFING_PIKACHU
 	call PlayMusic
 	xor a
 	ld [wSurfingMinigameIntroAnimationFinished], a

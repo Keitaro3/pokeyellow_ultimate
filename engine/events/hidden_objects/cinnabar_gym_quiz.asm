@@ -106,10 +106,10 @@ CinnabarGymQuiz_AskQuestion:
 	call CinnabarGymGateFlagAction
 	jp UpdateCinnabarGymGateTileBlocks_
 .wrongAnswer
-	call WaitForSoundToFinish
-	ld a, SFX_DENIED
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_DENIED
+	call PlaySFX
+	call WaitSFX
 	ld hl, CinnabarGymQuizIncorrectText
 	call PrintText
 	ldh a, [hGymGateIndex]
@@ -143,10 +143,10 @@ CinnabarGymQuizCorrectText:
 	ld a, c
 	and a
 	jp nz, TextScriptEnd
-	call WaitForSoundToFinish
-	ld a, SFX_GO_INSIDE
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_GO_INSIDE
+	call PlaySFX
+	call WaitSFX
 	jp TextScriptEnd
 
 CinnabarGymQuizIncorrectText:

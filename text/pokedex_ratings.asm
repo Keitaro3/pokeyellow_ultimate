@@ -1,8 +1,9 @@
 _DexCompletionText::
 	text "#DEX comp-"
 	line "letion is:"
+	prompt
 
-	para "@"
+_DexNumSeenOwned::
 	text_decimal hDexRatingNumMonsSeen, 1, 3
 	text " #MON seen"
 	line "@"
@@ -11,7 +12,7 @@ _DexCompletionText::
 
 	para "PROF.OAK's"
 	line "Rating:"
-	prompt
+	done
 
 _DexRatingText_Own0To9::
 	text "You still have"
@@ -114,4 +115,78 @@ _DexRatingText_Own150To151::
 	text "Your #DEX is"
 	line "fully complete!"
 	cont "Congratulations!"
+	done
+
+_OakRating02::
+	text "Good. I see you"
+	line "understand how to"
+	cont "use # BALLS."
+	done
+
+_OakRating03::
+	text "You're getting"
+	line "good at this."
+
+	para "But you have a"
+	line "long way to go."
+	done
+
+_OakRating05::
+	text "You're trying--I"
+	line "can see that."
+
+	para "Your #DEX is"
+	line "coming together."
+	done
+
+_OakRating06::
+	text "To evolve, some"
+	line "#MON grow,"
+
+	para "others use the"
+	line "effects of STONES."
+	done
+
+_OakRating10::
+	text "Your #DEX is"
+	line "filling up. Keep"
+	cont "up the good work!"
+	done
+
+_OakRating15::
+	text "Wow! You've hit"
+	line "200! Your #DEX"
+	cont "is looking great!"
+	done
+
+_OakRating16::
+	text "You've found so"
+	line "many #MON!"
+
+	para "You've really"
+	line "helped my studies!"
+	done
+
+_OakRating17::
+	text "Magnificent! You"
+	line "could become a"
+
+	para "#MON professor"
+	line "right now!"
+	done
+
+_OakRating18::
+	text "Your #DEX is"
+	line "amazing! You're"
+
+	para "ready to turn"
+	line "professional!"
+	done
+
+_OakRating19::
+	text "Whoa! A perfect"
+	line "#DEX! I've"
+
+	para "dreamt about this!"
+	line "Congratulations!"
 	done

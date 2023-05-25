@@ -71,8 +71,8 @@ DisplayTownMap:
 	ld b, a
 	and A_BUTTON | B_BUTTON | D_UP | D_DOWN
 	jr z, .inputLoop
-	ld a, SFX_TINK
-	call PlaySound
+	ld de, SFX_TINK
+	call PlaySFX
 	bit 6, b
 	jr nz, .pressedUp
 	bit 7, b
@@ -199,16 +199,16 @@ LoadTownMap_Fly::
 	jr z, .inputLoop
 	bit 0, b
 	jr nz, .pressedA
-	ld a, SFX_TINK
-	call PlaySound
+	ld de, SFX_TINK
+	call PlaySFX
 	bit 6, b
 	jr nz, .pressedUp
 	bit 7, b
 	jr nz, .pressedDown
 	jr .pressedB
 .pressedA
-	ld a, SFX_HEAL_AILMENT
-	call PlaySound
+	ld de, SFX_HEAL_AILMENT
+	call PlaySFX
 	ld a, [hl]
 	ld [wDestinationMap], a
 	ld hl, wd732

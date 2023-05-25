@@ -158,8 +158,10 @@ ENDC
 ; play pokemon cry
 .choseCry
 	ld a, [wd11e]
-	call GetCryData
-	call PlaySound
+	call GetCryIndex
+	ld e, c
+	ld d, b
+	call PlayCry
 	jr .handleMenuInput
 
 .choseArea
@@ -585,7 +587,7 @@ DrawDexEntryOnScreen:
 	hlcoord 1, 1
 	call LoadFlippedFrontSpriteByMonIndex ; draw pokemon picture
 	ld a, [wcf91]
-	call PlayCry ; play pokemon cry
+	call PlayMonCry ; play pokemon cry
 
 	pop hl
 	pop de

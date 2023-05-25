@@ -101,8 +101,8 @@ HandleMenuInput_::
 	bit 5, [hl]
 	pop hl
 	jr nz, .skipPlayingSound
-	ld a, SFX_PRESS_AB
-	call PlaySound
+	ld de, SFX_PRESS_AB
+	call PlaySFX
 .skipPlayingSound
 	pop af
 	ldh [hDownArrowBlinkCount2], a

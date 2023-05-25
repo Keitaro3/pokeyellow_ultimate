@@ -1,6 +1,10 @@
-Music_GBPrinter_Ch3::
+Music_Printer:
+	channel_count 1
+	channel 3, Music_Printer_Ch3
+
+Music_Printer_Ch3:
 	tempo 256
-	note_type 12, 1, 0
+	note_type 12, 2, 0
 	octave 4
 	note B_, 6
 	octave 5
@@ -30,7 +34,7 @@ Music_GBPrinter_Ch3::
 	rest 1
 	note F#, 1
 	rest 1
-.loop
+.mainloop:
 	note E_, 1
 	rest 1
 	note B_, 1
@@ -313,4 +317,4 @@ Music_GBPrinter_Ch3::
 	rest 1
 	note D#, 1
 	rest 1
-	sound_loop 0, .loop
+	sound_loop 0, .mainloop

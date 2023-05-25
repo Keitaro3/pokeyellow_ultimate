@@ -24,10 +24,8 @@ SSAnne2Script0:
 	ld hl, CoordsData_61411
 	call ArePlayerCoordsInArray
 	ret nc
-	call StopAllMusic
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
-	call PlayMusic
+	ld de, MUSIC_MEET_RIVAL
+	call PlayMusic2
 	ld a, [wCoordIndex]
 	ldh [hSavedCoordIndex], a
 	ld a, HS_SS_ANNE_2F_RIVAL
@@ -146,8 +144,8 @@ SSAnne2Script2:
 	ld a, $2
 	ldh [hSpriteIndex], a
 	call MoveSprite
-	call StopAllMusic
-	farcall Music_RivalAlternateStart
+	ld de, MUSIC_RIVAL_AFTER
+	call PlayMusic2
 	ld a, $3
 	ld [wSSAnne2FCurScript], a
 	ret
@@ -171,7 +169,7 @@ SSAnne2Script3:
 	ld a, HS_SS_ANNE_2F_RIVAL
 	ld [wMissableObjectIndex], a
 	predef HideObject
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ld a, $4
 	ld [wSSAnne2FCurScript], a
 	ret

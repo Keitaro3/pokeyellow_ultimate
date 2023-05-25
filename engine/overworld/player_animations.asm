@@ -9,15 +9,15 @@ EnterMapAnim::
 	bit 7, [hl] ; used fly out of battle?
 	res 7, [hl]
 	jr nz, .flyAnimation
-	ld a, SFX_TELEPORT_ENTER_1
-	call PlaySound
+	ld de, SFX_TELEPORT_ENTER_1
+	call PlaySFX
 	ld hl, wd732
 	bit 4, [hl] ; used dungeon warp?
 	pop hl
 	jr nz, .dungeonWarpAnimation
 	call PlayerSpinWhileMovingDown
-	ld a, SFX_TELEPORT_ENTER_2
-	call PlaySound
+	ld de, SFX_TELEPORT_ENTER_2
+	call PlaySFX
 	call IsPlayerStandingOnWarpPadOrHole
 	ld a, b
 	and a
@@ -34,7 +34,7 @@ EnterMapAnim::
 	ld hl, wFacingDirectionList
 	call PlayerSpinInPlace
 .restoreDefaultMusic
-	call PlayDefaultMusic
+	call RestartMapMusic
 .done
 	jp RestoreFacingDirectionAndYScreenPos
 .dungeonWarpAnimation
@@ -45,8 +45,8 @@ EnterMapAnim::
 .flyAnimation
 	pop hl
 	call LoadBirdSpriteGraphics
-	ld a, SFX_FLY
-	call PlaySound
+	ld de, SFX_FLY
+	call PlaySFX
 	ld hl, wFlyAnimUsingCoordList
 	xor a ; is using coord list
 	ld [hli], a ; wFlyAnimUsingCoordList
@@ -95,8 +95,8 @@ _LeaveMapAnim::
 	dec a
 	jp nz, LeaveMapThroughHoleAnim
 .spinWhileMovingUp
-	ld a, SFX_TELEPORT_EXIT_1
-	call PlaySound
+	ld de, SFX_TELEPORT_EXIT_1
+	call PlaySFX
 	ld hl, wPlayerSpinWhileMovingUpOrDownAnimDeltaY
 	ld a, -$10
 	ld [hli], a ; wPlayerSpinWhileMovingUpOrDownAnimDeltaY
@@ -142,8 +142,8 @@ _LeaveMapAnim::
 	ld [hli], a ; wFlyAnimCounter
 	ld [hl], $c ; wFlyAnimBirdSpriteImageIndex
 	call DoFlyAnimation
-	ld a, SFX_FLY
-	call PlaySound
+	ld de, SFX_FLY
+	call PlaySFX
 	ld hl, wFlyAnimUsingCoordList
 	xor a ; is using coord list
 	ld [hli], a ; wFlyAnimUsingCoordList
@@ -301,8 +301,10 @@ PlayerSpinInPlace:
 	jr nz, .skipPlayingSound
 ; when the last delay was a multiple of 4, play a sound if there is one
 	ld a, [wPlayerSpinInPlaceAnimSoundID]
+	ld d, 0
+	ld e, a
 	cp $ff
-	call nz, PlaySound
+	call nz, PlaySFX
 .skipPlayingSound
 	ld a, [wPlayerSpinInPlaceAnimFrameDelayDelta]
 	add c

@@ -60,8 +60,8 @@ UsedCut:
 	farcall AnimCut
 	ld a, $1
 	ld [wUpdateSpritesEnabled], a
-	ld a, SFX_CUT
-	call PlaySound
+	ld de, SFX_CUT_HM
+	call PlaySFX
 	ld a, $90
 	ldh [hWY], a
 	call UpdateSprites

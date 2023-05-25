@@ -9,7 +9,7 @@ CeladonMansion1F_TextPointers:
 	dw CeladonMansion1Text5
 
 CeladonMansion1_PlayCryScript:
-	call PlayCry
+	call PlayMonCry
 	jp TextScriptEnd
 
 CeladonMansion1Text1:

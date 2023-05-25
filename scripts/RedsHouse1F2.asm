@@ -16,16 +16,13 @@ MomHealPokemon:
 	call GBFadeOutToWhite
 	call ReloadMapData
 	predef HealParty
-	ld a, MUSIC_PKMN_HEALED
-	ld [wNewSoundID], a
-	call PlaySound
+	ld de, MUSIC_PKMN_HEALED
+	call PlayMusic
 .next
-	ld a, [wChannelSoundIDs]
+	ld a, [wChannel1MusicID]
 	cp MUSIC_PKMN_HEALED
 	jr z, .next
-	ld a, [wMapMusicSoundID]
-	ld [wNewSoundID], a
-	call PlaySound
+	call RestartMapMusic 
 	call GBFadeInFromWhite
 	ld hl, MomHealText2
 	call PrintText

@@ -115,19 +115,21 @@ ENDM
 
 ;\1 map name
 ;\2 map id
-;\3 tileset
-;\4 connections: combo of NORTH, SOUTH, WEST, and/or EAST, or 0 for none
+;\3 song
+;\4 tileset
+;\5 connections: combo of NORTH, SOUTH, WEST, and/or EAST, or 0 for none
 MACRO map_header
 	DEF CURRENT_MAP_WIDTH = \2_WIDTH
 	DEF CURRENT_MAP_HEIGHT = \2_HEIGHT
 	DEF CURRENT_MAP_OBJECT EQUS "\1_Object"
 \1_h::
 	db \3
+	db \4
 	db CURRENT_MAP_HEIGHT, CURRENT_MAP_WIDTH
 	dw \1_Blocks
 	dw \1_TextPointers
 	dw \1_Script
-	db \4
+	db \5
 ENDM
 
 ; Comes after map_header and connection macros

@@ -130,10 +130,8 @@ SilphCo7Script0:
 	ld [wJoyIgnore], a
 	ld a, PLAYER_DIR_DOWN
 	ld [wPlayerMovingDirection], a
-	call StopAllMusic
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
-	call PlayMusic
+	ld de, MUSIC_MEET_RIVAL
+	call PlayMusic2
 	ld a, $9
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
@@ -221,8 +219,8 @@ SilphCo7Script4:
 	ld a, $f
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	call StopAllMusic
-	farcall Music_RivalAlternateStart
+	ld de, MUSIC_RIVAL_AFTER
+	call PlayMusic2
 	ld de, MovementData_51d1d
 	ld a, [wcf0d]
 	cp $1
@@ -257,7 +255,7 @@ SilphCo7Script5:
 	ld a, HS_SILPH_CO_7F_RIVAL
 	ld [wMissableObjectIndex], a
 	predef HideObject
-	call PlayDefaultMusic
+	call RestartMapMusic
 	xor a
 	ld [wJoyIgnore], a
 	jp SilphCo7Text_51c10

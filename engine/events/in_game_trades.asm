@@ -273,7 +273,7 @@ InGameTrade_CheckForTradeEvo:
 	callfar TryEvolvingMon
 	xor a ; LINK_STATE_NONE
 	ld [wLinkState], a
-	jp PlayDefaultMusic
+	jp RestartMapMusic 
 
 InGameTradeTextPointers:
 ; entries correspond to TRADE_DIALOGSET_* constants

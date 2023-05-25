@@ -108,8 +108,8 @@ BillsPC_::
 	bit 3, a ; accessing Bill's PC through another PC?
 	jr nz, BillsPCMenu
 ; accessing it directly
-	ld a, SFX_TURN_ON_PC
-	call PlaySound
+	ld de, SFX_TURN_ON_PC
+	call PlaySFX
 	ld hl, SwitchOnText
 	call PrintText
 	
@@ -198,9 +198,9 @@ ExitBillsPC:
 	jr nz, .next
 ; accessing it directly
 	call LoadTextBoxTilePatterns
-	ld a, SFX_TURN_OFF_PC
-	call PlaySound
-	call WaitForSoundToFinish
+	ld de, SFX_TURN_OFF_PC
+	call PlaySFX
+	call WaitSFX
 .next
 	ld hl, wFlags_0xcd60
 	res 5, [hl]
@@ -238,14 +238,14 @@ BillsPCDeposit:
 	call DisplayDepositWithdrawMenu
 	jp nc, BillsPCMenu_
 	ld a, [wcf91]
-	call PlayCry
+	call PlayMonCry
 	ld a, PARTY_TO_BOX
 	ld [wMoveMonType], a
 	call MoveMon
 	xor a
 	ld [wRemoveMonFromBox], a
 	call RemovePokemon
-	call WaitForSoundToFinish
+	call WaitSFX
 	ld hl, wBoxNumString
 	ld a, [wCurrentBoxNum]
 	and $7f
@@ -290,14 +290,14 @@ BillsPCWithdraw:
 	ld hl, wBoxMonNicks
 	call GetPartyMonName
 	ld a, [wcf91]
-	call PlayCry
+	call PlayMonCry
 	xor a ; BOX_TO_PARTY
 	ld [wMoveMonType], a
 	call MoveMon
 	ld a, 1
 	ld [wRemoveMonFromBox], a
 	call RemovePokemon
-	call WaitForSoundToFinish
+	call WaitSFX
 	ld hl, MonIsTakenOutText
 	call PrintText
 	jp BillsPCMenu_
@@ -323,9 +323,14 @@ BillsPCRelease:
 	inc a
 	ld [wRemoveMonFromBox], a
 	call RemovePokemon
-	call WaitForSoundToFinish
+	call WaitSFX
 	ld a, [wcf91]
+	call GetCryIndex
+	jr c, .skip_cry
+	ld e, c
+	ld d, b
 	call PlayCry
+.skip_cry
 	ld hl, MonWasReleasedText
 	call PrintText
 	jp BillsPCMenu_

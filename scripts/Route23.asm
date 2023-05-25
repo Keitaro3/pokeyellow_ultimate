@@ -227,9 +227,9 @@ Route23Script_51388:
 VictoryRoadGuardText1:
 	text_far _VictoryRoadGuardText1
 	text_asm
-	ld a, SFX_DENIED
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
+	ld de, SFX_DENIED
+	call PlaySFX
+	call WaitPlaySFX
 	jp TextScriptEnd
 
 VictoryRoadGuardText2:

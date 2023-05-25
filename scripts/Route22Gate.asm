@@ -80,9 +80,9 @@ Route22GateText1:
 Route22GateText_1e704:
 	text_far _Route22GateText_1e704
 	text_asm
-	ld a, SFX_DENIED
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
+	ld de, SFX_DENIED
+	call WaitPlaySFX
+	call WaitSFX
 	ld hl, Route22GateText_1e715
 	ret
 

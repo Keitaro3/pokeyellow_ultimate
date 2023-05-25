@@ -48,7 +48,7 @@ EndOfBattle:
 .resetVariables
 	xor a
 	ld [wLowHealthAlarm], a ;disable low health alarm
-	ld [wChannelSoundIDs + CHAN5], a
+	ld [wChannel5MusicID], a
 	ld [wIsInBattle], a
 	ld [wBattleType], a
 	ld [wMoveMissed], a
@@ -76,7 +76,13 @@ EndOfBattle:
 	jr nz, .loop2
 	ld hl, wd72c
 	set 0, [hl]
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld e, 0
+	ld a, [wMusicFadeID]
+	ld d, 0
+	ld a, [wMusicFadeID + 1]
+	ld a, $8
+	ld [wMusicFade], a	
 	call GBPalWhiteOut
 	ld a, $ff
 	ld [wDestinationWarpID], a

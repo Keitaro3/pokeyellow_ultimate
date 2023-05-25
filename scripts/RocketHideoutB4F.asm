@@ -20,8 +20,8 @@ RocketHideout4Script_45473:
 	ld a, $2d
 	jr .asm_45498
 .asm_4548c
-	ld a, SFX_GO_INSIDE
-	call PlaySound
+	ld de, SFX_GO_INSIDE
+	call PlaySFX
 	SetEvent EVENT_ROCKET_HIDEOUT_4_DOOR_UNLOCKED
 .asm_45496
 	ld a, $e

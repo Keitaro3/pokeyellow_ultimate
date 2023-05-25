@@ -68,10 +68,10 @@ ENDC
 	ld a, [wWalkBikeSurfState]
 	and a
 	jr z, .walking
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 .walking
-	ld c, BANK(Music_MeetRival)
-	ld a, MUSIC_MEET_RIVAL
+	ld de, MUSIC_MEET_RIVAL
 	call PlayMusic
 	xor a
 	ldh [hJoyHeld], a
@@ -176,8 +176,8 @@ CeruleanCityScript2:
 	ld a, $1
 	ldh [hSpriteIndexOrTextID], a
 	call DisplayTextID
-	call StopAllMusic
-	farcall Music_RivalAlternateStart
+	ld de, MUSIC_RIVAL_AFTER
+	call PlayMusic2
 	ld a, $1
 	ldh [hSpriteIndex], a
 	call SetSpriteMovementBytesToFF
@@ -225,7 +225,7 @@ CeruleanCityScript3:
 	predef HideObject
 	xor a
 	ld [wJoyIgnore], a
-	call PlayDefaultMusic
+	call RestartMapMusic
 	ld a, $0
 	ld [wCeruleanCityCurScript], a
 	ret

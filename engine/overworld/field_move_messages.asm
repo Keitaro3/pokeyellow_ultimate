@@ -10,7 +10,7 @@ UsedStrengthText:
 	text_far _UsedStrengthText
 	text_asm
 	ld a, [wcf91]
-	call PlayCry
+	call PlayMonCry
 	call Delay3
 	jp TextScriptEnd
 

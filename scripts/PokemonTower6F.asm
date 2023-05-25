@@ -137,8 +137,8 @@ PokemonTower6Text7:
 	ld hl, PokemonTower2Text_60c1f
 	call PrintText
 	ld a, RESTLESS_SOUL
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	ld c, 30
 	call DelayFrames
 	ld hl, PokemonTower2Text_60c24

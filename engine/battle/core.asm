@@ -251,7 +251,7 @@ StartBattle:
 	call LoadBattleMonFromParty
 	call LoadScreenTilesFromBuffer1
 	call SendOutMon
-	jr MainInBattleLoop
+	jp MainInBattleLoop
 
 ; wild mon or link battle enemy ran from battle
 EnemyRan:
@@ -266,8 +266,8 @@ EnemyRan:
 	ld hl, EnemyRanText
 .printText
 	call PrintText
-	ld a, SFX_RUN
-	call PlaySoundWaitForCurrent
+	ld de, SFX_RUN
+	call WaitPlaySFX
 	xor a
 	ldh [hWhoseTurn], a
 	jpfar AnimationSlideEnemyMonOff
@@ -799,35 +799,17 @@ FaintEnemyPokemon:
 	ld hl, wPlayerUsedMove
 	ld [hli], a
 	ld [hl], a
+	call WaitSFX
+	ld de, SFX_KINESIS
+	call PlaySFX
 	hlcoord 12, 5
 	decoord 12, 6
 	call SlideDownFaintedMonPic
+	ld de, SFX_FAINT_THUD
+	call PlaySFX
 	hlcoord 0, 0
 	lb bc, 4, 11
 	call ClearScreenArea
-	ld a, [wIsInBattle]
-	dec a
-	jr z, .wild_win
-	xor a
-	ld [wFrequencyModifier], a
-	ld [wTempoModifier], a
-	ld a, SFX_FAINT_FALL
-	call PlaySoundWaitForCurrent
-.sfxwait
-	ld a, [wChannelSoundIDs + CHAN5]
-	cp SFX_FAINT_FALL
-	jr z, .sfxwait
-	ld a, SFX_FAINT_THUD
-	call PlaySound
-	call WaitForSoundToFinish
-	jr .sfxplayed
-.wild_win
-	call EndLowHealthAlarm
-	ld a, MUSIC_DEFEATED_WILD_MON
-	call PlayBattleVictoryMusic
-.sfxplayed
-; bug: win sfx is played for wild battles before checking for player mon HP
-; this can lead to odd scenarios where both player and enemy faint, as the win sfx plays yet the player never won the battle
 	ld hl, wBattleMonHP
 	ld a, [hli]
 	or [hl]
@@ -844,6 +826,13 @@ FaintEnemyPokemon:
 	ld hl, EnemyMonFaintedText
 	call PrintText
 	call PrintEmptyString
+	ld a, [wIsInBattle]
+	dec a
+	jr nz, .notWild
+	call EndLowHealthAlarm
+	ld de, MUSIC_DEFEATED_WILD_MON
+	call PlayBattleVictoryMusic
+.notWild	
 	call SaveScreenTilesToBuffer1
 	xor a
 	ld [wBattleResult], a
@@ -898,7 +887,7 @@ EndLowHealthAlarm:
 ; the low health alarm and prevents it from reactivating until the next battle.
 	xor a
 	ld [wLowHealthAlarm], a ; turn off low health alarm
-	ld [wChannelSoundIDs + CHAN5], a
+	ld [wChannel5MusicID], a
 	inc a
 	ld [wLowHealthAlarmDisabled], a ; prevent it from reactivating
 	ret
@@ -966,7 +955,8 @@ TrainerBattleVictory:
 .notrival
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
-	ld a, b
+	ld d, 0
+	ld e, b 
 	call nz, PlayBattleVictoryMusic
 	ld hl, TrainerDefeatedText
 	call PrintText
@@ -1000,11 +990,7 @@ TrainerDefeatedText:
 	text_end
 
 PlayBattleVictoryMusic:
-	push af
-	call StopAllMusic
-	ld c, BANK(Music_DefeatedTrainer)
-	pop af
-	call PlayMusic
+	call PlayMusic2
 	jp Delay3
 
 HandlePlayerMonFainted:
@@ -1052,9 +1038,8 @@ RemoveFaintedPlayerMon:
 	ld a, [wLowHealthAlarm]
 	bit 7, a      ; skip sound flag (red bar (?))
 	jr z, .skipWaitForSound
-	ld a, $ff
-	ld [wLowHealthAlarm], a ;disable low health alarm
-	call WaitForSoundToFinish
+	call EndLowHealthAlarm
+	call WaitSFX
 	xor a
 .skipWaitForSound
 ; a is 0, so this zeroes the enemy's accumulated damage.
@@ -1080,8 +1065,10 @@ RemoveFaintedPlayerMon:
 	and a ; was this called by HandleEnemyMonFainted?
 	ret z ; if so, return
 
+	ld a, $f0
+	ld [wCryTracks], a
 	ld a, [wBattleMonSpecies]
-	call PlayCry
+	call PlayStereoCry
 	ld hl, PlayerMonFaintedText
 	call PrintText
 	ld a, [wPlayerMonNumber]
@@ -1490,8 +1477,10 @@ EnemySendOutFirstMon:
 	ldh [hStartTileID], a
 	hlcoord 15, 6
 	predef AnimateSendingOutMon
+	ld a, $f
+	ld [wCryTracks], a
 	ld a, [wEnemyMonSpecies2]
-	call PlayCry
+	call PlayStereoCry
 	call DrawEnemyHUDAndHPBar
 	ld a, [wCurrentMenuItem]
 	and a
@@ -1645,7 +1634,7 @@ TryRunningFromBattle:
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
 	ld a, $2
-	jr nz, .playSound
+	jr nz, .playSFX
 ; link battle
 	call SaveScreenTilesToBuffer1
 	xor a
@@ -1657,15 +1646,15 @@ TryRunningFromBattle:
 	ld a, [wSerialExchangeNybbleReceiveData]
 	cp LINKBATTLE_RUN
 	ld a, $2
-	jr z, .playSound
+	jr z, .playSFX
 	dec a
-.playSound
+.playSFX
 	ld [wBattleResult], a
-	ld a, SFX_RUN
-	call PlaySoundWaitForCurrent
+	ld de, SFX_RUN
+	call WaitPlaySFX
 	ld hl, GotAwayText
 	call PrintText
-	call WaitForSoundToFinish
+	call WaitSFX
 	call SaveScreenTilesToBuffer1
 	scf ; set carry
 	ret
@@ -1834,8 +1823,10 @@ SendOutMon:
 	call PlayMoveAnimation
 	hlcoord 4, 11
 	predef AnimateSendingOutMon
+	ld a, $f0
+	ld [wCryTracks], a
 	ld a, [wcf91]
-	call PlayCry
+	call PlayStereoCry
 	call PrintEmptyString
 	jp SaveScreenTilesToBuffer1
 
@@ -1940,7 +1931,7 @@ DrawPlayerHUDAndHPBar:
 	ld [hl], $0
 	ret z
 	xor a
-	ld [wChannelSoundIDs + CHAN5], a
+	ld [wChannel5MusicID], a
 	ret
 .setLowHealthAlarm
 	ld hl, wLowHealthAlarm

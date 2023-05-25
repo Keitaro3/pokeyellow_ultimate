@@ -33,8 +33,8 @@ VermilionGymSetDoorTile:
 	ld a, $24 ; double door tile ID
 	jr .replaceTile
 .doorsOpen
-	ld a, SFX_GO_INSIDE
-	call PlaySound
+	ld de, SFX_GO_INSIDE
+	call PlaySFX
 	ld a, $5 ; clear floor tile ID
 .replaceTile
 	ld [wNewTileBlockID], a

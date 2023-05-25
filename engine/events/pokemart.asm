@@ -190,9 +190,9 @@ DisplayPokemartDialogue_::
 	ld a, 1
 	ld [wBoughtOrSoldItemInMart], a
 .skipSettingFlag2
-	ld a, SFX_PURCHASE
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
+	ld de, SFX_PURCHASE
+	call WaitPlaySFX
+	call WaitSFX
 	ld hl, PokemartBoughtItemText
 	call PrintText
 	jp .buyMenuLoop

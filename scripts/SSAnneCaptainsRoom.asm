@@ -44,22 +44,13 @@ SSAnne7Text1:
 SSAnne7RubText:
 	text_far _SSAnne7RubText
 	text_asm
-	ld a, [wAudioROMBank]
-	cp BANK("Audio Engine 3")
-	ld [wAudioSavedROMBank], a
-	jr nz, .asm_61908
-	call StopAllMusic
-	ld a, BANK(Music_PkmnHealed)
-	ld [wAudioROMBank], a
-.asm_61908
-	ld a, MUSIC_PKMN_HEALED
-	ld [wNewSoundID], a
-	call PlaySound
+	ld de, MUSIC_PKMN_HEALED
+	call PlayMusic2
 .asm_61910
-	ld a, [wChannelSoundIDs]
+	ld a, [wChannel1MusicID]
 	cp MUSIC_PKMN_HEALED
 	jr z, .asm_61910
-	call PlayDefaultMusic
+	call RestartMapMusic 
 	SetEvent EVENT_RUBBED_CAPTAINS_BACK
 	ld hl, wd72d
 	res 5, [hl]

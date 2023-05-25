@@ -15,8 +15,8 @@ VermilionHouse1Text2:
 	text_far _VermilionHouse1Text2
 	text_asm
 	ld a, PIDGEY
-	call PlayCry
-	call WaitForSoundToFinish
+	call PlayMonCry
+	call WaitSFX
 	jp TextScriptEnd
 
 VermilionHouse1Text3:

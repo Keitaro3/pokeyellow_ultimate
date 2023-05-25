@@ -97,7 +97,7 @@ CeladonCityText7:
 	text_far _CeladonCityText7
 	text_asm
 	ld a, POLIWRATH
-	call PlayCry
+	call PlayMonCry
 	jp TextScriptEnd
 
 CeladonCityText8:

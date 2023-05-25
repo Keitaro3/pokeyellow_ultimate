@@ -23,13 +23,13 @@ HallOfFamePC:
 	ldh [rBGP], a
 	call UpdateGBCPal_BGP
 	call EnableLCD
-	call StopAllMusic
+	ld de, MUSIC_NONE
+	call PlayMusic
 	ld hl, vBGMap1
 	call CreditsCopyTileMapToVRAM
 	ld hl, vBGMap0
 	call CreditsCopyTileMapToVRAM
-	ld c, BANK(Music_Credits)
-	ld a, MUSIC_CREDITS
+	ld de, MUSIC_CREDITS
 	call PlayMusic
 	ld c, 128
 	call DelayFrames

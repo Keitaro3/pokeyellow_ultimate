@@ -64,8 +64,8 @@ TryPushingBoulder::
 	ld de, PushBoulderRightMovementData
 .done
 	call MoveSprite
-	ld a, SFX_PUSH_BOULDER
-	call PlaySound
+	ld de, SFX_PUSH_BOULDER
+	call PlaySFX
 	ld hl, wFlags_0xcd60
 	set 1, [hl]
 	ret
@@ -99,8 +99,8 @@ DoBoulderDustAnimation::
 	ldh [hSpriteIndex], a
 	call GetSpriteMovementByte2Pointer
 	ld [hl], $10
-	ld a, SFX_CUT
-	jp PlaySound
+	ld de, SFX_CUT_HM
+	jp PlaySFX
 
 ResetBoulderPushFlags:
 	ld hl, wFlags_0xcd60

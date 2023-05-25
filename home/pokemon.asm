@@ -133,51 +133,53 @@ LoadFrontSpriteByMonIndex::
 	jp BankswitchCommon
 
 
-PlayCry::
-; Play monster a's cry.
-	push bc
-	ld b, a
-	ld a, [wLowHealthAlarm]
+PlayStereoCry::
+	push af
+	ld a, 1
+	ld [wStereoPanningMask], a
+	pop af
+	jr _PlayMonCry
+
+PlayMonCry::
 	push af
 	xor a
-	ld [wLowHealthAlarm], a
-	ld a, b
-	call GetCryData
-	call PlaySound
-	call WaitForSoundToFinish
+	ld [wStereoPanningMask], a
+	ld [wCryTracks], a
 	pop af
-	ld [wLowHealthAlarm], a
+
+_PlayMonCry::
+	push hl
+	push de
+	push bc
+
+	call GetCryIndex
+	jr c, .done
+
+	ld e, c
+	ld d, b
+	call PlayCry
+	call WaitSFX
+
+.done
 	pop bc
+	pop de
+	pop hl
 	ret
 
-GetCryData::
-; Load cry data for monster a.
+GetCryIndex::
+	and a
+	jr z, .no
+	cp NUM_POKEMON_INDEXES + 1
+	jr nc, .no
+
 	dec a
 	ld c, a
 	ld b, 0
-	ld hl, CryData
-	add hl, bc
-	add hl, bc
-	add hl, bc
+	and a
+	ret
 
-	ld a, BANK(CryData)
-	call BankswitchHome
-	ld a, [hli]
-	ld b, a ; cry id
-	ld a, [hli]
-	ld [wFrequencyModifier], a
-	ld a, [hl]
-	ld [wTempoModifier], a
-	call BankswitchBack
-
-	; Cry headers have 3 channels,
-	; and start from index CRY_SFX_START,
-	; so add 3 times the cry id.
-	ld a, b
-	ld c, CRY_SFX_START
-	rlca ; * 2
-	add b
-	add c
+.no
+	scf
 	ret
 
 DisplayPartyMenu::

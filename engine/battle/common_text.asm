@@ -8,8 +8,10 @@ PrintBeginningBattleText:
 	cp POKEMON_TOWER_7F + 1
 	jr c, .pokemonTower
 .notPokemonTower
+	ld a, $f
+	ld [wCryTracks], a
 	ld a, [wEnemyMonSpecies2]
-	call PlayCry
+	call PlayStereoCry
 	ld hl, WildMonAppearedText
 	ld a, [wMoveMissed]
 	and a
@@ -64,13 +66,9 @@ PrintBeginningBattleText:
 	call PrintText
 
 .playSFX
-	xor a
-	ld [wFrequencyModifier], a
-	ld a, $80
-	ld [wTempoModifier], a
-	ld a, SFX_SILPH_SCOPE
-	call PlaySound
-	jp WaitForSoundToFinish
+	ld de, SFX_SILPH_SCOPE
+	call PlaySFX
+	jp WaitSFX
 .done
 	ret
 

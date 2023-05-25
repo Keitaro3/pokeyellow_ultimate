@@ -113,7 +113,8 @@ GaryScript3:
 	ret
 
 GaryScript4:
-	farcall Music_Cities1AlternateTempo
+	ld de, MUSIC_CITY_SLOW
+	call PlayMusic
 	ld a, $2
 	ldh [hSpriteIndexOrTextID], a
 	call GaryScript_760c8

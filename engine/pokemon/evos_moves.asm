@@ -264,9 +264,9 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ld hl, IntoText
 	call PrintText_NoCreatingTextBox
 	
-	ld a, SFX_GET_ITEM_2
-	call PlaySoundWaitForCurrent
-	call WaitForSoundToFinish
+	ld de, SFX_GET_ITEM_2
+	call WaitPlaySFX
+	call WaitSFX
 	
 	ld c, 40
 	call DelayFrames
@@ -377,7 +377,7 @@ Evolution_PartyMonLoop: ; loop over party mons
 	ret nz
 	ld a, [wEvolutionOccurred]
 	and a
-	call nz, PlayDefaultMusic
+	call nz, RestartMapMusic
 	ret
 
 RenameEvolvedMon:

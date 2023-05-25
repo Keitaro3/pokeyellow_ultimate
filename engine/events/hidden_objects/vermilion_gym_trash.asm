@@ -95,10 +95,10 @@ GymTrashCans:
 VermilionGymTrashSuccessText1::
 	text_far _VermilionGymTrashSuccessText1
 	text_asm
-	call WaitForSoundToFinish
-	ld a, SFX_SWITCH
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_SWITCH
+	call PlaySFX
+	call WaitSFX
 	jp TextScriptEnd
 
 ; unused
@@ -109,26 +109,26 @@ VermilionGymTrashSuccessText2::
 ; unused
 VermilionGymTrashSuccesPlaySfx:
 	text_asm
-	call WaitForSoundToFinish
-	ld a, SFX_SWITCH
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_SWITCH
+	call PlaySFX
+	call WaitSFX
 	jp TextScriptEnd
 
 VermilionGymTrashSuccessText3::
 	text_far _VermilionGymTrashSuccessText3
 	text_asm
-	call WaitForSoundToFinish
-	ld a, SFX_GO_INSIDE
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_GO_INSIDE
+	call PlaySFX
+	call WaitSFX
 	jp TextScriptEnd
 
 VermilionGymTrashFailText::
 	text_far _VermilionGymTrashFailText
 	text_asm
-	call WaitForSoundToFinish
-	ld a, SFX_DENIED
-	call PlaySound
-	call WaitForSoundToFinish
+	call WaitSFX
+	ld de, SFX_DENIED
+	call PlaySFX
+	call WaitSFX
 	jp TextScriptEnd
