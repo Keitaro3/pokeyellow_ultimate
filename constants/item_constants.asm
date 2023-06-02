@@ -95,6 +95,7 @@ DEF SAFARI_ROCK EQU $16 ; overload
 	const FRIEND_BALL   ; $54
 	const SUN_SHARD     ; $55
 	const MOON_SHARD    ; $56
+	const SUN_STONE		; $57
 DEF NUM_ITEMS EQU const_value - 1
 
 ; elevator floors use item IDs

@@ -20,3 +20,8 @@ MACRO dbsprite
 ; x tile, y tile, x pixel, y pixel, vtile offset, attributes
 	db (\2 * TILE_WIDTH) % $100 + \4, (\1 * TILE_WIDTH) % $100 + \3, \5, \6
 ENDM
+
+; extracts the middle two colors from a 2bpp binary palette
+; example usage:
+; INCBIN "foo.gbcpal", middle_colors
+middle_colors EQUS "PAL_COLOR_SIZE, PAL_COLOR_SIZE * 2"

@@ -2015,7 +2015,7 @@ wDestinationWarpID:: db
 
 wStatusFlags:: db
 
-	ds 52
+	ds 26
 	
 wPartyMonHappiness:: ds PARTY_LENGTH
 wPartyMonHappinessEnd::

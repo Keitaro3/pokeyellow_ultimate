@@ -307,21 +307,20 @@ Pokedex_DrawInterface:
 	ld de, PokedexMenuItemsText
 	call PlaceString
 ; find the highest pokedex number among the pokemon the player has seen
-	ld hl, wPokedexSeenEnd - 1
-	ld b, (wPokedexSeenEnd - wPokedexSeen) * 8 + 1
+	ld hl, PokedexList + NUM_POKEMON - 1
+	ld d, NUM_POKEMON
+	ld e, d
 .maxSeenPokemonLoop
 	ld a, [hld]
-	ld c, 8
-.maxSeenPokemonInnerLoop
-	dec b
-	sla a
-	jr c, .storeMaxSeenPokemon
-	dec c
-	jr nz, .maxSeenPokemonInnerLoop
-	jr .maxSeenPokemonLoop
+	ld [wd11e], a
+	call Pokedex_CheckSeen
+	jr nz, .storeMaxSeenPokemon
+	dec d
+	dec e
+	jr nz, .maxSeenPokemonLoop
 
 .storeMaxSeenPokemon
-	ld a, b
+	ld a, d
 	ld [wDexMaxSeenMon], a
 	ret
 
@@ -751,3 +750,12 @@ IndexToPokedex:
 	ret
 
 INCLUDE "data/pokemon/dex_order.asm"
+
+Pokedex_CheckSeen:
+	push de
+	push hl
+	ld hl, wPokedexSeen
+	call IsPokemonBitSet
+	pop hl
+	pop de
+	ret

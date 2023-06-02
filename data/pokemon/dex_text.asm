@@ -1506,3 +1506,153 @@ _MewDexEntry::
 	next "fine, delicate"
 	next "hair can be seen"
 	dex
+	
+_ChikoritaDexEntry::
+	text "Its pleasantly"
+	next "aromatic leaves"
+	next "have the ability"
+
+	page "to check the hu-"
+	next "midity and tem-"
+	next "perature"
+	dex
+
+_BayleefDexEntry::
+	text "A spicy aroma ema-"
+	next "nates from around"
+	next "its neck. The"
+
+	page "aroma acts as a"
+	next "stimulant to re-"
+	next "store health"
+	dex
+
+_MeganiumDexEntry::
+	text "MEGANIUM's breath"
+	next "has the power to"
+	next "revive dead grass"
+
+	page "and plants. It can"
+	next "make them healthy"
+	next "again"
+	dex
+
+_CyndaquilDexEntry::
+	text "It usually stays"
+	next "hunched over."
+	next "If it is angry or"
+	
+	page "surprised, it"
+	next "shoots flames out"
+	next "of its back"
+	dex
+	
+_QuilavaDexEntry::
+	text "This #MON is"
+	next "fully covered by"
+	next "nonflammable fur."
+	
+	page "It can withstand"
+	next "any kind of fire"
+	next "attack"
+	dex
+	
+_TyphlosionDexEntry::
+	text "It has a secret,"
+	next "devastating move."
+	next "It rubs its blaz-"
+	
+	page "ing fur together"
+	next "to cause huge"
+	next "explosions"
+	dex
+
+_TotodileDexEntry::
+	text "It is small but"
+	next "rough and tough."
+	next "It won't hesitate"
+
+	page "to take a bite out"
+	next "of anything that"
+	next "moves"
+	dex
+	
+_CroconawDexEntry::
+	text "It opens its huge"
+	next "jaws wide when"
+	next "attacking. If it"
+
+	page "loses any fangs"
+	next "while biting, they"
+	next "grow back in"
+	dex
+	
+_FeraligatrDexEntry::
+	text "It is hard for it"
+	next "to support its own"
+	next "weight out of"
+
+	page "water, so it gets"
+	next "down on all fours."
+	next "But it moves fast"
+	dex
+	
+_SentretDexEntry::
+	text "It stands on its"
+	next "tail so it can see"
+	next "a long way. If it"
+
+	page "spots an enemy, it"
+	next "cries loudly to"
+	next "warn its kind"
+	dex
+
+_FurretDexEntry::
+	text "There is no tell-"
+	next "ing where the tail"
+	next "begins. Despite"
+
+	page "its short legs, it"
+	next "is quick at hunt-"
+	next "ing RATTATA"
+	dex
+	
+_HoothootDexEntry::
+	text "It has a perfect"
+	next "sense of time."
+	next "Whatever happens,"
+
+	page "it keeps rhythm by"
+	next "precisely tilting"
+	next "its head in time"
+	dex
+	
+_NoctowlDexEntry::
+	text "When it needs to"
+	next "think, it rotates"
+	next "its head 180 de-"
+
+	page "grees to sharpen"
+	next "its intellectual"
+	next "power"
+	dex
+	
+_LedybaDexEntry::
+	text "When the weather"
+	next "turns cold, lots"
+	next "of LEDYBA gather"
+
+	page "from everywhere to"
+	next "cluster and keep"
+	next "each other warm"
+	dex
+	
+_LedianDexEntry::
+	text "The star patterns"
+	next "on its back grow"
+	next "larger or smaller"
+
+	page "depending on the"
+	next "number of stars in"
+	next "the night sky"
+	dex

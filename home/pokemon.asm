@@ -169,7 +169,7 @@ _PlayMonCry::
 GetCryIndex::
 	and a
 	jr z, .no
-	cp NUM_POKEMON_INDEXES + 1
+	cp NUM_POKEMON + 1
 	jr nc, .no
 
 	dec a
@@ -449,3 +449,8 @@ GetPartyMonName::
 	pop bc
 	pop hl
 	ret
+	
+GetPartyLocation::
+; Add the length of a PartyMon struct to hl a times.
+	ld bc, PARTYMON_STRUCT_LENGTH
+	jp AddNTimes

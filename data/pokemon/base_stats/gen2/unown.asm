@@ -3,8 +3,7 @@
 	db  48,  72,  48,  48,  72
 	;   hp  atk  def  spd  spc
 
-	db PSYCHIC, PSYCHIC ; type
-
+	db PSYCHIC_TYPE, PSYCHIC_TYPE ; type
 	db 225 ; catch rate
 	db 61 ; base exp 
 	db GENDER_UNKNOWN ; gender ratio

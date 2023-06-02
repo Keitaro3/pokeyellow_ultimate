@@ -86,4 +86,5 @@ KeyItemFlags:
 	dbit FALSE ; FRIEND_BALL
 	dbit TRUE  ; SUN_SHARD
 	dbit TRUE  ; MOON_SHARD
+	dbit FALSE ; SUN_STONE
 	end_bit_array NUM_ITEMS

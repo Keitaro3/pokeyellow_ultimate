@@ -103,6 +103,7 @@ ItemUsePtrTable:
 	dw ItemUseBall		 ; FRIEND_BALL
 	dw UnusableItem      ; SUN_SHARD
 	dw UnusableItem      ; MOON_SHARD
+	dw ItemUseEvoStone	 ; SUN_STONE
 
 ItemUseBall:
 

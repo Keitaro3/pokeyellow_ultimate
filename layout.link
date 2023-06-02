@@ -134,7 +134,8 @@ ROMX $21
 ; bank $22 is empty
 ; bank $23 is empty
 ; bank $24 is empty
-; bank $25 is empty
+ROMX $25
+	"Pokédex Text 2" ; temporary
 ROMX $26
 	"Text 1"
 ROMX $27
@@ -210,6 +211,12 @@ ROMX $43
 ROMX $44
 	"Extra Songs 1"
 	"Songs 5"
+ROMX $45
+	"Pics 8"
+ROMX $46
+	"Pics 9"
+ROMX $47
+	"Pics 10"
 	
 	
 WRAM0

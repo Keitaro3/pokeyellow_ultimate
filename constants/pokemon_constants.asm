@@ -197,8 +197,75 @@
 	const BELLSPROUT         ; $BC
 	const WEEPINBELL         ; $BD
 	const VICTREEBEL         ; $BE
+	
+	const CHIKORITA          ; $BF
+	const BAYLEEF            ; $C0
+	const MEGANIUM           ; $C1
+	const CYNDAQUIL          ; $C2
+	const QUILAVA            ; $C3
+	const TYPHLOSION         ; $C4
+	const TOTODILE           ; $C5
+	const CROCONAW           ; $C6
+	const FERALIGATR         ; $C7
+	const SENTRET            ; $C8
+	const FURRET             ; $C9
+	const HOOTHOOT           ; $CA
+	const NOCTOWL            ; $CB
+	const LEDYBA             ; $CC
+	const LEDIAN             ; $CD
+	const SPINARAK           ; $CE
+	const ARIADOS            ; $CF
+	const CROBAT             ; $D0
+	const CHINCHOU           ; $D1
+	const LANTURN            ; $D2
+	const PICHU              ; $D3
+	const CLEFFA             ; $D4
+	const IGGLYBUFF          ; $D5
+	const TOGEPI             ; $D6
+	const TOGETIC            ; $D7
+	const NATU               ; $D8
+	const XATU               ; $D9
+	const MAREEP             ; $DA
+	const FLAAFFY            ; $DB
+	const AMPHAROS           ; $DC
+	const BELLOSSOM          ; $DD
+	const MARILL             ; $DE
+	const AZUMARILL          ; $DF
+	const SUDOWOODO          ; $E0
+	const POLITOED           ; $E1
+	const HOPPIP             ; $E2
+	const SKIPLOOM           ; $E3
+	const JUMPLUFF           ; $E4
+	const AIPOM              ; $E5
+	const SUNKERN            ; $E6
+	const SUNFLORA           ; $E7
+	const YANMA              ; $E8
+	const WOOPER             ; $E9
+	const QUAGSIRE           ; $EA
+	const ESPEON             ; $EB
+	const UMBREON            ; $EC
+	const MURKROW            ; $ED
+	const SLOWKING           ; $EE
+	const MISDREAVUS         ; $EF
+	const UNOWN              ; $F0
+	const WOBBUFFET          ; $F1
+	const GIRAFARIG          ; $F2
+	const PINECO             ; $F3
+	const FORRETRESS         ; $F4
+	const DUNSPARCE          ; $F5
+	const GLIGAR             ; $F6
+	const STEELIX            ; $F7
+	const SNUBBULL           ; $F8
+	const GRANBULL           ; $F9
+	const QWILFISH           ; $FA
+	const CELEBI	         ; $FB	
 
-DEF NUM_POKEMON_INDEXES EQU const_value - 1
+DEF NUM_POKEMON_INDEXES EQU const_value + - 1
+
+	const MON_GHOST	         ; $FC
+	const EGG                ; $FD
+	const FOSSIL_KABUTOPS    ; $FE
+	const FOSSIL_AERODACTYL  ; $FF
 
 ; starters
 DEF STARTER1 EQU CHARMANDER
@@ -208,10 +275,41 @@ DEF STARTER3 EQU BULBASAUR
 ; ghost Marowak in Pokémon Tower
 DEF RESTLESS_SOUL EQU MAROWAK
 
-DEF UNOWN EQU 240
-DEF WOBBUFFET EQU 241
+; Unown forms
+; indexes for:
+; - UnownWords (see data/pokemon/unown_words.asm)
+; - UnownPicPointers (see data/pokemon/unown_pic_pointers.asm)
+; - UnownAnimationPointers (see gfx/pokemon/unown_anim_pointers.asm)
+; - UnownAnimationIdlePointers (see gfx/pokemon/unown_idle_pointers.asm)
+; - UnownBitmasksPointers (see gfx/pokemon/unown_bitmask_pointers.asm)
+; - UnownFramesPointers (see gfx/pokemon/unown_frame_pointers.asm)
+const_value = 1
 
-DEF MON_GHOST EQU 252
-DEF EGG EQU 253
-DEF FOSSIL_KABUTOPS EQU 254
-DEF FOSSIL_AERODACTYL EQU 255
+	const UNOWN_A ;  1
+	const UNOWN_B ;  2
+	const UNOWN_C ;  3
+	const UNOWN_D ;  4
+	const UNOWN_E ;  5
+	const UNOWN_F ;  6
+	const UNOWN_G ;  7
+	const UNOWN_H ;  8
+	const UNOWN_I ;  9
+	const UNOWN_J ; 10
+	const UNOWN_K ; 11
+	const UNOWN_L ; 12
+	const UNOWN_M ; 13
+	const UNOWN_N ; 14
+	const UNOWN_O ; 15
+	const UNOWN_P ; 16
+	const UNOWN_Q ; 17
+	const UNOWN_R ; 18
+	const UNOWN_S ; 19
+	const UNOWN_T ; 20
+	const UNOWN_U ; 21
+	const UNOWN_V ; 22
+	const UNOWN_W ; 23
+	const UNOWN_X ; 24
+	const UNOWN_Y ; 25
+	const UNOWN_Z ; 26
+	
+NUM_UNOWN EQU const_value + -1 ; 26

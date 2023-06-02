@@ -193,7 +193,72 @@ EvosMovesPointerTable:
 	dw BellsproutEvosMoves
 	dw WeepinbellEvosMoves
 	dw VictreebelEvosMoves
+	dw ChikoritaEvosMoves
+	dw BayleefEvosMoves
+	dw MeganiumEvosMoves
+	dw CyndaquilEvosMoves
+	dw QuilavaEvosMoves
+	dw TyphlosionEvosMoves
+	dw TotodileEvosMoves
+	dw CroconawEvosMoves
+	dw FeraligatrEvosMoves
+	dw SentretEvosMoves
+	dw FurretEvosMoves
+	dw HoothootEvosMoves
+	dw NoctowlEvosMoves
+	dw LedybaEvosMoves
+	dw LedianEvosMoves
+	dw SpinarakEvosMoves
+	dw AriadosEvosMoves
+	dw CrobatEvosMoves
+	dw ChinchouEvosMoves
+	dw LanturnEvosMoves
+	dw PichuEvosMoves
+	dw CleffaEvosMoves
+	dw IgglybuffEvosMoves
+	dw TogepiEvosMoves
+	dw TogeticEvosMoves
+	dw NatuEvosMoves
+	dw XatuEvosMoves
+	dw MareepEvosMoves
+	dw FlaaffyEvosMoves
+	dw AmpharosEvosMoves
+	dw BellossomEvosMoves
+	dw MarillEvosMoves
+	dw AzumarillEvosMoves
+	dw SudowoodoEvosMoves
+	dw PolitoedEvosMoves
+	dw HoppipEvosMoves
+	dw SkiploomEvosMoves
+	dw JumpluffEvosMoves
+	dw AipomEvosMoves
+	dw SunkernEvosMoves
+	dw SunfloraEvosMoves
+	dw YanmaEvosMoves
+	dw WooperEvosMoves
+	dw QuagsireEvosMoves
+	dw EspeonEvosMoves
+	dw UmbreonEvosMoves
+	dw MurkrowEvosMoves
+	dw SlowkingEvosMoves
+	dw MisdreavusEvosMoves
+	dw UnownEvosMoves
+	dw WobbuffetEvosMoves
+	dw GirafarigEvosMoves
+	dw PinecoEvosMoves
+	dw ForretressEvosMoves
+	dw DunsparceEvosMoves
+	dw GligarEvosMoves
+	dw SteelixEvosMoves
+	dw SnubbullEvosMoves
+	dw GranbullEvosMoves
+	dw QwilfishEvosMoves
+	dw CelebiEvosMoves
 	assert_table_length NUM_POKEMON_INDEXES
+	dw MonGhostEvosMoves
+	dw EggEvosMoves
+	dw FossilKabutopsEvosMoves
+	dw FossilAerodactylEvosMoves
 
 RhydonEvosMoves:
 ; Evolutions
@@ -589,6 +654,7 @@ GrowlitheEvosMoves:
 
 OnixEvosMoves:
 ; Evolutions
+	db EV_TRADE, METAL_COAT_GSC, STEELIX
 	db 0
 ; Learnset
 	db 15, BIND
@@ -625,6 +691,7 @@ PidgeyEvosMoves:
 SlowpokeEvosMoves:
 ; Evolutions
 	db EV_LEVEL, 37, SLOWBRO
+	db EV_TRADE, KINGS_ROCK_GSC, SLOWKING
 	db 0
 ; Learnset
 	db 18, DISABLE
@@ -1394,6 +1461,8 @@ EeveeEvosMoves:
 	db EV_ITEM, FIRE_STONE, FLAREON
 	db EV_ITEM, THUNDER_STONE, JOLTEON
 	db EV_ITEM, WATER_STONE, VAPOREON
+	db EV_HAPPINESS, TR_MORNDAY, ESPEON
+	db EV_HAPPINESS, TR_NITE, UMBREON
 	db 0
 ; Learnset
 	db 8, SAND_ATTACK
@@ -1498,6 +1567,7 @@ ParasEvosMoves:
 PoliwhirlEvosMoves:
 ; Evolutions
 	db EV_ITEM, WATER_STONE, POLIWRATH
+	db EV_TRADE, KINGS_ROCK_GSC, POLITOED
 	db 0
 ; Learnset
 	db 16, HYPNOSIS
@@ -1716,6 +1786,7 @@ HypnoEvosMoves:
 
 GolbatEvosMoves:
 ; Evolutions
+	db EV_HAPPINESS, 1, CROBAT
 	db 0
 ; Learnset
 	db 10, SUPERSONIC
@@ -2393,6 +2464,7 @@ OddishEvosMoves:
 GloomEvosMoves:
 ; Evolutions
 	db EV_ITEM, LEAF_STONE, VILEPLUME
+	db EV_ITEM, SUN_STONE, BELLOSSOM
 	db 0
 ; Learnset
 	db 15, POISONPOWDER
@@ -2449,6 +2521,772 @@ VictreebelEvosMoves:
 	db 18, SLEEP_POWDER
 	db 0
 	
+ChikoritaEvosMoves:
+;Evolutions
+	db EV_LEVEL,16,BAYLEEF
+	db 0
+;Learnset
+	db 8, RAZOR_LEAF
+	db 12,REFLECT
+	db 15,POISONPOWDER
+	db 22,SYNTHESIS
+	db 29,BODY_SLAM
+	db 36,LIGHT_SCREEN
+	db 43,SAFEGUARD
+	db 50,SOLARBEAM
+	db 0
+	
+BayleefEvosMoves:
+;Evolutions
+	db EV_LEVEL,32,MEGANIUM
+	db 0
+;Learnset
+	db 8,RAZOR_LEAF
+	db 12,REFLECT
+	db 15,POISONPOWDER
+	db 23,SYNTHESIS
+	db 31,BODY_SLAM
+	db 39,LIGHT_SCREEN
+	db 47,SAFEGUARD
+	db 55,SOLARBEAM
+	db 0
+	
+MeganiumEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 8,RAZOR_LEAF
+	db 12,REFLECT
+	db 15,POISONPOWDER
+	db 23,SYNTHESIS
+	db 31,BODY_SLAM
+	db 41,LIGHT_SCREEN
+	db 51,SOLARBEAM
+	db 0
+	
+CyndaquilEvosMoves:
+;Evolutions
+	db EV_LEVEL,14,QUILAVA
+	db 0
+;Learnset
+	db 6,SMOKESCREEN
+	db 12,EMBER
+	db 19,QUICK_ATTACK
+	db 27,FLAME_WHEEL
+	db 36,SWIFT
+	db 46,FLAMETHROWER
+	db 0
+	
+QuilavaEvosMoves:
+;Evolutions
+	db EV_LEVEL,36,TYPHLOSION
+	db 0
+;Learnset
+	db 6,SMOKESCREEN
+	db 12,EMBER
+	db 21,QUICK_ATTACK
+	db 31,FLAME_WHEEL
+	db 42,SWIFT
+	db 54,FLAMETHROWER
+	db 0
+	
+TyphlosionEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 6,SMOKESCREEN
+	db 12,EMBER
+	db 21,QUICK_ATTACK
+	db 31,FLAME_WHEEL
+	db 45,SWIFT
+	db 60,FLAMETHROWER
+	db 0
+	
+TotodileEvosMoves:
+;Evolutions
+	db EV_LEVEL,18,CROCONAW
+	db 0
+;Learnset
+	db 7,RAGE
+	db 13,WATER_GUN
+	db 20,BITE
+	db 27,SCARY_FACE
+	db 35,SLASH
+	db 43,SCREECH
+	db 53,HYDRO_PUMP
+	db 0
+	
+CroconawEvosMoves:
+;Evolutions
+	db EV_LEVEL,30,FERALIGATR
+	db 0
+;Learnset
+	db 7,RAGE
+	db 13,WATER_GUN
+	db 21,BITE
+	db 28,SCARY_FACE
+	db 37,SLASH
+	db 45,SCREECH
+	db 55,HYDRO_PUMP
+	db 0
+	
+FeraligatrEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 7,RAGE
+	db 13,WATER_GUN
+	db 21,BITE
+	db 28,SCARY_FACE
+	db 38,SLASH
+	db 47,SCREECH
+	db 58,HYDRO_PUMP
+	db 0
+	
+SentretEvosMoves:
+;Evolutions
+	db EV_LEVEL,15,FURRET
+	db 0
+;Learnset
+	db 5,DEFENSE_CURL
+	db 11,QUICK_ATTACK
+	db 17,FURY_SWIPES
+	db 25,SLAM
+	db 33,REST
+	db 41,AMNESIA
+	db 0
+	
+FurretEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 5,DEFENSE_CURL
+	db 11,QUICK_ATTACK
+	db 18,FURY_SWIPES
+	db 28,SLAM
+	db 38,REST
+	db 48,AMNESIA
+	db 0
+	
+HoothootEvosMoves:
+;Evolutions
+	db EV_LEVEL,20,NOCTOWL
+	db 0
+;Learnset
+	db 6,FORESIGHT
+	db 11,PECK
+	db 16,HYPNOSIS
+	db 22,REFLECT
+	db 28,TAKE_DOWN
+	db 34,CONFUSION
+	db 48,DREAM_EATER
+	db 0
+	
+NoctowlEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 6,FORESIGHT
+	db 11,PECK
+	db 16,HYPNOSIS
+	db 25,REFLECT
+	db 33,TAKE_DOWN
+	db 41,CONFUSION
+	db 57,DREAM_EATER
+	db 0
+	
+LedybaEvosMoves:
+;Evolutions
+	db EV_LEVEL,18,LEDIAN
+	db 0
+;Learnset
+	db 8,SUPERSONIC
+	db 15,COMET_PUNCH
+	db 22,LIGHT_SCREEN
+	db 22,REFLECT
+	db 22,SAFEGUARD
+	db 29,BATON_PASS
+	db 36,SWIFT
+	db 43,AGILITY
+	db 50,DOUBLE_EDGE
+	db 0
+	
+LedianEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 8,SUPERSONIC
+	db 15,COMET_PUNCH
+	db 24,LIGHT_SCREEN
+	db 24,REFLECT
+	db 24,SAFEGUARD
+	db 33,BATON_PASS
+	db 42,SWIFT
+	db 51,AGILITY
+	db 60,DOUBLE_EDGE
+	db 0
+	
+SpinarakEvosMoves:
+;Evolutions
+	db EV_LEVEL,22,ARIADOS
+	db 0
+;Learnset
+	db 6,SCARY_FACE
+	db 11,CONSTRICT
+	db 17,NIGHT_SHADE
+	db 23,LEECH_LIFE
+	db 30,FURY_SWIPES
+	db 37,SPIDER_WEB
+	db 45,AGILITY
+	db 53,PSYCHIC_M
+	db 0
+	
+AriadosEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 6,SCARY_FACE
+	db 11,CONSTRICT
+	db 17,NIGHT_SHADE
+	db 25,LEECH_LIFE
+	db 34,FURY_SWIPES
+	db 43,SPIDER_WEB
+	db 53,AGILITY
+	db 63,PSYCHIC_M
+	db 0
+	
+CrobatEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 6,SUPERSONIC
+	db 12,BITE
+	db 19,CONFUSE_RAY
+	db 30,WING_ATTACK
+	db 42,HAZE
+	db 55,MEAN_LOOK
+	db 0
+	
+ChinchouEvosMoves:
+;Evolutions
+	db EV_LEVEL,27,LANTURN
+	db 0
+;Learnset
+	db 5,SUPERSONIC
+	db 13,FLAIL
+	db 17,WATER_GUN
+	db 25,SPARK
+	db 29,CONFUSE_RAY
+	db 37,TAKE_DOWN
+	db 41,HYDRO_PUMP
+	db 0
+	
+LanturnEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 5,SUPERSONIC
+	db 13,FLAIL
+	db 17,WATER_GUN
+	db 25,SPARK
+	db 33,CONFUSE_RAY
+	db 45,TAKE_DOWN
+	db 53,HYDRO_PUMP
+	db 0
+	
+PichuEvosMoves:
+;Evolutions
+	db EV_HAPPINESS,1,PIKACHU
+	db 0
+;Learnset
+	db 6,TAIL_WHIP
+	db 8,THUNDER_WAVE
+	db 11,SWEET_KISS
+	db 0
+	
+CleffaEvosMoves:
+;Evolutions
+	db EV_HAPPINESS,1,CLEFAIRY
+	db 0
+;Learnset
+	db 13,SING
+	db 18,SWEET_KISS
+	db 0
+	
+IgglybuffEvosMoves:
+;Evolutions
+	db EV_HAPPINESS,1,JIGGLYPUFF
+	db 0
+;Learnset
+	db 9,POUND
+	db 14,SWEET_KISS
+	db 0
+	
+TogepiEvosMoves:
+;Evolutions
+	db EV_HAPPINESS,1,TOGETIC
+	db 0
+;Learnset
+	db 7,METRONOME
+	db 18,SWEET_KISS
+	db 25,ENCORE
+	db 31,SAFEGUARD
+	db 38,DOUBLE_EDGE
+	db 0
+	
+TogeticEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 7,METRONOME
+	db 18,SWEET_KISS
+	db 25,ENCORE
+	db 31,SAFEGUARD
+	db 38,DOUBLE_EDGE
+	db 0
+	
+NatuEvosMoves:
+;Evolutions
+	db EV_LEVEL,25,XATU
+	db 0
+;Learnset
+	db 10,NIGHT_SHADE
+	db 20,TELEPORT
+	db 30,FUTURE_SIGHT
+	db 40,CONFUSE_RAY
+	db 50,PSYCHIC_M
+	db 0
+	
+XatuEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 10,NIGHT_SHADE
+	db 20,TELEPORT
+	db 35,FUTURE_SIGHT
+	db 50,CONFUSE_RAY
+	db 65,PSYCHIC_M
+	db 0
+	
+MareepEvosMoves:
+;Evolutions
+	db EV_LEVEL,15,FLAAFFY
+	db 0
+;Learnset
+	db 9,THUNDERSHOCK
+	db 16,THUNDER_WAVE
+	db 23,COTTON_SPORE
+	db 30,LIGHT_SCREEN
+	db 37,THUNDER
+	db 0
+	
+FlaaffyEvosMoves:
+;Evolutions
+	db EV_LEVEL,30,AMPHAROS
+	db 0
+;Learnset
+	db 9,THUNDERSHOCK
+	db 18,THUNDER_WAVE
+	db 27,COTTON_SPORE
+	db 36,LIGHT_SCREEN
+	db 45,THUNDER
+	db 0
+	
+AmpharosEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 9,THUNDERSHOCK
+	db 18,THUNDER_WAVE
+	db 27,COTTON_SPORE
+	db 30,THUNDERPUNCH
+	db 42,LIGHT_SCREEN
+	db 57,THUNDER
+	db 0
+	
+BellossomEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 55,SOLARBEAM
+	db 0
+	
+MarillEvosMoves:
+;Evolutions
+	db EV_LEVEL,18,AZUMARILL
+	db 0
+;Learnset
+	db 3,DEFENSE_CURL
+	db 6,TAIL_WHIP
+	db 10,WATER_GUN
+	db 15,ROLLOUT
+	db 21,BUBBLEBEAM
+	db 28,DOUBLE_EDGE
+	db 36,RAIN_DANCE
+	db 0
+	
+AzumarillEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 3,DEFENSE_CURL
+	db 6,TAIL_WHIP
+	db 10,WATER_GUN
+	db 15,ROLLOUT
+	db 25,BUBBLEBEAM
+	db 36,DOUBLE_EDGE
+	db 48,RAIN_DANCE
+	db 0
+
+SudowoodoEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 10,FLAIL
+	db 19,LOW_KICK
+	db 28,ROCK_SLIDE
+	db 37,FAINT_ATTACK
+	db 46,SLAM
+	db 0
+
+PolitoedEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 33, PERISH_SONG
+	db 49, SWAGGER
+	db 0
+
+HoppipEvosMoves:
+;Evolutions
+	db EV_LEVEL,18,SKIPLOOM
+	db 0
+;Learnset
+	db 5, TAIL_WHIP
+	db 10, TACKLE
+	db 13, POISONPOWDER
+	db 15, STUN_SPORE
+	db 17, SLEEP_POWDER
+	db 20, LEECH_SEED
+	db 25, COTTON_SPORE
+	db 30, MEGA_DRAIN
+	db 0
+
+SkiploomEvosMoves:
+;Evolutions
+	db EV_LEVEL,27,JUMPLUFF
+	db 0
+;Learnset
+	db 5, TAIL_WHIP
+	db 10, TACKLE
+	db 13, POISONPOWDER
+	db 15, STUN_SPORE
+	db 17, SLEEP_POWDER
+	db 22, LEECH_SEED
+	db 29, COTTON_SPORE
+	db 36, MEGA_DRAIN
+	db 0
+
+JumpluffEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 5, TAIL_WHIP
+	db 10, TACKLE
+	db 13, POISONPOWDER
+	db 15, STUN_SPORE
+	db 17, SLEEP_POWDER
+	db 22, LEECH_SEED
+	db 33, COTTON_SPORE
+	db 44, MEGA_DRAIN
+	db 0
+
+AipomEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 6, SAND_ATTACK
+	db 12, BATON_PASS
+	db 19, FURY_SWIPES
+	db 27, SWIFT
+	db 36, SCREECH
+	db 46, AGILITY
+	db 0
+
+SunkernEvosMoves:
+;Evolutions
+	db EV_ITEM, SUN_STONE, SUNFLORA
+	db 0
+;Learnset
+	db 4, GROWTH
+	db 10, MEGA_DRAIN
+	db 19, SUNNY_DAY
+	db 31, SYNTHESIS
+	db 46, GIGA_DRAIN
+	db 0
+
+SunfloraEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 4, GROWTH
+	db 10, RAZOR_LEAF
+	db 19, SUNNY_DAY
+	db 31, PETAL_DANCE
+	db 46, SOLARBEAM
+	db 0
+
+YanmaEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 7, QUICK_ATTACK
+	db 13, DOUBLE_TEAM
+	db 19, SONICBOOM
+	db 25, DETECT
+	db 31, SUPERSONIC
+	db 37, WING_ATTACK
+	db 43, SCREECH
+	db 0
+
+WooperEvosMoves:
+;Evolutions
+	db EV_LEVEL,20,QUAGSIRE
+	db 0
+;Learnset
+	db 11, SLAM
+	db 21, AMNESIA
+	db 31, EARTHQUAKE
+	db 41, RAIN_DANCE
+	db 51, MIST
+	db 51, HAZE
+	db 0
+
+QuagsireEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 11, SLAM
+	db 23, AMNESIA
+	db 35, EARTHQUAKE
+	db 47, RAIN_DANCE
+	db 59, MIST
+	db 59, HAZE
+	db 0
+
+EspeonEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 8, SAND_ATTACK
+	db 16, CONFUSION
+	db 23, QUICK_ATTACK
+	db 30, SWIFT
+	db 36, PSYBEAM
+	db 42, PSYCH_UP
+	db 47, PSYCHIC_M
+	db 52, MORNING_SUN
+	db 0
+
+UmbreonEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 8, SAND_ATTACK
+	db 16, PURSUIT
+	db 23, QUICK_ATTACK
+	db 30, CONFUSE_RAY
+	db 36, FAINT_ATTACK
+	db 42, MEAN_LOOK
+	db 47, SCREECH
+	db 52, MOONLIGHT
+	db 0
+
+MurkrowEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 11, PURSUIT
+	db 16, HAZE
+	db 26, NIGHT_SHADE
+	db 31, FAINT_ATTACK
+	db 41, MEAN_LOOK
+	db 0
+
+SlowkingEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 18, DISABLE
+	db 22, HEADBUTT
+	db 27, GROWL
+	db 33, WATER_GUN
+	db 40, SWAGGER
+	db 48, PSYCHIC_M
+	db 0
+
+MisdreavusEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 6, SPITE
+	db 12, CONFUSE_RAY
+	db 19, MEAN_LOOK
+	db 27, PSYBEAM
+	db 36, PAIN_SPLIT
+	db 46, PERISH_SONG
+	db 0
+
+UnownEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 0
+	
+WobbuffetEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 0
+	
+GirafarigEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 7, CONFUSION
+	db 13, STOMP
+	db 20, AGILITY
+	db 30, BATON_PASS
+	db 41, PSYBEAM
+	db 54, CRUNCH
+	db 0
+	
+PinecoEvosMoves:
+;Evolutions
+	db EV_LEVEL,31,FORRETRESS
+	db 0
+;Learnset
+	db 8, SELFDESTRUCT
+	db 15, TAKE_DOWN
+	db 22, RAPID_SPIN
+	db 29, BIDE
+	db 36, EXPLOSION
+	db 43, SPIKES
+	db 50, DOUBLE_EDGE
+	db 0
+	
+ForretressEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 8, SELFDESTRUCT
+	db 15, TAKE_DOWN
+	db 22, RAPID_SPIN
+	db 29, BIDE
+	db 39, EXPLOSION
+	db 49, SPIKES
+	db 59, DOUBLE_EDGE
+	db 0
+	
+DunsparceEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 5, DEFENSE_CURL
+	db 13, GLARE
+	db 18, SPITE
+	db 26, PURSUIT
+	db 30, SCREECH
+	db 38, TAKE_DOWN
+	db 0
+	
+GligarEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 6, SAND_ATTACK
+	db 13, HARDEN
+	db 20, QUICK_ATTACK
+	db 28, FAINT_ATTACK
+	db 36, SLASH
+	db 44, SCREECH
+	db 52, GUILLOTINE
+	db 0
+	
+SteelixEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 15, BIND
+	db 19, ROCK_THROW
+	db 25, RAGE
+	db 33, SLAM
+	db 43, HARDEN
+	db 52, CRUNCH
+	db 0
+	
+SnubbullEvosMoves:
+;Evolutions
+	db EV_LEVEL,23,GRANBULL
+	db 0
+;Learnset
+	db 4, TAIL_WHIP
+	db 8, CHARM
+	db 13, BITE
+	db 19, LICK
+	db 26, ROAR
+	db 34, RAGE
+	db 43, TAKE_DOWN
+	db 0
+	
+GranbullEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 4, TAIL_WHIP
+	db 8, CHARM
+	db 13, BITE
+	db 19, LICK
+	db 28, ROAR
+	db 38, RAGE
+	db 51, TAKE_DOWN
+	db 0
+	
+QwilfishEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 10, HARDEN
+	db 10, MINIMIZE
+	db 19, WATER_GUN
+	db 28, PIN_MISSILE
+	db 37, TAKE_DOWN
+	db 46, HYDRO_PUMP
+	db 0
+	
+CelebiEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 10, SAFEGUARD
+	db 20, ANCIENTPOWER
+	db 30, FUTURE_SIGHT
+	db 40, BATON_PASS
+	db 50, PERISH_SONG
+	db 0
+	
+MonGhostEvosMoves:
+; Evolutions
+	db 0
+; Learnset
+	db 0
+	
+EggEvosMoves:
+;Evolutions
+	db 0
+;Learnset
+	db 0
+
 FossilKabutopsEvosMoves:
 ; Evolutions
 	db 0
@@ -2456,12 +3294,6 @@ FossilKabutopsEvosMoves:
 	db 0
 
 FossilAerodactylEvosMoves:
-; Evolutions
-	db 0
-; Learnset
-	db 0
-
-MonGhostEvosMoves:
 ; Evolutions
 	db 0
 ; Learnset
