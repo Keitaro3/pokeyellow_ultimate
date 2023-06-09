@@ -386,11 +386,13 @@ UpdateChannels:
 	jr nz, .ch3_rest
 	bit NOTE_NOISE_SAMPLING, [hl]
 	jr nz, .ch3_noise_sampling
+	bit NOTE_FREQ_OVERRIDE, [hl]
+	jr nz, .ch3_frequency_override
 	bit NOTE_VIBRATO_OVERRIDE, [hl]
 	jr nz, .ch3_vibrato_override
 	ret
 
-.ch3_frequency_override ; unreferenced
+.ch3_frequency_override
 	ld a, [wCurTrackFrequency]
 	ldh [rNR33], a
 	ld a, [wCurTrackFrequency + 1]
@@ -1124,7 +1126,11 @@ ReadNoiseSample:
 	jr z, .quit
 
 	and $f
+	ld hl, wChannel4Flags3
+	bit SOUND_LEGACY_DRUMS, [hl]
+	jr nz, .skipInc
 	inc a
+.skipInc
 	ld [wNoiseSampleDelay], a
 	ld a, [de]
 	inc de
@@ -1413,7 +1419,7 @@ MusicCommands:
 	dw MusicEE ; unused
 	dw Music_StereoPanning
 	dw Music_SFXToggleNoise
-	dw MusicF1 ; nothing
+	dw Music_ToggleLegacyDrums
 	dw MusicF2 ; nothing
 	dw MusicF3 ; nothing
 	dw MusicF4 ; nothing
@@ -1430,7 +1436,21 @@ MusicCommands:
 	dw Music_Ret
 	assert_table_length $100 - FIRST_MUSIC_CMD
 
-MusicF1:
+Music_ToggleLegacyDrums:
+; toggle something
+; params: none
+	ld hl, CHANNEL_FLAGS3
+	add hl, bc
+	bit SOUND_LEGACY_DRUMS, [hl]
+	jr z, .on
+	res SOUND_LEGACY_DRUMS, [hl]
+	ret
+
+.on
+	set SOUND_LEGACY_DRUMS, [hl]
+	ret
+
+
 MusicF2:
 MusicF3:
 MusicF4:

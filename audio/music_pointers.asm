@@ -8,20 +8,20 @@ Music:
 	dba Music_PokemonCenter
 	dba Music_Gym
 	dba Music_ViridianCity
-	dba Music_GoldenrodCity
+	dba Music_CeruleanCity
 	dba Music_CeladonCity
-	dba Music_EcruteakCity
+	dba Music_CinnabarIsland
 	dba Music_VermilionCity	
 	dba Music_LavenderTown	
-	dba Music_SSAqua	
+	dba Music_SSAnne	
 	dba Music_ProfOak
-	dba Music_LookRival
+	dba Music_MeetRival
 	dba Music_AfterTheRivalFight
 	dba Music_ShowMeAround
 	dba Music_Evolution
 	dba Music_HealPokemon
 	dba Music_Route1
-	dba Music_Route30
+	dba Music_Route24
 	dba Music_Route3
 	dba Music_Route12
 	dba Music_IndigoPlateau
@@ -35,27 +35,27 @@ Music:
 	dba Music_TitleScreen
 	dba Music_Credits
 	dba Music_HallOfFame
-	dba Music_ProfOaksPokemonTalk
-	dba Music_MagnetTrain
+	dba Music_OaksLab
+	dba Music_JigglypuffSong
 	dba Music_Bicycle
 	dba Music_Surf
 	dba Music_GameCorner
-	dba Music_GoldSilverOpening2
+	dba Music_IntroBattle
 	dba Music_RocketHideout
-	dba Music_Route2
+	dba Music_ViridianForest
 	dba Music_MtMoon
-	dba Music_BurnedTower
-	dba Music_SproutTower
-	dba Music_RocketTheme	
-	dba Music_LookHiker
+	dba Music_PokemonMansion
+	dba Music_PokemonTower
+	dba Music_SilphCo	
+	dba Music_LookEvil
 	dba Music_LookLass
-	dba Music_LookOfficer
-	dba Music_MobileAdapterMenu
-	dba Music_LookMysticalMan
+	dba Music_LookYoungster
+	dba Music_SurfingPikachu
+	dba Music_YellowUnusedSong
 	dba Music_Printer	
-	dba Music_ViridianCity
-	dba Music_LookRival
-	dba Music_AfterTheRivalFight	
+	dba Music_ViridianCitySlow
+	dba Music_MeetRival2
+	dba Music_AfterTheRivalFight2	
 	dba Music_AzaleaTown
 	dba Music_CherrygroveCity
 	dba Music_LookKimonoGirl

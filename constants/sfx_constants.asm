@@ -49,7 +49,7 @@
 	const SFX_KINESIS                     ; 2f
 	const SFX_LICK                        ; 30
 	const SFX_POUND                       ; 31
-	const SFX_MOVE_PUZZLE_PIECE           ; 32
+	const SFX_THRASH                      ; 32
 	const SFX_COMET_PUNCH                 ; 33
 	const SFX_MEGA_PUNCH                  ; 34
 	const SFX_SCRATCH                     ; 35

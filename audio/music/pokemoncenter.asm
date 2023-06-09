@@ -1,23 +1,24 @@
 Music_PokemonCenter:
-	channel_count 4
+	channel_count 3
 	channel 1, Music_PokemonCenter_Ch1
 	channel 2, Music_PokemonCenter_Ch2
 	channel 3, Music_PokemonCenter_Ch3
-	channel 4, Music_PokemonCenter_Ch4
 
-Music_PokemonCenter_Ch1:
-	tempo 152
+Music_PokemonCenter_Ch1::
+	tempo 144
 	volume 7, 7
-	duty_cycle 2
-	vibrato 10, 1, 4
+	duty_cycle 3
+	vibrato 10, 2, 2
 	pitch_offset 1
-.mainloop:
+
+Music_PokemonCenter_branch_be61::
 	stereo_panning FALSE, TRUE
-	note_type 12, 8, 3
+	note_type 12, 10, 3
 	octave 3
 	note F#, 2
 	note F_, 2
 	note F#, 2
+	note_type 12, 11, 5
 	octave 4
 	note D_, 4
 	note C#, 2
@@ -32,9 +33,11 @@ Music_PokemonCenter_Ch1:
 	note F#, 2
 	note G_, 2
 	note A_, 2
+	note_type 12, 10, 3
 	note A_, 2
 	note E_, 2
 	note A_, 2
+	note_type 12, 11, 5
 	octave 4
 	note C#, 4
 	octave 3
@@ -51,9 +54,11 @@ Music_PokemonCenter_Ch1:
 	octave 3
 	note B_, 2
 	note A_, 2
+	note_type 12, 10, 3
 	note F#, 2
 	note F_, 2
 	note F#, 2
+	note_type 12, 11, 5
 	octave 4
 	note D_, 4
 	note C#, 2
@@ -68,16 +73,17 @@ Music_PokemonCenter_Ch1:
 	note F#, 2
 	note G_, 2
 	note A_, 2
+	note_type 12, 10, 3
 	note A_, 2
 	note E_, 2
 	note A_, 2
+	note_type 12, 11, 5
 	octave 4
 	note C#, 4
 	octave 3
 	note B_, 2
 	note A_, 2
 	note G_, 2
-	note_type 12, 11, 4
 	note F#, 2
 	note E_, 2
 	note D_, 2
@@ -148,42 +154,49 @@ Music_PokemonCenter_Ch1:
 	note E_, 2
 	note F#, 2
 	note G_, 2
-	sound_loop 0, .mainloop
+	sound_loop 0, Music_PokemonCenter_branch_be61
 
-Music_PokemonCenter_Ch2:
-	vibrato 16, 2, 5
-.mainloop:
+
+Music_PokemonCenter_Ch2::
+	vibrato 8, 2, 5
+
+Music_PokemonCenter_branch_befc::
 	stereo_panning TRUE, TRUE
-	sound_call .sub1
+	sound_call Music_PokemonCenter_branch_bf4e
 	stereo_panning FALSE, TRUE
+	duty_cycle 3
 	note_type 12, 10, 5
 	octave 3
 	note A_, 4
 	note E_, 4
 	stereo_panning TRUE, TRUE
-	sound_call .sub2
+	sound_call Music_PokemonCenter_branch_bf60
 	note D_, 2
 	note F#, 6
 	stereo_panning FALSE, TRUE
+	duty_cycle 3
 	note_type 12, 10, 5
 	octave 3
 	note A_, 4
 	note E_, 4
 	stereo_panning TRUE, TRUE
-	sound_call .sub1
+	sound_call Music_PokemonCenter_branch_bf4e
 	stereo_panning FALSE, TRUE
+	duty_cycle 3
 	note_type 12, 10, 5
 	octave 3
 	note A_, 4
 	note E_, 4
 	stereo_panning TRUE, TRUE
-	sound_call .sub2
+	sound_call Music_PokemonCenter_branch_bf60
 	note D_, 8
 	stereo_panning FALSE, TRUE
+	duty_cycle 3
 	note_type 12, 10, 5
 	octave 3
 	note D_, 4
 	note E_, 4
+	duty_cycle 2
 	note_type 12, 12, 6
 	octave 4
 	note F#, 8
@@ -216,9 +229,9 @@ Music_PokemonCenter_Ch2:
 	note F#, 2
 	note E_, 2
 	note D_, 8
-	sound_loop 0, .mainloop
+	sound_loop 0, Music_PokemonCenter_branch_befc
 
-.sub1:
+Music_PokemonCenter_branch_bf4e::
 	duty_cycle 2
 	note_type 12, 12, 2
 	octave 4
@@ -227,7 +240,7 @@ Music_PokemonCenter_Ch2:
 	note A_, 2
 	octave 4
 	note D_, 2
-	volume_envelope 12, 3
+	note_type 12, 12, 3
 	note A_, 4
 	note G_, 4
 	note F#, 2
@@ -235,7 +248,8 @@ Music_PokemonCenter_Ch2:
 	note C#, 6
 	sound_ret
 
-.sub2:
+Music_PokemonCenter_branch_bf60::
+	duty_cycle 2
 	note_type 12, 12, 2
 	octave 4
 	note C#, 2
@@ -243,163 +257,137 @@ Music_PokemonCenter_Ch2:
 	note A_, 2
 	octave 4
 	note C#, 2
-	volume_envelope 12, 3
+	note_type 12, 12, 3
 	note F#, 4
 	note E_, 4
 	note C#, 2
 	sound_ret
 
-Music_PokemonCenter_Ch3:
-	note_type 12, 2, 8
-.mainloop:
+
+Music_PokemonCenter_Ch3::
+	note_type 12, 1, 0
+
+Music_PokemonCenter_branch_bf72::
 	stereo_panning TRUE, FALSE
-	octave 3
-	note D_, 1
-	rest 5
-	note F#, 1
-	rest 3
-	note F#, 1
-	rest 1
-	note G_, 1
-	rest 1
-	note F#, 1
-	rest 1
-	sound_call .sub1
-	sound_call .sub2
-	note F#, 1
-	rest 5
-	note A_, 1
-	rest 3
-	note A_, 1
-	rest 1
-	note G_, 1
-	rest 1
-	note A_, 1
-	rest 1
-	note D_, 1
-	rest 5
-	note F#, 1
-	rest 3
-	note F#, 1
-	rest 1
-	note G_, 1
-	rest 1
-	note F#, 1
-	rest 1
-	sound_call .sub1
-	sound_call .sub2
-	note D_, 1
-	rest 5
-	note F#, 1
-	rest 3
-	note F#, 1
-	rest 1
-	note D_, 1
-	rest 1
-	note G_, 1
-	rest 1
+	octave 4
+	note D_, 2
+	note F#, 2
+	note D_, 2
+	note F#, 2
+	note D_, 2
+	note F#, 2
+	note G_, 2
+	note F#, 2
+	sound_call Music_PokemonCenter_branch_bfd9
+	sound_call Music_PokemonCenter_branch_bfe2
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note A_, 2
+	note G_, 2
+	note A_, 2
+	note D_, 2
+	note F#, 2
+	note D_, 2
+	note F#, 2
+	note D_, 2
+	note F#, 2
+	note G_, 2
+	note F#, 2
+	sound_call Music_PokemonCenter_branch_bfd9
+	sound_call Music_PokemonCenter_branch_bfe2
+	note D_, 2
+	note F#, 2
+	note D_, 2
+	note F#, 2
+	note D_, 2
+	note B_, 2
+	note A_, 2
+	note G_, 2
 	stereo_panning TRUE, TRUE
-	sound_call .sub3
-	note G_, 1
-	rest 5
-	note B_, 1
-	rest 3
-	note B_, 1
-	rest 1
-	note G_, 1
-	rest 1
-	note B_, 1
-	rest 1
-	note E_, 1
-	rest 5
-	note G_, 1
-	rest 3
-	note G_, 1
-	rest 3
-	note G_, 1
-	rest 1
-	note F#, 1
-	rest 5
-	note A_, 1
-	rest 3
-	note A_, 1
-	rest 1
-	note G#, 1
-	rest 1
-	note A_, 1
-	rest 1
-	sound_call .sub3
-	note G_, 1
-	rest 5
-	note B_, 1
-	rest 3
-	note B_, 1
-	rest 3
-	note B_, 1
-	rest 1
-	note E_, 1
-	rest 5
-	note G_, 1
-	rest 3
-	note G_, 1
-	rest 3
-	note G_, 1
-	rest 1
-	note F#, 1
-	rest 5
-	note A_, 1
-	rest 3
-	note A_, 1
-	rest 1
-	note G_, 1
-	rest 1
-	note E_, 1
-	rest 1
-	sound_loop 0, .mainloop
+	sound_call Music_PokemonCenter_branch_bfeb
+	note G_, 2
+	note B_, 2
+	note G_, 2
+	note B_, 2
+	note G_, 2
+	note B_, 2
+	note G_, 2
+	note B_, 2
+	note E_, 2
+	note G_, 2
+	note E_, 2
+	note G_, 2
+	note E_, 2
+	note G_, 2
+	note E_, 2
+	note G_, 2
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note A_, 2
+	note G#, 2
+	note A_, 2
+	sound_call Music_PokemonCenter_branch_bfeb
+	note G_, 2
+	note B_, 2
+	note G_, 2
+	note B_, 2
+	note G_, 2
+	note B_, 2
+	note G_, 2
+	note B_, 2
+	note E_, 2
+	note G_, 2
+	note E_, 2
+	note G_, 2
+	note E_, 2
+	note G_, 2
+	note E_, 2
+	note G_, 2
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note G_, 2
+	note F#, 2
+	note E_, 2
+	sound_loop 0, Music_PokemonCenter_branch_bf72
 
-.sub1:
-	note E_, 1
-	rest 5
-	note A_, 1
-	rest 3
-	note A_, 1
-	rest 3
-	note A_, 1
-	rest 1
+Music_PokemonCenter_branch_bfd9::
+	note E_, 2
+	note A_, 2
+	note E_, 2
+	note A_, 2
+	note E_, 2
+	note A_, 2
+	note E_, 2
+	note A_, 2
 	sound_ret
 
-.sub2:
-	note E_, 1
-	rest 5
-	note A_, 1
-	rest 3
-	note A_, 1
-	rest 1
-	note G_, 1
-	rest 1
-	note A_, 1
-	rest 1
+Music_PokemonCenter_branch_bfe2::
+	note E_, 2
+	note A_, 2
+	note E_, 2
+	note A_, 2
+	note E_, 2
+	note A_, 2
+	note G_, 2
+	note A_, 2
 	sound_ret
 
-.sub3:
-	note F#, 1
-	rest 5
-	note A_, 1
-	rest 3
-	note A_, 1
-	rest 3
-	note A_, 1
-	rest 1
+Music_PokemonCenter_branch_bfeb::
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note A_, 2
+	note F#, 2
+	note A_, 2
 	sound_ret
-
-Music_PokemonCenter_Ch4:
-	toggle_noise 3
-	drum_speed 12
-	stereo_panning TRUE, TRUE
-.mainloop:
-	drum_note 8, 6
-	drum_note 8, 4
-	drum_note 8, 2
-	drum_note 8, 2
-	drum_note 8, 2
-	sound_loop 0, .mainloop

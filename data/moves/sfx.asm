@@ -3,7 +3,7 @@ MoveSoundTable:
 	db SFX_POUND             ; POUND
 	db SFX_COMET_PUNCH       ; KARATE_CHOP
 	db SFX_DOUBLESLAP        ; DOUBLESLAP
-	db SFX_MOVE_PUZZLE_PIECE ; COMET_PUNCH
+	db SFX_THRASH            ; COMET_PUNCH
 	db SFX_MEGA_PUNCH        ; MEGA_PUNCH
 	db SFX_SILPH_SCOPE       ; PAY_DAY
 	db SFX_MEGA_PUNCH        ; FIRE_PUNCH
@@ -44,8 +44,8 @@ MoveSoundTable:
 	db SFX_HORN_ATTACK       ; PIN_MISSILE
 	db SFX_SCREECH           ; LEER
 	db SFX_BITE              ; BITE
-	db SFX_MOVE_PUZZLE_PIECE ; GROWL
-	db SFX_MOVE_PUZZLE_PIECE ; ROAR
+	db SFX_THRASH            ; GROWL
+	db SFX_THRASH            ; ROAR
 	db SFX_SING              ; SING
 	db SFX_SUPERSONIC        ; SUPERSONIC
 	db SFX_SUPERSONIC        ; SONICBOOM
@@ -164,6 +164,6 @@ MoveSoundTable:
 	db SFX_THUNDER           ; SUPER_FANG
 	db SFX_CUT               ; SLASH
 	db SFX_SURF              ; SUBSTITUTE
-	db SFX_MOVE_PUZZLE_PIECE ; STRUGGLE
+	db SFX_THRASH            ; STRUGGLE
 	;assert_table_length NUM_ATTACKS
-	db SFX_MOVE_PUZZLE_PIECE
+	db SFX_THRASH

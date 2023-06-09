@@ -101,6 +101,7 @@ DEF NOISE_CHAN_F EQU 2 ; bit set in CHAN5-CHAN7
 	const_def
 	const SOUND_VIBRATO_DIR     ; 0
 	const SOUND_PITCH_SLIDE_DIR ; 1
+	const SOUND_LEGACY_DRUMS    ; 2
 
 ; NoteFlags
 	const_def

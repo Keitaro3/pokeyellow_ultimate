@@ -43,25 +43,25 @@ PlayBattleMusic::
 	jr .done
 	
 .wildBattle
-	;ld a, [wEnemyMonSpecies2]
+	ld a, [wEnemyMonSpecies2]
 	
-	;ld de, MUSIC_SUICUNE_BATTLE	
-	;cp RAIKOU
-	;jr z, .done
-	;cp ENTEI
-	;jr z, .done
-	;cp SUICUNE
-	;jr z, .done
+	ld de, MUSIC_SUICUNE_BATTLE	
+	cp RAIKOU
+	jr z, .done
+	cp ENTEI
+	jr z, .done
+	cp SUICUNE
+	jr z, .done
 	
-	;ld de, MUSIC_JOHTO_WILD_BATTLE_NIGHT
-	;cp LUGIA
-	;jr z, .done
+	ld de, MUSIC_JOHTO_WILD_BATTLE_NIGHT
+	cp LUGIA
+	jr z, .done
 	
-	;ld de, MUSIC_JOHTO_WILD_BATTLE
-	;cp HO_OH
-	;jr z, .done
-	;cp CELEBI
-	;jr z, .done
+	ld de, MUSIC_JOHTO_WILD_BATTLE
+	cp HO_OH
+	jr z, .done
+	cp CELEBI
+	jr z, .done
 
 .normalWildBattle
 	ld de, MUSIC_WILD_BATTLE

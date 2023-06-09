@@ -35,7 +35,9 @@ ROM0
 	"Home"
 ROMX $1
 	"bank1"
-; Bank $2 is empty
+ROMX $2
+	"Audio"
+	"Songs 1"
 ROMX $3
 	"bank3"
 ROMX $4
@@ -56,6 +58,7 @@ ROMX $7
 	"Maps 4"
 	"Hidden Objects 1"
 ROMX $8
+	"Songs 2"
 	"Bill's PC"
 ROMX $9
 	"Battle Engine 3"
@@ -126,14 +129,22 @@ ROMX $1D
 	"Itemfinder 2"
 ROMX $1E
 	"bank1E"
-; bank $1F is empty
+ROMX $1F
+	"Songs 3"
+	"Sound Effects"
+	"Cries"
 ROMX $20
 	"Surfing Pikachu GFX"
+	"Songs 4"
 ROMX $21
 	"Trainer Pics 2"
-; bank $22 is empty
-; bank $23 is empty
-; bank $24 is empty
+	"Songs 5"
+ROMX $22
+	"Pics 1"
+ROMX $23
+	"Pics 2"
+ROMX $24
+	"Pics 3"
 ROMX $25
 	"Pokédex Text 2" ; temporary
 ROMX $26
@@ -162,19 +173,19 @@ ROMX $2f
 ROMX $30
 	"bank30"
 ROMX $31
-	"Pics 1"
-ROMX $32
-	"Pics 2"
-ROMX $33
-	"Pics 3"
-ROMX $34
 	"Pics 4"
-ROMX $35
+ROMX $32
 	"Pics 5"
-ROMX $36
+ROMX $33
 	"Pics 6"
-ROMX $37
+ROMX $34
 	"Pics 7"
+ROMX $35
+	"Pics 8"
+ROMX $36
+	"Pics 9"
+ROMX $37
+	"Pics 10"
 ROMX $39
 	"Unown Pics"
 ROMX $3A
@@ -196,29 +207,6 @@ ROMX $3E
 ROMX $3F
 	"Map Header Pointers"
 	"NPC Sprites 3"
-	
-ROMX $40
-	"Audio"
-	"Songs 1"
-ROMX $41
-	"Songs 2"
-ROMX $42
-	"Songs 3"
-	"Sound Effects"
-	"Cries"
-ROMX $43
-	"Songs 4"
-ROMX $44
-	"Extra Songs 1"
-	"Songs 5"
-ROMX $45
-	"Pics 8"
-ROMX $46
-	"Pics 9"
-ROMX $47
-	"Pics 10"
-	
-	
 WRAM0
 	"Audio RAM"
 	org $c100

@@ -2,8 +2,8 @@ SFX:
 ; entries correspond to SFX_* constants
 	table_width 3, SFX
 	dba Sfx_DexFanfare5079
-	dba Sfx_Item
-	dba Sfx_CaughtMon
+	dba Sfx_LevelUp
+	dba Sfx_Item2
 	dba Sfx_PokeballsPlacedOnTable
 	dba Sfx_Potion
 	dba Sfx_FullHeal
@@ -42,15 +42,15 @@ SFX:
 	dba Sfx_ElevatorEnd
 	dba Sfx_ThrowBall
 	dba Sfx_BallPoof
-	dba Sfx_Unknown3A
+	dba Sfx_FaintThud
 	dba Sfx_Run
 	dba Sfx_SlotMachineStart
-	dba Sfx_Unused
+	dba Sfx_CaughtMon
 	dba Sfx_Peck
 	dba Sfx_Kinesis
 	dba Sfx_Lick
 	dba Sfx_Pound
-	dba Sfx_MovePuzzlePiece
+	dba Sfx_Thrash
 	dba Sfx_CometPunch
 	dba Sfx_MegaPunch
 	dba Sfx_Scratch
@@ -95,11 +95,11 @@ SFX:
 	dba Sfx_Sing
 	dba Sfx_HyperBeam
 	dba Sfx_Shine
-	dba Sfx_Unknown60
+	dba Sfx_IntroLunge
 	dba Sfx_SwitchPockets
-	dba Sfx_Unknown63
+	dba Sfx_IntroRaise
 	dba Sfx_Burn
-	dba Sfx_Unknown66
+	dba Sfx_SlotsStopReel
 	dba Sfx_GetCoinFromSlots
 	dba Sfx_PayDay
 	dba Sfx_Metronome
@@ -138,7 +138,7 @@ SFX:
 	dba Sfx_MilkDrink
 	dba Sfx_Present
 	dba Sfx_MorningSun
-	dba Sfx_KeyItem
+	dba Sfx_KeyItem2
 	dba Sfx_GetEgg
 	dba Sfx_MoveDeleted
 	dba Sfx_ChooseACard
@@ -155,7 +155,7 @@ SFX:
 	dba Sfx_MasterBall
 	dba Sfx_EggHatch
 	dba Sfx_Flash
-	dba Sfx_GameFreakLogoGs
+	dba Sfx_GameFreakLogo
 	dba Sfx_NotVeryEffective
 	dba Sfx_Damage
 	dba Sfx_SuperEffective
@@ -172,12 +172,12 @@ SFX:
 	dba Sfx_GetTrademon
 	dba Sfx_2Boops
 	dba Sfx_Twinkle
-	dba Sfx_Intro_Hip
-	dba Sfx_Intro_Hop
-	dba Sfx_Intro_Whoosh
-	dba Sfx_Surfing_Jump
-	dba Sfx_Surfing_Flip
-	dba Sfx_Surfing_Crash
-	dba Sfx_Surfing_Land
+	dba Sfx_IntroHip
+	dba Sfx_IntroHop
+	dba Sfx_IntroWhoosh
+	dba Sfx_SurfingJump
+	dba Sfx_SurfingFlip
+	dba Sfx_SurfingCrash
+	dba Sfx_SurfingLand
 	dba Sfx_Pokeflute2
 	assert_table_length NUM_SFX

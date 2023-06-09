@@ -237,9 +237,9 @@ MACRO sfx_toggle_noise
 	endc
 ENDM
 
-	const music0xf1_cmd ; $f1
-MACRO music0xf1
-	db music0xf1_cmd
+	const toggle_legacy_drums_cmd ; $f1
+MACRO toggle_legacy_drums
+	db toggle_legacy_drums_cmd
 ENDM
 
 	const music0xf2_cmd ; $f2

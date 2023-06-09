@@ -152,7 +152,7 @@ MACRO channel_struct
 \1MusicBank::         db
 \1Flags1::            db ; 0:on/off 1:subroutine 2:looping 3:sfx 4:noise 5:rest
 \1Flags2::            db ; 0:vibrato on/off 1:pitch slide 2:duty cycle pattern 4:pitch offset
-\1Flags3::            db ; 0:vibrato up/down 1:pitch slide direction
+\1Flags3::            db ; 0:vibrato up/down 1:pitch slide direction 3: legacy drums
 \1MusicAddress::      dw
 \1LastMusicAddress::  dw
                       dw

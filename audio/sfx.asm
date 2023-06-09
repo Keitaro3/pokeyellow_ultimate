@@ -178,10 +178,10 @@ Sfx_BallPoof:
 	channel 5, Sfx_BallPoof_Ch5
 	channel 8, Sfx_BallPoof_Ch8
 
-Sfx_Unknown3A:
+Sfx_FaintThud:
 	channel_count 2
-	channel 5, Sfx_Unknown3A_Ch5
-	channel 8, Sfx_Unknown3A_Ch8
+	channel 5, Sfx_FaintThud_Ch5
+	channel 8, Sfx_FaintThud_Ch8
 
 Sfx_Run:
 	channel_count 1
@@ -192,25 +192,25 @@ Sfx_SlotMachineStart:
 	channel 5, Sfx_SlotMachineStart_Ch5
 	channel 6, Sfx_SlotMachineStart_Ch6
 
-Sfx_Unknown60:
+Sfx_IntroLunge:
 	channel_count 1
-	channel 8, Sfx_Unknown60_Ch8
+	channel 8, Sfx_IntroLunge_Ch8
 
 Sfx_SwitchPockets:
 	channel_count 1
 	channel 8, Sfx_SwitchPockets_Ch8
 
-Sfx_Unknown63:
+Sfx_IntroRaise:
 	channel_count 1
-	channel 8, Sfx_Unknown63_Ch8
+	channel 8, Sfx_IntroRaise_Ch8
 
 Sfx_Burn:
 	channel_count 1
 	channel 8, Sfx_Burn_Ch8
 
-Sfx_Unknown66:
+Sfx_SlotsStopReel:
 	channel_count 1
-	channel 5, Sfx_Unknown66_Ch5
+	channel 5, Sfx_SlotsStopReel_Ch5
 
 Sfx_GetCoinFromSlots:
 	channel_count 1
@@ -241,9 +241,9 @@ Sfx_Pound:
 	channel_count 1
 	channel 8, Sfx_Pound_Ch8
 
-Sfx_MovePuzzlePiece:
+Sfx_Thrash:
 	channel_count 1
-	channel 8, Sfx_MovePuzzlePiece_Ch8
+	channel 8, Sfx_Thrash_Ch8
 
 Sfx_CometPunch:
 	channel_count 1
@@ -460,66 +460,58 @@ Sfx_Elevator:
 	channel 7, Sfx_Elevator_Ch7
 	channel 8, Sfx_Elevator_Ch8
 
-Sfx_LevelUp:
 Sfx_DexFanfare5079:
-	channel_count 4
-	channel 5, Sfx_LevelUp_Ch5
-	channel 6, Sfx_LevelUp_Ch6
-	channel 7, Sfx_LevelUp_Ch7
-	channel 8, Sfx_LevelUp_Ch8
-	assert Sfx_LevelUp_Ch5 == Sfx_DexFanfare5079_Ch5
-	assert Sfx_LevelUp_Ch6 == Sfx_DexFanfare5079_Ch6
-	assert Sfx_LevelUp_Ch7 == Sfx_DexFanfare5079_Ch7
-	assert Sfx_LevelUp_Ch8 == Sfx_DexFanfare5079_Ch8
+	channel_count 3
+	channel 5, Sfx_DexFanfare5079_Ch5
+	channel 6, Sfx_DexFanfare5079_Ch6
+	channel 7, Sfx_DexFanfare5079_Ch7
 
-Sfx_LevelUp_Ch5:
 Sfx_DexFanfare5079_Ch5:
 	toggle_sfx
-	tempo 120
+	tempo 256
 	volume 7, 7
+	vibrato 6, 2, 6
 	duty_cycle 2
-	note_type 8, 11, 1
+	pitch_offset 1
+	note_type 4, 11, 1
 	octave 3
-	note B_, 2
-	note B_, 2
-	note B_, 2
-	volume_envelope 11, 3
+	note G#, 2
+	note G#, 2
+	note G#, 2
+	note_type 12, 11, 3
 	octave 4
-	note G#, 12
+	note E_, 4
 	sound_ret
 
-Sfx_LevelUp_Ch6:
 Sfx_DexFanfare5079_Ch6:
 	toggle_sfx
+	vibrato 8, 2, 7
 	duty_cycle 2
-	note_type 8, 12, 1
+	note_type 4, 12, 1
 	octave 4
 	note E_, 2
 	note E_, 2
 	note E_, 2
-	volume_envelope 12, 3
-	note B_, 12
+	note_type 12, 12, 3
+	note B_, 4
 	sound_ret
 
-Sfx_LevelUp_Ch7:
 Sfx_DexFanfare5079_Ch7:
 	toggle_sfx
-	note_type 8, 2, 5
+	note_type 4, 1, 0
 	octave 4
-	note G#, 1
+	note B_, 1
 	rest 1
-	note G#, 1
+	note B_, 1
 	rest 1
-	note G#, 1
+	note B_, 1
 	rest 1
-	octave 5
-	note E_, 5
-	volume_envelope 3, 5
-	note E_, 3
-	rest 4
+	note_type 12, 1, 0
+	octave 4
+	note B_, 2
+	rest 2
 	sound_ret
 
-Sfx_LevelUp_Ch8:
 Sfx_DexFanfare5079_Ch8:
 	toggle_sfx
 	sfx_toggle_noise 4
@@ -527,14 +519,14 @@ Sfx_DexFanfare5079_Ch8:
 	note C_, 12
 	sound_ret
 
-Sfx_KeyItem:
+Sfx_KeyItem2:
 	channel_count 4
-	channel 5, Sfx_KeyItem_Ch5
-	channel 6, Sfx_KeyItem_Ch6
-	channel 7, Sfx_KeyItem_Ch7
-	channel 8, Sfx_KeyItem_Ch8
+	channel 5, Sfx_KeyItem2_Ch5
+	channel 6, Sfx_KeyItem2_Ch6
+	channel 7, Sfx_KeyItem2_Ch7
+	channel 8, Sfx_KeyItem2_Ch8
 
-Sfx_KeyItem_Ch5:
+Sfx_KeyItem2_Ch5:
 	toggle_sfx
 	tempo 120
 	volume 7, 7
@@ -551,7 +543,7 @@ Sfx_KeyItem_Ch5:
 	note G#, 16
 	sound_ret
 
-Sfx_KeyItem_Ch6:
+Sfx_KeyItem2_Ch6:
 	toggle_sfx
 	duty_cycle 2
 	note_type 6, 12, 1
@@ -565,7 +557,7 @@ Sfx_KeyItem_Ch6:
 	note B_, 16
 	sound_ret
 
-Sfx_KeyItem_Ch7:
+Sfx_KeyItem2_Ch7:
 	toggle_sfx
 	note_type 6, 2, 5
 	octave 4
@@ -586,7 +578,7 @@ Sfx_KeyItem_Ch7:
 	rest 4
 	sound_ret
 
-Sfx_KeyItem_Ch8:
+Sfx_KeyItem2_Ch8:
 	toggle_sfx
 	sfx_toggle_noise 4
 	drum_speed 12
@@ -594,46 +586,44 @@ Sfx_KeyItem_Ch8:
 	sound_ret
 
 Sfx_DexFanfare2049:
-	channel_count 4
+	channel_count 3
 	channel 5, Sfx_DexFanfare2049_Ch5
 	channel 6, Sfx_DexFanfare2049_Ch6
 	channel 7, Sfx_DexFanfare2049_Ch7
-	channel 8, Sfx_DexFanfare2049_Ch8
 
 Sfx_DexFanfare2049_Ch5:
 	toggle_sfx
-	tempo 104
+	tempo 256
 	volume 7, 7
 	duty_cycle 2
-	note_type 12, 8, 8
+	note_type 5, 11, 1
 	octave 3
-	note A_, 4
-	rest 2
-	note A_, 1
-	rest 1
-	note A#, 4
-	rest 2
-	note A#, 1
-	rest 1
-	octave 4
-	note C_, 2
-	rest 2
-	octave 3
-	note A#, 2
-	rest 2
 	note A_, 2
-	rest 6
+	note A_, 2
+	note G_, 2
+	note G_, 2
+	note F_, 2
+	note E_, 2
+	note F_, 2
+	note A_, 2
+	octave 4
+	note C_, 4
+	note E_, 4
+	octave 3
+	note F_, 4
 	sound_ret
 
 Sfx_DexFanfare2049_Ch6:
 	toggle_sfx
 	duty_cycle 2
-	note_type 12, 12, 1
+	note_type 5, 12, 2
 	octave 5
 	note F_, 2
-	note E_, 2
+	note E_, 1
+	rest 1
 	note D_, 2
-	note C_, 2
+	note C_, 1
+	rest 1
 	octave 4
 	note A#, 2
 	octave 5
@@ -642,357 +632,311 @@ Sfx_DexFanfare2049_Ch6:
 	note E_, 2
 	note F_, 4
 	note G_, 4
-	note F_, 8
+	note F_, 4
 	sound_ret
 
 Sfx_DexFanfare2049_Ch7:
 	toggle_sfx
-	note_type 12, 2, 5
+	note_type 5, 1, 0
+	octave 5
+	note C_, 1
+	rest 1
 	octave 4
-	note F_, 4
-	rest 2
-	note F_, 1
-	rest 1
-	note F_, 4
-	rest 2
-	note F_, 1
-	rest 1
-	note A_, 2
-	rest 2
-	note E_, 2
-	rest 2
 	note F_, 2
-	rest 6
-	sound_ret
-
-Sfx_DexFanfare2049_Ch8:
-	toggle_sfx
-	sfx_toggle_noise 4
-	drum_speed 12
-	note C_, 16
-	rest 16
-	sound_ret
-
-Sfx_Item:
-	channel_count 4
-	channel 5, Sfx_Item_Ch5
-	channel 6, Sfx_Item_Ch6
-	channel 7, Sfx_Item_Ch7
-	channel 8, Sfx_Item_Ch8
-
-Sfx_Item_Ch5:
-	toggle_sfx
-	tempo 108
-	volume 7, 7
-	vibrato 8, 2, 7
-	duty_cycle 2
-	note_type 8, 11, 2
+	octave 5
+	note C_, 1
+	rest 1
 	octave 4
-	note C_, 6
-	note C_, 2
-	note F_, 2
-	note C_, 2
-	note G_, 4
-	note G_, 4
-	note G_, 4
-	note F_, 12
-	rest 12
-	sound_ret
-
-Sfx_Item_Ch6:
-	toggle_sfx
-	vibrato 8, 2, 7
-	duty_cycle 2
-	note_type 8, 12, 3
-	octave 4
-	note A_, 6
-	note A_, 2
-	note A_, 2
-	note A_, 2
-	note A#, 4
-	note A#, 4
-	note A#, 4
-	note A_, 12
-	rest 12
-	sound_ret
-
-Sfx_Item_Ch7:
-	toggle_sfx
-	note_type 8, 2, 5
-	octave 4
-	note F_, 4
-	rest 2
-	note F_, 1
+	note A#, 1
+	rest 1
+	note A_, 1
+	rest 1
+	note G_, 1
 	rest 1
 	note F_, 1
 	rest 1
-	note F_, 1
+	note E_, 1
 	rest 1
-	note D#, 2
-	rest 2
-	note D#, 2
-	rest 2
-	note E_, 2
-	rest 2
-	note F_, 6
-	volume_envelope 3, 5
-	note F_, 4
-	rest 14
-	sound_ret
-
-Sfx_Item_Ch8:
-	toggle_sfx
-	sfx_toggle_noise 4
-	drum_speed 12
-	note C_, 16
-	rest 16
-	sound_ret
-
-Sfx_CaughtMon:
-	channel_count 4
-	channel 5, Sfx_CaughtMon_Ch5
-	channel 6, Sfx_CaughtMon_Ch6
-	channel 7, Sfx_CaughtMon_Ch7
-	channel 8, Sfx_CaughtMon_Ch8
-
-Sfx_CaughtMon_Ch5:
-	toggle_sfx
-	tempo 112
-	volume 7, 7
-	vibrato 8, 2, 7
-	duty_cycle 2
-	note_type 8, 11, 3
-	octave 4
-	note C_, 6
-	octave 3
-	note A_, 6
-	note F_, 12
-	volume_envelope 11, 1
-	octave 4
-	note D#, 2
-	note D#, 2
-	note D#, 2
-	note D#, 2
-	note D#, 2
-	note G_, 2
-	volume_envelope 11, 3
-	note F_, 12
-	sound_ret
-
-Sfx_CaughtMon_Ch6:
-	toggle_sfx
-	duty_cycle 2
-	vibrato 8, 2, 7
-	note_type 8, 12, 3
-	octave 4
-	note A_, 6
-	note F_, 6
-	note C_, 12
-	volume_envelope 12, 1
-	note A#, 2
-	note A#, 2
-	note A#, 2
-	note G_, 2
-	note G_, 2
-	note A#, 2
-	volume_envelope 12, 3
-	note A_, 12
-	sound_ret
-
-Sfx_CaughtMon_Ch7:
-	toggle_sfx
-	note_type 8, 2, 5
-	octave 3
-	note C_, 12
-	note C_, 6
-	octave 2
-	note A_, 2
-	octave 3
-	note C_, 2
-	note F_, 2
-	note G_, 6
-	note A#, 6
-	note A_, 6
-	volume_envelope 3, 5
-	note A_, 3
+	octave 5
+	note F_, 1
 	rest 3
+	note C_, 1
+	rest 3
+	octave 4
+	note F_, 2
+	rest 2
 	sound_ret
 
-Sfx_CaughtMon_Ch8:
+Sfx_LevelUp:
+	channel_count 3
+	channel 5, Sfx_LevelUp_Ch5
+	channel 6, Sfx_LevelUp_Ch6
+	channel 7, Sfx_LevelUp_Ch7
+
+Sfx_LevelUp_Ch5:
 	toggle_sfx
-	sfx_toggle_noise 4
-	drum_speed 12
-	note C_, 16
-	rest 16
+	tempo 256
+	volume 7, 7
+	duty_cycle 2
+	pitch_offset 1
+	note_type 6, 11, 4
+	octave 4
+	note F_, 4
+	note_type 4, 11, 2
+	note C_, 2
+	note F_, 2
+	note C_, 2
+	note_type 6, 11, 3
+	note D#, 2
+	note D#, 2
+	note E_, 2
+	note_type 6, 11, 4
+	note F_, 8
+	sound_ret
+
+Sfx_LevelUp_Ch6:
+	toggle_sfx
+	vibrato 4, 2, 2
+	duty_cycle 2
+	note_type 6, 12, 4
+	octave 4
+	note A_, 4
+	note_type 4, 12, 2
+	note A_, 2
+	note A_, 2
+	note A_, 2
+	note_type 6, 12, 4
+	note A#, 2
+	note A#, 2
+	note A#, 2
+	note_type 6, 12, 4
+	note A_, 8
+	sound_ret
+
+Sfx_LevelUp_Ch7:
+	toggle_sfx
+	note_type 6, 1, 0
+	octave 5
+	note A_, 4
+	note_type 4, 1, 0
+	note F_, 1
+	rest 1
+	note F_, 1
+	rest 1
+	note F_, 1
+	rest 1
+	note_type 6, 1, 0
+	note G_, 1
+	rest 1
+	note D#, 1
+	rest 1
+	note G_, 1
+	rest 1
+	note A_, 8
+	sound_ret
+
+Sfx_Item2:
+	channel_count 3
+	channel 5, Sfx_Item2_Ch5
+	channel 6, Sfx_Item2_Ch6
+	channel 7, Sfx_Item2_Ch7
+
+Sfx_Item2_Ch5:
+	toggle_sfx
+	tempo 256
+	volume 7, 7
+	duty_cycle 2
+	pitch_offset 1
+	note_type 5, 11, 4
+	octave 4
+	note D_, 4
+	note C_, 4
+	octave 3
+	note A_, 8
+	note_type 5, 11, 2
+	octave 4
+	note D#, 2
+	note D#, 2
+	note D_, 2
+	note C_, 2
+	note C_, 2
+	octave 3
+	note A#, 2
+	note_type 5, 11, 4
+	octave 4
+	note C_, 8
+	sound_ret
+
+Sfx_Item2_Ch6:
+	toggle_sfx
+	vibrato 8, 2, 7
+	duty_cycle 2
+	note_type 5, 12, 5
+	octave 4
+	note A_, 4
+	note F_, 4
+	note C_, 8
+	note_type 5, 12, 2
+	note A#, 2
+	note A#, 2
+	note A#, 2
+	note G_, 2
+	note G_, 2
+	note A#, 2
+	note_type 5, 12, 4
+	note A_, 8
+	sound_ret
+
+Sfx_Item2_Ch7:
+	toggle_sfx
+	note_type 5, 1, 0
+	octave 5
+	note F_, 4
+	note D#, 4
+	note C_, 8
+	note D#, 1
+	rest 1
+	note D#, 1
+	rest 1
+	note E_, 1
+	rest 1
+	note F_, 1
+	rest 1
+	note F_, 1
+	rest 1
+	note G_, 1
+	rest 1
+	note A_, 8
 	sound_ret
 
 Sfx_DexFanfare80109:
-	channel_count 4
+	channel_count 3
 	channel 5, Sfx_DexFanfare80109_Ch5
 	channel 6, Sfx_DexFanfare80109_Ch6
 	channel 7, Sfx_DexFanfare80109_Ch7
-	channel 8, Sfx_DexFanfare80109_Ch8
 
 Sfx_DexFanfare80109_Ch5:
 	toggle_sfx
-	tempo 112
+	tempo 256
 	volume 7, 7
-	vibrato 8, 2, 7
 	duty_cycle 2
-	note_type 12, 11, 1
-	octave 4
-	note D#, 2
-	note D#, 1
-	note D#, 1
+	pitch_offset 1
+	note_type 5, 10, 4
 	octave 3
-	note A#, 2
-	note A#, 1
-	note A#, 1
+	note A#, 4
+	note_type 5, 11, 1
 	octave 4
-	note D#, 2
-	note D#, 1
-	note D#, 1
+	note C_, 2
+	note C_, 1
+	note C_, 1
+	note_type 5, 10, 4
+	note D#, 4
+	note_type 5, 11, 1
 	note F_, 2
 	note F_, 1
 	note F_, 1
-	volume_envelope 10, 5
-	note A#, 16
+	note_type 5, 11, 4
+	note A#, 8
 	sound_ret
 
 Sfx_DexFanfare80109_Ch6:
 	toggle_sfx
-	vibrato 8, 2, 7
+	vibrato 4, 2, 3
 	duty_cycle 2
-	note_type 12, 12, 1
+	note_type 5, 13, 1
 	octave 4
 	note G_, 2
 	note G_, 1
 	note G_, 1
-	note D#, 2
-	note D#, 1
-	note D#, 1
+	note_type 5, 12, 4
+	note D#, 4
+	note_type 5, 13, 1
 	note G#, 2
 	note G#, 1
 	note G#, 1
 	note A#, 2
 	note A#, 1
 	note A#, 1
-	volume_envelope 11, 5
+	note_type 5, 12, 4
 	octave 5
-	note D#, 16
+	note D#, 8
 	sound_ret
 
 Sfx_DexFanfare80109_Ch7:
 	toggle_sfx
-	note_type 12, 2, 5
+	note_type 5, 1, 0
 	octave 4
-	note D#, 1
-	rest 1
-	octave 3
-	note A#, 2
-	octave 4
-	note D#, 1
-	rest 1
-	octave 3
-	note A#, 2
-	octave 4
-	note D#, 1
-	rest 1
-	note C_, 2
-	note D_, 1
-	rest 1
-	octave 3
-	note A#, 2
 	note D#, 4
-	volume_envelope 3, 5
-	note D#, 3
-	rest 9
+	note G#, 4
+	note G_, 4
+	note F_, 4
+	note D#, 8
 	sound_ret
 
-Sfx_DexFanfare80109_Ch8:
-	toggle_sfx
-	sfx_toggle_noise 4
-	drum_speed 12
-	note C_, 16
-	rest 16
-	sound_ret
+Sfx_CaughtMon:
+	channel_count 3
+	channel 5, Sfx_CaughtMon_Ch5
+	channel 6, Sfx_CaughtMon_Ch6
+	channel 7, Sfx_CaughtMon_Ch7
 
-Sfx_Unused:
-	channel_count 4
-	channel 5, Sfx_Unused_Ch5
-	channel 6, Sfx_Unused_Ch6
-	channel 7, Sfx_Unused_Ch7
-	channel 8, Sfx_Unused_Ch8
-
-Sfx_Unused_Ch5:
+Sfx_CaughtMon_Ch5:
 	toggle_sfx
-	tempo 124
+	tempo 256
 	volume 7, 7
-	vibrato 8, 2, 7
-	duty_cycle 2
-	note_type 12, 11, 1
-	octave 4
-	note F_, 2
-	note F_, 1
-	note F_, 1
-	note C_, 2
-	note C_, 1
-	note C_, 1
+	duty_cycle 3
+	pitch_offset 1
+	note_type 6, 11, 2
+	octave 3
 	note E_, 2
-	note G_, 1
-	note G_, 1
-	note C_, 2
-	note E_, 1
-	note E_, 1
-	volume_envelope 10, 5
-	note F_, 16
+	note F#, 2
+	note G#, 2
+	note G#, 1
+	note G#, 1
+	note B_, 2
+	octave 4
+	note C#, 2
+	note D#, 2
+	note D#, 1
+	note D#, 1
+	note_type 6, 11, 5
+	note E_, 8
 	sound_ret
 
-Sfx_Unused_Ch6:
+Sfx_CaughtMon_Ch6:
 	toggle_sfx
-	vibrato 8, 2, 7
 	duty_cycle 2
-	note_type 12, 12, 1
+	note_type 6, 12, 2
 	octave 4
+	note G#, 2
+	note G#, 1
+	note G#, 1
+	note E_, 2
+	note E_, 1
+	note E_, 1
+	note B_, 2
+	note B_, 1
+	note B_, 1
 	note A_, 2
 	note A_, 1
 	note A_, 1
-	note F_, 2
-	note F_, 1
-	note F_, 1
+	note_type 6, 12, 5
+	note G#, 8
+	sound_ret
+
+Sfx_CaughtMon_Ch7:
+	toggle_sfx
+	note_type 6, 1, 0
+	octave 4
+	note B_, 2
+	rest 2
 	octave 5
-	note C_, 2
-	note C_, 1
-	note C_, 1
-	octave 4
-	note A#, 2
-	note A#, 1
-	note A#, 1
-	volume_envelope 11, 5
-	note A_, 16
-	sound_ret
-
-Sfx_Unused_Ch7:
-	toggle_sfx
-	note_type 12, 2, 5
-	octave 4
-	note F_, 8
-	note C_, 2
-	note E_, 2
+	note C#, 2
+	rest 2
+	note D#, 2
+	rest 2
+	note F#, 2
 	note G_, 2
-	note A#, 2
-	note A_, 4
-	volume_envelope 3, 5
-	note A_, 3
-	rest 9
-	sound_ret
-
-Sfx_Unused_Ch8:
-	toggle_sfx
-	sfx_toggle_noise 4
-	drum_speed 12
-	note C_, 16
-	rest 16
+	note G#, 4
 	sound_ret
 
 Sfx_GetEgg:
@@ -2549,23 +2493,22 @@ Sfx_Flash_Ch5:
 	pitch_sweep 0, 8
 	sound_ret
 
-Sfx_GameFreakLogoGs:
+Sfx_GameFreakLogo:
 	channel_count 1
-	channel 5, Sfx_GameFreakLogoGs_Ch5
+	channel 5, Sfx_GameFreakLogo_Ch5
 
-Sfx_GameFreakLogoGs_Ch5:
-	duty_cycle 3
-	pitch_sweep 7, -7
-	square_note 4, 5, 5, 2018
-	square_note 5, 7, 5, 2018
-	square_note 6, 9, 4, 2018
-	square_note 7, 11, 4, 2018
-	square_note 8, 11, 3, 2018
-	square_note 9, 9, 3, 2018
-	square_note 10, 7, 2, 2018
-	square_note 10, 5, 3, 2018
-	square_note 10, 3, 4, 2018
-	square_note 10, 1, 5, 2018
+Sfx_GameFreakLogo_Ch5:
+	duty_cycle_pattern 2, 0, 2, 0
+	pitch_sweep 2, -7
+	square_note 4, 4, 0, 2016
+	square_note 4, 6, 0, 2016
+	square_note 4, 8, 0, 2016
+	square_note 8, 10, 0, 2016
+	square_note 8, 10, 0, 2016
+	square_note 8, 8, 0, 2016
+	square_note 8, 6, 0, 2016
+	square_note 8, 3, 0, 2016
+	square_note 15, 1, 2, 2016
 	pitch_sweep 0, 8
 	sound_ret
 
@@ -3741,12 +3684,12 @@ Sfx_BallPoof_Ch8:
 	noise_note 15, 10, 2, 34
 	sound_ret
 
-Sfx_Unknown3A_Ch5:
+Sfx_FaintThud_Ch5:
 	square_note 15, 13, 1, 512
 	pitch_sweep 0, 8
 	sound_ret
 
-Sfx_Unknown3A_Ch8:
+Sfx_FaintThud_Ch8:
 	noise_note 4, 15, 5, 51
 	noise_note 8, 15, 4, 34
 	noise_note 15, 15, 2, 33
@@ -3803,7 +3746,7 @@ Sfx_Pound_Ch8:
 	noise_note 2, 10, 1, 34
 	sound_ret
 
-Sfx_MovePuzzlePiece_Ch8:
+Sfx_Thrash_Ch8:
 	noise_note 8, 15, 1, 84
 	sound_ret
 
@@ -4379,7 +4322,7 @@ Sfx_HyperBeam_Ch8:
 	sound_loop 26, Sfx_HyperBeam_Ch8
 	sound_ret
 
-Sfx_Unknown60_Ch8:
+Sfx_IntroLunge_Ch8:
 	noise_note 6, 2, 0, 16
 	noise_note 6, 2, -7, 64
 	noise_note 6, 4, -7, 65
@@ -4394,7 +4337,7 @@ Sfx_SwitchPockets_Ch8:
 	noise_note 4, 12, 1, 66
 	sound_ret
 
-Sfx_Unknown63_Ch8:
+Sfx_IntroRaise_Ch8:
 	noise_note 2, 6, -7, 33
 	noise_note 2, 10, -7, 49
 	noise_note 15, 15, 2, 65
@@ -4405,7 +4348,7 @@ Sfx_Burn_Ch8:
 	noise_note 15, 15, 2, 67
 	sound_ret
 
-Sfx_Unknown66_Ch5:
+Sfx_SlotsStopReel_Ch5:
 	duty_cycle 2
 	square_note 1, 15, 2, 1696
 	square_note 1, 15, 2, 1760
@@ -4512,33 +4455,33 @@ Sfx_Twinkle_Ch5:
 	note G_, 6
 	sound_ret
 	
-Sfx_Intro_Hip::
+Sfx_IntroHip::
 	channel_count 1
-	channel 5, Sfx_Intro_Hip_Ch5	
+	channel 5, Sfx_IntroHip_Ch5	
 	
-Sfx_Intro_Hip_Ch5:
+Sfx_IntroHip_Ch5:
 	duty_cycle 2
 	pitch_sweep 2, 6
 	square_note 12, 12, 2, 1856
 	pitch_sweep 0, 8
 	sound_ret
 	
-Sfx_Intro_Hop:
+Sfx_IntroHop:
 	channel_count 1
-	channel 5, Sfx_Intro_Hop_Ch5	
+	channel 5, Sfx_IntroHop_Ch5	
 	
-Sfx_Intro_Hop_Ch5:
+Sfx_IntroHop_Ch5:
 	duty_cycle 2
 	pitch_sweep 2, 6
 	square_note 12, 12, 2, 1664
 	pitch_sweep 0, 8
 	sound_ret
 	
-Sfx_Intro_Whoosh:
+Sfx_IntroWhoosh:
 	channel_count 1
-	channel 8, Sfx_Intro_Whoosh_Ch8
+	channel 8, Sfx_IntroWhoosh_Ch8
 	
-Sfx_Intro_Whoosh_Ch8:
+Sfx_IntroWhoosh_Ch8:
 	noise_note 4, 2, -4, 32
 	noise_note 3, 10, 0, 32
 	noise_note 3, 11, 0, 33
@@ -4546,11 +4489,11 @@ Sfx_Intro_Whoosh_Ch8:
 	noise_note 15, 13, 2, 36
 	sound_ret
 	
-Sfx_Surfing_Jump:
+Sfx_SurfingJump:
 	channel_count 1
-	channel 8, Sfx_Surfing_Jump_Ch8
+	channel 8, Sfx_SurfingJump_Ch8
 	
-Sfx_Surfing_Jump_Ch8:
+Sfx_SurfingJump_Ch8:
 	noise_note 6, 15, 1, 17
 	noise_note 7, 15, 2, 34
 	noise_note 8, 15, 3, 51
@@ -4560,11 +4503,11 @@ Sfx_Surfing_Jump_Ch8:
 	noise_note 12, 15, 7, 17
 	sound_ret
 
-Sfx_Surfing_Flip:
+Sfx_SurfingFlip:
 	channel_count 1
-	channel 5, Sfx_Surfing_Flip_Ch5
+	channel 5, Sfx_SurfingFlip_Ch5
 	
-Sfx_Surfing_Flip_Ch5:
+Sfx_SurfingFlip_Ch5:
 	duty_cycle 2
 	square_note 3, 12, 4, 1888
 	square_note 0, 10, 4, 1856
@@ -4573,21 +4516,21 @@ Sfx_Surfing_Flip_Ch5:
 	square_note 15, 12, 1, 1888
 	sound_ret
 
-Sfx_Surfing_Crash:
+Sfx_SurfingCrash:
 	channel_count 1
-	channel 8, Sfx_Surfing_Crash_Ch8
+	channel 8, Sfx_SurfingCrash_Ch8
 	
-Sfx_Surfing_Crash_Ch8:
+Sfx_SurfingCrash_Ch8:
 	noise_note 3, 15, 3, 102
 	noise_note 3, 3, 3, 83
 	noise_note 7, 15, 5, 81
 	sound_ret
 
-Sfx_Surfing_Land:
+Sfx_SurfingLand:
 	channel_count 1
-	channel 8, Sfx_Surfing_Land_Ch8
+	channel 8, Sfx_SurfingLand_Ch8
 	
-Sfx_Surfing_Land_Ch8:
+Sfx_SurfingLand_Ch8:
 	noise_note 2, 15, 1, 50
 	noise_note 2, 0, 0, 0
 	noise_note 4, 14, 6, 33
