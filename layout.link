@@ -35,6 +35,7 @@ ROM0
 	"Home"
 ROMX $1
 	"bank1"
+	"Pic Banks"
 ROMX $2
 	"Audio"
 	"Songs 1"
@@ -61,14 +62,18 @@ ROMX $8
 	"Songs 2"
 	"Bill's PC"
 ROMX $9
+	"Pics 1"
 	"Battle Engine 3"
 ROMX $A
+	"Pics 2"
 	"Battle Engine 4"
 ROMX $B
+	"Pics 3"
 	"Battle Engine 5"
 ROMX $C
-	"Pic Banks"
+	"Pics 4"
 ROMX $D
+	"Pics 5"
 	"Slot Machines"
 ROMX $E
 	"Battle Engine 6"
@@ -140,13 +145,13 @@ ROMX $21
 	"Trainer Pics 2"
 	"Songs 5"
 ROMX $22
-	"Pics 1"
+	"Pics 6"
 ROMX $23
-	"Pics 2"
+	"Pics 7"
 ROMX $24
-	"Pics 3"
+	"Pics 8"
 ROMX $25
-	"Pokédex Text 2" ; temporary
+	"Pokédex Text"
 ROMX $26
 	"Text 1"
 ROMX $27
@@ -164,7 +169,7 @@ ROMX $2C
 ROMX $2D
 	"Text 8"
 ROMX $2E
-	"Pokédex Text"
+	"Pokédex Text 2"
 ROMX $2f
 	"Move Names"
 	"BG Map Attributes (Debug)"
@@ -173,21 +178,17 @@ ROMX $2f
 ROMX $30
 	"bank30"
 ROMX $31
-	"Pics 4"
-ROMX $32
-	"Pics 5"
-ROMX $33
-	"Pics 6"
-ROMX $34
-	"Pics 7"
-ROMX $35
-	"Pics 8"
-ROMX $36
 	"Pics 9"
-ROMX $37
+ROMX $32
 	"Pics 10"
-ROMX $39
+ROMX $33
 	"Unown Pics"
+; bank $34 is empty
+; bank $35 is empty
+; bank $36 is empty
+; bank $37 is empty
+; bank $38 is empty
+; bank $39 is empty
 ROMX $3A
 	"bank3A"
 ROMX $3B
