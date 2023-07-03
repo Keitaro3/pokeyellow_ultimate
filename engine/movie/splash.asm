@@ -1,10 +1,12 @@
 LoadShootingStarGraphics:
+	call IsCGB
+	jr nz, .next
 	ld a, $f9
 	ldh [rOBP0], a
 	ld a, $a4
 	ldh [rOBP1], a
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	jr .next
+.next
 	ld de, MoveAnimationTiles1 tile 3 ; star tile (top left quadrant)
 	ld hl, vChars1 tile $20
 	lb bc, BANK(MoveAnimationTiles1), 1
@@ -77,7 +79,8 @@ AnimateShootingStar:
 	ld hl, rOBP0
 	rrc [hl]
 	rrc [hl]
-	call UpdateGBCPal_OBP0
+	ld a, [hl]
+	call DmgToCgbObjPal0
 	ld c, 10
 	call CheckForUserInterruption
 	ret c
@@ -219,8 +222,7 @@ MoveDownSmallStars:
 ; and out.
 	ldh a, [rOBP1]
 	xor %10100000
-	ldh [rOBP1], a
-	call UpdateGBCPal_OBP1
+	call UpdateFourObjPals
 	ld c, 3
 	call CheckForUserInterruption
 	ret c
@@ -257,3 +259,32 @@ GameFreakShootingStarOAMDataEnd:
 FallingStar:
 	INCBIN "gfx/splash/falling_star.2bpp"
 FallingStarEnd:
+
+UpdateFourObjPals::
+	ldh [rOBP1], a
+	push af
+
+	ldh a, [hGBC]
+	and a
+	jr z, .dmg
+
+	push hl
+	push de
+	push bc
+
+	ld hl, wOBPals2 palette 4
+	ld de, wOBPals1 palette 4
+	ldh a, [rOBP1]
+	ld b, a
+	ld c, 4
+	call CopyPals
+	ld a, TRUE
+	ldh [hCGBPalUpdate], a
+
+	pop bc
+	pop de
+	pop hl
+
+.dmg
+	pop af
+	ret	

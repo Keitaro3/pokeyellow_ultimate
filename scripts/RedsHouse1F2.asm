@@ -13,7 +13,8 @@ MomWakeUpText:
 MomHealPokemon:
 	ld hl, MomHealText1
 	call PrintText
-	call GBFadeOutToWhite
+	farcall FadeBlackQuickly
+	call ReloadSpritesNoPalettes
 	call ReloadMapData
 	predef HealParty
 	ld de, MUSIC_PKMN_HEALED
@@ -23,7 +24,7 @@ MomHealPokemon:
 	cp MUSIC_PKMN_HEALED
 	jr z, .next
 	call RestartMapMusic 
-	call GBFadeInFromWhite
+	farcall FadeInQuickly
 	ld hl, MomHealText2
 	call PrintText
 	ret

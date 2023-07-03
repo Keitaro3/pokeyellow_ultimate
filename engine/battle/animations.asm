@@ -15,8 +15,6 @@ DrawFrameBlock:
 	ld a, [wFBTileCounter]
 	inc a
 	ld [wFBTileCounter], a
-	ld a, $2
-	ld [wdef5], a
 	ld a, [wSubAnimTransform]
 	dec a
 	jr z, .flipHorizontalAndVertical   ; SUBANIMTYPE_HVFLIP
@@ -48,12 +46,6 @@ DrawFrameBlock:
 .finishCopying ; finish copying values to OAM (when subanimation not transformed)
 	add [hl] ; X offset
 	ld [de], a ; store X
-	cp 88
-	jr c, .asm_78056
-	ld a, [wdef5]
-	inc a
-	ld [wdef5], a
-.asm_78056
 	inc hl
 	inc de
 	ld a, [hli]
@@ -61,9 +53,6 @@ DrawFrameBlock:
 	ld [de], a ; store tile ID
 	inc de
 	ld a, [hli]
-	ld b, a
-	ld a, [wdef5]
-	or b
 	ld [de], a ; store flags
 	inc de
 	jp .nextTile
@@ -82,12 +71,6 @@ DrawFrameBlock:
 	ld a, 168
 	sub b ; flip X coordinate
 	ld [de], a ; store X
-	cp 88
-	jr c, .asm_78087
-	ld a, [wdef5]
-	inc a
-	ld [wdef5], a
-.asm_78087
 	inc hl
 	inc de
 	ld a, [hli]
@@ -107,8 +90,7 @@ DrawFrameBlock:
 	jr z, .storeFlags1
 	ld b, 0
 .storeFlags1
-	ld a, [wdef5]
-	or b
+	ld a, b
 	ld [de], a
 	inc de
 	jp .nextTile
@@ -125,12 +107,6 @@ DrawFrameBlock:
 	ld a, 168
 	sub b ; flip X coordinate
 	ld [de], a ; store X
-	cp 88
-	jr c, .asm_780c8
-	ld a, [wdef5]
-	inc a
-	ld [wdef5], a
-.asm_780c8
 	inc hl
 	inc de
 	ld a, [hli]
@@ -146,9 +122,6 @@ DrawFrameBlock:
 .disableHorizontalFlip
 	res 5, a
 .storeFlags2
-	ld b, a
-	ld a, [wdef5]
-	or b
 	ld [de], a
 	inc de
 .nextTile
@@ -451,7 +424,6 @@ MoveAnimation:
 	xor a
 	vc_hook Stop_reducing_move_anim_flashing_Haze_Hyper_Beam
 	ld [wSubAnimSubEntryAddr], a
-	ld [wUnusedD09B], a
 	ld [wSubAnimTransform], a
 	dec a ; NO_MOVE - 1
 	ld [wAnimSoundID], a
@@ -1181,30 +1153,15 @@ AnimationWaterDropletsEverywhere:
 _AnimationWaterDroplets:
 	ld hl, wShadowOAM
 .loop
-	ld a, $1
-	ld [wdef5], a
 	ld a, [wBaseCoordY]
 	ld [hli], a ; Y
-	cp 40
-	jr c, .asm_792d7
-	ld a, [wdef5]
-	inc a
-	ld [wdef5], a
-.asm_792d7
 	ld a, [wBaseCoordX]
 	add 27
 	ld [wBaseCoordX], a
 	ld [hli], a ; X
-	cp 88
-	jr c, .asm_792ee
-	ld a, [wdef5]
-	add $2
-	and $3
-	ld [wdef5], a
-.asm_792ee
 	ld a, [wDropletTile]
 	ld [hli], a ; tile
-	ld a, [wdef5]
+	xor a
 	ld [hli], a ; attribute
 	ld a, [wBaseCoordX]
 	cp 144
@@ -1347,30 +1304,16 @@ BattleAnimWriteOAMEntry:
 ; Y coordinate = e (increased by 8 each call, before the write to OAM)
 ; X coordinate = [wBaseCoordX]
 ; tile = d
-; attributes = variable (depending on coords)
-	ld a, $1
-	ld [wdef5], a
+; attributes = 0
 	ld a, e
 	add 8
 	ld e, a
 	ld [hli], a
-	cp 40
-	jr c, .asm_793d8
-	ld a, [wdef5]
-	inc a
-	ld [wdef5], a
-.asm_793d8
 	ld a, [wBaseCoordX]
 	ld [hli], a
-	cp 88
-	jr c, .asm_793e8
-	ld a, [wdef5]
-	add $2
-	ld [wdef5], a
-.asm_793e8
 	ld a, d
 	ld [hli], a
-	ld a, [wdef5]
+	xor a
 	ld [hli], a
 	ret
 
@@ -1575,8 +1518,6 @@ AnimationSpiralBallsInward:
 	ld a, [hl]
 	cp $ff
 	jr z, .done
-	ld a, $2
-	ld [wdef5], a
 	ld a, [wSpiralBallsBaseY]
 	add [hl]
 	ld [de], a ; Y
@@ -1585,20 +1526,9 @@ AnimationSpiralBallsInward:
 	ld a, [wSpiralBallsBaseX]
 	add [hl]
 	ld [de], a ; X
-	cp 88
-	jr c, .asm_79524
-	ld a, $3
-	ld [wdef5], a
-.asm_79524
 	inc hl
 	inc de
 	inc de
-	ld a, [de]
-	and $f0
-	ld b, a
-	ld a, [wdef5]
-	or b
-	ld [de], a
 	inc de
 	dec c
 	jr nz, .innerLoop
@@ -2521,8 +2451,6 @@ FallingObjects_UpdateOAMEntry:
 ; movement byte.
 	ld hl, wShadowOAM
 	add hl, de
-	ld a, $1
-	ld [wdef5], a
 	ld a, [hl]
 	inc a
 	inc a
@@ -2531,12 +2459,6 @@ FallingObjects_UpdateOAMEntry:
 	ld a, 160 ; if Y >= 112, put it off-screen
 .next
 	ld [hli], a ; Y
-	cp 40
-	jr c, .asm_79e51
-	ld a, [wdef5]
-	inc a
-	ld [wdef5], a
-.asm_79e51
 	ld a, [wFallingObjectMovementByte]
 	ld b, a
 	ld de, FallingObjects_DeltaXs
@@ -2553,13 +2475,6 @@ FallingObjects_UpdateOAMEntry:
 	ld a, [de]
 	add [hl]
 	ld [hli], a ; X
-	cp 88
-	jr c, .asm_79e75
-	ld a, [wdef5]
-	add $2
-	and $3
-	ld [wdef5], a
-.asm_79e75
 	inc hl
 	xor a ; no horizontal flip
 	jr .next2
@@ -2569,19 +2484,9 @@ FallingObjects_UpdateOAMEntry:
 	ld a, [hl]
 	sub b
 	ld [hli], a ; X
-	cp 88
-	jr c, .asm_79e5c
-	ld a, [wdef5]
-	add $2
-	and $3
-	ld [wdef5], a
-.asm_79e5c
 	inc hl
 	ld a, (1 << OAM_X_FLIP)
 .next2
-	ld b, a
-	ld a, [wdef5]
-	or b
 	ld [hl], a ; attribute
 	ret
 
@@ -2667,11 +2572,11 @@ AnimationShakeEnemyHUD:
 	call BattleAnimCopyTileMapToVRAM
 
 ; update BGMap attributes
-	ldh a, [hGBC]
-	and a
-	jr z, .notGBC
-	ld c, 13
-	farcall LoadBGMapAttributes
+	;ldh a, [hGBC]
+	;and a
+	;jr z, .notGBC
+	;ld c, 13
+	;farcall LoadBGMapAttributes
 .notGBC
 
 ; Move the window so that the row below the enemy HUD (in BG map 0) lines up
@@ -2708,11 +2613,11 @@ AnimationShakeEnemyHUD:
 	ld hl, vBGMap1
 	call BattleAnimCopyTileMapToVRAM
 ; update BGMap attributes
-	ldh a, [hGBC]
-	and a
-	jr z, .notGBC2
-	ld c, 11
-	farcall LoadBGMapAttributes
+	;ldh a, [hGBC]
+	;and a
+	;jr z, .notGBC2
+	;ld c, 11
+	;farcall LoadBGMapAttributes
 .notGBC2
 	xor a
 	ldh [hWY], a

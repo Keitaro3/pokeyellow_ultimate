@@ -24,9 +24,11 @@ MainMenu:
 	ld hl, wd72e
 	res 6, [hl]
 	call ClearScreen
-	call RunDefaultPaletteCommand
 	call LoadTextBoxTilePatterns
-	call LoadFontTilePatterns
+	call LoadFontTilePatterns	
+	ld b, SET_PAL_GENERIC
+	call RunPaletteCommand
+	call GBPalNormal
 	ld hl, wd730
 	set 6, [hl]
 	ld a, [wSaveFileStatus]

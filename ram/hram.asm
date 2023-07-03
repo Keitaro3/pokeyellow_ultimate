@@ -392,7 +392,9 @@ hLCDCPointer:: db
 
 hJoyInput:: db
 
-	ds 2
+	ds 1
+	
+hBGMapUpdate:: db	
 
 hDisableJoypadPolling:: db
 
@@ -404,9 +406,9 @@ hUILayoutFlags:: db
 
 hFieldMoveMonMenuTopMenuItemX:: db
 
-hPikachuSpriteVRAMOffset:: db
+hBGMapTileCount:: db
 
-	ds 1
+hCGBPalUpdate:: db
 
 ; 0 if DMG, != 0 if GBC
 hGBC:: db

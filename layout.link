@@ -172,9 +172,6 @@ ROMX $2E
 	"Pokédex Text 2"
 ROMX $2f
 	"Move Names"
-	"BG Map Attributes (Debug)"
-	org $5000
-	"BG Map Attributes"
 ROMX $30
 	"bank30"
 ROMX $31
@@ -188,11 +185,12 @@ ROMX $33
 ; bank $36 is empty
 ; bank $37 is empty
 ; bank $38 is empty
-; bank $39 is empty
+ROMX $39
+	"Trainer AI"
 ROMX $3A
 	"bank3A"
 ROMX $3B
-	"bank3B"
+	"Color Engine"
 ROMX $3C
 	"Specific Script Flags"
 	"Tilesets 4"
@@ -225,6 +223,8 @@ WRAM0
 	"Stack"
 VRAM $0
 	"VRAM"
+VRAM $1
+	"VRAM 1"
 SRAM $0
 	"Sprite Buffers"
 SRAM $1

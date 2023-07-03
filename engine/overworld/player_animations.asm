@@ -113,7 +113,7 @@ _LeaveMapAnim::
 	ld c, 10
 	call DelayFrames
 .playerStandingOnWarpPad
-	call GBFadeOutToWhite
+	farcall FadeOutPalettes
 	jp RestoreFacingDirectionAndYScreenPos
 .playerNotStandingOnWarpPadOrHole
 	ld a, $4
@@ -214,7 +214,7 @@ LeaveMapThroughHoleAnim:
 	ld a, $a0
 	ld [wShadowOAMSprite02YCoord], a
 	ld [wShadowOAMSprite03YCoord], a
-	call GBFadeOutToWhite
+	farcall FadeOutPalettes
 	ld a, $1
 	ld [wUpdateSpritesEnabled], a ; enable UpdateSprites
 	jp RestoreFacingDirectionAndYScreenPos

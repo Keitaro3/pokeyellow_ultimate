@@ -268,8 +268,11 @@ DEF FIRST_INDOOR_MAP EQU const_value
 	map_const BRUNOS_ROOM,                    5,  6 ; $F6
 	map_const AGATHAS_ROOM,                   5,  6 ; $F7
 	map_const SUMMER_BEACH_HOUSE,             7,  4 ; $F8
+	map_const ROUTE_19_GATE,				  5,  3 ; $F9
 DEF NUM_MAPS EQU const_value
 
 ; Indoor maps, such as houses, use this as the Map ID in their exit warps
 ; This map ID takes the player back to the last outdoor map they were on, stored in wLastMap
 DEF LAST_MAP EQU -1
+
+DEF NUM_MAP_GROUPS EQU 17

@@ -13,7 +13,7 @@
 	const FOREST_GATE  ; 9
 	const MUSEUM       ; 10
 	const UNDERGROUND  ; 11
-	const GATE         ; 12
+	const GATE_T       ; 12
 	const SHIP         ; 13
 	const SHIP_PORT    ; 14
 	const CEMETERY     ; 15
@@ -27,3 +27,15 @@
 	const PLATEAU      ; 23
 	const BEACH_HOUSE  ; 24
 DEF NUM_TILESETS EQU const_value
+
+; bg palette values (see gfx/tilesets/*_palette_map.asm)
+; TilesetBGPalette indexes (see gfx/tilesets/bg_tiles.pal)
+	const_def
+	const PAL_BG_GRAY   ; 0
+	const PAL_BG_RED    ; 1
+	const PAL_BG_GREEN  ; 2
+	const PAL_BG_WATER  ; 3
+	const PAL_BG_YELLOW ; 4
+	const PAL_BG_BROWN  ; 5
+	const PAL_BG_ROOF   ; 6
+	const PAL_BG_TEXT   ; 7

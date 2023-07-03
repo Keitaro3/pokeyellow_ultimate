@@ -7,13 +7,13 @@ PokemonMansionB1F_Object:
 	def_bg_events
 
 	def_object_events
-	object_event 16, 23, SPRITE_SUPER_NERD, STAY, NONE, 1, BURGLAR, 9
-	object_event 27, 11, SPRITE_SCIENTIST, STAY, DOWN, 2, SCIENTIST, 13
-	object_event 10,  2, SPRITE_POKE_BALL, STAY, NONE, 3, RARE_CANDY
-	object_event  1, 22, SPRITE_POKE_BALL, STAY, NONE, 4, FULL_RESTORE
-	object_event 19, 25, SPRITE_POKE_BALL, STAY, NONE, 5, TM_BLIZZARD
-	object_event  5,  4, SPRITE_POKE_BALL, STAY, NONE, 6, TM_SOLARBEAM
-	object_event 16, 20, SPRITE_POKEDEX, STAY, NONE, 7 ; person
-	object_event  5, 13, SPRITE_POKE_BALL, STAY, NONE, 8, SECRET_KEY
+	object_event 16, 23, SPRITE_BIKE_SHOP_CLERK, STAY, NONE, PAL_NPC_GREEN, 1, BURGLAR, 9
+	object_event 27, 11, SPRITE_SCIENTIST, STAY, DOWN, PAL_NPC_BLUE, 2, SCIENTIST, 13
+	object_event 10,  2, SPRITE_POKE_BALL, STAY, NONE, 0, 3, RARE_CANDY
+	object_event  1, 22, SPRITE_POKE_BALL, STAY, NONE, 0, 4, FULL_RESTORE
+	object_event 19, 25, SPRITE_POKE_BALL, STAY, NONE, 0, 5, TM_BLIZZARD
+	object_event  5,  4, SPRITE_POKE_BALL, STAY, NONE, 0, 6, TM_SOLARBEAM
+	object_event 16, 20, SPRITE_POKEDEX, STAY, NONE, 0, 7 ; person
+	object_event  5, 13, SPRITE_POKE_BALL, STAY, NONE, 0, 8, SECRET_KEY
 
 	def_warps_to POKEMON_MANSION_B1F

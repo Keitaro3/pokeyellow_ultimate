@@ -7,8 +7,8 @@ Route1_Object:
 	bg_event  9, 27, 3 ; Route1Text3
 
 	def_object_events
-	object_event  5, 24, SPRITE_YOUNGSTER, WALK, UP_DOWN, 1 ; person
-	object_event 15, 13, SPRITE_YOUNGSTER, WALK, LEFT_RIGHT, 2 ; person
+	object_event  5, 24, SPRITE_BUG_CATCHER, WALK, UP_DOWN, PAL_NPC_GREEN, 1 ; person
+	object_event 15, 13, SPRITE_BUG_CATCHER, WALK, LEFT_RIGHT, PAL_NPC_RED, 2 ; person
 
 	def_warps_to ROUTE_1
 

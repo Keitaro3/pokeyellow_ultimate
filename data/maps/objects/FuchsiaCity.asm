@@ -11,6 +11,8 @@ FuchsiaCity_Object:
 	warp_event 22, 13, FUCHSIA_MEETING_ROOM, 1
 	warp_event 31, 27, FUCHSIA_GOOD_ROD_HOUSE, 2
 	warp_event 31, 24, FUCHSIA_GOOD_ROD_HOUSE, 1
+	warp_event 17, 35, ROUTE_19_GATE, 3
+	warp_event 18, 35, ROUTE_19_GATE, 4
 
 	def_bg_events
 	bg_event 15, 23, 11 ; FuchsiaCityText11
@@ -29,15 +31,15 @@ FuchsiaCity_Object:
 	bg_event  7,  7, 24 ; FuchsiaCityText24
 
 	def_object_events
-	object_event 10, 12, SPRITE_YOUNGSTER, WALK, LEFT_RIGHT, 1 ; person
-	object_event 28, 17, SPRITE_GAMBLER, WALK, LEFT_RIGHT, 2 ; person
-	object_event 30, 14, SPRITE_FISHER, STAY, DOWN, 3 ; person
-	object_event 24,  8, SPRITE_YOUNGSTER, STAY, UP, 4 ; person
-	object_event 31,  5, SPRITE_CHANSEY, STAY, DOWN, 5 ; person
-	object_event 25,  6, SPRITE_POKE_BALL, STAY, NONE, 6 ; person
-	object_event 12,  6, SPRITE_MONSTER, WALK, LEFT_RIGHT, 7 ; person
-	object_event 30, 12, SPRITE_MONSTER, WALK, LEFT_RIGHT, 8 ; person
-	object_event  8, 17, SPRITE_SEEL, WALK, ANY_DIR, 9 ; person
-	object_event  6,  5, SPRITE_FOSSIL, STAY, NONE, 10 ; person
+	object_event 10, 12, SPRITE_BUG_CATCHER, WALK, LEFT_RIGHT, PAL_NPC_BROWN, 1 ; person
+	object_event 28, 17, SPRITE_GAMBLER, WALK, LEFT_RIGHT, PAL_NPC_BLUE, 2 ; person
+	object_event 30, 14, SPRITE_FISHER, STAY, DOWN, PAL_NPC_GREEN, 3 ; person
+	object_event 24,  8, SPRITE_BUG_CATCHER, STAY, UP, PAL_NPC_BLUE, 4 ; person
+	object_event 31,  5, SPRITE_CHANSEY, STAY, DOWN, PAL_NPC_RED, 5 ; person
+	object_event 25,  6, SPRITE_POKE_BALL, STAY, NONE, 0, 6 ; person
+	object_event 12,  6, SPRITE_MONSTER, WALK, LEFT_RIGHT, PAL_NPC_BROWN, 7 ; person
+	object_event 30, 12, SPRITE_SLOWPOKE_2, STAY, NONE, PAL_NPC_RED, 8 ; person
+	object_event  8, 17, SPRITE_LAPRAS, WALK, ANY_DIR, PAL_NPC_BLUE, 9 ; person
+	object_event  6,  5, SPRITE_FOSSIL, STAY, NONE, 0, 10 ; person
 
 	def_warps_to FUCHSIA_CITY

@@ -3,7 +3,7 @@
 LoadGBPal::
 	ld a, [wMapPalOffset] ; tells if wCurMap is dark (requires HM5_FLASH?)
 	ld b, a
-	ld hl, FadePal4
+	ld hl, IncGradGBPalTable_11
 	ld a, l
 	sub b
 	ld l, a
@@ -16,67 +16,113 @@ LoadGBPal::
 	ldh [rOBP0], a
 	ld a, [hli]
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
 	ret
 
 GBFadeInFromBlack::
-	ld hl, FadePal1
+	ldh a, [hGBC]
+	and a
+	jr z, .dmg
+	ld hl, IncGradGBPalTable_00
 	ld b, 4
 	jr GBFadeIncCommon
 
+.dmg
+	ld hl, IncGradGBPalTable_08
+	ld b, 4
+	jr GBFadeIncCommon
+
+
 GBFadeOutToWhite::
-	ld hl, FadePal6
+	ldh a, [hGBC]
+	and a
+	jr z, .dmg
+	ld hl, IncGradGBPalTable_05
+	ld b, 3
+	jr GBFadeIncCommon
+
+.dmg
+	ld hl, IncGradGBPalTable_13
 	ld b, 3
 
 GBFadeIncCommon:
+; Rotate palettes to the right and fill with loaded colors from the left
+; If we're already at the leftmost color, fill with the leftmost color
+	push de
 	ld a, [hli]
-	ldh [rBGP], a
+	call DmgToCgbBGPals
 	ld a, [hli]
-	ldh [rOBP0], a
+	ld e, a
 	ld a, [hli]
-	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	ld d, a
+	call DmgToCgbObjPals
 	ld c, 8
 	call DelayFrames
+	pop de
 	dec b
 	jr nz, GBFadeIncCommon
 	ret
 
 GBFadeOutToBlack::
-	ld hl, FadePal4 + 2
+	ldh a, [hGBC]
+	and a
+	jr z, .dmg
+	ld hl, IncGradGBPalTable_04 - 1
+	ld b, 4
+	jr GBFadeDecCommon
+
+.dmg
+	ld hl, IncGradGBPalTable_12 - 1
 	ld b, 4
 	jr GBFadeDecCommon
 
 GBFadeInFromWhite::
-	ld hl, FadePal7 + 2
+	ldh a, [hGBC]
+	and a
+	jr z, .dmg
+	ld hl, IncGradGBPalTable_07 - 1
+	ld b, 3
+	jr GBFadeDecCommon
+
+.dmg
+	ld hl, IncGradGBPalTable_15 - 1
 	ld b, 3
 
 GBFadeDecCommon:
+; Rotate palettes to the left and fill with loaded colors from the right
+; If we're already at the rightmost color, fill with the rightmost color
+	push de
 	ld a, [hld]
-	ldh [rOBP1], a
+	ld d, a
 	ld a, [hld]
-	ldh [rOBP0], a
+	ld e, a
+	call DmgToCgbObjPals
 	ld a, [hld]
-	ldh [rBGP], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call DmgToCgbBGPals
 	ld c, 8
 	call DelayFrames
+	pop de
 	dec b
 	jr nz, GBFadeDecCommon
 	ret
 
-FadePal1:: db %11111111, %11111111, %11111111
-FadePal2:: db %11111110, %11111110, %11111000
-FadePal3:: db %11111001, %11100100, %11100100
-FadePal4:: db %11100100, %11010000, %11100000
-;                rBGP      rOBP0      rOBP1
-FadePal5:: db %11100100, %11010000, %11100000
-FadePal6:: db %10010000, %10000000, %10010000
-FadePal7:: db %01000000, %01000000, %01000000
-FadePal8:: db %00000000, %00000000, %00000000
+IncGradGBPalTable_00:: dc 3,3,3,3, 3,3,3,3, 3,3,3,3
+IncGradGBPalTable_01:: dc 3,3,3,2, 3,3,3,2, 3,3,3,2
+IncGradGBPalTable_02:: dc 3,3,2,1, 3,3,2,1, 3,3,2,1
+IncGradGBPalTable_03:: dc 3,2,1,0, 3,2,1,0, 3,2,1,0
+
+IncGradGBPalTable_04:: dc 3,2,1,0, 3,2,1,0, 3,2,1,0
+IncGradGBPalTable_05:: dc 2,1,0,0, 2,1,0,0, 2,1,0,0
+IncGradGBPalTable_06:: dc 1,0,0,0, 1,0,0,0, 1,0,0,0
+
+IncGradGBPalTable_07:: dc 0,0,0,0, 0,0,0,0, 0,0,0,0
+;                           bgp      obp1     obp2
+IncGradGBPalTable_08:: dc 3,3,3,3, 3,3,3,3, 3,3,3,3
+IncGradGBPalTable_09:: dc 3,3,3,2, 3,3,3,2, 3,3,2,0
+IncGradGBPalTable_10:: dc 3,3,2,1, 3,2,1,0, 3,2,1,0
+IncGradGBPalTable_11:: dc 3,2,1,0, 3,1,0,0, 3,2,0,0
+
+IncGradGBPalTable_12:: dc 3,2,1,0, 3,1,0,0, 3,2,0,0
+IncGradGBPalTable_13:: dc 2,1,0,0, 2,0,0,0, 2,1,0,0
+IncGradGBPalTable_14:: dc 1,0,0,0, 1,0,0,0, 1,0,0,0
+
+IncGradGBPalTable_15:: dc 0,0,0,0, 0,0,0,0, 0,0,0,0

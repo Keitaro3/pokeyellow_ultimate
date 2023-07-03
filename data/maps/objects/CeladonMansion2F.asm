@@ -11,5 +11,7 @@ CeladonMansion2F_Object:
 	bg_event  4,  9, 1 ; CeladonMansion2Text1
 
 	def_object_events
+	object_event 4,  4, SPRITE_MONSTER, WALK, 1, PAL_NPC_BLUE, 1 ; person
+	object_event 1,  8, SPRITE_GUITARIST, STAY, RIGHT, PAL_NPC_RED, 2 ; person
 
 	def_warps_to CELADON_MANSION_2F

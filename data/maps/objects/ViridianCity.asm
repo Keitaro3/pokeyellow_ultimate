@@ -17,12 +17,12 @@ ViridianCity_Object:
 	bg_event 27,  7, 13 ; ViridianCityText13
 
 	def_object_events
-	object_event 13, 20, SPRITE_YOUNGSTER, WALK, ANY_DIR, 1 ; person
-	object_event 30,  8, SPRITE_GAMBLER, STAY, NONE, 2 ; person
-	object_event 30, 25, SPRITE_YOUNGSTER, WALK, ANY_DIR, 3 ; person
-	object_event 17,  9, SPRITE_GIRL, STAY, RIGHT, 4 ; person
-	object_event 18,  9, SPRITE_GAMBLER_ASLEEP, STAY, NONE, 5 ; person
-	object_event  6, 23, SPRITE_FISHER, STAY, DOWN, 6 ; person
-	object_event 17,  5, SPRITE_GAMBLER, WALK, LEFT_RIGHT, 7 ; person
+	object_event 13, 20, SPRITE_BUG_CATCHER, WALK, ANY_DIR, PAL_NPC_GREEN, 1 ; person
+	object_event 30,  8, SPRITE_GAMBLER, STAY, NONE, PAL_NPC_BLUE, 2 ; person
+	object_event 30, 25, SPRITE_BUG_CATCHER, WALK, ANY_DIR, PAL_NPC_BLUE, 3 ; person
+	object_event 17,  9, SPRITE_TEACHER, STAY, RIGHT, PAL_NPC_GREEN, 4 ; person
+	object_event 18,  9, SPRITE_GAMBLER_ASLEEP, STAY, NONE, 0, 5 ; person
+	object_event  6, 23, SPRITE_FISHER, STAY, DOWN, PAL_NPC_RED, 6 ; person
+	object_event 17,  5, SPRITE_GAMBLER, WALK, LEFT_RIGHT, 0, 7 ; person
 
 	def_warps_to VIRIDIAN_CITY

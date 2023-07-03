@@ -98,31 +98,26 @@ PrepareOAMData::
 	ldh a, [hSpriteScreenX]   ; temp for sprite X position
 	add $8                   ; X=8 is left of screen (X=0 is invisible)
 	add [hl]                 ; add X offset from table
-	ld [de], a
+	ld [de], a ; XCoordinate
 	inc hl
 	inc e
 	ld a, [wd5cd]
 	add [hl]
-	;cp $80
-	;jr c, .asm_4a1c
-	;ld b, a
-	;ldh a, [hPikachuSpriteVRAMOffset]
-	;add b
-;.asm_4a1c
 	ld [de], a ; tile id
 	inc hl
 	inc e
-	ld a, [hl]
+	ld a, [hl] ; facing priority bit 
 	bit 1, a ; is the tile allowed to set the sprite priority bit?
 	jr z, .skipPriority
 	ldh a, [hSpritePriority]
 	or [hl]
-.skipPriority
+.skipPriority	
 	and $f0
 	bit OAM_OBP_NUM, a
 	jr z, .spriteusesOBP0
 	or OAM_HIGH_PALS
 .spriteusesOBP0
+	call ColorOverworldSprite
 	ld [de], a
 	inc hl
 	inc e
@@ -228,5 +223,24 @@ _IsTilePassable::
 .tileNotPassable
 	scf
 	ret
+	
+ColorOverworldSprite:
+	push bc
+	push de
+	and $f8
+	ld b,a
+
+	ldh a, [hSpriteOffset2]
+	ld e, a
+	ld d, HIGH(wSpriteStateData2)
+	ld a, SPRITESTATEDATA2_GBCPALETTE
+	add e
+	ld e, a
+	ld a,[de]		; Load A with color value
+	or b
+
+	pop de
+	pop bc
+	ret	
 
 INCLUDE "data/tilesets/collision_tile_ids.asm"

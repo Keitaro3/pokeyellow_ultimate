@@ -62,38 +62,37 @@ _ViridianFrstAfterBattleText3::
 	cont "dropped!"
 	done
 
-_ViridianForestBattleTextPikaGirl::
-	text "Hi, do you have a"
-	line "PIKACHU?"
+_ViridianForestBattleTextAnthony::
+	text "I might be little,"
+	line "but I won't like"
+	cont "it if you go easy!"
 	done
 
-_ViridianForestEndBattleTextPikaGirl::
-	text "Oh no,"
-	line "really?"
+_ViridianForestEndBattleTextAnthony::
+	text "Oh, boo."
+	line "Nothing went"
+	cont "right."
 	prompt
 
-_ViridianForestAfterBattleTextPikaGirl::
-	text "I looked forever,"
-	line "but I never found"
-	cont "a PIKACHU here!"
+_ViridianForestAfterBattleTextAnthony::
+	text "I lost some of my"
+	line "allowance…"
 	done
 
-_ViridianForestBattleTextSamurai::
-	text "I'm gonna be the"
-	line "best. You just"
-	cont "can't beat me!"
+_ViridianForestBattleTextCharlie::
+	text "Did you know that"
+	line "#MON evolve?"
 	done
 
-_ViridianForestEndBattleTextSamurai::
-	text "After"
-	line "all I did..."
+_ViridianForestEndBattleTextCharlie::
+	text "Oh!"
+	line "I lost!"
 	prompt
 
-_ViridianForestAfterBattleTextSamurai::
-	text "A METAPOD is cool"
-	line "because its"
-	cont "attack is its"
-	cont "defense!"
+_ViridianForestAfterBattleTextCharlie::
+	text "Bug #MON evolve"
+	line "quickly. They're"
+	cont "a lot of fun!"
 	done
 
 _ViridianForestText8::

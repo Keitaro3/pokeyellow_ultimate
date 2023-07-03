@@ -33,83 +33,77 @@ ClearBgMap::
 	jr nz, .loop
 	ret
 
-; This function redraws a BG row of height 2 or a BG column of width 2.
-; One of its main uses is redrawing the row or column that will be exposed upon
-; scrolling the BG when the player takes a step. Redrawing only the exposed
-; row or column is more efficient than redrawing the entire screen.
-; However, this function is also called repeatedly to redraw the whole screen
-; when necessary. It is also used in trade animation and elevator code.
 RedrawRowOrColumn::
+; Copy [hBGMapTileCount] 16x8 tiles from wRedrawRowOrColumnSrcTiles
+; to bg map addresses in wBGMapBufferPointers.
+
+; [hBGMapTileCount] must be even since this is done in pairs.
+
+; Return carry on success.
+
 	ldh a, [hRedrawRowOrColumnMode]
 	and a
 	ret z
-	ld b, a
-	xor a
-	ldh [hRedrawRowOrColumnMode], a
-	dec b
-	jr nz, .redrawRow
-.redrawColumn
-	ld hl, wRedrawRowOrColumnSrcTiles
-	ldh a, [hRedrawRowOrColumnDest]
-	ld e, a
-	ldh a, [hRedrawRowOrColumnDest + 1]
-	ld d, a
-	ld c, SCREEN_HEIGHT
-.loop1
-	ld a, [hli]
-	ld [de], a
-	inc de
-	ld a, [hli]
-	ld [de], a
-	ld a, BG_MAP_WIDTH - 1
-	add e
-	ld e, a
-	jr nc, .noCarry
-	inc d
-.noCarry
-; the following 4 lines wrap us from bottom to top if necessary
-	ld a, d
-	and $3
-	or $98
-	ld d, a
-	dec c
-	jr nz, .loop1
-	xor a
-	ldh [hRedrawRowOrColumnMode], a
-	ret
-.redrawRow
-	ld hl, wRedrawRowOrColumnSrcTiles
-	ldh a, [hRedrawRowOrColumnDest]
-	ld e, a
-	ldh a, [hRedrawRowOrColumnDest + 1]
-	ld d, a
-	push de
-	call .DrawHalf ; draw upper half
-	pop de
-	ld a, BG_MAP_WIDTH ; width of VRAM background map
-	add e
-	ld e, a
-	; fall through and draw lower half
 
-.DrawHalf
-	ld c, SCREEN_WIDTH / 2
-.loop2
+; Relocate the stack pointer to wBGMapBufferPointers
+	ld [hSPTemp], sp
+	ld hl, wBGMapBufferPointers
+	ld sp, hl
+
+; We can now pop the addresses of affected spots on the BG Map
+
+	ld hl, wBGMapPalBuffer
+	ld de, wRedrawRowOrColumnSrcTiles
+
+.next
+; Copy a pair of 16x8 blocks (one 16x16 block)
+
+rept 2
+; Get our BG Map address
+	pop bc
+
+; Palettes
+	ld a, 1
+	ldh [rVBK], a
+
 	ld a, [hli]
-	ld [de], a
-	inc de
+	ld [bc], a
+	inc c
 	ld a, [hli]
-	ld [de], a
-	ld a, e
-	inc a
-; the following 6 lines wrap us from the right edge to the left edge if necessary
-	and $1f
-	ld b, a
-	ld a, e
-	and $e0
-	or b
-	ld e, a
+	ld [bc], a
 	dec c
-	jr nz, .loop2
+
+; Tiles
+	ld a, 0
+	ldh [rVBK], a
+
+	ld a, [de]
+	inc de
+	ld [bc], a
+	inc c
+	ld a, [de]
+	inc de
+	ld [bc], a
+endr
+
+; We've done 2 16x8 blocks
+	ldh a, [hBGMapTileCount]
+	dec a
+	dec a
+	ldh [hBGMapTileCount], a
+
+	jr nz, .next
+
+; Restore the stack pointer
+	ldh a, [hSPTemp]
+	ld l, a
+	ldh a, [hSPTemp + 1]
+	ld h, a
+	ld sp, hl
+
+	xor a
+	ldh [hRedrawRowOrColumnMode], a
+	scf
 	ret
 
 ; This function automatically transfers tile number data from the tile map at
@@ -120,71 +114,146 @@ RedrawRowOrColumn::
 ; the above function, RedrawRowOrColumn, is used when walking to
 ; improve efficiency.
 AutoBgMapTransfer::
+; Update the BG Map, in thirds, from wTilemap and wAttrmap.
+
 	ldh a, [hAutoBGTransferEnabled]
-	and a
+	and a ; 0
 	ret z
-	ld [hSPTemp], sp ; save stack pointer
-	ldh a, [hAutoBGTransferPortion]
-	and a
-	jr z, .transferTopThird
-	dec a
-	jr z, .transferMiddleThird
-.transferBottomThird
-	hlcoord 0, 12
-	ld sp, hl
-	ldh a, [hAutoBGTransferDest + 1]
-	ld h, a
+
+; BG Map 0
+	dec a ; 1
+	jr z, .Tiles
+	dec a ; 2
+	jr z, .Attr
+
+; BG Map 1
+	dec a ; useless
+
 	ldh a, [hAutoBGTransferDest]
 	ld l, a
-	ld de, (12 * 32)
-	add hl, de
-	xor a ; TRANSFERTOP
-	jr .doTransfer
-.transferTopThird
+	ldh a, [hAutoBGTransferDest + 1]
+	ld h, a
+	push hl
+
+	xor a ; LOW(vBGMap1)
+	ldh [hAutoBGTransferDest], a
+	ld a, HIGH(vBGMap1)
+	ldh [hAutoBGTransferDest + 1], a
+
+	ldh a, [hAutoBGTransferEnabled]
+	push af
+	cp 3
+	call z, .Tiles
+	pop af
+	cp 4
+	call z, .Attr
+
+	pop hl
+	ld a, l
+	ldh [hAutoBGTransferDest], a
+	ld a, h
+	ldh [hAutoBGTransferDest + 1], a
+	ret
+
+.Attr:
+	ld a, 1
+	ldh [rVBK], a
+
+	hlcoord 0, 0, wAttrmap
+	call .update
+
+	ld a, 0
+	ldh [rVBK], a
+	ret
+
+.Tiles:
 	hlcoord 0, 0
-	ld sp, hl
-	ldh a, [hAutoBGTransferDest + 1]
-	ld h, a
-	ldh a, [hAutoBGTransferDest]
-	ld l, a
-	ld a, TRANSFERMIDDLE
-	jr .doTransfer
-.transferMiddleThird
-	hlcoord 0, 6
-	ld sp, hl
-	ldh a, [hAutoBGTransferDest + 1]
-	ld h, a
-	ldh a, [hAutoBGTransferDest]
-	ld l, a
-	ld de, (6 * 32)
+
+.update
+	ld [hSPTemp], sp
+
+; Which third?
+	ldh a, [hAutoBGTransferPortion]
+	and a ; 0
+	jr z, .top
+	dec a ; 1
+	jr z, .middle
+	; 2
+
+DEF THIRD_HEIGHT EQU SCREEN_HEIGHT / 3
+
+; bottom
+	ld de, 2 * THIRD_HEIGHT * SCREEN_WIDTH
 	add hl, de
-	ld a, TRANSFERBOTTOM
-.doTransfer
-	ldh [hAutoBGTransferPortion], a ; store next portion
-	ld b, 6
+	ld sp, hl
 
-TransferBgRows::
-; unrolled loop and using pop for speed
-REPT SCREEN_WIDTH / 2 - 1
-	pop de
-	ld [hl], e
-	inc l
-	ld [hl], d
-	inc l
-ENDR
-	pop de
-	ld [hl], e
-	inc l
-	ld [hl], d
-
-	ld a, BG_MAP_WIDTH - (SCREEN_WIDTH - 1)
-	add l
+	ldh a, [hAutoBGTransferDest + 1]
+	ld h, a
+	ldh a, [hAutoBGTransferDest]
 	ld l, a
-	jr nc, .ok
-	inc h
-.ok
-	dec b
-	jr nz, TransferBgRows
+
+	ld de, 2 * THIRD_HEIGHT * BG_MAP_WIDTH
+	add hl, de
+
+; Next time: top third
+	xor a
+	jr .start
+
+.middle
+	ld de, THIRD_HEIGHT * SCREEN_WIDTH
+	add hl, de
+	ld sp, hl
+
+	ldh a, [hAutoBGTransferDest + 1]
+	ld h, a
+	ldh a, [hAutoBGTransferDest]
+	ld l, a
+
+	ld de, THIRD_HEIGHT * BG_MAP_WIDTH
+	add hl, de
+
+; Next time: bottom third
+	ld a, 2
+	jr .start
+
+.top
+	ld sp, hl
+
+	ldh a, [hAutoBGTransferDest + 1]
+	ld h, a
+	ldh a, [hAutoBGTransferDest]
+	ld l, a
+
+; Next time: middle third
+	ld a, 1
+
+.start
+; Which third to update next time
+	ldh [hAutoBGTransferPortion], a
+
+; Rows of tiles in a third
+	ld a, THIRD_HEIGHT
+
+; Discrepancy between wTilemap and BGMap
+	ld bc, BG_MAP_WIDTH - (SCREEN_WIDTH - 1)
+
+.row
+; Copy a row of 20 tiles
+rept SCREEN_WIDTH / 2 - 1
+	pop de
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+endr
+	pop de
+	ld [hl], e
+	inc l
+	ld [hl], d
+
+	add hl, bc
+	dec a
+	jr nz, .row
 
 	ldh a, [hSPTemp]
 	ld l, a
@@ -193,61 +262,39 @@ ENDR
 	ld sp, hl
 	ret
 
-; Copies [hVBlankCopyBGNumRows] rows from hVBlankCopyBGSource to hVBlankCopyBGDest.
-; If hVBlankCopyBGSource is XX00, the transfer is disabled.
-VBlankCopyBgMap::
-	ldh a, [hVBlankCopyBGSource] ; doubles as enabling byte
-	and a
-	ret z
-	ld [hSPTemp], sp ; save stack pointer
-	ldh a, [hVBlankCopyBGSource]
-	ld l, a
-	ldh a, [hVBlankCopyBGSource + 1]
-	ld h, a
-	ld sp, hl
-	ldh a, [hVBlankCopyBGDest]
-	ld l, a
-	ldh a, [hVBlankCopyBGDest + 1]
-	ld h, a
-	ldh a, [hVBlankCopyBGNumRows]
-	ld b, a
-	xor a
-	ldh [hVBlankCopyBGSource], a ; disable transfer so it doesn't continue next V-blank
-	jr TransferBgRows
-
 
 VBlankCopyDouble::
-; Copy [hVBlankCopyDoubleSize] 1bpp tiles
-; from hVBlankCopyDoubleSource to hVBlankCopyDoubleDest.
-
-; While we're here, convert to 2bpp.
-; The process is straightforward:
-; copy each byte twice.
-
-	ldh a, [hVBlankCopyDoubleSize]
+	ld a, [hVBlankCopyDoubleSize]
 	and a
 	ret z
 
-	ld [hSPTemp], sp ; save stack pointer
+; Copy [hVBlankCopyDoubleSize] 1bpp tiles from [hVBlankCopyDoubleSource] to [hVBlankCopyDoubleDest]
 
-	ldh a, [hVBlankCopyDoubleSource]
+	ld [hSPTemp], sp
+
+; Source
+	ld hl, hVBlankCopyDoubleSource
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ldh a, [hVBlankCopyDoubleSource + 1]
-	ld h, a
 	ld sp, hl
 
-	ldh a, [hVBlankCopyDoubleDest]
+; Destination
+	ld hl, hVBlankCopyDoubleDest
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ldh a, [hVBlankCopyDoubleDest + 1]
-	ld h, a
 
-	ldh a, [hVBlankCopyDoubleSize]
+; # tiles to copy
+	ld a, [hVBlankCopyDoubleSize]
 	ld b, a
-	xor a ; transferred
-	ldh [hVBlankCopyDoubleSize], a
 
-.loop
-REPT LEN_2BPP_TILE / 4 - 1
+	xor a
+	ld [hVBlankCopyDoubleSize], a
+
+.next
+
+rept 3
 	pop de
 	ld [hl], e
 	inc l
@@ -257,7 +304,7 @@ REPT LEN_2BPP_TILE / 4 - 1
 	inc l
 	ld [hl], d
 	inc l
-ENDR
+endr
 	pop de
 	ld [hl], e
 	inc l
@@ -266,78 +313,85 @@ ENDR
 	ld [hl], d
 	inc l
 	ld [hl], d
+
 	inc hl
 	dec b
-	jr nz, .loop
+	jr nz, .next
+
+	ld a, l
+	ld [hVBlankCopyDoubleDest], a
+	ld a, h
+	ld [hVBlankCopyDoubleDest + 1], a
 
 	ld [hVBlankCopyDoubleSource], sp
-	ld sp, hl ; load destination into sp to save time with ld [$xxxx], sp
-	ld [hVBlankCopyDoubleDest], sp
 
 	ldh a, [hSPTemp]
 	ld l, a
 	ldh a, [hSPTemp + 1]
 	ld h, a
 	ld sp, hl
-
 	ret
 
 
 VBlankCopy::
-; Copy [hVBlankCopySize] 2bpp tiles (or 16 * [hVBlankCopySize] tile map entries)
-; from hVBlankCopySource to hVBlankCopyDest.
-
-; Source and destination addresses are updated,
-; so transfer can continue in subsequent calls.
-
-	ldh a, [hVBlankCopySize]
+	ld a, [hVBlankCopySize]
 	and a
 	ret z
 
+; Copy [hVBlankCopySize] 2bpp tiles from [hVBlankCopySource] to [hVBlankCopyDest]
+
 	ld [hSPTemp], sp
 
-	ldh a, [hVBlankCopySource]
+; Source
+	ld hl, hVBlankCopySource
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ldh a, [hVBlankCopySource + 1]
-	ld h, a
 	ld sp, hl
 
-	ldh a, [hVBlankCopyDest]
+; Destination
+	ld hl, hVBlankCopyDest
+	ld a, [hli]
+	ld h, [hl]
 	ld l, a
-	ldh a, [hVBlankCopyDest + 1]
-	ld h, a
 
-	ldh a, [hVBlankCopySize]
+; # tiles to copy
+	ld a, [hVBlankCopySize]
 	ld b, a
-	xor a ; transferred
-	ldh [hVBlankCopySize], a
 
-.loop
-REPT LEN_2BPP_TILE / 2 - 1
+	xor a
+	ld [hVBlankCopySize], a
+
+.next
+
+rept 7
 	pop de
 	ld [hl], e
 	inc l
 	ld [hl], d
 	inc l
-ENDR
+endr
 	pop de
 	ld [hl], e
 	inc l
 	ld [hl], d
+
 	inc hl
 	dec b
-	jr nz, .loop
+	jr nz, .next
+
+	ld a, l
+	ld [hVBlankCopyDest], a
+	ld a, h
+	ld [hVBlankCopyDest + 1], a
 
 	ld [hVBlankCopySource], sp
-	ld sp, hl
-	ld [hVBlankCopyDest], sp
 
 	ldh a, [hSPTemp]
 	ld l, a
 	ldh a, [hSPTemp + 1]
 	ld h, a
 	ld sp, hl
-
 	ret
 
 

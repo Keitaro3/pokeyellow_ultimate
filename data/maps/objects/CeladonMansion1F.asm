@@ -12,9 +12,9 @@ CeladonMansion1F_Object:
 	bg_event  4,  9, 5 ; CeladonMansion1Text5
 
 	def_object_events
-	object_event  0,  5, SPRITE_MONSTER, STAY, RIGHT, 1 ; person
-	object_event  1,  5, SPRITE_GRANNY, STAY, DOWN, 2 ; person
-	object_event  1,  8, SPRITE_FAIRY, WALK, LEFT_RIGHT, 3 ; person
-	object_event  4,  4, SPRITE_MONSTER, WALK, UP_DOWN, 4 ; person
+	object_event  0,  5, SPRITE_CAT, STAY, RIGHT, PAL_NPC_RED, 1 ; person
+	object_event  1,  5, SPRITE_GRANNY, STAY, DOWN, 0, 2 ; person
+	object_event  1,  8, SPRITE_FAIRY, WALK, LEFT_RIGHT, PAL_NPC_RED, 3 ; person
+	object_event  4,  4, SPRITE_MONSTER, WALK, UP_DOWN, PAL_NPC_BLUE, 4 ; person
 
 	def_warps_to CELADON_MANSION_1F

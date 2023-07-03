@@ -86,6 +86,8 @@ DEF rLCDC_DEFAULT EQU %11100011
 	call ClearBgMap
 	ld h, HIGH(vBGMap1)
 	call ClearBgMap
+	
+	callfar InitCGBPals
 
 	ld a, rLCDC_DEFAULT
 	ldh [rLCDC], a

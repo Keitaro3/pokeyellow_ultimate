@@ -1,30 +1,152 @@
-BaseHappinessTable::
-	db CLEFAIRY,   HIGH_BASE_HAPPINESS
-	db CLEFABLE,   HIGH_BASE_HAPPINESS
-	db CHANSEY,    HIGH_BASE_HAPPINESS
-	db ARTICUNO,   LOW_BASE_HAPPINESS
-	db ZAPDOS,     LOW_BASE_HAPPINESS
-	db MOLTRES,    LOW_BASE_HAPPINESS
-	db DRATINI,    LOW_BASE_HAPPINESS
-	db DRAGONAIR,  LOW_BASE_HAPPINESS
-	db DRAGONITE,  LOW_BASE_HAPPINESS
-	db MEWTWO,     NO_BASE_HAPPINESS
-	db MEW,        MYTHICAL_BASE_HAPPINESS
-	;db CLEFFA,     HIGH_BASE_HAPPINESS
-	;db UMBREON,    LOW_BASE_HAPPINESS
-	;db MURKROW,    LOW_BASE_HAPPINESS
-	;db MISDREAVUS, LOW_BASE_HAPPINESS
-	;db SNEASEL,    LOW_BASE_HAPPINESS
-	;db HOUNDOUR,   LOW_BASE_HAPPINESS
-	;db HOUNDOOM,   LOW_BASE_HAPPINESS
-	;db BLISSEY,    HIGH_BASE_HAPPINESS
-	;db RAIKOU,     LOW_BASE_HAPPINESS
-	;db ENTEI,      LOW_BASE_HAPPINESS
-	;db SUICUNE,    LOW_BASE_HAPPINESS
-	;db LARVITAR,   LOW_BASE_HAPPINESS
-	;db PUPITAR,    LOW_BASE_HAPPINESS
-	;db TYRANITAR,  LOW_BASE_HAPPINESS
-	;db LUGIA,      NO_BASE_HAPPINESS
-	;db HO-OH,      NO_BASE_HAPPINESS
-	;db CELEBI,     MYTHICAL_BASE_HAPPINESS
-	db -1
+Textbox::
+; Draw a text box at hl with room for b lines of c characters each.
+; Places a border around the textbox, then switches the palette to the
+; text black-and-white scheme.
+	push bc
+	push hl
+	call TextboxBorder
+	pop hl
+	pop bc
+	jr TextboxPalette
+
+TextboxBorder::
+	; Top
+	push hl
+	ld a, "┌"
+	ld [hli], a
+	inc a ; "─"
+	call .PlaceChars
+	inc a ; "┐"
+	ld [hl], a
+	pop hl
+
+	; Middle
+	ld de, SCREEN_WIDTH
+	add hl, de
+.row
+	push hl
+	ld a, "│"
+	ld [hli], a
+	ld a, " "
+	call .PlaceChars
+	ld [hl], "│"
+	pop hl
+
+	ld de, SCREEN_WIDTH
+	add hl, de
+	dec b
+	jr nz, .row
+
+	; Bottom
+	ld a, "└"
+	ld [hli], a
+	ld a, "─"
+	call .PlaceChars
+	ld [hl], "┘"
+
+	ret
+
+.PlaceChars:
+; Place char a c times.
+	ld d, c
+.loop
+	ld [hli], a
+	dec d
+	jr nz, .loop
+	ret
+
+TextboxPalette::
+; Fill text box width c height b at hl with pal 7
+	ld de, wAttrmap - wTilemap
+	add hl, de
+	inc b
+	inc b
+	inc c
+	inc c
+	ld a, PAL_BG_TEXT
+.col
+	push bc
+	push hl
+.row
+	ld [hli], a
+	dec c
+	jr nz, .row
+	pop hl
+	ld de, SCREEN_WIDTH
+	add hl, de
+	pop bc
+	dec b
+	jr nz, .col
+	ret
+
+SpeechTextbox::
+; Standard textbox.
+	hlcoord TEXTBOX_X, TEXTBOX_Y
+	ld b, TEXTBOX_INNERH
+	ld c, TEXTBOX_INNERW
+	jp Textbox
+
+PrintText::
+	call SetUpTextbox
+	; fallthrough
+
+PrintText_NoCreatingTextBox::
+	bccoord TEXTBOX_INNERX, TEXTBOX_INNERY
+	call PlaceHLTextAtBC
+	ret
+
+SetUpTextbox::
+	push hl
+	call SpeechTextbox
+	call UpdateSprites
+	call ApplyTilemap
+	pop hl
+	ret
+	
+	
+	
+	
+PrintText::
+; Print text hl at (1, 14).
+	push hl
+	ld a, MESSAGE_BOX
+	ld [wTextBoxID], a
+	call DisplayTextBoxID
+	call UpdateSprites
+	call Delay3
+	pop hl
+PrintText_NoCreatingTextBox::
+	bccoord 1, 14
+	jp TextCommandProcessor
+	
+	
+	
+	
+	
+OpenText:: ; window.asm
+	call ClearWindowData
+	ldh a, [hROMBank]
+	push af
+	ld a, BANK(ReanchorBGMap_NoOAMUpdate) ; aka BANK(LoadFonts_NoOAMUpdate)
+	rst Bankswitch
+
+	call ReanchorBGMap_NoOAMUpdate ; clear bgmap
+	call SpeechTextbox
+	call _OpenAndCloseMenu_HDMATransferTilemapAndAttrmap ; anchor bgmap
+	call LoadFonts_NoOAMUpdate ; load font
+	pop af
+	rst Bankswitch
+
+	ret
+
+_OpenAndCloseMenu_HDMATransferTilemapAndAttrmap::
+	ldh a, [hOAMUpdate]
+	push af
+	ld a, $1
+	ldh [hOAMUpdate], a
+
+	call CGBOnly_CopyTilemapAtOnce
+
+	pop af
+	ldh [hOAMUpdate], a
+	ret	

@@ -92,7 +92,10 @@ wMapMusic:: db
 
 wDontPlayMapMusicOnReload:: db
 
-	ds 206
+	ds 126
+	
+wBGMapPalBuffer::  ds 40
+wBGMapBufferPointers:: ds 20 * 2
 
 
 SECTION "Sprite State Data", WRAM0
@@ -139,7 +142,7 @@ wSpriteStateData2::
 ; - 7: (?) (set to $80 when in grass, else $0; may be used to draw grass above the sprite)
 ; - 8: delay until next movement (counted downwards, movement status is set to ready if reached 0)
 ; - 9: original facing direction (backed up by DisplayTextIDInit, restored by CloseTextDisplay)
-; - A
+; - A: GBC Palette
 ; - B
 ; - C
 ; - D: picture ID
@@ -428,7 +431,7 @@ wPlayerMonNumber:: db
 ; the address of the menu cursor's current location within wTileMap
 wMenuCursorLocation:: dw
 
-	ds 2
+wFarCallBC:: dw
 
 ; how many times should HandleMenuInput poll the joypad state before it returns?
 wMenuJoypadPollCount:: db
@@ -1868,7 +1871,7 @@ wSerialPlayerDataBlock:: ; ds $1a8
 ; that case, this would be ESCAPE_ROPE.
 wPseudoItemID:: db
 
-wUnusedD153:: db
+wTempObjectCopyPalette:: db
 
 wIsTrainerBattle:: db
 
@@ -1952,8 +1955,8 @@ wLetterPrintingDelayFlags:: db
 
 wPlayerID:: dw
 
-wMapMusicSoundID:: db
-wMapMusicROMBank:: db
+wMapTimeOfDay:: db
+wTimeOfDayPalset:: db
 
 ; offset subtracted from FadePal4 to get the background and object palettes for the current map
 ; normally, it is 0. it is 6 when Flash is needed, causing FadePal2 to be used instead of FadePal4
@@ -2015,13 +2018,28 @@ wDestinationWarpID:: db
 
 wStatusFlags:: db
 
-	ds 26
+	ds 21
 	
 wPartyMonHappiness:: ds PARTY_LENGTH
 wPartyMonHappinessEnd::
 
 wEnemyMonHappiness:: ds PARTY_LENGTH
-wDayCareMonHappiness:: ds 1
+wDayCareMonHappiness:: db
+
+wEnvironment:: db
+	
+wMapGroup:: db
+
+wTimeOfDayPal:: db
+
+wPlayerGender:: db
+; $00 = male
+; $01 = female
+	
+wGameDifficulty:: db
+; $00 = Easy Mode
+; $01 = Normal Mode
+; $02 = Challenge Mode	
 
 wIsSurfingPikachuInParty:: db ; bit 6: has surfing pika, bit 7: pikachu in party
 wSurfSpriteID:: db ; What Sprite ID to use for surfing
@@ -2096,7 +2114,11 @@ wTilesetTalkingOverTiles:: ds 3
 
 wGrassTile:: db
 
-	ds 4
+wTileAnimations:: db
+
+wTilesetPalettes:: dw
+
+	ds 1
 
 wNumBoxItems:: db
 ; item, quantity
@@ -2109,7 +2131,7 @@ wCurrentBoxNum:: dw
 ; number of HOF teams
 wNumHoFTeams:: db
 
-wUnusedD5A3:: db
+wTimeOfDay:: db
 
 wPlayerCoins:: ds 2 ; BCD
 
@@ -2247,7 +2269,11 @@ wRoute18Gate1FCurScript:: db
 	ds 78
 wGameProgressFlagsEnd::
 
-	ds 56
+	ds 1
+	
+wEggNick:: ds NAME_LENGTH ; df65
+wEggOT::   ds NAME_LENGTH ; df70
+wEggMon::  box_struct wEggMon ; df7b	
 
 wObtainedHiddenItemsFlags:: flag_array 112
 
@@ -2504,6 +2530,54 @@ wDayCareMonOT::   ds NAME_LENGTH
 
 wDayCareMon:: box_struct wDayCareMon
 
+wDayCareMan::
+; bit 7: active
+; bit 6: egg ready
+; bit 5: monsters are compatible
+; bit 0: monster 1 in day-care
+	ds 1
+
+wBreedMon1::
+wBreedMon1Nick::  ds NAME_LENGTH ; def6
+wBreedMon1OT::    ds NAME_LENGTH ; df01
+wBreedMon1Happiness:: ds 1
+wBreedMon1Stats:: box_struct wBreedMon1 ; df0c
+
+wDayCareLady:: ; df2c
+; bit 7: active
+; bit 0: monster 2 in day-care
+	ds 1
+
+wStepsToEgg:: ; df2d
+	ds 1
+	
+wBreedMotherOrNonDitto:: ; df2e
+;  z: yes
+; nz: no
+	ds 1
+
+wBreedMon2::
+wBreedMon2Nick::  ds NAME_LENGTH ; df2f
+wBreedMon2OT::    ds NAME_LENGTH ; df3a
+wBreedMon2Happiness:: ds 1
+wBreedMon2Stats:: box_struct wBreedMon2 ; df45
+
+; 15 bytes
+wRoamMon:: roam_struct wRoamMon
+
+wRoamMon_CurMapNumber:: db
+wRoamMon_CurMapGroup:: db
+wRoamMon_LastMapNumber:: db
+wRoamMon_LastMapGroup:: db
+
+wBestMagikarpLengthFeet:: db
+wBestMagikarpLengthInches:: db
+
+wBestHeracrossLengthFeet:: db
+wBestHeracrossLengthInches:: db
+
+	ds 27
+
 wMainDataEnd::
 
 
@@ -2516,18 +2590,26 @@ wChannel{d:n}:: channel_struct wChannel{d:n}
 endr
 wChannelsEnd::
 
-	ds 722
-
 
 SECTION "GBC Palette Data", WRAM0
 
-wGBCBasePalPointers:: ds NUM_ACTIVE_PALS * 2
-wGBCPal:: ds PALETTE_SIZE
-wLastBGP:: db
-wLastOBP0:: db
-wLastOBP1:: db
-wdef5:: db
-wBGPPalsBuffer:: ds NUM_ACTIVE_PALS * PALETTE_SIZE
+wAttrmap::
+; 20x18 grid of bg tile attributes for 8x8 tiles
+; read horizontally from the top row
+;		bit 7: priority
+;		bit 6: y flip
+;		bit 5: x flip
+;		bit 4: pal # (non-cgb)
+;		bit 3: vram bank (cgb only)
+;		bit 2-0: pal # (cgb only)
+	ds SCREEN_WIDTH * SCREEN_HEIGHT
+wAttrmapEnd::
+
+; eight 4-color palettes each
+wBGPals1:: ds 8 palettes
+wOBPals1:: ds 8 palettes
+wBGPals2:: ds 8 palettes
+wOBPals2:: ds 8 palettes
 
 
 SECTION "Stack", WRAM0

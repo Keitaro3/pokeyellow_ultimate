@@ -67,9 +67,7 @@ SlidePlayerAndEnemySilhouettesOnScreen:
 	ldh [rBGP], a
 	ldh [rOBP0], a
 	ldh [rOBP1], a
-	call UpdateGBCPal_BGP
-	call UpdateGBCPal_OBP0
-	call UpdateGBCPal_OBP1
+	call GBPalNormal
 .slideSilhouettesLoop ; slide silhouettes of the player's pic and the enemy's pic onto the screen
 	ld h, b
 	ld l, $40
@@ -99,6 +97,7 @@ SlidePlayerAndEnemySilhouettesOnScreen:
 	call Delay3
 	ld b, SET_PAL_BATTLE
 	call RunPaletteCommand
+	call GBPalNormal
 	call HideSprites
 	jpfar PrintBeginningBattleText
 
@@ -1198,6 +1197,7 @@ HandlePlayerBlackOut:
 .notRival1Battle
 	ld b, SET_PAL_BATTLE_BLACK
 	call RunPaletteCommand
+	;call GBPalNormal
 	ld hl, PlayerBlackedOutText2
 	ld a, [wLinkState]
 	cp LINK_STATE_BATTLING
@@ -1815,6 +1815,7 @@ SendOutMon:
 	ld [wPlayerMonMinimized], a
 	ld b, SET_PAL_BATTLE
 	call RunPaletteCommand
+	call GBPalNormal
 	ld hl, wEnemyBattleStatus1
 	res USING_TRAPPING_MOVE, [hl]
 	ld a, $1
@@ -2035,7 +2036,8 @@ GetBattleHealthBarColor:
 	cp b
 	ret z
 	ld b, SET_PAL_BATTLE
-	jp RunPaletteCommand
+	call RunPaletteCommand
+	jp GBPalNormal
 
 ; center's mon's name on the battle screen
 ; if the name is 1 or 2 letters long, it is printed 2 spaces more to the right than usual
@@ -6904,3 +6906,25 @@ PlayMoveAnimation:
 	predef MoveAnimation
 	callfar Func_78e98
 	ret
+	
+GetPartyMonDVs:
+	ld hl, wBattleMonDVs
+	ld a, [wPlayerBattleStatus3]
+	bit TRANSFORMED, a
+	ret z
+	ld hl, wPartyMon1DVs
+	ld a, [wPlayerMonNumber]
+	jp GetPartyLocation
+
+GetEnemyMonDVs:
+	ld hl, wEnemyMonDVs
+	ld a, [wEnemyBattleStatus3]
+	bit TRANSFORMED, a
+	ret z
+	ld hl, wTransformedEnemyMonOriginalDVs
+	ld a, [wIsInBattle]
+	dec a
+	ret z
+	ld hl, wEnemyMon1DVs
+	ld a, [wEnemyMonPartyPos]
+	jp GetPartyLocation

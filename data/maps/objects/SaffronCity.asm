@@ -24,19 +24,19 @@ SaffronCity_Object:
 	bg_event  1, 19, 25 ; SaffronCityText25
 
 	def_object_events
-	object_event  7,  6, SPRITE_ROCKET, STAY, NONE, 1 ; person
-	object_event 20,  8, SPRITE_ROCKET, WALK, LEFT_RIGHT, 2 ; person
-	object_event 34,  4, SPRITE_ROCKET, STAY, NONE, 3 ; person
-	object_event 13, 12, SPRITE_ROCKET, STAY, NONE, 4 ; person
-	object_event 11, 25, SPRITE_ROCKET, WALK, LEFT_RIGHT, 5 ; person
-	object_event 32, 13, SPRITE_ROCKET, WALK, LEFT_RIGHT, 6 ; person
-	object_event 18, 30, SPRITE_ROCKET, WALK, LEFT_RIGHT, 7 ; person
-	object_event  8, 14, SPRITE_SCIENTIST, WALK, ANY_DIR, 8 ; person
-	object_event 23, 23, SPRITE_SILPH_WORKER, STAY, NONE, 9 ; person
-	object_event 17, 30, SPRITE_OFFICE_LADY, WALK, LEFT_RIGHT, 10 ; person
-	object_event 30, 12, SPRITE_GENTLEMAN, STAY, DOWN, 11 ; person
-	object_event 31, 12, SPRITE_BIRD, STAY, DOWN, 12 ; person
-	object_event 18,  8, SPRITE_ROCKER, STAY, UP, 13 ; person
-	object_event 18, 22, SPRITE_ROCKET, STAY, DOWN, 14 ; person
+	object_event  7,  6, SPRITE_ROCKET, STAY, NONE, 0, 1 ; person
+	object_event 20,  8, SPRITE_ROCKET, WALK, LEFT_RIGHT, 0, 2 ; person
+	object_event 34,  4, SPRITE_ROCKET, STAY, NONE, 0, 3 ; person
+	object_event 13, 12, SPRITE_ROCKET, STAY, NONE, 0, 4 ; person
+	object_event 11, 25, SPRITE_ROCKET, WALK, LEFT_RIGHT, 0, 5 ; person
+	object_event 32, 13, SPRITE_ROCKET, WALK, LEFT_RIGHT, 0, 6 ; person
+	object_event 18, 30, SPRITE_ROCKET, WALK, LEFT_RIGHT, 0, 7 ; person
+	object_event  8, 14, SPRITE_SCIENTIST, WALK, ANY_DIR, PAL_NPC_BLUE, 8 ; person
+	object_event 23, 23, SPRITE_SILPH_WORKER, STAY, NONE, 0, 9 ; person
+	object_event 17, 30, SPRITE_OFFICE_LADY, WALK, LEFT_RIGHT, PAL_NPC_GREEN, 10 ; person
+	object_event 30, 12, SPRITE_GENTLEMAN, STAY, DOWN, PAL_NPC_BLUE, 11 ; person
+	object_event 31, 12, SPRITE_BIRD, STAY, DOWN, PAL_NPC_BROWN, 12 ; person
+	object_event 18,  8, SPRITE_GUITARIST, STAY, UP, 0, 13 ; person
+	object_event 18, 22, SPRITE_ROCKET, STAY, DOWN, 0, 14 ; person
 
 	def_warps_to SAFFRON_CITY

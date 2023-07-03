@@ -56,6 +56,13 @@ MACRO dn ; nybbles
 	ENDR
 ENDM
 
+MACRO dc ; "crumbs"
+	rept _NARG / 4
+		db ((\1) << 6) | ((\2) << 4) | ((\3) << 2) | (\4)
+		shift 4
+	endr
+ENDM
+
 MACRO bigdw ; big-endian word
 	db HIGH(\1), LOW(\1)
 ENDM

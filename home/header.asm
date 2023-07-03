@@ -7,7 +7,7 @@ SECTION "rst0", ROM0[$0000]
 
 SECTION "rst8", ROM0[$0008]
 	rst $38
-
+	
 	ds $10 - @, 0 ; unused
 
 SECTION "rst10", ROM0[$0010]

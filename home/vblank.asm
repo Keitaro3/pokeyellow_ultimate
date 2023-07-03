@@ -25,12 +25,17 @@ VBlank::
 	ldh [rWY], a
 .ok
 
-	call AutoBgMapTransfer
-	call VBlankCopyBgMap
 	call RedrawRowOrColumn
+	jr c, .done
+	call UpdatePalsIfCGB
+	jr c, .done
+	call AutoBgMapTransfer
+	
 	call VBlankCopy
 	call VBlankCopyDouble
 	call UpdateMovingBgTiles
+	
+.done	
 	call hDMARoutine
 	ld a, BANK(PrepareOAMData)
 	ldh [hLoadedROMBank], a

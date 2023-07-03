@@ -63,3 +63,4 @@ DEF OAKS_AIDE_REFUSED         EQU $ff
 	const_def
 	const STATUSFLAGS_NATIONAL_DEX_F             ; 0
 	const STATUSFLAGS_UNOWN_DEX_F                ; 1
+	const STATUSFLAGS_FLASH_F                    ; 2

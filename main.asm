@@ -88,14 +88,12 @@ INCLUDE "engine/battle/move_effects/haze.asm"
 
 SECTION "bank5", ROMX
 
-INCLUDE "engine/gfx/load_pokedex_tiles.asm"
 INCLUDE "engine/overworld/map_sprites.asm"
 
 
 SECTION "Battle Engine 2", ROMX
 
 INCLUDE "engine/battle/move_effects/substitute.asm"
-INCLUDE "engine/menus/pc.asm"
 
 
 SECTION "Doors and Ledges", ROMX
@@ -172,6 +170,7 @@ INCLUDE "engine/battle/effects.asm"
 SECTION "bank10", ROMX
 
 INCLUDE "engine/menus/pokedex.asm"
+INCLUDE "engine/gfx/load_pokedex_tiles.asm"
 INCLUDE "engine/overworld/emotion_bubbles.asm"
 INCLUDE "engine/movie/trade.asm"
 INCLUDE "engine/movie/intro.asm"
@@ -308,27 +307,16 @@ Section "Surfing Pikachu GFX", ROMX
 INCLUDE "gfx/surfing_pikachu.asm"
 
 
-SECTION "BG Map Attributes (Debug)", ROMX
-
-IF DEF(_DEBUG)
-	INCLUDE "engine/gfx/bg_map_attributes.asm"
-ENDC
-
-
-SECTION "BG Map Attributes", ROMX
-
-INCLUDE "data/cgb/bg_map_attributes.asm"
-IF !DEF(_DEBUG)
-	INCLUDE "engine/gfx/bg_map_attributes.asm"
-ENDC
-
-
 SECTION "bank30", ROMX
 
 ; This whole bank is garbage data.
 IF !DEF(_DEBUG)
 	INCBIN "garbage/bank30.bin"
 ENDC
+
+SECTION "Trainer AI", ROMX
+
+INCLUDE "engine/battle/trainer_ai.asm"
 
 
 SECTION "bank3A", ROMX
@@ -340,11 +328,17 @@ INCLUDE "engine/printer/printer.asm"
 INCLUDE "engine/events/diploma2.asm"
 INCLUDE "engine/printer/printer2.asm"
 INCLUDE "engine/overworld/npc_movement_2.asm"
+INCLUDE "engine/menus/pc.asm"
 
-SECTION "bank3B", ROMX
 
-INCLUDE "engine/gfx/palettes.asm"
-INCLUDE "engine/battle/trainer_ai.asm"
+SECTION "Color Engine", ROMX
+
+INCLUDE "engine/tilesets/map_palettes.asm"
+INCLUDE "engine/tilesets/tileset_palettes.asm"
+INCLUDE "gfx/tileset_palette_maps.asm"
+INCLUDE "engine/gfx/color.asm"
+
+INCLUDE "engine/tilesets/timeofday_pals.asm"
 
 
 SECTION "Specific Script Flags", ROMX
@@ -408,5 +402,4 @@ INCLUDE "engine/gfx/animated_objects.asm"
 
 SECTION "Map Header Pointers", ROMX
 
-INCLUDE "data/maps/map_header_pointers.asm"
-INCLUDE "data/maps/map_header_banks.asm"
+INCLUDE "data/maps/maps.asm"

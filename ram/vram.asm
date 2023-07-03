@@ -29,3 +29,13 @@ vTitleLogo::  ds $80 tiles
 vTitleLogo2:: ds 30 tiles
 
 ENDU
+
+
+SECTION "VRAM 1", VRAM
+
+; generic
+vChars3:: ds $80 tiles
+vChars4:: ds $80 tiles
+vChars5:: ds $80 tiles
+vBGMap2:: ds BG_MAP_WIDTH * BG_MAP_HEIGHT
+vBGMap3:: ds BG_MAP_WIDTH * BG_MAP_HEIGHT

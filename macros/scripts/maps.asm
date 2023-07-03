@@ -9,25 +9,27 @@ ENDM
 ;\3 sprite id
 ;\4 movement (WALK/STAY)
 ;\5 range or direction
-;\6 text id
-;\7 items only: item id
-;\7 trainers only: trainer class/pokemon id
-;\8 trainers only: trainer number/pokemon level
+;\6 color (0 for default; PAL_NPC_* otherwise)
+;\7 text id
+;\8 items only: item id
+;\8 trainers only: trainer class/pokemon id
+;\9 trainers only: trainer number/pokemon level
 MACRO object_event
-	db \3
-	db \2 + 4
-	db \1 + 4
-	db \4
-	db \5
-	IF _NARG > 7
-		db TRAINER | \6
-		db \7
+	db \3 ; ID
+	db \2 + 4 ; Y
+	db \1 + 4 ; X
+	db \4 ; Movement 1
+	db \5 ; Movement 2
+	dn \6, 0 ; Color
+	IF _NARG > 8
+		db TRAINER | \7
 		db \8
-	ELIF _NARG > 6
-		db ITEM | \6
-		db \7
+		db \9
+	ELIF _NARG > 7
+		db ITEM | \7
+		db \8
 	ELSE
-		db \6
+		db \7
 	ENDC
 	DEF {_NUM_OBJECT_EVENTS} += 1
 ENDM

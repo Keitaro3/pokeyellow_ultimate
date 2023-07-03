@@ -11,6 +11,8 @@ DEF PALETTE_SIZE EQU NUM_PAL_COLORS * PAL_COLOR_SIZE
 
 DEF NUM_ACTIVE_PALS EQU 4
 
+DEF PALRGB_WHITE EQU palred 31 + palgreen 31 + palblue 31 ; $7fff
+
 ; pal/blk packets
 ; SetPalFunctions indexes (see engine/gfx/palettes.asm)
 	const_def
@@ -31,11 +33,12 @@ DEF NUM_ACTIVE_PALS EQU 4
 	const SET_PAL_PIKACHU_BEACH_GAME   ; $0E
 	const SET_PAL_PIKACHU_BEACH_TITLE  ; $0F
 	const SET_PAL_POKEDEX_2			   ; $10
-	;const SET_PAL_POKEPIC			   ; $11
-	;const SET_PAL_PACK				   ; $12
+	const SET_PAL_POKEPIC			   ; $11
+	const SET_PAL_PACK				   ; $12
 	const SET_PAL_TRADE_TUBE		   ; $13
-	;const SET_PAL_TRAINERORMONFRONTPIC ; $14
-	;const SET_PAL_GENDERSELECT		   ; $15
+	const SET_PAL_TRAINERORMONFRONTPIC ; $14
+	const SET_PAL_GENDERSELECT		   ; $15
+DEF NUM_SCGB_LAYOUTS EQU const_value
 
 DEF SET_PAL_PARTY_MENU_HP_BARS EQU $fc
 DEF SET_PAL_DEFAULT EQU $ff
@@ -83,8 +86,26 @@ DEF SET_PAL_DEFAULT EQU $ff
 	const PAL_25        	; $25
 	const PAL_26        	; $26
 	const PAL_27        	; $27
-	;const PAL_NITE			; $28
-	;const PAL_SHINY_GREYMON ; $29
-	;const PAL_PACK			; $2A
-	;const PAL_GENDER_SELECT ; $2B
+	const PAL_NITE			; $28
+	const PAL_SHINY_GREYMON ; $29
+	const PAL_PACK			; $2A
+	const PAL_GENDER_SELECT ; $2B
 DEF NUM_SGB_PALS EQU const_value
+
+; wTimeOfDay::
+	const_def
+	const MORN_F     ; 0
+	const DAY_F      ; 1
+	const NITE_F     ; 2
+	const DARKNESS_F ; 3
+DEF NUM_DAYTIMES EQU const_value
+
+DEF MORN     EQU 1 << MORN_F
+DEF DAY      EQU 1 << DAY_F
+DEF NITE     EQU 1 << NITE_F
+DEF DARKNESS EQU 1 << DARKNESS_F
+
+DEF ANYTIME EQU MORN | DAY | NITE
+
+; wTimeOfDayPalset::
+DEF DARKNESS_PALSET EQU (DARKNESS_F << 6) | (DARKNESS_F << 4) | (DARKNESS_F << 2) | DARKNESS_F

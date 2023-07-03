@@ -221,13 +221,12 @@ ReadSpriteSheetData:
 	and a
 	ret z
 
+	ld hl, SpriteSheetPointerTable + SPRITEDATA_ADDR
 	dec a
-	ld l, a
-	ld h, 0
-	add hl, hl
-	add hl, hl
-	ld de, SpriteSheetPointerTable
-	add hl, de
+	ld c, a
+	ld b, 0
+	ld a, NUM_SPRITEDATA_FIELDS
+	call AddNTimes
 	ld e, [hl]
 	inc hl
 	ld d, [hl]
@@ -237,7 +236,6 @@ ReadSpriteSheetData:
 		   ; this is because of the use of CopyVideoDataAlternate
 	inc hl
 	ld b, [hl]
-	inc hl
 	scf
 	ret
 
@@ -298,8 +296,6 @@ GetSplitMapSpriteSetID:
 	ret c
 ; Chooses the correct sprite set ID depending on the player's position within
 ; the map for maps with two sprite sets.
-	cp SPLITSET_ROUTE_20
-	jr z, .route20
 	ld hl, SplitMapSpriteSets
 	and $0f
 	dec a
@@ -328,36 +324,26 @@ GetSplitMapSpriteSetID:
 .loadSpriteSetID
 	ld a, [hl]
 	ret
-; Uses sprite set SPRITESET_PALLET_VIRIDIAN for west side and SPRITESET_FUCHSIA for east side.
-; Route 20 is a special case because the two map sections have a more complex
-; shape instead of the map simply being split horizontally or vertically.
-.route20
-	ld hl, wXCoord
-	; Use SPRITESET_PALLET_VIRIDIAN if X < 43
-	ld a, [hl]
-	cp 43
-	ld a, SPRITESET_PALLET_VIRIDIAN
-	ret c
-	; Use SPRITESET_FUCHSIA if X >= 62.
-	ld a, [hl]
-	cp 62
-	ld a, SPRITESET_FUCHSIA
-	ret nc
-	; If 55 <= X < 62, split Y at 8; else 43 <= X < 55, so split Y at 13
-	ld a, [hl]
-	cp 55
-	ld b, 8
-	jr nc, .next
-	ld b, 13
-.next
-	; Use SPRITESET_FUCHSIA if Y < split; else use SPRITESET_PALLET_VIRIDIAN
-	ld a, [wYCoord]
-	cp b
-	ld a, SPRITESET_FUCHSIA
-	ret c
-	ld a, SPRITESET_PALLET_VIRIDIAN
-	ret
 
 INCLUDE "data/maps/sprite_sets.asm"
 
 INCLUDE "data/sprites/sprites.asm"
+
+_GetSpritePalette::
+	ld a, e
+	;call GetMonSprite
+	;jr c, .is_pokemon
+
+	ld hl, SpriteSheetPointerTable + SPRITEDATA_PALETTE
+	dec a
+	ld c, a
+	ld b, 0
+	ld a, NUM_SPRITEDATA_FIELDS
+	call AddNTimes
+	ld e, [hl]
+	ret
+
+.is_pokemon
+	xor a
+	ld e, a
+	ret

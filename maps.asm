@@ -1245,3 +1245,8 @@ INCLUDE "scripts/SummerBeachHouse2.asm"
 
 INCLUDE "scripts/ViridianForest2.asm"
 INCLUDE "scripts/SSAnne2FRooms_2.asm"
+
+INCLUDE "data/maps/headers/Route19Gate.asm"
+INCLUDE "scripts/Route19Gate.asm"
+Route19Gate_Blocks: INCBIN "maps/Route19Gate.blk"
+INCLUDE "data/maps/objects/Route19Gate.asm"

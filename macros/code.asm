@@ -19,6 +19,19 @@ MACRO dict
 	jp z, \2
 ENDM
 
+MACRO jumptable
+	ld a, [\2]
+	ld e, a
+	ld d, 0
+	ld hl, \1
+	add hl, de
+	add hl, de
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	jp hl
+ENDM
+
 MACRO maskbits
 ; masks just enough bits to cover values 0 to \1 - 1
 ; \2 is an optional shift amount

@@ -22,16 +22,16 @@ CeruleanCity_Object:
 	bg_event 27, 21, 17 ; CeruleanCityText17
 
 	def_object_events
-	object_event 20,  2, SPRITE_BLUE, STAY, DOWN, 1 ; person
-	object_event 30,  8, SPRITE_ROCKET, STAY, NONE, 2, ROCKET, 5
-	object_event 31, 20, SPRITE_COOLTRAINER_M, STAY, DOWN, 3 ; person
-	object_event 15, 18, SPRITE_SUPER_NERD, WALK, UP_DOWN, 4 ; person
-	object_event  9, 21, SPRITE_SUPER_NERD, WALK, LEFT_RIGHT, 5 ; person
-	object_event 28, 12, SPRITE_GUARD, STAY, DOWN, 6 ; person
-	object_event 29, 26, SPRITE_COOLTRAINER_F, STAY, LEFT, 7 ; person
-	object_event 28, 26, SPRITE_MONSTER, STAY, DOWN, 8 ; person
-	object_event  9, 27, SPRITE_COOLTRAINER_F, WALK, LEFT_RIGHT, 9 ; person
-	object_event  4, 12, SPRITE_SUPER_NERD, STAY, DOWN, 10 ; person
-	object_event 27, 12, SPRITE_GUARD, STAY, DOWN, 11 ; person
+	object_event 20,  2, SPRITE_BLUE, STAY, DOWN, 0, 1 ; person
+	object_event 30,  8, SPRITE_ROCKET, STAY, NONE, PAL_NPC_BROWN, 2, ROCKET, 5
+	object_event 31, 20, SPRITE_YOUNGSTER, STAY, DOWN, 0, 3 ; person
+	object_event 15, 18, SPRITE_SUPER_NERD, WALK, UP_DOWN, 0, 4 ; person
+	object_event  9, 21, SPRITE_SUPER_NERD, WALK, LEFT_RIGHT, PAL_NPC_RED, 5 ; person
+	object_event 28, 12, SPRITE_GUARD, STAY, DOWN, 0, 6 ; person
+	object_event 29, 26, SPRITE_COOLTRAINER_F, STAY, LEFT, PAL_NPC_GREEN, 7 ; person
+	object_event 28, 26, SPRITE_SLOWPOKE, STAY, NONE, PAL_NPC_RED, 8 ; person
+	object_event  9, 27, SPRITE_COOLTRAINER_F, WALK, LEFT_RIGHT, 0, 9 ; person
+	object_event  4, 12, SPRITE_SUPER_NERD, STAY, DOWN, PAL_NPC_RED, 10 ; person
+	object_event 27, 12, SPRITE_GUARD, STAY, DOWN, 0, 11 ; person
 
 	def_warps_to CERULEAN_CITY

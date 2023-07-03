@@ -60,6 +60,15 @@ MACRO battle_struct
 \1PP::         ds NUM_MOVES
 ENDM
 
+MACRO roam_struct
+\1Species::   db
+\1Level::     db
+\1MapGroup::  db
+\1MapNumber:: db
+\1HP::        db
+\1DVs::       dw
+ENDM
+
 MACRO spritestatedata1
 \1PictureID::             db
 \1MovementStatus::        db
@@ -89,7 +98,8 @@ MACRO spritestatedata2
 \1GrassPriority::        db
 \1MovementDelay::        db
 \1OrigFacingDirection::  db
-	ds 3
+\1Palette::				 db
+	ds 2
 \1PictureID::            db
 \1ImageBaseOffset::      db
 	ds 1

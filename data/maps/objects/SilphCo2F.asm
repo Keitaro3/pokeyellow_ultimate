@@ -13,10 +13,10 @@ SilphCo2F_Object:
 	def_bg_events
 
 	def_object_events
-	object_event 10,  1, SPRITE_OFFICE_LADY, STAY, UP, 1 ; person
-	object_event  5, 12, SPRITE_SCIENTIST, STAY, DOWN, 2, SCIENTIST, 2
-	object_event 24, 13, SPRITE_SCIENTIST, STAY, LEFT, 3, SCIENTIST, 3
-	object_event 16, 11, SPRITE_ROCKET, STAY, UP, 4, ROCKET, 23
-	object_event 24,  7, SPRITE_ROCKET, STAY, UP, 5, ROCKET, 24
+	object_event 10,  1, SPRITE_OFFICE_LADY, STAY, UP, PAL_NPC_RED, 1 ; person
+	object_event  5, 12, SPRITE_SCIENTIST, STAY, DOWN, PAL_NPC_BLUE, 2, SCIENTIST, 2
+	object_event 24, 13, SPRITE_SCIENTIST, STAY, LEFT, PAL_NPC_BLUE, 3, SCIENTIST, 3
+	object_event 16, 11, SPRITE_ROCKET, STAY, UP, PAL_NPC_BROWN, 4, ROCKET, 23
+	object_event 24,  7, SPRITE_ROCKET, STAY, UP, PAL_NPC_BROWN, 5, ROCKET, 24
 
 	def_warps_to SILPH_CO_2F

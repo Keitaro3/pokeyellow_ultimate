@@ -1,19 +1,25 @@
 LoadTilesetHeader:
 	call GetPredefRegisters
 	push hl
-	ld d, 0
 	ld a, [wCurMapTileset]
-	add a
-	add a
+	ld d, 0
 	ld e, a
-	ld hl, Tilesets
+	ld h, 0
+	ld l, a
+	ld c, $d
+.loop
 	add hl, de
-	add hl, de
-	add hl, de
+	dec c
+	jr nz, .loop
+	ld d, h
+	ld e, l
+.calculateOffset
+	ld hl, Tilesets ;load tileset headers in to HL
+	add hl, de ;add DE to HL to get position?
 	ld de, wTilesetBank
-	ld bc, $b
+	ld bc, $0e
 	call CopyData
-	ld a, [hl]
+	ld a, [wTileAnimations]
 	ldh [hTileAnimations], a
 	xor a
 	ldh [hMovingBGTilesCounter1], a

@@ -64,6 +64,14 @@ OakSpeech:
 	ld de, ProfOakPic
 	lb bc, BANK(ProfOakPic), $00
 	call IntroDisplayPicCenteredOrUpperRight
+	
+	xor a
+	ld [wcf91], a
+	ld a, PROF_OAK
+	ld [wTrainerClass], a
+	ld b, SET_PAL_TRAINERORMONFRONTPIC
+	call RunPaletteCommand	
+	
 	call FadeInIntroPic
 	ld hl, OakSpeechText1
 	call PrintText
@@ -75,23 +83,48 @@ OakSpeech:
 	call GetMonHeader
 	hlcoord 6, 4
 	call LoadFlippedFrontSpriteByMonIndex
+	
+	xor a
+	ld [wLoadedMonDVs], a
+	ld [wLoadedMonDVs + 1], a
+
+	ld b, SET_PAL_TRAINERORMONFRONTPIC
+	call RunPaletteCommand	
+	
 	call MovePicLeft
 	ld hl, OakSpeechText2
 	call PrintText
 	call GBFadeOutToWhite
 	call ClearScreen
+	
+	xor a
+	ld [wcf91], a
+	ld [wTrainerClass], a	
+	
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
 	call IntroDisplayPicCenteredOrUpperRight
+	
+	ld b, SET_PAL_TRAINERORMONFRONTPIC
+	call RunPaletteCommand
+	
 	call MovePicLeft
 	ld hl, IntroducePlayerText
 	call PrintText
 	call ChoosePlayerName
 	call GBFadeOutToWhite
 	call ClearScreen
+	
+	ld a, RIVAL1
+	ld [wTrainerClass], a	
+	
 	ld de, Rival1Pic
 	lb bc, BANK(Rival1Pic), $00
 	call IntroDisplayPicCenteredOrUpperRight
+	
+	ld b, SET_PAL_TRAINERORMONFRONTPIC
+	call RunPaletteCommand
+	
 	call FadeInIntroPic
 	ld hl, IntroduceRivalText
 	call PrintText
@@ -99,9 +132,17 @@ OakSpeech:
 .skipChoosingNames
 	call GBFadeOutToWhite
 	call ClearScreen
+	
+	xor a
+	ld [wTrainerClass], a	
+	
 	ld de, RedPicFront
 	lb bc, BANK(RedPicFront), $00
 	call IntroDisplayPicCenteredOrUpperRight
+	
+	ld b, SET_PAL_TRAINERORMONFRONTPIC
+	call RunPaletteCommand	
+	
 	call GBFadeInFromWhite
 	ld a, [wd72d]
 	and a
@@ -179,8 +220,7 @@ FadeInIntroPic:
 	ld b, 6
 .next
 	ld a, [hli]
-	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call DmgToCgbBGPals
 	ld c, 10
 	call DelayFrames
 	dec b
@@ -201,8 +241,7 @@ MovePicLeft:
 	call DelayFrame
 
 	ld a, %11100100
-	ldh [rBGP], a
-	call UpdateGBCPal_BGP
+	call DmgToCgbBGPals
 .next
 	call DelayFrame
 	ldh a, [rWX]

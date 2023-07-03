@@ -26,7 +26,8 @@ StartMenu_Pokemon::
 .exitMenu
 	call GBPalWhiteOutWithDelay3
 	call RestoreScreenTilesAndReloadTilePatterns
-	call LoadGBPal
+	call RunDefaultPaletteCommand
+	call GBPalNormal
 	jp RedisplayStartMenu
 .chosePokemon
 	call SaveScreenTilesToBuffer1
@@ -482,13 +483,15 @@ StartMenu_TrainerInfo::
 	call RunPaletteCommand
 	call GBPalNormal
 	call WaitForTextScrollButtonPress ; wait for button press
-	call GBPalWhiteOut
+	call GBPalWhiteOutWithDelay3
 	call LoadFontTilePatterns
 	call LoadScreenTilesFromBuffer2 ; restore saved screen
 	call RunDefaultPaletteCommand
 	call ReloadMapData
 	farcall DrawStartMenu ; XXX what difference does this make?
-	call LoadGBPal
+	;call ReloadPalettes
+	call RunDefaultPaletteCommand
+	call GBPalNormal
 	pop af
 	ldh [hTileAnimations], a
 	jp RedisplayStartMenu_DoNotDrawStartMenu

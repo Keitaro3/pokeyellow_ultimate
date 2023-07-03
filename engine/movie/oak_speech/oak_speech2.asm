@@ -23,6 +23,11 @@ ChoosePlayerName:
 	ld de, RedPicFront
 	ld b, BANK(RedPicFront)
 	call IntroDisplayPicCenteredOrUpperRight
+	
+	ld b, SET_PAL_TRAINERORMONFRONTPIC
+	call RunPaletteCommand
+	call GBFadeInFromWhite	
+	
 .done
 	ld hl, YourNameIsText
 	jp PrintText
@@ -54,8 +59,13 @@ ChooseRivalName:
 	call ClearScreen
 	call Delay3
 	ld de, Rival1Pic
-	ld b, $13
+	ld b, BANK(Rival1Pic)
 	call IntroDisplayPicCenteredOrUpperRight
+	
+	ld b, SET_PAL_TRAINERORMONFRONTPIC
+	call RunPaletteCommand
+	call GBFadeInFromWhite		
+	
 .done
 	ld hl, HisNameIsText
 	jp PrintText

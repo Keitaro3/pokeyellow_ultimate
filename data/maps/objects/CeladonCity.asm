@@ -28,14 +28,14 @@ CeladonCity_Object:
 	bg_event 27, 21, 18 ; CeladonCityText18
 
 	def_object_events
-	object_event  8, 17, SPRITE_LITTLE_GIRL, WALK, ANY_DIR, 1 ; person
-	object_event 11, 28, SPRITE_GRAMPS, STAY, UP, 2 ; person
-	object_event 14, 19, SPRITE_GIRL, WALK, UP_DOWN, 3 ; person
-	object_event 25, 22, SPRITE_GRAMPS, STAY, DOWN, 4 ; person
-	object_event 22, 16, SPRITE_GRAMPS, STAY, DOWN, 5 ; person
-	object_event 32, 12, SPRITE_FISHER, STAY, LEFT, 6 ; person
-	object_event 30, 12, SPRITE_MONSTER, STAY, RIGHT, 7 ; person
-	object_event 32, 29, SPRITE_ROCKET, WALK, LEFT_RIGHT, 8 ; person
-	object_event 42, 14, SPRITE_ROCKET, WALK, LEFT_RIGHT, 9 ; person
+	object_event  8, 17, SPRITE_LITTLE_GIRL, WALK, ANY_DIR, 0, 1 ; person
+	object_event 11, 28, SPRITE_GRAMPS, STAY, UP, PAL_NPC_RED, 2 ; person
+	object_event 14, 19, SPRITE_TEACHER, WALK, UP_DOWN, PAL_NPC_GREEN, 3 ; person
+	object_event 25, 22, SPRITE_GRAMPS, STAY, DOWN, PAL_NPC_GREEN, 4 ; person
+	object_event 22, 16, SPRITE_GRAMPS, STAY, DOWN, 0, 5 ; person
+	object_event 32, 12, SPRITE_FISHER, STAY, LEFT, PAL_NPC_GREEN, 6 ; person
+	object_event 30, 12, SPRITE_POLIWRATH, STAY, RIGHT, 0, 7 ; person
+	object_event 32, 29, SPRITE_ROCKET, WALK, LEFT_RIGHT, 0, 8 ; person
+	object_event 42, 14, SPRITE_ROCKET, WALK, LEFT_RIGHT, 0, 9 ; person
 
 	def_warps_to CELADON_CITY

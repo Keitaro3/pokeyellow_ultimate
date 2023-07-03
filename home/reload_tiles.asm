@@ -7,6 +7,8 @@ ReloadMapData::
 	call DisableLCD
 	call LoadTextBoxTilePatterns
 	call LoadCurrentMapView
+	farcall UpdateTimeOfDayPal
+	call OverworldTextModeSwitch
 	call LoadTilesetTilePatternData
 	call EnableLCD
 	pop af

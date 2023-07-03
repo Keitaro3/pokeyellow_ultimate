@@ -39,6 +39,20 @@ MACRO bgcoord
 	ENDC
 ENDM
 
+DEF hlwincoord EQUS "wincoord hl,"
+DEF bcwincoord EQUS "wincoord bc,"
+DEF dewincoord EQUS "wincoord de,"
+
+MACRO wincoord
+; register, x, y[, origin]
+	validate_coords \2, \3, BG_MAP_WIDTH, BG_MAP_HEIGHT
+	IF _NARG >= 4
+		ld \1, (\3) * BG_MAP_WIDTH + (\2) + \4
+	ELSE
+		ld \1, (\3) * BG_MAP_WIDTH + (\2) + vBGMap1
+	ENDC
+ENDM
+
 DEF hlowcoord EQUS "owcoord hl,"
 DEF bcowcoord EQUS "owcoord bc,"
 DEF deowcoord EQUS "owcoord de,"

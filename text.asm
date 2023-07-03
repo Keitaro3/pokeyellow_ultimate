@@ -251,6 +251,8 @@ INCLUDE "text/SaffronCity.asm"
 
 INCLUDE "data/text/text_9.asm"
 
+INCLUDE "text/Route19Gate.asm"
+
 
 SECTION "Pokédex Text", ROMX
 

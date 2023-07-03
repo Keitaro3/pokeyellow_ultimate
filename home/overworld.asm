@@ -459,7 +459,7 @@ WarpFound2::
 	jr nz, .notRockTunnel
 	ld a, $06
 	ld [wMapPalOffset], a
-	call GBFadeOutToBlack
+	farcall FadeOutPalettes
 .notRockTunnel
 	call PlayMapChangeSound
 	jr .done
@@ -631,6 +631,8 @@ CheckMapConnections::
 	ld [wCurrentTileBlockMapViewPointer + 1], a
 .loadNewMap ; load the connected map that was entered
 	call LoadMapHeader
+	call LoadMapEnvironment
+	call GetMapTimeOfDay
 	call FadeToMapMusic
 	ld b, SET_PAL_OVERWORLD
 	call RunPaletteCommand
@@ -662,7 +664,7 @@ PlayMapChangeSound::
 	ld a, [wMapPalOffset]
 	and a
 	ret nz
-	jp GBFadeOutToBlack
+	farjp FadeOutPalettes
 
 CheckIfInOutsideMap::
 ; If the player is in an outside map (a town or route), set the z flag
@@ -814,33 +816,23 @@ LoadPlayerSpriteGraphics::
 	jp LoadWalkingPlayerSpriteGraphics
 
 IsBikeRidingAllowed::
-; The bike can be used on Route 23 and Indigo Plateau,
-; or maps with tilesets in BikeRidingTilesets.
+; The bike can be used in the following environments:
+; TOWN, ROUTE, CAVE, and GATE
 ; Return carry if biking is allowed.
-
-	ld a, [wCurMap]
-	cp ROUTE_23
-	jr z, .allowed
-	cp INDIGO_PLATEAU
-	jr z, .allowed
-
-	ld a, [wCurMapTileset]
-	ld b, a
-	ld hl, BikeRidingTilesets
-.loop
-	ld a, [hli]
-	cp b
-	jr z, .allowed
-	inc a
-	jr nz, .loop
-	and a
-	ret
-
+	ld a, [wEnvironment]
+	cp INDOOR
+	jr z, .no_biking
+	cp ENVIRONMENT_5
+	jr z, .no_biking
+	cp DUNGEON
+	jr z, .no_biking
 .allowed
 	scf
+	ret	
+	
+.no_biking
+	and a
 	ret
-
-INCLUDE "data/tilesets/bike_riding_tilesets.asm"
 
 ; load the tile pattern data of the current tileset into VRAM
 LoadTilesetTilePatternData::
@@ -1412,11 +1404,14 @@ AdvancePlayerSprite::
 ScheduleNorthRowRedraw::
 	hlcoord 0, 0
 	call CopyToRedrawRowOrColumnSrcTiles
+	ld c, 2 * SCREEN_WIDTH
+	call ScrollBGMapPalettes
 	ld a, [wMapViewVRAMPointer]
-	ldh [hRedrawRowOrColumnDest], a
+	ld e, a
 	ld a, [wMapViewVRAMPointer + 1]
-	ldh [hRedrawRowOrColumnDest + 1], a
-	ld a, REDRAW_ROW
+	ld d, a
+	call UpdateBGMapRow
+	ld a, $1
 	ldh [hRedrawRowOrColumnMode], a
 	ret
 
@@ -1434,37 +1429,43 @@ CopyToRedrawRowOrColumnSrcTiles::
 ScheduleSouthRowRedraw::
 	hlcoord 0, 16
 	call CopyToRedrawRowOrColumnSrcTiles
+	ld c, 2 * SCREEN_WIDTH
+	call ScrollBGMapPalettes
 	ld a, [wMapViewVRAMPointer]
 	ld l, a
 	ld a, [wMapViewVRAMPointer + 1]
 	ld h, a
-	ld bc, $200
+	ld bc, BG_MAP_WIDTH tiles
 	add hl, bc
+; cap d at VBGMap1 / $100
 	ld a, h
-	and $03
-	or $98
-	ldh [hRedrawRowOrColumnDest + 1], a
-	ld a, l
-	ldh [hRedrawRowOrColumnDest], a
-	ld a, REDRAW_ROW
+	and %00000011
+	or HIGH(vBGMap0)
+	ld e, l
+	ld d, a
+	call UpdateBGMapRow
+	ld a, $1
 	ldh [hRedrawRowOrColumnMode], a
 	ret
 
 ScheduleEastColumnRedraw::
 	hlcoord 18, 0
 	call ScheduleColumnRedrawHelper
+	ld c, 2 * SCREEN_HEIGHT
+	call ScrollBGMapPalettes
 	ld a, [wMapViewVRAMPointer]
-	ld c, a
-	and $e0
+	ld e, a
+	and %11100000
 	ld b, a
-	ld a, c
-	add 18
-	and $1f
+	ld a, e
+	add SCREEN_HEIGHT
+	and %00011111
 	or b
-	ldh [hRedrawRowOrColumnDest], a
+	ld e, a
 	ld a, [wMapViewVRAMPointer + 1]
-	ldh [hRedrawRowOrColumnDest + 1], a
-	ld a, REDRAW_COL
+	ld d, a
+	call UpdateBGMapColumn
+	ld a, $1
 	ldh [hRedrawRowOrColumnMode], a
 	ret
 
@@ -1478,7 +1479,7 @@ ScheduleColumnRedrawHelper::
 	ld a, [hl]
 	ld [de], a
 	inc de
-	ld a, 19
+	ld a, SCREEN_WIDTH - 1
 	add l
 	ld l, a
 	jr nc, .noCarry
@@ -1491,13 +1492,73 @@ ScheduleColumnRedrawHelper::
 ScheduleWestColumnRedraw::
 	hlcoord 0, 0
 	call ScheduleColumnRedrawHelper
+	ld c, 2 * SCREEN_HEIGHT
+	call ScrollBGMapPalettes
 	ld a, [wMapViewVRAMPointer]
-	ldh [hRedrawRowOrColumnDest], a
+	ld e, a
 	ld a, [wMapViewVRAMPointer + 1]
-	ldh [hRedrawRowOrColumnDest + 1], a
-	ld a, REDRAW_COL
+	ld d, a
+	call UpdateBGMapColumn
+	ld a, $1
 	ldh [hRedrawRowOrColumnMode], a
 	ret
+	
+UpdateBGMapRow:: ; 27d3
+	ld hl, wBGMapBufferPointers
+	push de
+	call .iteration
+	pop de
+	ld a, $20
+	add e
+	ld e, a
+
+.iteration
+	ld c, 10
+.loop
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	ld a, e
+	inc a
+	inc a
+	and $1f
+	ld b, a
+	ld a, e
+	and $e0
+	or b
+	ld e, a
+	dec c
+	jr nz, .loop
+	ld a, SCREEN_WIDTH
+	ld [hBGMapTileCount], a
+	ret
+
+UpdateBGMapColumn:: ; 27f8
+	ld hl, wBGMapBufferPointers
+	ld c, SCREEN_HEIGHT
+.loop
+	ld a, e
+	ld [hli], a
+	ld a, d
+	ld [hli], a
+	ld a, $20
+	add e
+	ld e, a
+	jr nc, .skip
+	inc d
+; cap d at vBGMap1 / $100
+	ld a, d
+	and $3
+	or vBGMap0 / $100
+	ld d, a
+
+.skip
+	dec c
+	jr nz, .loop
+	ld a, SCREEN_HEIGHT
+	ld [hBGMapTileCount], a
+	ret	
 
 ; function to write the tiles that make up a tile block to memory
 ; Input: c = tile block ID, hl = destination address
@@ -1892,15 +1953,18 @@ LoadMapData::
 	call ResetMapVariables
 	call LoadTextBoxTilePatterns
 	call LoadMapHeader
+	call LoadMapEnvironment
+	call GetMapTimeOfDay
 	call InitMapSprites ; load tile pattern data for sprites
 	call LoadScreenRelatedData
 	call CopyMapViewToVRAM
 	ld a, $01
 	ld [wUpdateSpritesEnabled], a
 	call EnableLCD
-	ld b, $09
-	call RunPaletteCommand
 	call LoadPlayerSpriteGraphics
+	ld b, SET_PAL_OVERWORLD
+	call RunPaletteCommand
+	call GBPalNormal
 	ld a, [wd732]
 	and 1 << 4 | 1 << 3 ; fly warp or dungeon warp
 	jr nz, .restoreRomBank
@@ -1924,7 +1988,8 @@ LoadMapData::
 LoadScreenRelatedData::
 	call LoadTileBlockMap
 	call LoadTilesetTilePatternData
-	call LoadCurrentMapView
+	call LoadMapTimeOfDay
+	;call LoadCurrentMapView
 	ret
 
 ReloadMapAfterSurfingMinigame::
@@ -1995,41 +2060,34 @@ CopyMapViewToVRAM2:
 ; function to switch to the ROM bank that a map is stored in
 ; Input: a = map number
 SwitchToMapRomBank::
-	push hl
-	push bc
 	ld c, a
 	ld b, $00
-	ld a, BANK(MapHeaderBanks)
-	call BankswitchHome
-	ld hl, MapHeaderBanks
-	add hl, bc
-	ld a, [hl]
-	ldh [hMapROMBank], a
-	call BankswitchBack
-	ldh a, [hMapROMBank]
+SwitchToAnyMapRomBank::
+	call GetAnyMapHeaderBank
 	call BankswitchCommon
-	pop bc
-	pop hl
 	ret
+	
+GetAnyMapHeaderBank::
+	push hl
+	push de
+	ld de, MAP_MAPHEADER_BANK
+	call GetAnyMapField
+	ld a, c
+	pop de
+	pop hl
+	ret	
 
 GetMapHeaderPointer::
-	ldh a, [hLoadedROMBank]
-	push af
-	ld a, BANK(MapHeaderPointers)
-	call BankswitchCommon
+; returns the current map's data pointer in hl.
+	push bc
 	push de
-	ld a, [wCurMap]
-	ld e, a
-	ld d, $0
-	ld hl, MapHeaderPointers
-	add hl, de
-	add hl, de
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
+	ld de, MAP_MAPHEADER
+	call GetMapField
+	ld l, c
+	ld h, b
 	pop de
-	pop af
-	jp BankswitchCommon
+	pop bc
+	ret	
 
 IgnoreInputForHalfSecond:
 	ld a, 30
@@ -2091,6 +2149,8 @@ InitSprites::
 .loadSpriteLoop
 	ld a, [hli]
 	ld [de], a ; x#SPRITESTATEDATA1_PICTUREID
+	call GetSpritePalette
+	ld [wTempObjectCopyPalette], a
 	inc d
 	ld a, e
 	add $4
@@ -2105,6 +2165,18 @@ InitSprites::
 	ld [de], a ; x#SPRITESTATEDATA2_MOVEMENTBYTE1
 	ld a, [hli]
 	ldh [hLoadSpriteTemp1], a ; save movement byte 2
+	ld a, e
+	add $4
+	ld e, a
+	ld a, [hli]
+	and MAPOBJECT_PALETTE_MASK
+	jr z, .skip_color_override
+	swap a
+	and OAM_PALETTE
+	ld [wTempObjectCopyPalette], a
+.skip_color_override	
+	ld a, [wTempObjectCopyPalette]
+	ld [de], a ;  x#SPRITESTATEDATA2_PALETTE
 	ld a, [hli]
 	ldh [hLoadSpriteTemp2], a ; save text ID and flags byte
 	push bc
@@ -2112,7 +2184,7 @@ InitSprites::
 	pop bc
 	dec d
 	ld a, e
-	add $a
+	add $6
 	ld e, a
 	inc c
 	inc c
@@ -2274,4 +2346,151 @@ ForceMapMusic:
 	ld [wMusicFade], a
 .notbiking
 	call TryRestartMapMusic
+	ret
+	
+GetSpritePalette::
+	push hl
+	push de
+	push bc
+	ld e, a
+
+	farcall _GetSpritePalette
+
+	ld a, e
+	pop bc
+	pop de
+	pop hl
+	ret
+	
+LoadMapTimeOfDay::
+	ld a, $1
+	ld [wUpdateSpritesEnabled], a
+	farcall ReplaceTimeOfDayPals
+	farcall UpdateTimeOfDayPal
+	call OverworldTextModeSwitch
+	call .ClearBGMap
+	call .PushAttrmap
+	ret
+
+.ClearBGMap:
+	ld a, HIGH(vBGMap0)
+	ld [wMapViewVRAMPointer + 1], a
+	xor a ; LOW(vBGMap0)
+	ld [wMapViewVRAMPointer], a
+	ldh [hSCY], a
+	ldh [hSCX], a
+	;farcall ApplyBGMapAnchorToObjects
+
+	ld a, "■"
+	ld bc, vBGMap1 - vBGMap0
+	hlbgcoord 0, 0
+	call FillMemory
+	ret
+
+.PushAttrmap:
+	decoord 0, 0
+	call .copy
+	ldh a, [hGBC]
+	and a
+	ret z
+
+	decoord 0, 0, wAttrmap
+	ld a, $1
+	ldh [rVBK], a
+.copy
+	hlbgcoord 0, 0
+	ld c, SCREEN_WIDTH
+	ld b, SCREEN_HEIGHT
+.row
+	push bc
+.column
+	ld a, [de]
+	inc de
+	ld [hli], a
+	dec c
+	jr nz, .column
+	ld bc, BG_MAP_WIDTH - SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .row
+	ld a, $0
+	ldh [rVBK], a
+	ret	
+	
+OverworldTextModeSwitch::
+	call LoadCurrentMapView
+	call SwapTextboxPalettes
+	ret
+
+GetMapField::
+; Extract data from the current map's group entry.
+
+; inputs:
+; de = offset of desired data within the map (a MAP_* constant)
+
+; outputs:
+; bc = data from the current map's field
+; (e.g., de = MAP_TILESET would return a pointer to the tileset id)
+
+	xor a ; wMapGroup
+	ld b, a
+	ld a, [wCurMap] ; wMapNumber
+	ld c, a
+GetAnyMapField::
+	; bankswitch
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, BANK(MapAttributes)
+	call BankswitchCommon
+
+	;call GetAnyMapPointer
+	ld hl, MapAttributes
+	ld a, c
+	ld c, 7
+	call AddNTimes
+	
+	add hl, de
+	ld c, [hl]
+	inc hl
+	ld b, [hl]
+
+	; bankswitch back
+	pop af
+	call BankswitchCommon
+	ret
+	
+GetMapEnvironment::
+	push hl
+	push de
+	push bc
+	ld de, MAP_ENVIRONMENT
+	call GetMapField
+	ld a, c
+	pop bc
+	pop de
+	pop hl
+	ret
+	
+LoadMapEnvironment::
+	call GetMapEnvironment
+	ld [wEnvironment], a
+	ret
+	
+GetMapTimeOfDay::
+	call GetTimeOfDayByte
+	and $f
+	ld [wMapTimeOfDay], a
+	ret
+
+GetTimeOfDayByte::
+	push hl
+	push bc
+
+	ld de, MAP_PALETTE
+	call GetMapField
+	ld a, c
+
+	pop bc
+	pop hl
 	ret	

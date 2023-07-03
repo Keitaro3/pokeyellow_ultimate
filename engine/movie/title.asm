@@ -87,6 +87,7 @@ DisplayTitleScreen:
 	dec b
 	jr nz, .pokemonLogoLastTileRowLoop
 
+	;call LoadLogoAttrMap
 	call DrawPlayerCharacter
 
 ; put a pokeball in the player's hand
@@ -202,6 +203,7 @@ DisplayTitleScreen:
 
 	ld a, HIGH(vBGMap1)
 	call TitleScreenCopyTileMapToVRAM
+	farcall ApplyAttrmapToWindow
 	call LoadScreenTilesFromBuffer2
 	call PrintGameVersionOnTitleScreen
 	call Delay3
@@ -270,12 +272,26 @@ TitleScreenPickNewMon:
 
 	ld [hl], a
 	call LoadTitleMonSprite
+	;ld b,SET_PAL_TITLE_SCREEN
+	;call RunPaletteCommand
+	;call GBPalNormal
+	call UpdateTitlemonColor
 
 	ld a, $90
 	ldh [hWY], a
 	ld d, 1 ; scroll out
 	farcall TitleScroll
 	ret
+	
+UpdateTitlemonColor:
+	call IsCGB
+	ret z
+	
+	farcall TitleScreenGetMonPalettePointer
+
+	ld a, TRUE
+	ldh [hCGBPalUpdate], a
+	ret	
 
 TitleScreenScrollInMon:
 	ld d, 0 ; scroll in
@@ -393,3 +409,40 @@ CopyFixedLengthText:
 
 NintenText: db "NINTEN@"
 SonyText:   db "SONY@"
+
+LoadLogoAttrMap:
+	call IsCGB
+	ret z
+	
+	ld a, 1
+	ld [rVBK], a
+	
+; place tiles for pokemon logo (except for the last row)
+	hlwincoord 2, 1
+	ld a, $01
+	ld de, SCREEN_WIDTH
+	ld c, 6
+.pokemonLogoTileLoop
+	ld b, $10
+	push hl
+.pokemonLogoTileRowLoop ; place tiles for one row
+	ld [hli], a
+	dec b
+	jr nz, .pokemonLogoTileRowLoop
+	pop hl
+	add hl, de
+	dec c
+	jr nz, .pokemonLogoTileLoop
+
+; place tiles for the last row of the pokemon logo
+	hlwincoord 2, 7
+	ld a, $01
+	ld b, $10
+.pokemonLogoLastTileRowLoop
+	ld [hli], a
+	dec b
+	jr nz, .pokemonLogoLastTileRowLoop
+	
+	xor a
+	ld [rVBK], a
+	ret

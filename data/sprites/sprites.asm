@@ -2,119 +2,117 @@ MACRO overworld_sprite
 	dw \1
 	db \2 tiles
 	db BANK(\1)
+	db \3
 ENDM
 
 SpriteSheetPointerTable:
-	table_width 4, SpriteSheetPointerTable
+	table_width 5, SpriteSheetPointerTable
 	; graphics, tile count
-	overworld_sprite RedSprite, 12              ; SPRITE_RED
-	overworld_sprite BlueSprite, 12             ; SPRITE_BLUE
-	overworld_sprite OakSprite, 12              ; SPRITE_OAK
-	overworld_sprite YoungsterSprite, 12        ; SPRITE_YOUNGSTER
-	overworld_sprite MonsterSprite, 12          ; SPRITE_MONSTER
-	overworld_sprite CooltrainerFSprite, 12     ; SPRITE_COOLTRAINER_F
-	overworld_sprite CooltrainerMSprite, 12     ; SPRITE_COOLTRAINER_M
-	overworld_sprite LittleGirlSprite, 12       ; SPRITE_LITTLE_GIRL
-	overworld_sprite BirdSprite, 12             ; SPRITE_BIRD
-	overworld_sprite MiddleAgedManSprite, 12    ; SPRITE_MIDDLE_AGED_MAN
-	overworld_sprite GamblerSprite, 12          ; SPRITE_GAMBLER
-	overworld_sprite SuperNerdSprite, 12        ; SPRITE_SUPER_NERD
-	overworld_sprite GirlSprite, 12             ; SPRITE_GIRL
-	overworld_sprite HikerSprite, 12            ; SPRITE_HIKER
-	overworld_sprite BeautySprite, 12           ; SPRITE_BEAUTY
-	overworld_sprite GentlemanSprite, 12        ; SPRITE_GENTLEMAN
-	overworld_sprite DaisySprite, 12            ; SPRITE_DAISY
-	overworld_sprite BikerSprite, 12            ; SPRITE_BIKER
-	overworld_sprite SailorSprite, 12           ; SPRITE_SAILOR
-	overworld_sprite CookSprite, 12             ; SPRITE_COOK
-	overworld_sprite BikeShopClerkSprite, 12    ; SPRITE_BIKE_SHOP_CLERK
-	overworld_sprite MrFujiSprite, 12           ; SPRITE_MR_FUJI
-	overworld_sprite GiovanniSprite, 12         ; SPRITE_GIOVANNI
-	overworld_sprite RocketSprite, 12           ; SPRITE_ROCKET
-	overworld_sprite ChannelerSprite, 12        ; SPRITE_CHANNELER
-	overworld_sprite WaiterSprite, 12           ; SPRITE_WAITER
-	overworld_sprite OfficeLadySprite, 12       ; SPRITE_OFFICE_LADY
-	overworld_sprite MiddleAgedWomanSprite, 12  ; SPRITE_MIDDLE_AGED_WOMAN
-	overworld_sprite BrunetteGirlSprite, 12     ; SPRITE_BRUNETTE_GIRL
-	overworld_sprite LanceSprite, 12            ; SPRITE_LANCE
-	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_RED_1
-	overworld_sprite ScientistSprite, 12        ; SPRITE_SCIENTIST
-	overworld_sprite RockerSprite, 12           ; SPRITE_ROCKER
-	overworld_sprite SwimmerSprite, 12          ; SPRITE_SWIMMER
-	overworld_sprite SafariZoneWorkerSprite, 12 ; SPRITE_SAFARI_ZONE_WORKER
-	overworld_sprite GymGuideSprite, 12         ; SPRITE_GYM_GUIDE
-	overworld_sprite GrampsSprite, 12           ; SPRITE_GRAMPS
-	overworld_sprite ClerkSprite, 12            ; SPRITE_CLERK
-	overworld_sprite FishingGuruSprite, 12      ; SPRITE_FISHING_GURU
-	overworld_sprite GrannySprite, 12           ; SPRITE_GRANNY
-	overworld_sprite NurseSprite, 12            ; SPRITE_NURSE
-	overworld_sprite LinkReceptionistSprite, 12 ; SPRITE_LINK_RECEPTIONIST
-	overworld_sprite SilphPresidentSprite, 12   ; SPRITE_SILPH_PRESIDENT
-	overworld_sprite SilphWorkerSprite, 12      ; SPRITE_SILPH_WORKER
-	overworld_sprite WardenSprite, 12           ; SPRITE_WARDEN
-	overworld_sprite CaptainSprite, 12          ; SPRITE_CAPTAIN
-	overworld_sprite FisherSprite, 12           ; SPRITE_FISHER
-	overworld_sprite BlackbeltSprite, 12        ; SPRITE_BLACKBELT
-	overworld_sprite GuardSprite, 12            ; SPRITE_GUARD
-	overworld_sprite RedSprite, 12              ; SPRITE_UNUSED_RED_2
-	overworld_sprite MomSprite, 12              ; SPRITE_MOM
-	overworld_sprite BaldingGuySprite, 12       ; SPRITE_BALDING_GUY
-	overworld_sprite LittleBoySprite, 12        ; SPRITE_LITTLE_BOY
-	overworld_sprite GameboyGirlSprite, 12      ; SPRITE_GAMEBOY_GIRL
-	overworld_sprite GameboyKidSprite, 12       ; SPRITE_GAMEBOY_KID
-	overworld_sprite FairySprite, 12            ; SPRITE_FAIRY
-	overworld_sprite AgathaSprite, 12           ; SPRITE_AGATHA
-	overworld_sprite BrunoSprite, 12            ; SPRITE_BRUNO
-	overworld_sprite LoreleiSprite, 12          ; SPRITE_LORELEI
-	overworld_sprite SeelSprite, 12             ; SPRITE_SEEL
-	overworld_sprite PikachuSprite, 12          ; SPRITE_PIKACHU
-	overworld_sprite OfficerJennySprite, 12     ; SPRITE_OFFICER_JENNY
-	overworld_sprite SandshrewSprite, 12        ; SPRITE_SANDSHREW
-	overworld_sprite OddishSprite, 12           ; SPRITE_ODDISH
-	overworld_sprite BulbasaurSprite, 12        ; SPRITE_BULBASAUR
-	overworld_sprite JigglypuffSprite, 12       ; SPRITE_JIGGLYPUFF
-	overworld_sprite ClefairySprite, 12         ; SPRITE_CLEFAIRY
-	overworld_sprite ChanseySprite, 12          ; SPRITE_CHANSEY
-	overworld_sprite JessieSprite, 12           ; SPRITE_JESSIE
-	overworld_sprite JamesSprite, 12            ; SPRITE_JAMES
-	overworld_sprite LaprasSprite, 12           ; SPRITE_LAPRAS
-	overworld_sprite Seel2Sprite, 12            ; SPRITE_SEEL_2
-	overworld_sprite PoliwrathSprite, 12        ; SPRITE_POLIWRATH
-	overworld_sprite BillSprite, 12             ; SPRITE_BILL
-	overworld_sprite BlaineSprite, 12           ; SPRITE_BLAINE
-	overworld_sprite BrockSprite, 12            ; SPRITE_BROCK
-	overworld_sprite MistySprite, 12            ; SPRITE_MISTY
-	overworld_sprite SurgeSprite, 12            ; SPRITE_SURGE
-	overworld_sprite ErikaSprite, 12            ; SPRITE_ERIKA
-	overworld_sprite KogaSprite, 12             ; SPRITE_KOGA
-	overworld_sprite SabrinaSprite, 12          ; SPRITE_SABRINA
-	overworld_sprite SchoolboySprite, 12        ; SPRITE_SCHOOLBOY
-	overworld_sprite TamerSprite, 12            ; SPRITE_TAMER
-	overworld_sprite SwimmerGirlSprite, 12      ; SPRITE_SWIMMER_F
-	overworld_sprite RocketGirlSprite, 12       ; SPRITE_ROCKET_F
-	overworld_sprite KimonoGirlSprite, 12       ; SPRITE_KIMONO_GIRL
-	overworld_sprite SageSprite, 12             ; SPRITE_SAGE
-	overworld_sprite ReceptionistSprite, 12     ; SPRITE_RECEPTIONIST
-	overworld_sprite CelioSprite, 12            ; SPRITE_CELIO
-	overworld_sprite SlowpokeSprite, 12         ; SPRITE_SLOWPOKE
-	overworld_sprite LeafSprite, 12             ; SPRITE_LEAF
-	overworld_sprite PokeBallSprite, 4          ; SPRITE_POKE_BALL
-	overworld_sprite FossilSprite, 4            ; SPRITE_FOSSIL
-	overworld_sprite BoulderSprite, 4           ; SPRITE_BOULDER
-	overworld_sprite PaperSprite, 4             ; SPRITE_PAPER
-	overworld_sprite PokedexSprite, 4           ; SPRITE_POKEDEX
-	overworld_sprite ClipboardSprite, 4         ; SPRITE_CLIPBOARD
-	overworld_sprite RockSmashSprite, 4         ; SPRITE_ROCK_SMASH
-	overworld_sprite OldAmberSprite, 4          ; SPRITE_UNUSED_OLD_AMBER
-	overworld_sprite OldAmberSprite, 4          ; SPRITE_OLD_AMBER
-	overworld_sprite GamblerAsleepSprite, 4     ; SPRITE_UNUSED_GAMBLER_ASLEEP_1
-	overworld_sprite GamblerAsleepSprite, 4     ; SPRITE_UNUSED_GAMBLER_ASLEEP_2
-	overworld_sprite GamblerAsleepSprite, 4     ; SPRITE_GAMBLER_ASLEEP
-	overworld_sprite SlowpokeSprite, 4
-	overworld_sprite N64Sprite, 4
-	overworld_sprite VirtualBoySprite, 4
-	overworld_sprite SnesSprite, 4
-	overworld_sprite FamicomSprite, 4
-	overworld_sprite GoldTrophySprite, 4
-	overworld_sprite SilverTrophySprite, 4
+	overworld_sprite RedSprite, 12, PAL_OW_RED               ; SPRITE_RED
+	overworld_sprite BlueSprite, 12, PAL_OW_RED              ; SPRITE_BLUE
+	overworld_sprite OakSprite, 12, PAL_OW_BROWN             ; SPRITE_OAK
+	overworld_sprite BugCatcherSprite, 12, PAL_OW_BLUE       ; SPRITE_BUG_CATCHER
+	overworld_sprite MonsterSprite, 12, PAL_OW_RED           ; SPRITE_MONSTER
+	overworld_sprite CooltrainerFSprite, 12, PAL_OW_BLUE     ; SPRITE_COOLTRAINER_F
+	overworld_sprite CooltrainerMSprite, 12, PAL_OW_BLUE     ; SPRITE_COOLTRAINER_M
+	overworld_sprite LittleGirlSprite, 12, PAL_OW_RED        ; SPRITE_LITTLE_GIRL
+	overworld_sprite BirdSprite, 12, PAL_OW_RED              ; SPRITE_BIRD
+	overworld_sprite MiddleAgedManSprite, 12, PAL_OW_BROWN   ; SPRITE_MIDDLE_AGED_MAN
+	overworld_sprite GamblerSprite, 12, PAL_OW_BROWN         ; SPRITE_GAMBLER
+	overworld_sprite SuperNerdSprite, 12, PAL_OW_BLUE        ; SPRITE_SUPER_NERD
+	overworld_sprite GirlSprite, 12, PAL_OW_RED              ; SPRITE_GIRL
+	overworld_sprite HikerSprite, 12, PAL_OW_BROWN           ; SPRITE_HIKER
+	overworld_sprite BeautySprite, 12, PAL_OW_BLUE           ; SPRITE_BEAUTY
+	overworld_sprite GentlemanSprite, 12, PAL_OW_BLUE        ; SPRITE_GENTLEMAN
+	overworld_sprite DaisySprite, 12, PAL_OW_BLUE            ; SPRITE_DAISY
+	overworld_sprite BikerSprite, 12, PAL_OW_BROWN           ; SPRITE_BIKER
+	overworld_sprite SailorSprite, 12, PAL_OW_BLUE           ; SPRITE_SAILOR
+	overworld_sprite CookSprite, 12, PAL_OW_RED              ; SPRITE_COOK
+	overworld_sprite BikeShopClerkSprite, 12, PAL_OW_BLUE    ; SPRITE_BIKE_SHOP_CLERK
+	overworld_sprite MrFujiSprite, 12, PAL_OW_BROWN          ; SPRITE_MR_FUJI
+	overworld_sprite GiovanniSprite, 12, PAL_OW_RED          ; SPRITE_GIOVANNI
+	overworld_sprite RocketSprite, 12, PAL_OW_BROWN          ; SPRITE_ROCKET
+	overworld_sprite ChannelerSprite, 12, PAL_OW_BROWN       ; SPRITE_CHANNELER
+	overworld_sprite WaiterSprite, 12, PAL_OW_RED            ; SPRITE_WAITER
+	overworld_sprite OfficeLadySprite, 12, PAL_OW_BLUE       ; SPRITE_OFFICE_LADY
+	overworld_sprite MiddleAgedWomanSprite, 12, PAL_OW_BROWN ; SPRITE_MIDDLE_AGED_WOMAN
+	overworld_sprite BrunetteGirlSprite, 12, PAL_OW_RED      ; SPRITE_BRUNETTE_GIRL
+	overworld_sprite LanceSprite, 12, PAL_OW_RED             ; SPRITE_LANCE
+	overworld_sprite ScientistSprite, 12, PAL_OW_BLUE        ; SPRITE_SCIENTIST
+	overworld_sprite RockerSprite, 12, PAL_OW_GREEN          ; SPRITE_ROCKER
+	overworld_sprite SwimmerSprite, 12, PAL_OW_BLUE          ; SPRITE_SWIMMER
+	overworld_sprite SafariZoneWorkerSprite, 12, PAL_OW_RED  ; SPRITE_SAFARI_ZONE_WORKER
+	overworld_sprite GymGuideSprite, 12, PAL_OW_BLUE         ; SPRITE_GYM_GUIDE
+	overworld_sprite GrampsSprite, 12, PAL_OW_BROWN          ; SPRITE_GRAMPS
+	overworld_sprite ClerkSprite, 12, PAL_OW_GREEN           ; SPRITE_CLERK
+	overworld_sprite FishingGuruSprite, 12, PAL_OW_BLUE      ; SPRITE_FISHING_GURU
+	overworld_sprite GrannySprite, 12, PAL_OW_BROWN          ; SPRITE_GRANNY
+	overworld_sprite NurseSprite, 12, PAL_OW_RED             ; SPRITE_NURSE
+	overworld_sprite LinkReceptionistSprite, 12, PAL_OW_RED  ; SPRITE_LINK_RECEPTIONIST
+	overworld_sprite SilphPresidentSprite, 12, PAL_OW_BROWN  ; SPRITE_SILPH_PRESIDENT
+	overworld_sprite SilphWorkerSprite, 12, PAL_OW_RED       ; SPRITE_SILPH_WORKER
+	overworld_sprite WardenSprite, 12, PAL_OW_BROWN          ; SPRITE_WARDEN
+	overworld_sprite CaptainSprite, 12, PAL_OW_BROWN         ; SPRITE_CAPTAIN
+	overworld_sprite FisherSprite, 12, PAL_OW_BLUE           ; SPRITE_FISHER
+	overworld_sprite BlackbeltSprite, 12, PAL_OW_BROWN       ; SPRITE_BLACK_BELT
+	overworld_sprite GuardSprite, 12, PAL_OW_BLUE            ; SPRITE_GUARD
+	overworld_sprite MomSprite, 12, PAL_OW_RED               ; SPRITE_MOM
+	overworld_sprite BaldingGuySprite, 12, PAL_OW_BROWN      ; SPRITE_BALDING_GUY
+	overworld_sprite LittleBoySprite, 12, PAL_OW_BLUE        ; SPRITE_LITTLE_BOY
+	overworld_sprite GameboyGirlSprite, 12, PAL_OW_GREEN     ; SPRITE_GAMEBOY_GIRL
+	overworld_sprite GameboyKidSprite, 12, PAL_OW_GREEN      ; SPRITE_GAMEBOY_KID
+	overworld_sprite FairySprite, 12, PAL_OW_RED             ; SPRITE_FAIRY
+	overworld_sprite AgathaSprite, 12, PAL_OW_BROWN          ; SPRITE_AGATHA
+	overworld_sprite BrunoSprite, 12, PAL_OW_RED             ; SPRITE_BRUNO
+	overworld_sprite LoreleiSprite, 12, PAL_OW_BLUE          ; SPRITE_LORELEI
+	overworld_sprite SeelSprite, 12, PAL_OW_BLUE             ; SPRITE_SEEL
+	overworld_sprite PikachuSprite, 12, PAL_OW_RED           ; SPRITE_PIKACHU
+	overworld_sprite OfficerJennySprite, 12, PAL_OW_BLUE     ; SPRITE_OFFICER_JENNY
+	overworld_sprite SandshrewSprite, 12, PAL_OW_BROWN       ; SPRITE_SANDSHREW
+	overworld_sprite OddishSprite, 12, PAL_OW_GREEN          ; SPRITE_ODDISH
+	overworld_sprite BulbasaurSprite, 12, PAL_OW_GREEN       ; SPRITE_BULBASAUR
+	overworld_sprite JigglypuffSprite, 12, PAL_OW_RED        ; SPRITE_JIGGLYPUFF
+	overworld_sprite ClefairySprite, 12, PAL_OW_RED          ; SPRITE_CLEFAIRY
+	overworld_sprite ChanseySprite, 12, PAL_OW_RED           ; SPRITE_CHANSEY
+	overworld_sprite JessieSprite, 12, PAL_OW_RED            ; SPRITE_JESSIE
+	overworld_sprite JamesSprite, 12, PAL_OW_BLUE            ; SPRITE_JAMES
+	overworld_sprite LaprasSprite, 12, PAL_OW_BLUE           ; SPRITE_LAPRAS
+	overworld_sprite Seel2Sprite, 12, PAL_OW_BLUE            ; SPRITE_SEEL_2
+	overworld_sprite PoliwrathSprite, 12, PAL_OW_BLUE        ; SPRITE_POLIWRATH
+	overworld_sprite CatSprite, 12, PAL_OW_RED               ; SPRITE_CAT
+	overworld_sprite BillSprite, 12, PAL_OW_RED              ; SPRITE_BILL
+	overworld_sprite BlaineSprite, 12, PAL_OW_BROWN          ; SPRITE_BLAINE
+	overworld_sprite BrockSprite, 12, PAL_OW_BROWN           ; SPRITE_BROCK
+	overworld_sprite MistySprite, 12, PAL_OW_BLUE            ; SPRITE_MISTY
+	overworld_sprite SurgeSprite, 12, PAL_OW_GREEN           ; SPRITE_SURGE
+	overworld_sprite ErikaSprite, 12, PAL_OW_GREEN           ; SPRITE_ERIKA
+	overworld_sprite KogaSprite, 12, PAL_OW_BROWN            ; SPRITE_KOGA
+	overworld_sprite SabrinaSprite, 12, PAL_OW_RED           ; SPRITE_SABRINA
+	overworld_sprite YoungsterSprite, 12, PAL_OW_BLUE        ; SPRITE_YOUNGSTER
+	overworld_sprite TeacherSprite, 12, PAL_OW_RED           ; SPRITE_TEACHER
+	overworld_sprite GuitaristSprite, 12, PAL_OW_GREEN       ; SPRITE_GUITARIST
+	overworld_sprite SwimmerGirlSprite, 12, PAL_OW_BLUE      ; SPRITE_SWIMMER_F
+	overworld_sprite RocketGirlSprite, 12, PAL_OW_BROWN      ; SPRITE_ROCKET_F
+	overworld_sprite KimonoGirlSprite, 12, PAL_OW_RED        ; SPRITE_KIMONO_GIRL
+	overworld_sprite SageSprite, 12, PAL_OW_BROWN            ; SPRITE_SAGE
+	overworld_sprite ReceptionistSprite, 12, PAL_OW_BLUE     ; SPRITE_RECEPTIONIST
+	overworld_sprite CelioSprite, 12, PAL_OW_GREEN           ; SPRITE_CELIO
+	overworld_sprite SlowpokeSprite, 12, PAL_OW_RED          ; SPRITE_SLOWPOKE
+	overworld_sprite LeafSprite, 12, PAL_OW_BROWN            ; SPRITE_LEAF
+	overworld_sprite PokeBallSprite, 4, PAL_OW_RED           ; SPRITE_POKE_BALL
+	overworld_sprite FossilSprite, 4, PAL_OW_ROCK            ; SPRITE_FOSSIL
+	overworld_sprite BoulderSprite, 4, PAL_OW_ROCK           ; SPRITE_BOULDER
+	overworld_sprite PaperSprite, 4, PAL_OW_BLUE             ; SPRITE_PAPER
+	overworld_sprite PokedexSprite, 4, PAL_OW_BROWN          ; SPRITE_POKEDEX
+	overworld_sprite ClipboardSprite, 4, PAL_OW_BROWN        ; SPRITE_CLIPBOARD
+	overworld_sprite RockSmashSprite, 4, PAL_OW_ROCK         ; SPRITE_ROCK_SMASH
+	overworld_sprite OldAmberSprite, 4, PAL_OW_ROCK          ; SPRITE_OLD_AMBER
+	overworld_sprite GamblerAsleepSprite, 4, PAL_OW_BROWN    ; SPRITE_GAMBLER_ASLEEP
+	overworld_sprite SlowpokeSprite, 4, PAL_OW_RED           ; SPRITE_SLOWPOKE
+	overworld_sprite N64Sprite, 4, PAL_OW_BROWN              ; SPRITE_N64
+	overworld_sprite VirtualBoySprite, 4, PAL_OW_RED         ; SPRITE_VIRTUAL_BOY
+	overworld_sprite SnesSprite, 4, PAL_OW_BLUE              ; SPRITE_SNES
+	overworld_sprite FamicomSprite, 4, PAL_OW_RED            ; SPRITE_NES
+	overworld_sprite GoldTrophySprite, 4, PAL_OW_BROWN       ; SPRITE_GOLD_TROPHY
+	overworld_sprite SilverTrophySprite, 4, PAL_OW_SILVER    ; SPRITE_SILVER_TROPHY
 	assert_table_length NUM_SPRITES, 4

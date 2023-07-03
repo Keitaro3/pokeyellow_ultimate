@@ -12,15 +12,15 @@ Route12_Object:
 	bg_event 11, 63, 12 ; Route12Text12
 
 	def_object_events
-	object_event 10, 62, SPRITE_ROCK_SMASH, STAY, DOWN, 1 ; person
-	object_event 14, 31, SPRITE_FISHER, STAY, LEFT, 2, FISHER, 3
-	object_event  5, 39, SPRITE_FISHER, STAY, UP, 3, FISHER, 4
-	object_event 11, 92, SPRITE_COOLTRAINER_M, STAY, LEFT, 4, JR_TRAINER_M, 9
-	object_event 14, 76, SPRITE_SUPER_NERD, STAY, UP, 5, GUITARIST, 2
-	object_event 12, 40, SPRITE_FISHER, STAY, LEFT, 6, FISHER, 5
-	object_event  9, 52, SPRITE_FISHER, STAY, RIGHT, 7, FISHER, 6
-	object_event  6, 87, SPRITE_FISHER, STAY, DOWN, 8, FISHER, 11
-	object_event 14, 35, SPRITE_POKE_BALL, STAY, NONE, 9, TM_PAY_DAY
-	object_event  5, 89, SPRITE_POKE_BALL, STAY, NONE, 10, IRON
+	object_event 10, 62, SPRITE_ROCK_SMASH, STAY, DOWN, 0, 1 ; person
+	object_event 14, 31, SPRITE_FISHER, STAY, LEFT, PAL_NPC_GREEN, 2, FISHER, 3
+	object_event  5, 39, SPRITE_FISHER, STAY, UP, PAL_NPC_GREEN, 3, FISHER, 4
+	object_event 11, 92, SPRITE_YOUNGSTER, STAY, LEFT, PAL_NPC_GREEN, 4, JR_TRAINER_M, 9
+	object_event 14, 76, SPRITE_GUITARIST, STAY, UP, PAL_NPC_RED, 5, GUITARIST, 2
+	object_event 12, 40, SPRITE_FISHER, STAY, LEFT, PAL_NPC_GREEN, 6, FISHER, 5
+	object_event  9, 52, SPRITE_FISHER, STAY, RIGHT, PAL_NPC_GREEN, 7, FISHER, 6
+	object_event  6, 87, SPRITE_FISHER, STAY, DOWN, PAL_NPC_GREEN, 8, FISHER, 11
+	object_event 14, 35, SPRITE_POKE_BALL, STAY, NONE, 0, 9, TM_PAY_DAY
+	object_event  5, 89, SPRITE_POKE_BALL, STAY, NONE, 0, 10, IRON
 
 	def_warps_to ROUTE_12

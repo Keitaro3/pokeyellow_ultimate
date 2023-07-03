@@ -12,7 +12,7 @@ ShowPokedexMenu:
 	ld [wd11e], a
 	ldh [hJoy7], a
 .setUpGraphics
-	callfar LoadPokedexTilePatterns
+	call LoadPokedexTilePatterns
 .loop
 	ld b, SET_PAL_GENERIC
 	call RunPaletteCommand
@@ -441,7 +441,7 @@ ShowPokedexData:
 	call GBPalWhiteOutWithDelay3
 	call ClearScreen
 	call UpdateSprites
-	callfar LoadPokedexTilePatterns ; load pokedex tiles
+	call LoadPokedexTilePatterns ; load pokedex tiles
 
 ; function to display pokedex data from inside the pokedex
 ShowPokedexDataInternal:

@@ -39,7 +39,7 @@ ViridianForestTrainerHeader1:
 ViridianForestTrainerHeader2:
 	trainer EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_2, 1, ViridianForestBattleText3, ViridianForestEndBattleText3, ViridianForestAfterBattleText3
 ViridianForestTrainerHeader3:
-	trainer EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_3, 0, ViridianForestBattleText4, ViridianForestEndBattleText4, ViridianForestAfterBattleText4
+	trainer EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_3, 4, ViridianForestBattleText4, ViridianForestEndBattleText4, ViridianForestAfterBattleText4
 ViridianForestTrainerHeader4:
 	trainer EVENT_BEAT_VIRIDIAN_FOREST_TRAINER_4, 4, ViridianForestBattleText5, ViridianForestEndBattleText5, ViridianForestAfterBattleText5
 	db -1 ; end
@@ -112,27 +112,27 @@ ViridianForestAfterBattleText3:
 	text_end
 
 ViridianForestBattleText4:
-	text_far _ViridianForestBattleTextPikaGirl
+	text_far _ViridianForestBattleTextAnthony
 	text_end
 
 ViridianForestEndBattleText4:
-	text_far _ViridianForestEndBattleTextPikaGirl
+	text_far _ViridianForestEndBattleTextAnthony
 	text_end
 
 ViridianForestAfterBattleText4:
-	text_far _ViridianForestAfterBattleTextPikaGirl
+	text_far _ViridianForestAfterBattleTextAnthony
 	text_end
 
 ViridianForestBattleText5:
-	text_far _ViridianForestBattleTextSamurai
+	text_far _ViridianForestBattleTextCharlie
 	text_end
 
 ViridianForestEndBattleText5:
-	text_far _ViridianForestEndBattleTextSamurai
+	text_far _ViridianForestEndBattleTextCharlie
 	text_end
 
 ViridianForestAfterBattleText5:
-	text_far _ViridianForestAfterBattleTextSamurai
+	text_far _ViridianForestAfterBattleTextCharlie
 	text_end
 
 ViridianForestText10:

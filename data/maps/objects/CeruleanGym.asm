@@ -8,9 +8,9 @@ CeruleanGym_Object:
 	def_bg_events
 
 	def_object_events
-	object_event  4,  2, SPRITE_BRUNETTE_GIRL, STAY, DOWN, 1, MISTY, 1
-	object_event  2,  3, SPRITE_COOLTRAINER_F, STAY, RIGHT, 2, JR_TRAINER_F, 1
-	object_event  8,  7, SPRITE_SWIMMER, STAY, LEFT, 3, SWIMMER, 1
-	object_event  7, 10, SPRITE_GYM_GUIDE, STAY, DOWN, 4 ; person
+	object_event  4,  2, SPRITE_MISTY, STAY, DOWN, PAL_NPC_RED, 1, MISTY, 1
+	object_event  2,  3, SPRITE_BRUNETTE_GIRL, STAY, RIGHT, PAL_NPC_GREEN, 2, JR_TRAINER_F, 1
+	object_event  8,  7, SPRITE_SWIMMER, STAY, LEFT, PAL_NPC_RED, 3, SWIMMER, 1
+	object_event  7, 10, SPRITE_GYM_GUIDE, STAY, DOWN, PAL_NPC_BLUE, 4 ; person
 
 	def_warps_to CERULEAN_GYM
