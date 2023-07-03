@@ -206,6 +206,9 @@ ROMX $3E
 ROMX $3F
 	"Map Header Pointers"
 	"NPC Sprites 3"
+ROMX $40
+	"Move Descriptions"
+	"Item Descriptions"
 WRAM0
 	"Audio RAM"
 	org $c100

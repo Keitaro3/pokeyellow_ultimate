@@ -92,27 +92,63 @@ DEF SAFARI_ROCK EQU $16 ; overload
 	const MAX_ETHER     ; $51
 	const ELIXER        ; $52
 	const MAX_ELIXER    ; $53
-	const FRIEND_BALL   ; $54
-	const SUN_SHARD     ; $55
-	const MOON_SHARD    ; $56
-	const SUN_STONE		; $57
+	const MOOMOO_MILK  	; $54
+	const PSNCUREBERRY 	; $55
+	const PRZCUREBERRY 	; $56
+	const BURNT_BERRY  	; $57
+	const ICE_BERRY    	; $58
+	const BITTER_BERRY 	; $59
+	const MINT_BERRY   	; $5A
+	const TINYMUSHROOM 	; $5B
+	const BIG_MUSHROOM 	; $5C
+	const MIRACLEBERRY 	; $5D
+	const PEARL        	; $5E
+	const BIG_PEARL    	; $5F
+	const RAGECANDYBAR 	; $60
+	const GS_BALL      	; $61
+	const ENERGYPOWDER 	; $62
+	const ENERGY_ROOT  	; $63
+	const HEAL_POWDER  	; $64
+	const REVIVAL_HERB 	; $65
+	const STARDUST     	; $66
+	const STAR_PIECE   	; $67
+	const BERRY_JUICE  	; $68
+	const MYSTERYBERRY 	; $69
+	const LEVEL_BALL   	; $6A
+	const LURE_BALL    	; $6B
+	const FRIEND_BALL  	; $6C
+	const NORMAL_BOX   	; $6D
+	const GORGEOUS_BOX 	; $6E	
+	const SUN_STONE    	; $6F
+	const BERRY        	; $70
+	const GOLD_BERRY   	; $71
+	const BRICK_PIECE  	; $72
+	const METEORITE		; $73
+	const TRI_PASS		; $74
+	const RAINBOW_PASS	; $75
+	const MYSTICTICKET  ; $76
+	const GOLD_CORE	    ; $77
+	const SILVER_CORE	; $78
+	const OLD_SEA_MAP   ; $79
+	const SUN_SHARD		; $7A
+	const MOON_SHARD	; $7B
 DEF NUM_ITEMS EQU const_value - 1
 
 ; elevator floors use item IDs
-	const FLOOR_B2F     ; $54
-	const FLOOR_B1F     ; $55
-	const FLOOR_1F      ; $56
-	const FLOOR_2F      ; $57
-	const FLOOR_3F      ; $58
-	const FLOOR_4F      ; $59
-	const FLOOR_5F      ; $5A
-	const FLOOR_6F      ; $5B
-	const FLOOR_7F      ; $5C
-	const FLOOR_8F      ; $5D
-	const FLOOR_9F      ; $5E
-	const FLOOR_10F     ; $5F
-	const FLOOR_11F     ; $60
-	const FLOOR_B4F     ; $61
+	const FLOOR_B2F     ; $7C
+	const FLOOR_B1F     ; $7D
+	const FLOOR_1F      ; $7E
+	const FLOOR_2F      ; $7F
+	const FLOOR_3F      ; $80
+	const FLOOR_4F      ; $81
+	const FLOOR_5F      ; $82
+	const FLOOR_6F      ; $83
+	const FLOOR_7F      ; $84
+	const FLOOR_8F      ; $85
+	const FLOOR_9F      ; $86
+	const FLOOR_10F     ; $87
+	const FLOOR_11F     ; $88
+	const FLOOR_B4F     ; $89
 DEF NUM_FLOORS EQU const_value - 1 - NUM_ITEMS
 
 	const_next $C4

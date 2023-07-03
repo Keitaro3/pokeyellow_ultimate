@@ -83,10 +83,46 @@ ItemPrices::
 	bcd3 0     ; MAX_ETHER
 	bcd3 0     ; ELIXER
 	bcd3 0     ; MAX_ELIXER
+	bcd3 500   ; MOOMOO_MILK
+	bcd3 10    ; PSNCUREBERRY
+	bcd3 10    ; PRZCUREBERRY
+	bcd3 10    ; BURNT_BERRY
+	bcd3 10    ; ICE_BERRY
+	bcd3 10    ; BITTER_BERRY
+	bcd3 10    ; MINT_BERRY
+	bcd3 500   ; TINYMUSHROOM
+	bcd3 5000  ; BIG_MUSHROOM
+	bcd3 10	   ; MIRACLEBERRY
+	bcd3 1400  ; PEARL
+	bcd3 7500  ; BIG_PEARL
+	bcd3 300   ; RAGECANDYBAR
+	bcd3 0     ; GS_BALL
+	bcd3 500   ; ENERGYPOWDER
+	bcd3 800   ; ENERGY_ROOT
+	bcd3 450   ; HEAL_POWDER
+	bcd3 2800  ; REVIVAL_HERB
+	bcd3 2000  ; STARDUST
+	bcd3 9800  ; STAR_PIECE
+	bcd3 100   ; BERRY_JUICE
+	bcd3 10    ; MYSTERYBERRY
+	bcd3 150   ; LEVEL_BALL
+	bcd3 150   ; LURE_BALL
 	bcd3 150   ; FRIEND_BALL
+	bcd3 10	   ; NORMAL BOX
+	bcd3 10	   ; GORGEOUS BOX
+	bcd3 2100  ; SUN_STONE
+	bcd3 10    ; BERRY
+	bcd3 10    ; GOLD_BERRY
+	bcd3 50    ; BRICK_PIECE
+	bcd3 0     ; METEORITE
+	bcd3 0     ; TRI_PASS
+	bcd3 0     ; RAINBOW_PASS
+	bcd3 0     ; MYSTICTICKET
+	bcd3 0     ; GOLD_CORE
+	bcd3 0     ; SILVER_CORE
+	bcd3 0     ; OLD_SEA_MAP
 	bcd3 0     ; SUN_SHARD
 	bcd3 0     ; MOON_SHARD
-	bcd3 2100  ; SUN_STONE
 	assert_table_length NUM_ITEMS
 	bcd3 0     ; FLOOR_B2F
 	bcd3 0     ; FLOOR_B1F

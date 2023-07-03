@@ -610,3 +610,7 @@ _NoPokemonText::
 	text "There are no"
 	line "#MON here!"
 	prompt
+	
+_ItemLooksBitterText::
+	text "It looks bitter..."
+	prompt

@@ -100,10 +100,48 @@ ItemUsePtrTable:
 	dw ItemUsePPRestore  ; MAX_ETHER
 	dw ItemUsePPRestore  ; ELIXER
 	dw ItemUsePPRestore  ; MAX_ELIXER
-	dw ItemUseBall		 ; FRIEND_BALL
-	dw UnusableItem      ; SUN_SHARD
-	dw UnusableItem      ; MOON_SHARD
-	dw ItemUseEvoStone	 ; SUN_STONE
+	dw ItemUseMedicine   ; MOOMOO_MILK
+	dw ItemUseMedicine   ; PSNCUREBERRY
+	dw ItemUseMedicine   ; PRZCUREBERRY
+	dw ItemUseMedicine   ; BURNT_BERRY
+	dw ItemUseMedicine   ; ICE_BERRY
+	dw ItemCureConfusion ; BITTER_BERRY
+	dw ItemUseMedicine   ; MINT_BERRY
+	dw UnusableItem      ; TINYMUSHROOM
+	dw UnusableItem      ; BIG_MUSHROOM
+	dw ItemUseMedicine   ; MIRACLEBERRY
+	dw UnusableItem      ; PEARL
+	dw UnusableItem      ; BIG_PEARL
+	dw ItemUseMedicine   ; RAGECANDYBAR
+	dw UnusableItem      ; GS_BALL
+	dw ItemUseEnergypowder  ; ENERGYPOWDER
+	dw ItemUseEnergyRoot    ; ENERGY_ROOT
+	dw ItemUseEnergypowder  ; HEAL_POWDER
+	dw ItemUseRevivalHerb   ; REVIVAL_HERB
+	dw UnusableItem      ; STARDUST
+	dw UnusableItem      ; STAR_PIECE
+	dw ItemUseMedicine   ; BERRY_JUICE
+	dw ItemUsePPRestore  ; MYSTERYBERRY
+	dw UnusableItem      ; LEVEL_BALL
+	dw UnusableItem      ; LURE_BALL
+	dw ItemUseBall       ; FRIEND_BALL
+	dw UnusableItem		 ; NORMAL BOX
+	dw UnusableItem		 ; GORGEOUS BOX
+	dw ItemUseEvoStone   ; SUN_STONE
+	dw ItemUseMedicine   ; BERRY
+	dw ItemUseMedicine   ; GOLD_BERRY
+	dw UnusableItem      ; BRICK_PIECE
+	
+	dw UnusableItem      ; METEORITE
+	dw UnusableItem      ; TRI_PASS
+	dw UnusableItem      ; RAINBOW_PASS
+	dw UnusableItem      ; MYSTICTICKET
+	dw UnusableItem      ; GOLD_CORE
+	dw UnusableItem      ; SILVER_CORE
+	dw UnusableItem      ; OLD_SEA_MAP
+	
+	dw UnusableItem  	 ; SUN_SHARD
+	dw UnusableItem  	 ; MOON_SHARD
 
 ItemUseBall:
 
@@ -892,6 +930,26 @@ ItemUseVitamin:
 	ld a, USED_VITAMIN
 	ld [wItemType],a
 	jr _ItemUseMedicine
+	
+ItemUseEnergypowder:
+	ld a, USED_POWDER
+	ld [wItemType],a
+	jr _ItemUseMedicine
+	
+ItemUseEnergyRoot:
+	ld a, USED_ROOT
+	ld [wItemType],a
+	jr _ItemUseMedicine
+	
+ItemUseRevivalHerb:
+	ld a, USED_HERB
+	ld [wItemType],a
+	jr _ItemUseMedicine
+	
+ItemLooksBitterText:
+	text_far _ItemLooksBitterText
+	;TX_BLINK
+	text_end	
 
 ItemUseMedicine:
 	ld a, USED_MEDICINE ; a = $00
@@ -974,8 +1032,16 @@ _ItemUseMedicine:
 	jp z, ItemUseMedicine ; if so, force another choice
 .checkItemType
 	ld a, [wcf91]
+	cp BERRY_JUICE
+	jp nc, .healHP ; if it's a Berry Juice, Berry or Gold Berry
+	cp HEAL_POWDER
+	jr z, .cureStatusAilment ; if it's a Heal Powder
+	cp ENERGYPOWDER
+	jp nc, .healHP ; if it's an Energy Powder, Energy Root, or Revival Herb
+	cp PSNCUREBERRY
+	jr nc, .cureStatusAilment ; if it's one of the status-specific healing berries
 	cp REVIVE
-	jr nc, .healHP ; if it's a Revive or Max Revive
+	jp nc, .healHP ; if it's a Revive or Max Revive
 	cp FULL_HEAL
 	jr z, .cureStatusAilment ; if it's a Full Heal
 	cp HP_UP
@@ -990,17 +1056,27 @@ _ItemUseMedicine:
 	lb bc, ANTIDOTE_MSG, 1 << PSN
 	cp ANTIDOTE
 	jr z, .checkMonStatus
+	cp PSNCUREBERRY
+	jr z, .checkMonStatus
 	lb bc, BURN_HEAL_MSG, 1 << BRN
 	cp BURN_HEAL
+	jr z, .checkMonStatus
+	cp ICE_BERRY
 	jr z, .checkMonStatus
 	lb bc, ICE_HEAL_MSG, 1 << FRZ
 	cp ICE_HEAL
 	jr z, .checkMonStatus
+	cp BURNT_BERRY
+	jr z, .checkMonStatus
 	lb bc, AWAKENING_MSG, SLP_MASK
 	cp AWAKENING
 	jr z, .checkMonStatus
+	cp MINT_BERRY
+	jr z, .checkMonStatus
 	lb bc, PARALYZ_HEAL_MSG, 1 << PAR
 	cp PARLYZ_HEAL
+	jr z, .checkMonStatus
+	cp PRZCUREBERRY
 	jr z, .checkMonStatus
 	lb bc, FULL_HEAL_MSG, $ff ; Full Heal
 .checkMonStatus
@@ -1046,6 +1122,8 @@ _ItemUseMedicine:
 	jr z, .updateInBattleFaintedData
 	cp MAX_REVIVE
 	jr z, .updateInBattleFaintedData
+	cp REVIVAL_HERB
+	jr z, .updateInBattleFaintedData
 	jp .healingItemNoEffect
 
 .updateInBattleFaintedData
@@ -1079,6 +1157,8 @@ _ItemUseMedicine:
 	cp REVIVE
 	jp z, .healingItemNoEffect
 	cp MAX_REVIVE
+	jp z, .healingItemNoEffect
+	cp REVIVAL_HERB
 	jp z, .healingItemNoEffect
 .compareCurrentHPToMaxHP
 	push hl
@@ -1197,6 +1277,17 @@ _ItemUseMedicine:
 
 .notUsingSoftboiled2
 	ld a, [wcf91]
+	cp MOOMOO_MILK
+	ld b, 100 ; Moomoo Milk heal amount
+	jr z, .addHealAmount
+	cp BERRY
+	ld b, 10 ; Berry heal amount
+	jr z, .addHealAmount
+	ld b, 30 ; Gold Berry heal amount
+	jr nc, .addHealAmount
+	cp BERRY_JUICE
+	ld b, 20 ; Berry Juice heal amount
+	jr z, .addHealAmount
 	cp SODA_POP
 	ld b, 60 ; Soda Pop heal amount
 	jr z, .addHealAmount
@@ -1248,6 +1339,8 @@ _ItemUseMedicine:
 	jr c, .setCurrentHPToMaxHp ; if using a Full Restore or Max Potion
 	cp MAX_REVIVE
 	jr z, .setCurrentHPToMaxHp ; if using a Max Revive
+	cp REVIVAL_HERB
+	jr z, .setCurrentHPToMaxHp ; if using a Revival Herb
 	jr .updateInBattleData
 
 .setCurrentHPToHalfMaxHP
@@ -1326,6 +1419,15 @@ _ItemUseMedicine:
 	jr c, .playStatusAilmentCuringSound
 	cp FULL_HEAL
 	jr z, .playStatusAilmentCuringSound
+	cp MIRACLEBERRY
+	jr z, .playStatusAilmentCuringSound
+	jr nc, .skipSetSound
+	cp HEAL_POWDER
+	jr z, .playStatusAilmentCuringSound
+	cp PSNCUREBERRY
+	jr nc, .playStatusAilmentCuringSound
+
+.skipSetSound	
 	ld de, SFX_HEAL_HP
 	call WaitPlaySFX
 	ldh a, [hUILayoutFlags]
@@ -1343,6 +1445,8 @@ _ItemUseMedicine:
 	cp REVIVE
 	jr z, .showHealingItemMessage
 	cp MAX_REVIVE
+	jr z, .showHealingItemMessage
+	cp REVIVAL_HERB
 	jr z, .showHealingItemMessage
 	ld a, POTION_MSG
 	ld [wPartyMenuTypeOrMessageID], a
@@ -1363,6 +1467,17 @@ _ItemUseMedicine:
 	ld c, 50
 	call DelayFrames
 	call WaitForTextScrollButtonPress
+	ld a, [wItemType]
+	cp USED_POWDER
+	jr z, .bitterItem
+	cp USED_ROOT
+	jr z, .bitterItem
+	cp USED_HERB
+	jr nz, .notBitter
+.bitterItem
+	ld hl, ItemLooksBitterText
+	call PrintText
+.notBitter	
 	jr .done
 
 .canceledItemUse
@@ -2373,6 +2488,33 @@ PPIncreasedText:
 PPRestoredText:
 	text_far _PPRestoredText
 	text_end
+	
+ItemCureConfusion:
+	ld a,[wIsInBattle]
+	and a
+	jp z,ItemUseNotTime
+	
+	ld hl, wPlayerBattleStatus1
+	bit CONFUSED, [hl]
+	ld a, 1
+	jr z, .done
+
+	res CONFUSED, [hl]
+	xor a
+	ldh [hWhoseTurn], a
+	call PrintItemUseTextAndRemoveItem
+
+	ld hl, ConfusedNoMoreText2
+	call PrintText
+	ret
+
+.done
+	call ItemUseNoEffect
+	ret
+	
+ConfusedNoMoreText2:
+	text_far _ConfusedNoMoreText
+	text_end
 
 ; for items that can't be used from the Item menu
 UnusableItem:
@@ -2872,8 +3014,8 @@ IsKeyItem_::
 	push af
 	ld hl, KeyItemFlags
 	ld de, wBuffer
-	ld bc, 15 ; only 11 bytes are actually used
-	ASSERT 15 >= (NUM_ITEMS + 7) / 8
+	ld bc, 16 ; only 11 bytes are actually used
+	ASSERT 16 >= (NUM_ITEMS + 7) / 8
 	call CopyData
 	pop af
 	dec a

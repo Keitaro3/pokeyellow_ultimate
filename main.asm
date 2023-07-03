@@ -403,3 +403,14 @@ INCLUDE "engine/gfx/animated_objects.asm"
 SECTION "Map Header Pointers", ROMX
 
 INCLUDE "data/maps/maps.asm"
+
+
+SECTION "Move Descriptions", ROMX
+
+INCLUDE "data/moves/descriptions.asm"
+
+
+SECTION "Item Descriptions", ROMX
+
+INCLUDE "data/items/descriptions.asm"
+INCLUDE "data/items/attributes.asm"
