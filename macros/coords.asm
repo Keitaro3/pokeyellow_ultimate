@@ -102,3 +102,9 @@ MACRO dbmapcoord
 ; x, y
 	db \2, \1
 ENDM
+
+MACRO menu_coords
+; x1, y1, x2, y2
+	db \2, \1 ; start coords
+	db \4, \3 ; end coords
+ENDM

@@ -14,8 +14,8 @@ CinnabarIsland_ScriptPointers:
 
 CinnabarIslandScript0:
 	ld b, SECRET_KEY
-	call IsItemInBag
-	ret nz
+	call CheckItem
+	ret c
 	ld a, [wYCoord]
 	cp 4
 	ret nz

@@ -6,9 +6,9 @@ GiveItem::
 	ld [wd11e], a
 	ld [wcf91], a
 	ld a, c
-	ld [wItemQuantity], a
+	ld [wItemQuantityChange], a
 	ld hl, wNumBagItems
-	call AddItemToInventory
+	call ReceiveItem
 	ret nc
 	call GetItemName
 	call CopyToStringBuffer

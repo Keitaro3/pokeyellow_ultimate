@@ -237,3 +237,22 @@ ClearScreen::
 	dec b
 	jr nz, .loop
 	jp Delay3
+	
+GetFarWord::
+; retrieve a halfword from a:hl, and return it in hl.
+	; bankswitch to new bank
+	ld [hROMBankTemp], a
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, [hROMBankTemp]
+	call BankswitchCommon
+
+	; get halfword from new bank, put it in hl
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+
+	; bankswitch to previous bank and return
+	pop af
+	call BankswitchCommon
+	ret	

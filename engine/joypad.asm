@@ -93,3 +93,32 @@ TrySoftReset:
 	jp z, SoftReset
 
 	jp Joypad
+
+_JoyTextDelay::
+	call Joypad
+	ldh a, [hJoy7] ;was hInMenu, just needs to be a blank value
+	and a
+	ldh a, [hJoyPressed]
+	jr z, .ok
+	ldh a, [hJoyHeld]
+.ok
+	ldh [hJoy5], a
+	ldh a, [hJoyPressed]
+	and a
+	jr z, .checkframedelay
+	ld a, 15
+	ld [hFrameCounter], a ;wTextDelayFrames
+	ret
+
+.checkframedelay
+	ld a, [hFrameCounter] ;wTextDelayFrames
+	and a
+	jr z, .restartframedelay
+	xor a
+	ldh [hJoy5], a
+	ret
+
+.restartframedelay
+	ld a, 5
+	ld [hFrameCounter], a ;wTextDelayFrames
+	ret

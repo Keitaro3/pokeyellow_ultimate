@@ -106,12 +106,12 @@ PlayerPCDeposit:
 	ld [wListMenuID], a
 	call DisplayListMenuID
 	jp c, PlayerPCMenu
-	call IsKeyItem
+	;call IsKeyItem
 	ld a, 1
-	ld [wItemQuantity], a
-	ld a, [wIsKeyItem]
-	and a
-	jr nz, .next
+	ld [wItemQuantityChange], a
+	;ld a, [wIsKeyItem]
+	;and a
+	;jr nz, .next
 ; if it's not a key item, there can be more than one of the item
 	ld hl, DepositHowManyText
 	call PrintText
@@ -120,14 +120,14 @@ PlayerPCDeposit:
 	jp z, .loop
 .next
 	ld hl, wNumBoxItems
-	call AddItemToInventory
+	call ReceiveItem
 	jr c, .roomAvailable
 	ld hl, NoRoomToStoreText
 	call PrintText
 	jp .loop
 .roomAvailable
 	ld hl, wNumBagItems
-	call RemoveItemFromInventory
+	;call RemoveItemFromInventory
 	call WaitSFX
 	ld de, SFX_WITHDRAW_DEPOSIT
 	call PlaySFX
@@ -160,12 +160,12 @@ PlayerPCWithdraw:
 	ld [wListMenuID], a
 	call DisplayListMenuID
 	jp c, PlayerPCMenu
-	call IsKeyItem
+	;call IsKeyItem
 	ld a, 1
-	ld [wItemQuantity], a
-	ld a, [wIsKeyItem]
-	and a
-	jr nz, .next
+	ld [wItemQuantityChange], a
+	;ld a, [wIsKeyItem]
+	;and a
+	;jr nz, .next
 ; if it's not a key item, there can be more than one of the item
 	ld hl, WithdrawHowManyText
 	call PrintText
@@ -174,14 +174,14 @@ PlayerPCWithdraw:
 	jp z, .loop
 .next
 	ld hl, wNumBagItems
-	call AddItemToInventory
+	call ReceiveItem
 	jr c, .roomAvailable
 	ld hl, CantCarryMoreText
 	call PrintText
 	jp .loop
 .roomAvailable
 	ld hl, wNumBoxItems
-	call RemoveItemFromInventory
+	;call RemoveItemFromInventory
 	call WaitSFX
 	ld de, SFX_WITHDRAW_DEPOSIT
 	call PlaySFX
@@ -216,14 +216,14 @@ PlayerPCToss:
 	call DisplayListMenuID
 	pop hl
 	jp c, PlayerPCMenu
-	push hl
-	call IsKeyItem
-	pop hl
+	;push hl
+	;call IsKeyItem
+	;pop hl
 	ld a, 1
 	ld [wItemQuantity], a
-	ld a, [wIsKeyItem]
-	and a
-	jr nz, .next
+	;ld a, [wIsKeyItem]
+	;and a
+	;jr nz, .next
 	ld a, [wcf91]
 	call IsItemHM
 	jr c, .next

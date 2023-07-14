@@ -92,7 +92,103 @@ wMapMusic:: db
 
 wDontPlayMapMusicOnReload:: db
 
-	ds 126
+;---------Window Data--------
+
+wWindowStackPointer:: dw
+wMenuJoypad:: db
+wMenuSelection:: db
+wMenuSelectionQuantity:: db
+wWhichIndexSet:: db
+wScrollingMenuCursorPosition:: db
+wWindowStackSize:: db
+
+wMenuCursorPositionBackup:: db
+wMenuScrollPositionBackup:: db
+
+; menu header
+wMenuHeader::
+wMenuFlags:: db
+wMenuBorderTopCoord:: db
+wMenuBorderLeftCoord:: db
+wMenuBorderBottomCoord:: db
+wMenuBorderRightCoord:: db
+wMenuDataPointer:: dw
+wMenuCursorPosition:: dw
+	ds 7
+wMenuHeaderEnd::
+
+wMenuData::
+wMenuDataFlags:: db
+
+UNION
+; Vertical Menu/DoNthMenu/SetUpMenu
+wMenuDataItems:: db
+wMenuDataIndicesPointer:: dw
+wMenuDataDisplayFunctionPointer:: dw
+wMenuDataPointerTableAddr:: dw
+
+NEXTU
+; 2D Menu
+wMenuData_2DMenuDimensions:: db
+wMenuData_2DMenuSpacing:: db
+wMenuData_2DMenuItemStringsBank:: db
+wMenuData_2DMenuItemStringsAddr:: dw
+wMenuData_2DMenuFunctionBank:: db
+wMenuData_2DMenuFunctionAddr:: dw
+
+NEXTU
+; Scrolling Menu
+wMenuData_ScrollingMenuHeight:: db
+wMenuData_ScrollingMenuWidth:: db
+wMenuData_ScrollingMenuItemFormat:: db
+wMenuData_ItemsPointerBank:: db
+wMenuData_ItemsPointerAddr:: dw
+wMenuData_ScrollingMenuFunction1:: ds 3
+wMenuData_ScrollingMenuFunction2:: ds 3
+wMenuData_ScrollingMenuFunction3:: ds 3
+ENDU
+wMenuDataEnd::
+
+w2DMenuData::
+w2DMenuCursorInitY:: db
+w2DMenuCursorInitX:: db
+w2DMenuNumRows:: db
+w2DMenuNumCols:: db
+w2DMenuFlags1::
+; bit 7: Disable checking of wMenuJoypadFilter
+; bit 6: Enable sprite animations
+; bit 5: Wrap around vertically
+; bit 4: Wrap around horizontally
+; bit 3: Set bit 7 in w2DMenuFlags2 and exit the loop if bit 5 is disabled and we tried to go too far down
+; bit 2: Set bit 7 in w2DMenuFlags2 and exit the loop if bit 5 is disabled and we tried to go too far up
+; bit 1: Set bit 7 in w2DMenuFlags2 and exit the loop if bit 4 is disabled and we tried to go too far left
+; bit 0: Set bit 7 in w2DMenuFlags2 and exit the loop if bit 4 is disabled and we tried to go too far right
+	db
+w2DMenuFlags2:: db
+w2DMenuCursorOffsets:: db
+wMenuJoypadFilter:: db
+w2DMenuDataEnd::
+
+wMenuCursorY:: db
+wMenuCursorX:: db
+wCursorOffCharacter:: db
+wCursorCurrentTile:: dw
+
+wLastPocket:: db
+
+wPartyMenuCursor:: db
+wItemsPocketCursor:: db
+wKeyItemsPocketCursor:: db
+wBallsPocketCursor:: db
+wTMHMPocketCursor:: db
+
+wKeyItemsPocketScrollPosition:: db
+wBallsPocketScrollPosition:: db
+wTMHMPocketScrollPosition:: db
+
+;-------Window Data End-------
+
+	ds 62
 	
 wBGMapPalBuffer::  ds 40
 wBGMapBufferPointers:: ds 20 * 2
@@ -415,6 +511,7 @@ wPartyAndBillsPCSavedMenuItem:: db
 
 ; It is used by the bag list to remember the cursor position while the menu
 ; isn't active.
+wItemsPocketScrollPosition::
 wBagSavedMenuItem:: db
 
 ; It is used by the start menu to remember the cursor position while the menu
@@ -429,6 +526,7 @@ wPlayerMoveListIndex:: db
 wPlayerMonNumber:: db
 
 ; the address of the menu cursor's current location within wTileMap
+wMenuScrollPosition::
 wMenuCursorLocation:: dw
 
 wFarCallBC:: dw
@@ -505,6 +603,7 @@ wMenuWrappingEnabled:: db
 ; whether to check for 180-degree turn (0 = don't, 1 = do)
 wCheckFor180DegreeTurn:: db
 
+wPackUsedItem::
 wUnownLetter:: db
 
 wMissableObjectIndex:: db
@@ -516,7 +615,7 @@ wPredefBC:: dw
 
 wTrainerHeaderFlagBit:: db
 
-	ds 1
+wCurItemQuantity:: db
 
 ; which NPC movement script pointer is being used
 ; 0 if an NPC movement script is not running
@@ -525,7 +624,8 @@ wNPCMovementScriptPointerTableNum:: db
 ; ROM bank of current NPC movement script
 wNPCMovementScriptBank:: db
 
-	ds 2
+wWhichRegisteredItem:: db
+wRegisteredItem:: db
 
 ; This union spans 180 bytes.
 UNION
@@ -763,7 +863,7 @@ wEngagedTrainerClass:: db
 wEngagedTrainerSet:: db
 ENDU
 
-	ds 1
+wBaseHappiness:: db
 
 wNPCMovementDirections2Index::
 ; which entry from TradeMons to select
@@ -776,10 +876,9 @@ wFilteredBagItemsCount:: db
 ; 0 if the joypad state is not being simulated
 wSimulatedJoypadStatesIndex:: db
 
-wBaseHappiness:: db
+wPackJumptableIndex:: db
 
-; written to but nothing ever reads it
-wWastedByteCD3A:: db
+wCurPocket:: db
 
 ; mask indicating which real button presses can override simulated ones
 ; XXX is it ever not 0?
@@ -1163,7 +1262,8 @@ wUsedItemOnWhichPokemon:: db
 ENDU
 
 ; sound ID during battle animations
-wAnimSoundID:: db
+wAnimSoundID::
+wBuffer1:: db
 
 ; used as a storage value for the bank to return to after a BankswitchHome (bankswitch in homebank)
 wBankswitchHomeSavedROMBank:: db
@@ -1174,7 +1274,8 @@ wBankswitchHomeTemp:: db
 ; 0 = nothing bought or sold in pokemart
 ; 1 = bought or sold something in pokemart
 ; this value is not used for anything
-wBoughtOrSoldItemInMart:: db
+wBoughtOrSoldItemInMart::
+wBuffer2:: db
 
 ; $00 - win
 ; $01 - lose
@@ -1304,7 +1405,7 @@ wMoveMonType:: db
 
 wItemQuantity:: db
 
-wMaxItemQuantity:: db
+wItemQuantityChange:: db
 
 ; LoadMonData copies mon data here
 wLoadedMon:: party_struct wLoadedMon
@@ -1782,6 +1883,7 @@ wVBlankSavedROMBank:: db
 
 wFarCopyDataSavedROMBank:: db
 
+wItemAttributeValue::
 wIsKeyItem:: db
 
 wTextBoxID:: db
@@ -2018,7 +2120,13 @@ wDestinationWarpID:: db
 
 wStatusFlags:: db
 
-	ds 21
+wNumBalls:: db
+wBalls:: ds MAX_BALLS * 2 + 1
+wBallsEnd::
+
+wJumptableIndex:: db
+wTrainerCardBadgeFrameCounter:: db
+wTrainerCardBadgeTileID:: db
 	
 wPartyMonHappiness:: ds PARTY_LENGTH
 wPartyMonHappinessEnd::
@@ -2043,21 +2151,17 @@ wGameDifficulty:: db
 
 wIsSurfingPikachuInParty:: db ; bit 6: has surfing pika, bit 7: pikachu in party
 wSurfSpriteID:: db ; What Sprite ID to use for surfing
-	ds 1
 wd475:: db ; something to do with Cinnabar Gym
-	ds 4
 wd47a:: db ; something to do with the play time counter
-	ds 24
 wAlreadySpokeToSurfinDude:: db
-	ds 1
 wSurfingMinigameHiScore:: dw ; little-endian BCD
-	ds 1
 wPrinterSettings:: db
 wUnknownSerialFlag_d499:: db
 wPrinterConnectionOpen:: db
 wPrinterOpcode:: db
 
-	ds 20
+wTMsHMs::
+	ds 57
 
 ; number of signs in the current map (up to 16)
 wNumSigns:: db
@@ -2335,7 +2439,7 @@ wWhichDungeonWarp:: db
 
 wUnusedD71F:: db
 
-	ds 8
+	ds 2
 
 ; bit 0: using Strength outside of battle
 ; bit 1: set by IsSurfingAllowed when surfing's allowed, but the caller resets it after checking the result
@@ -2576,7 +2680,9 @@ wBestMagikarpLengthInches:: db
 wBestHeracrossLengthFeet:: db
 wBestHeracrossLengthInches:: db
 
-	ds 27
+wNumKeyItems:: db
+wKeyItems:: ds MAX_KEY_ITEMS + 1
+wKeyItemsEnd::
 
 wMainDataEnd::
 

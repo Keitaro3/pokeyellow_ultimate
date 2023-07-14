@@ -23,8 +23,8 @@ PrintCardKeyText:
 	ret nz
 .cardKeyDoorInFrontOfPlayer
 	ld b, CARD_KEY
-	call IsItemInBag
-	jr z, .noCardKey
+	call CheckItem
+	jr nc, .noCardKey
 	xor a
 	ld [wPlayerMovingDirection], a
 	tx_pre_id CardKeySuccessText

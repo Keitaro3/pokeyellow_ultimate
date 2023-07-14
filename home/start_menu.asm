@@ -7,6 +7,7 @@ DisplayStartMenu::
 	call PlaySFX
 
 RedisplayStartMenu::
+	call ClearWindowData
 	farcall DrawStartMenu
 RedisplayStartMenu_DoNotDrawStartMenu::
 	farcall PrintSafariZoneSteps ; print Safari Zone info, if in Safari Zone

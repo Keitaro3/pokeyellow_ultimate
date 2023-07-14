@@ -836,9 +836,9 @@ FaintEnemyPokemon:
 	xor a
 	ld [wBattleResult], a
 	ld b, EXP_ALL
-	call IsItemInBag
+	call CheckItem
 	push af
-	jr z, .giveExpToMonsThatFought ; if no exp all, then jump
+	jr nc, .giveExpToMonsThatFought ; if no exp all, then jump
 
 ; the player has exp all
 ; first, we halve the values that determine exp gain
@@ -3439,8 +3439,8 @@ IsGhostBattle:
 	cp POKEMON_TOWER_7F + 1
 	jr nc, .next
 	ld b, SILPH_SCOPE
-	call IsItemInBag
-	ret z
+	call CheckItem
+	ret nc
 .next
 	ld a, 1
 	and a

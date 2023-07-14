@@ -84,7 +84,7 @@ Route16GateScript3:
 
 Route16GateScript_49755:
 	ld b, BICYCLE
-	jp IsItemInBag
+	jp CheckItem
 
 Route16Gate1F_TextPointers:
 	dw Route16GateText1
@@ -94,7 +94,7 @@ Route16Gate1F_TextPointers:
 Route16GateText1:
 	text_asm
 	call Route16GateScript_49755
-	jr z, .asm_0bdf3
+	jr nc, .asm_0bdf3
 	ld hl, Route16GateText_4977c
 	call PrintText
 	jr .asm_56c9d

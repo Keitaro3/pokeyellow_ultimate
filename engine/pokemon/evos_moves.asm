@@ -136,37 +136,22 @@ Evolution_PartyMonLoop: ; loop over party mons
 
 ; TR_NITE
 	push hl
-	ld hl, wBagItems ; will be wKeyItems
-	ld c, 0
-.moonLoop
-	ld a, [hli]
-	cp $ff
-	jr z, .noShard
-	cp MOON_SHARD
-	jr z, .foundShard
-	inc c
-	jr .moonLoop
+	ld b, MOON_SHARD
+	call CheckItem
+	jr nc, .noShard
+.foundShard
+	pop hl
+	jr .doEvolution	
 	
 ; TR_DAY	
 .happiness_daylight
 	push hl
-	ld hl, wBagItems ; will be wKeyItems
-	ld c, 0
-.sunLoop
-	ld a, [hli]
-	cp $ff
-	jr z, .noShard
-	cp SUN_SHARD
-	jr z, .foundShard
-	inc c
-	jr .sunLoop
-	
+	ld b, SUN_SHARD
+	call CheckItem
+	jr c, .foundShard	
 .noShard
 	pop hl
 	jp .nextEvoEntry3
-.foundShard
-	pop hl
-	jr .doEvolution	
 	
 .checkTradeEvo
 	ld a, [wLinkState]

@@ -6,7 +6,8 @@ MACRO item_attribute
 ENDM
 
 ItemAttributes:
-; entries correspond to item ids
+; entries correspond to item ids (see constants/item_constants.asm)
+	table_width ITEMATTR_STRUCT_LENGTH, ItemAttributes
 ; MASTER_BALL
 	item_attribute 0, CANT_SELECT, BALL, ITEMMENU_NOUSE, ITEMMENU_CLOSE
 ; ULTRA_BALL
@@ -93,6 +94,8 @@ ItemAttributes:
 	item_attribute 0, CANT_SELECT | CANT_TOSS, KEY_ITEM, ITEMMENU_NOUSE, ITEMMENU_NOUSE	
 ; SECRET_KEY
 	item_attribute 0, CANT_SELECT | CANT_TOSS, KEY_ITEM, ITEMMENU_CLOSE, ITEMMENU_NOUSE
+; ?????
+	item_attribute $9999, NO_LIMITS, ITEM_T, ITEMMENU_NOUSE, ITEMMENU_NOUSE	
 ; BIKE_VOUCHER
 	item_attribute 0, CANT_SELECT | CANT_TOSS, KEY_ITEM, ITEMMENU_CLOSE, ITEMMENU_NOUSE
 ; X_ACCURACY
@@ -170,8 +173,7 @@ ItemAttributes:
 ; ELIXER
 	item_attribute 3000, CANT_SELECT, ITEM_T, ITEMMENU_PARTY, ITEMMENU_PARTY
 ; MAX_ELIXER
-	item_attribute 4500, CANT_SELECT, ITEM_T, ITEMMENU_PARTY, ITEMMENU_PARTY	
-	
+	item_attribute 4500, CANT_SELECT, ITEM_T, ITEMMENU_PARTY, ITEMMENU_PARTY
 ; MOOMOO_MILK
 	item_attribute 500, CANT_SELECT, ITEM_T, ITEMMENU_PARTY, ITEMMENU_PARTY
 ; PSNCUREBERRY
@@ -281,9 +283,7 @@ ItemAttributes:
 	item_attribute $9999, NO_LIMITS, ITEM_T, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; FLOOR_B4F
 	item_attribute $9999, NO_LIMITS, ITEM_T, ITEMMENU_NOUSE, ITEMMENU_NOUSE
-	
-; $89
-	item_attribute $9999, NO_LIMITS, ITEM_T, ITEMMENU_NOUSE, ITEMMENU_NOUSE
+
 ; $8a
 	item_attribute $9999, NO_LIMITS, ITEM_T, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; $8b
@@ -523,3 +523,4 @@ ItemAttributes:
 	item_attribute $9999, NO_LIMITS, ITEM_T, ITEMMENU_NOUSE, ITEMMENU_NOUSE
 ; $00
 	item_attribute $9999, NO_LIMITS, ITEM_T, ITEMMENU_NOUSE, ITEMMENU_NOUSE
+	assert_table_length $100

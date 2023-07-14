@@ -323,7 +323,7 @@ CeruleanCityText_196d9:
 
 ReceivedTM28Text:
 	text_far _ReceivedTM28Text
-	sound_get_item_1
+	sound_get_tm
 	text_far _ReceivedTM28Text2
 	text_waitbutton
 	text_end

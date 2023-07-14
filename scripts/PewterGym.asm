@@ -144,7 +144,7 @@ BeforeReceivedTM34Text:
 
 ReceivedTM34Text:
 	text_far _ReceivedTM34Text
-	sound_get_item_1
+	sound_get_tm
 	text_far _TM34ExplanationText
 	text_end
 
@@ -154,7 +154,7 @@ TM34NoRoomText:
 
 ReceivedBoulderBadgeText:
 	text_far _ReceivedBoulderBadgeText
-	sound_get_item_1
+	sound_get_badge
 	text_far _BrockBoulerBadgeInfoText ; Text to tell that the flash technique can be used
 	text_end
 

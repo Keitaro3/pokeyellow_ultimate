@@ -1649,7 +1649,6 @@ AreInputsSimulated::
 ; if done simulating button presses
 .doneSimulating
 	xor a
-	ld [wWastedByteCD3A], a
 	ld [wSimulatedJoypadStatesIndex], a
 	ld [wSimulatedJoypadStatesEnd], a
 	ld [wJoyIgnore], a
@@ -2417,6 +2416,32 @@ LoadMapTimeOfDay::
 	ld a, $0
 	ldh [rVBK], a
 	ret	
+
+FadeToMenu::
+	xor a
+	ldh [hAutoBGTransferEnabled], a
+	call LoadStandardMenuHeader
+	farcall FadeOutPalettes
+	call ClearSprites
+	xor a
+	ld [wUpdateSpritesEnabled], a
+	ret	
+	
+CloseSubmenu::
+	call GBPalWhiteOutWithDelay3
+	call ReloadMapData
+	
+	;call GBPalWhiteOutWithDelay3
+	;call RunDefaultPaletteCommand
+	;call ReloadMapData	
+	;call LoadScreenTilesFromBuffer2 ; restore saved screen
+	;call Delay3
+	;call UpdateTimePals	
+	
+	call Call_ExitMenu
+	call ClearSprites
+	call ReloadMapSpriteTilePatterns	
+	call ReloadPalettes
 	
 OverworldTextModeSwitch::
 	call LoadCurrentMapView

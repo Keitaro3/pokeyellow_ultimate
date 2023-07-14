@@ -182,7 +182,7 @@ hDivideBCDQuotient::
 hDivideBCDBuffer::
 	ds 3 ; BCD number
 
-	ds 1
+hOAMUpdate:: db
 
 hSerialReceivedNewData:: db
 ; $01 = using external clock
@@ -204,7 +204,8 @@ hJoyPressed::  db
 hJoyHeld::     db
 hJoy5::        db
 hJoy6::        db
-hJoy7::        db
+hJoy7::
+hInMenu:: db
 
 hLoadedROMBank:: db
 hSavedROMBank::  db
@@ -285,7 +286,7 @@ hTileAnimations:: db
 
 hMovingBGTilesCounter1:: db
 
-	ds 1
+hTilesPerCycle:: db
 
 hCurrentSpriteOffset:: db ; multiple of $10
 

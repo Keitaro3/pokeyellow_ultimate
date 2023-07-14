@@ -19,8 +19,8 @@ CopycatsHouse2FText1:
 	ld hl, CopycatsHouse2FText_5ccd4
 	call PrintText
 	ld b, POKE_DOLL
-	call IsItemInBag
-	jr z, .done
+	call CheckItem
+	jr nc, .done
 	ld hl, TM31PreReceiveText
 	call PrintText
 	lb bc, TM_MIMIC, 1
@@ -53,7 +53,7 @@ TM31PreReceiveText:
 
 ReceivedTM31Text:
 	text_far _ReceivedTM31Text
-	sound_get_item_1
+	sound_get_tm
 TM31ExplanationText1:
 	text_far _TM31ExplanationText1
 	text_waitbutton

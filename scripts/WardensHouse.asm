@@ -13,8 +13,8 @@ FuchsiaHouse2Text1:
 	CheckEvent EVENT_GOT_HM04
 	jr nz, .got_item
 	ld b, GOLD_TEETH
-	call IsItemInBag
-	jr nz, .have_gold_teeth
+	call CheckItem
+	jr c, .have_gold_teeth
 	CheckEvent EVENT_GAVE_GOLD_TEETH
 	jr nz, .gave_gold_teeth
 	ld hl, WardenGibberishText1
@@ -81,7 +81,7 @@ WardenThankYouText:
 
 ReceivedHM04Text:
 	text_far _ReceivedHM04Text
-	sound_get_item_1
+	sound_get_tm
 	text_end
 
 HM04ExplanationText:

@@ -63,8 +63,8 @@ IF DEF(_DEBUG)
 	inc de
 	ld a, [de]
 	inc de
-	ld [wItemQuantity], a
-	call AddItemToInventory
+	ld [wItemQuantityChange], a
+	call ReceiveItem
 	jr .items_loop
 .items_end
 

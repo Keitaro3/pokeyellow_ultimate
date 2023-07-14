@@ -13,8 +13,6 @@ ROM0
 	"rst20"
 	org $0028
 	"rst28"
-	org $0030
-	"rst30"
 	org $0038
 	"rst38"
 	org $0040
@@ -209,6 +207,10 @@ ROMX $3F
 ROMX $40
 	"Move Descriptions"
 	"Item Descriptions"
+ROMX $41	
+	"Pack Menu"
+ROMX $42	
+	"bank42"
 WRAM0
 	"Audio RAM"
 	org $c100
@@ -230,6 +232,9 @@ VRAM $1
 	"VRAM 1"
 SRAM $0
 	"Sprite Buffers"
+	"SRAM Stack"
+	org $b800
+	"SRAM Window Stack"
 SRAM $1
 	"Save Data"
 	"Active Box"

@@ -7,9 +7,9 @@ RemoveGuardDrink::
 	ret z
 	push hl
 	ld b, a
-	call IsItemInBag
+	call CheckItem
 	pop hl
-	jr z, .drinkLoop
+	jr nc, .drinkLoop
 	farjp RemoveItemByID
 
 INCLUDE "data/items/guard_drink_items.asm"

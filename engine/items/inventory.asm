@@ -1,151 +1,555 @@
-; function to add an item (in varying quantities) to the player's bag or PC box
-; INPUT:
-; hl = address of inventory (either wNumBagItems or wNumBoxItems)
-; [wcf91] = item ID
-; [wItemQuantity] = item quantity
-; sets carry flag if successful, unsets carry flag if unsuccessful
-AddItemToInventory_::
-	ld a, [wItemQuantity] ; a = item quantity
-	push af
-	push bc
-	push de
+_ReceiveItem::
+	call DoesHLEqualNumItems
+	jp nz, PutItemInPocket
 	push hl
-	push hl
-	ld d, PC_ITEM_CAPACITY ; how many items the PC can hold
-	ld a, LOW(wNumBagItems)
-	cp l
-	jr nz, .checkIfInventoryFull
-	ld a, HIGH(wNumBagItems)
-	cp h
-	jr nz, .checkIfInventoryFull
-; if the destination is the bag
-	ld d, BAG_ITEM_CAPACITY ; how many items the bag can hold
-.checkIfInventoryFull
-	ld a, [hl]
-	sub d
-	ld d, a
-	ld a, [hli]
-	and a
-	jr z, .addNewItem
-.notAtEndOfInventory
-	ld a, [hli]
-	ld b, a ; b = ID of current item in table
-	ld a, [wcf91] ; a = ID of item being added
-	cp b ; does the current item in the table match the item being added?
-	jp z, .increaseItemQuantity ; if so, increase the item's quantity
-	inc hl
-.addAnotherStackOfItem
-	ld a, [hl]
-	cp $ff ; is it the end of the table?
-	jr nz, .notAtEndOfInventory
-.addNewItem ; add an item not yet in the inventory
-	pop hl
-	ld a, d
-	and a ; is there room for a new item slot?
-	jr z, .done
-; if there is room
-	inc [hl] ; increment the number of items in the inventory
-	ld a, [hl] ; the number of items will be the index of the new item
-	add a
-	dec a
-	ld c, a
-	ld b, 0
-	add hl, bc ; hl = address to store the item
-	ld a, [wcf91]
-	ld [hli], a ; store item ID
-	ld a, [wItemQuantity]
-	ld [hli], a ; store item quantity
-	ld [hl], $ff ; store terminator
-	jp .success
-.increaseItemQuantity ; increase the quantity of an item already in the inventory
-	ld a, [wItemQuantity]
-	ld b, a ; b = quantity to add
-	ld a, [hl] ; a = existing item quantity
-	add b ; a = new item quantity
-	cp 100
-	jp c, .storeNewQuantity ; if the new quantity is less than 100, store it
-; if the new quantity is greater than or equal to 100,
-; try to max out the current slot and add the rest in a new slot
-	sub 99
-	ld [wItemQuantity], a ; a = amount left over (to put in the new slot)
-	ld a, d
-	and a ; is there room for a new item slot?
-	jr z, .increaseItemQuantityFailed
-; if so, store 99 in the current slot and store the rest in a new slot
-	ld a, 99
-	ld [hli], a
-	jp .addAnotherStackOfItem
-.increaseItemQuantityFailed
-	pop hl
-	and a
-	jr .done
-.storeNewQuantity
-	ld [hl], a
-	pop hl
-.success
-	scf
-.done
-	pop hl
+	call CheckItemPocket
 	pop de
-	pop bc
-	pop bc
-	ld a, b
-	ld [wItemQuantity], a ; restore the initial value from when the function was called
+	ld a, [wItemAttributeValue]
+	dec a
+	ld hl, .Pockets
+	rst JumpTable
 	ret
 
-; function to remove an item (in varying quantities) from the player's bag or PC box
-; INPUT:
-; hl = address of inventory (either wNumBagItems or wNumBoxItems)
-; [wWhichPokemon] = index (within the inventory) of the item to remove
-; [wItemQuantity] = quantity to remove
-RemoveItemFromInventory_::
+.Pockets:
+; entries correspond to item types
+	dw .Item
+	dw .KeyItem
+	dw .Ball
+	dw .TMHM
+
+.Item:
+	ld h, d
+	ld l, e
+	jp PutItemInPocket
+
+.KeyItem:
+	ld h, d
+	ld l, e
+	jp ReceiveKeyItem
+
+.Ball:
+	ld hl, wNumBalls
+	jp PutItemInPocket
+
+.TMHM:
+	ld h, d
+	ld l, e
+	ld a, [wcf91] ; wCurItem
+	ld c, a
+	call GetTMHMNumber
+	jp ReceiveTMHM
+	
+_TossItem::
+	call DoesHLEqualNumItems
+	jr nz, .remove
 	push hl
-	inc hl
-	ld a, [wWhichPokemon] ; index (within the inventory) of the item being removed
-	add a
-	add l
-	ld l, a
-	jr nc, .noCarry
-	inc h
-.noCarry
-	inc hl
-	ld a, [wItemQuantity] ; quantity being removed
-	ld e, a
-	ld a, [hl] ; a = current quantity
-	sub e
-	ld [hld], a ; store new quantity
-	ld [wMaxItemQuantity], a
-	and a
-	jr nz, .skipMovingUpSlots
-; if the remaining quantity is 0,
-; remove the emptied item slot and move up all the following item slots
-.moveSlotsUp
-	ld e, l
+	call CheckItemPocket
+	pop de
+	ld a, [wItemAttributeValue]
+	dec a
+	ld hl, .Pockets
+	rst JumpTable
+	ret
+
+.Pockets:
+; entries correspond to item types
+	dw .Item
+	dw .KeyItem
+	dw .Ball
+	dw .TMHM
+
+.Ball:
+	ld hl, wNumBalls
+	jp RemoveItemFromPocket
+
+.TMHM:
+	ld h, d
+	ld l, e
+	ld a, [wcf91] ; wCurItem
+	ld c, a
+	call GetTMHMNumber
+	jp TossTMHM
+
+.KeyItem:
+	ld h, d
+	ld l, e
+	jp TossKeyItem
+
+.Item:
+	ld h, d
+	ld l, e
+
+.remove
+	jp RemoveItemFromPocket	
+	
+_CheckItem::
+	call DoesHLEqualNumItems
+	jr nz, .nope
+	push hl
+	call CheckItemPocket
+	pop de
+	ld a, [wItemAttributeValue]
+	dec a
+	ld hl, .Pockets
+	rst JumpTable
+	ret
+
+.Pockets:
+; entries correspond to item types
+	dw .Item
+	dw .KeyItem
+	dw .Ball
+	dw .TMHM
+
+.Ball:
+	ld hl, wNumBalls
+	jp CheckTheItem
+
+.TMHM:
+	ld h, d
+	ld l, e
+	ld a, [wcf91] ; wCurItem
+	ld c, a
+	call GetTMHMNumber
+	jp CheckTMHM
+
+.KeyItem:
+	ld h, d
+	ld l, e
+	jp CheckKeyItems
+
+.Item:
+	ld h, d
+	ld l, e
+
+.nope
+	jp CheckTheItem	
+	
+DoesHLEqualNumItems:
+	ld a, l
+	cp LOW(wNumBagItems)
+	ret nz
+	ld a, h
+	cp HIGH(wNumBagItems)
+	ret
+
+GetPocketCapacity:
+	ld c, MAX_ITEMS
+	ld a, e
+	cp LOW(wNumBagItems)
+	jr nz, .not_bag
+	ld a, d
+	cp HIGH(wNumBagItems)
+	ret z
+
+.not_bag
+	ld c, MAX_PC_ITEMS
+	ld a, e
+	cp LOW(wNumBoxItems)
+	jr nz, .not_pc
+	ld a, d
+	cp HIGH(wNumBoxItems)
+	ret z
+
+.not_pc
+	ld c, MAX_BALLS
+	ret	
+	
+PutItemInPocket:
 	ld d, h
-	inc de
-	inc de ; de = address of the slot following the emptied one
-.loop ; loop to move up the following slots
+	ld e, l
+	inc hl
+	ld a, [wcf91] ; wCurItem
+	ld c, a
+	ld b, 0
+.loop
+	ld a, [hli]
+	cp -1
+	jr z, .terminator
+	cp c
+	jr nz, .next
+	ld a, MAX_ITEM_STACK
+	sub [hl]
+	add b
+	ld b, a
+	ld a, [wItemQuantityChange]
+	cp b
+	jr z, .ok
+	jr c, .ok
+
+.next
+	inc hl
+	jr .loop
+
+.terminator
+	call GetPocketCapacity
 	ld a, [de]
-	inc de
-	ld [hli], a
-	cp $ff
-	jr nz, .loop
-; update menu info
-	xor a
-	ld [wListScrollOffset], a
-	ld [wCurrentMenuItem], a
-	ld [wBagSavedMenuItem], a
-	ld [wSavedListScrollOffset], a
-	pop hl
-	ld a, [hl] ; a = number of items in inventory
-	dec a ; decrement the number of items
-	ld [hl], a ; store new number of items
-	ld [wListCount], a
-	cp 2
-	jr c, .done
-	ld [wMaxMenuItem], a
+	cp c
+	jr c, .ok
+	and a
+	ret
+
+.ok
+	ld h, d
+	ld l, e
+	ld a, [wcf91] ; wCurItem
+	ld c, a
+	ld a, [wItemQuantityChange]
+	ld [wItemQuantity], a
+.loop2
+	inc hl
+	ld a, [hli]
+	cp -1
+	jr z, .terminator2
+	cp c
+	jr nz, .loop2
+	ld a, [wItemQuantity]
+	add [hl]
+	cp MAX_ITEM_STACK + 1
+	jr nc, .newstack
+	ld [hl], a
 	jr .done
-.skipMovingUpSlots
-	pop hl
+
+.newstack
+	ld [hl], MAX_ITEM_STACK
+	sub MAX_ITEM_STACK
+	ld [wItemQuantity], a
+	jr .loop2
+
+.terminator2
+	dec hl
+	ld a, [wcf91] ; wCurItem
+	ld [hli], a
+	ld a, [wItemQuantity]
+	ld [hli], a
+	ld [hl], -1
+	ld h, d
+	ld l, e
+	inc [hl]
+
 .done
+	scf
+	ret
+	
+RemoveItemFromPocket:
+	ld d, h
+	ld e, l
+	ld a, [hli]
+	ld c, a
+	ld a, [wCurItemQuantity]
+	cp c
+	jr nc, .ok ; memory
+	ld c, a
+	ld b, 0
+	add hl, bc
+	add hl, bc
+	ld a, [wcf91] ; wCurItem
+	cp [hl]
+	inc hl
+	jr z, .skip
+	ld h, d
+	ld l, e
+	inc hl
+
+.ok
+	ld a, [wcf91] ; wCurItem
+	ld b, a
+.loop
+	ld a, [hli]
+	cp b
+	jr z, .skip
+	cp -1
+	jr z, .nope
+	inc hl
+	jr .loop
+
+.skip
+	ld a, [wItemQuantityChange]
+	ld b, a
+	ld a, [hl]
+	sub b
+	jr c, .nope
+	ld [hl], a
+	ld [wItemQuantity], a
+	and a
+	jr nz, .yup
+	dec hl
+	ld b, h
+	ld c, l
+	inc hl
+	inc hl
+.loop2
+	ld a, [hli]
+	ld [bc], a
+	inc bc
+	cp -1
+	jr nz, .loop2
+	ld h, d
+	ld l, e
+	dec [hl]
+
+.yup
+	scf
+	ret
+
+.nope
+	and a
+	ret	
+	
+CheckTheItem:
+	ld a, [wcf91] ; wCurItem
+	ld c, a
+.loop
+	inc hl
+	ld a, [hli]
+	cp -1
+	jr z, .done
+	cp c
+	jr nz, .loop
+	scf
+	ret
+
+.done
+	and a
+	ret	
+	
+ReceiveKeyItem:
+	ld hl, wNumKeyItems
+	ld a, [hli]
+	cp MAX_KEY_ITEMS
+	jr nc, .nope
+	ld c, a
+	ld b, 0
+	add hl, bc
+	ld a, [wcf91] ; wCurItem
+	ld [hli], a
+	ld [hl], -1
+	ld hl, wNumKeyItems
+	inc [hl]
+	scf
+	ret
+
+.nope
+	and a
+	ret
+	
+TossKeyItem:
+	ld a, [wCurItemQuantity]
+	ld e, a
+	ld d, 0
+	ld hl, wNumKeyItems
+	ld a, [hl]
+	cp e
+	jr nc, .ok
+	call .Toss
+	ret nc
+	jr .ok2
+
+.ok
+	dec [hl]
+	inc hl
+	add hl, de
+
+.ok2
+	ld d, h
+	ld e, l
+	inc hl
+.loop
+	ld a, [hli]
+	ld [de], a
+	inc de
+	cp -1
+	jr nz, .loop
+	scf
+	ret
+
+.Toss:
+	ld hl, wNumKeyItems
+	ld a, [wcf91] ; wCurItem
+	ld c, a
+.loop3
+	inc hl
+	ld a, [hl]
+	cp c
+	jr z, .ok3
+	cp -1
+	jr nz, .loop3
+	xor a
+	ret
+
+.ok3
+	ld a, [wNumKeyItems]
+	dec a
+	ld [wNumKeyItems], a
+	scf
+	ret
+	
+CheckKeyItems:
+	ld a, [wcf91] ; wCurItem
+	ld c, a
+	ld hl, wKeyItems
+.loop
+	ld a, [hli]
+	cp c
+	jr z, .done
+	cp -1
+	jr nz, .loop
+	and a
+	ret
+
+.done
+	scf
+	ret	
+
+ReceiveTMHM:
+	dec c
+	ld b, 0
+	ld hl, wTMsHMs
+	add hl, bc
+	ld a, [wItemQuantityChange]
+	add [hl]
+	cp MAX_ITEM_STACK + 1
+	jr nc, .toomany
+	ld [hl], a
+	scf
+	ret
+
+.toomany
+	and a
+	ret
+	
+TossTMHM:
+	dec c
+	ld b, 0
+	ld hl, wTMsHMs
+	add hl, bc
+	ld a, [wItemQuantityChange]
+	ld b, a
+	ld a, [hl]
+	sub b
+	jr c, .nope
+	ld [hl], a
+	ld [wItemQuantity], a
+	jr nz, .yup
+	ld a, [wTMHMPocketScrollPosition]
+	and a
+	jr z, .yup
+	dec a
+	ld [wTMHMPocketScrollPosition], a
+
+.yup
+	scf
+	ret
+
+.nope
+	and a
+	ret
+
+CheckTMHM:
+	dec c
+	ld b, $0
+	ld hl, wTMsHMs
+	add hl, bc
+	ld a, [hl]
+	and a
+	ret z
+	scf
+	ret
+
+GetTMHMNumber::
+; Return the number of a TM/HM by item id c.
+	ld a, c
+.done
+	sub TM01
+	inc a
+	ld c, a
+	ret
+	
+_CheckTossableItem::
+; Return 1 in wItemAttributeValue and carry if wCurItem can't be removed from the bag.
+	ld a, ITEMATTR_PERMISSIONS
+	call GetItemAttr
+	bit CANT_TOSS_F, a
+	jr nz, ItemAttr_ReturnCarry
+	and a
+	ret
+
+CheckSelectableItem:
+; Return 1 in wItemAttributeValue and carry if wCurItem can't be selected.
+	ld a, ITEMATTR_PERMISSIONS
+	call GetItemAttr
+	bit CANT_SELECT_F, a
+	jr nz, ItemAttr_ReturnCarry
+	and a
+	ret	
+	
+CheckItemPocket::
+; Return the pocket for wCurItem in wItemAttributeValue.
+	ld a, ITEMATTR_POCKET
+	call GetItemAttr
+	and $f
+	ld [wItemAttributeValue], a
+	ret
+
+CheckItemContext:
+; Return the context for wCurItem in wItemAttributeValue.
+	ld a, ITEMATTR_HELP
+	call GetItemAttr
+	and $f
+	ld [wItemAttributeValue], a
+	ret
+	
+CheckItemMenu:
+; Return the menu for wCurItem in wItemAttributeValue.
+	ld a, ITEMATTR_HELP
+	call GetItemAttr
+	swap a
+	and $f
+	ld [wItemAttributeValue], a
+	ret
+
+GetItemAttr:
+; Get attribute a of wCurItem.
+
+	push hl
+	push bc
+
+	ld hl, ItemAttributes
+	ld c, a
+	ld b, 0
+	add hl, bc
+
+	xor a
+	ld [wItemAttributeValue], a
+
+	ld a, [wcf91]
+	dec a
+	ld c, a
+	ld a, ITEMATTR_STRUCT_LENGTH
+	call AddNTimes
+	ld a, BANK(ItemAttributes)
+	call GetFarByte
+
+	pop bc
+	pop hl
+	ret
+
+ItemAttr_ReturnCarry:
+	ld a, 1
+	ld [wItemAttributeValue], a
+	scf
+	ret
+	
+GetItemPrice:
+; Return the price of wCurItem in de.
+	push hl
+	push bc
+	ld a, ITEMATTR_PRICE_LO
+	call GetItemAttr
+	ld e, a
+	ld a, ITEMATTR_PRICE_HI
+	call GetItemAttr
+	ld d, a
+	pop bc
+	pop hl
 	ret

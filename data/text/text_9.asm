@@ -440,3 +440,49 @@ _UsedCutText::
 	text " hacked"
 	line "away with CUT!"
 	prompt
+	
+_RegisteredItemText::
+	text "Registered the"
+	line "@"
+	text_ram wStringBuffer
+	text "."
+	prompt
+
+_CantRegisterText::
+	text "You can't register"
+	line "that item."
+	prompt
+
+_AskItemMoveText::
+	text "Where should this"
+	line "be moved to?"
+	done
+	
+_PackNoItemText::
+	text "No items."
+	done	
+	
+_PackEmptyText::
+	text ""
+	done
+
+_AskSurfText::
+	text "The water is calm."
+	line "Want to SURF?"
+	done
+	
+_UseWaterfallText::
+	text_ram wcd6d
+	text " used"
+	line "WATERFALL!"
+	done
+
+_HugeWaterfallText::
+	text "Wow, it's a huge"
+	line "waterfall."
+	done
+
+_AskWaterfallText::
+	text "Do you want to use"
+	line "WATERFALL?"
+	done

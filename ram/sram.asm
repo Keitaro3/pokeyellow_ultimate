@@ -8,6 +8,21 @@ sSpriteBuffer2:: ds SPRITEBUFFERSIZE
 
 sHallOfFame:: ds HOF_TEAM * HOF_TEAM_CAPACITY
 
+sScratch:: ds $60 tiles
+
+SECTION "SRAM Stack", SRAM
+
+sStackTop:: dw
+sRTCHaltCheckValue:: dw
+
+
+SECTION "SRAM Window Stack", SRAM
+
+sWindowStackBottom::
+	ds $800 - 1
+sWindowStackTop::
+	ds 1
+
 
 SECTION "Save Data", SRAM
 

@@ -322,37 +322,6 @@ PlayMapMusic::
 	pop hl
 	ret
 
-PlayMapMusicBike::
-; If the player's on a bike, play the bike music instead of the map music
-	push hl
-	push de
-	push bc
-	push af
-
-	xor a
-	ld [wDontPlayMapMusicOnReload], a
-	ld de, MUSIC_BIKE_RIDING
-	ld a, [wWalkBikeSurfState]
-	cp $1 ;PLAYER_BIKE
-	jr z, .play
-	call GetMapMusic_MaybeSpecial
-.play
-	push de
-	ld de, MUSIC_NONE
-	call PlayMusic
-	call DelayFrame
-	pop de
-
-	ld a, e
-	ld [wMapMusic], a
-	call PlayMusic
-
-	pop af
-	pop bc
-	pop de
-	pop hl
-	ret
-
 TryRestartMapMusic::
 	ld a, [wDontPlayMapMusicOnReload]
 	and a

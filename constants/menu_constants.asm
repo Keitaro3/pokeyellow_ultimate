@@ -94,3 +94,31 @@ USED_VITAMIN    EQU 1
 USED_POWDER     EQU 2
 USED_ROOT       EQU 3
 USED_HERB       EQU 4
+
+; MenuHeader flags
+	const_def
+	shift_const MENU_RESTORE_TILES ; Will be set if MENU_BACKUP_TILES(_2) is set.
+	shift_const MENU_UNUSED_1
+	shift_const MENU_UNUSED_2
+	shift_const MENU_NO_CLICK_SFX
+	shift_const MENU_SPRITE_ANIMS
+	shift_const MENU_UNUSED_3
+	shift_const MENU_BACKUP_TILES
+	shift_const MENU_BACKUP_TILES_2
+
+; VerticalMenu/DoNthMenu/SetUpMenu/_2DMenu MenuData flags
+; Per flag the comment specifies which menus actually implement it
+	const_def
+	shift_const STATICMENU_DISABLE_B ; VerticalMenu/_2DMenu
+	shift_const STATICMENU_ENABLE_SELECT ; VerticalMenu/_2DMenu
+	shift_const STATICMENU_ENABLE_LEFT_RIGHT ; DoNthMenu/SetUpMenu
+	shift_const STATICMENU_ENABLE_START ; DoNthMenu/SetUpMenu
+	shift_const STATICMENU_PLACE_TITLE ; VerticalMenu
+	shift_const STATICMENU_WRAP ; All
+	shift_const STATICMENU_NO_TOP_SPACING ; VerticalMenu/_2DMenu
+	shift_const STATICMENU_CURSOR ; VerticalMenu/_2DMenu
+	
+; ScrollingMenu items structure format
+	const_def 1
+	const SCROLLINGMENU_ITEMS_NORMAL
+	const SCROLLINGMENU_ITEMS_QUANTITY	

@@ -141,7 +141,7 @@ INCLUDE "engine/battle/move_effects/leech_seed.asm"
 SECTION "Battle Engine 5", ROMX
 
 INCLUDE "engine/battle/display_effectiveness.asm"
-INCLUDE "engine/items/tmhm.asm"
+;INCLUDE "engine/items/tmhm.asm"
 INCLUDE "engine/slots/game_corner_slots2.asm"
 
 
@@ -186,6 +186,8 @@ INCLUDE "engine/events/pokedex_rating.asm"
 SECTION "Dungeon Warps", ROMX
 
 INCLUDE "engine/overworld/dungeon_warps.asm"
+
+INCLUDE "engine/items/buy_sell_toss.asm"
 
 
 SECTION "Hidden Objects 2", ROMX
@@ -414,3 +416,20 @@ SECTION "Item Descriptions", ROMX
 
 INCLUDE "data/items/descriptions.asm"
 INCLUDE "data/items/attributes.asm"
+
+
+SECTION "Pack Menu", ROMX
+
+INCLUDE "engine/items/pack.asm"
+INCLUDE "engine/items/pack_leaf.asm"
+INCLUDE "engine/menus/menu.asm"
+INCLUDE "engine/items/update_item_description.asm"
+INCLUDE "engine/menus/scrolling_menu.asm"
+INCLUDE "engine/menus/menu_2.asm"
+
+
+SECTION "bank42", ROMX
+
+INCLUDE "engine/items/tmhm.asm"
+INCLUDE "engine/items/print_item_description.asm"
+INCLUDE "engine/pokemon/print_move_description.asm"

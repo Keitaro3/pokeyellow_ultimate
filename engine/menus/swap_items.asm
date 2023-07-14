@@ -1,149 +1,272 @@
-HandleItemListSwapping::
-	ld a, [wListMenuID]
-	cp ITEMLISTMENU
-	jp nz, DisplayListMenuIDLoop ; only rearrange item list menus
-	push hl
-	ld hl, wListPointer
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	inc hl ; hl = beginning of list entries
-	ld a, [wCurrentMenuItem]
+SwitchItemsInBag:
+	ld a, [wMenuItemToSwap]
+	and a
+	jr z, .init
 	ld b, a
-	ld a, [wListScrollOffset]
-	add b
-	add a
-	ld c, a
-	ld b, 0
-	add hl, bc ; hl = address of currently selected item entry
-	ld a, [hl]
-	pop hl
+	ld a, [wScrollingMenuCursorPosition]
 	inc a
-	jp z, DisplayListMenuIDLoop ; ignore attempts to swap the Cancel menu item
-	ld a, [wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
-	and a ; has the first item to swap already been chosen?
-	jr nz, .swapItems
-; if not, set the currently selected item as the first item
-	ld a, [wCurrentMenuItem]
-	inc a
-	ld b, a
-	ld a, [wListScrollOffset] ; index of top (visible) menu item within the list
-	add b
-	ld [wMenuItemToSwap], a ; ID of item chosen for swapping (counts from 1)
-	ld c, 20
-	call DelayFrames
-	jp DisplayListMenuIDLoop
-.swapItems
-	ld a, [wCurrentMenuItem]
-	inc a
-	ld b, a
-	ld a, [wListScrollOffset]
-	add b
-	ld b, a
-	ld a, [wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
-	cp b ; is the currently selected item the same as the first item to swap?
-	jp z, DisplayListMenuIDLoop ; ignore attempts to swap an item with itself
-	dec a
-	ld [wMenuItemToSwap], a ; ID of item chosen for swapping (counts from 1)
-	ld c, 20
-	call DelayFrames
-	push hl
-	push de
-	ld hl, wListPointer
-	ld a, [hli]
-	ld h, [hl]
-	ld l, a
-	inc hl ; hl = beginning of list entries
-	ld d, h
-	ld e, l ; de = beginning of list entries
-	ld a, [wCurrentMenuItem]
-	ld b, a
-	ld a, [wListScrollOffset]
-	add b
-	add a
-	ld c, a
-	ld b, 0
-	add hl, bc ; hl = address of currently selected item entry
-	ld a, [wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
-	add a
-	add e
-	ld e, a
-	jr nc, .noCarry
-	inc d
-.noCarry ; de = address of first item to swap
-	ld a, [de]
-	ld b, a
-	ld a, [hli]
 	cp b
-	jr z, .swapSameItemType
-.swapDifferentItems
-	ldh [hSwapItemID], a ; save second item ID
-	ld a, [hld]
-	ldh [hSwapItemQuantity], a ; save second item quantity
-	ld a, [de]
-	ld [hli], a ; put first item ID in second item slot
-	inc de
-	ld a, [de]
-	ld [hl], a ; put first item quantity in second item slot
-	ldh a, [hSwapItemQuantity]
-	ld [de], a ; put second item quantity in first item slot
-	dec de
-	ldh a, [hSwapItemID]
-	ld [de], a ; put second item ID in first item slot
-	xor a
-	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
-	pop de
-	pop hl
-	jp DisplayListMenuIDLoop
-.swapSameItemType
-	inc de
+	jr z, .trivial
+	ld a, [wScrollingMenuCursorPosition]
+	call ItemSwitch_GetNthItem
 	ld a, [hl]
-	ld b, a
+	cp -1
+	ret z
+	ld a, [wMenuItemToSwap]
+	dec a
+	ld [wMenuItemToSwap], a
+	call Function248cf
+	jp c, Function248f9
+	ld a, [wScrollingMenuCursorPosition]
+	ld c, a
+	ld a, [wMenuItemToSwap]
+	cp c
+	jr c, .asm_248a2
+	jr .asm_24872
+
+.init
+	ld a, [wScrollingMenuCursorPosition]
+	inc a
+	ld [wMenuItemToSwap], a
+	ret
+
+.trivial
+	xor a
+	ld [wMenuItemToSwap], a
+	ret
+
+.asm_24872
+	ld a, [wMenuItemToSwap]
+	call Function24968
+	ld a, [wScrollingMenuCursorPosition]
+	ld d, a
+	ld a, [wMenuItemToSwap]
+	ld e, a
+	call Function24994
+	push bc
+	ld a, [wMenuItemToSwap]
+	call ItemSwitch_GetNthItem
+	dec hl
+	push hl
+	call ItemSwitch_ConvertItemFormatToDW
+	add hl, bc
+	ld d, h
+	ld e, l
+	pop hl
+	pop bc
+	call Function249d3
+	ld a, [wScrollingMenuCursorPosition]
+	call Function24975
+	xor a
+	ld [wMenuItemToSwap], a
+	ret
+
+.asm_248a2
+	ld a, [wMenuItemToSwap]
+	call Function24968
+	ld a, [wScrollingMenuCursorPosition]
+	ld d, a
+	ld a, [wMenuItemToSwap]
+	ld e, a
+	call Function24994
+	push bc
+	ld a, [wMenuItemToSwap]
+	call ItemSwitch_GetNthItem
+	ld d, h
+	ld e, l
+	call ItemSwitch_ConvertItemFormatToDW
+	add hl, bc
+	pop bc
+	call CopyData
+	ld a, [wScrollingMenuCursorPosition]
+	call Function24975
+	xor a
+	ld [wMenuItemToSwap], a
+	ret
+
+Function248cf:
+	ld a, [wMenuItemToSwap]
+	call ItemSwitch_GetNthItem
+	ld d, h
+	ld e, l
+	ld a, [wScrollingMenuCursorPosition]
+	call ItemSwitch_GetNthItem
 	ld a, [de]
-	add b ; a = sum of both item quantities
-	cp 100 ; is the sum too big for one item slot?
-	jr c, .combineItemSlots
-; swap enough items from the first slot to max out the second slot if they can't be combined
+	cp [hl]
+	jr nz, .asm_248f5
+	ld a, [wScrollingMenuCursorPosition]
+	call Function249bf
+	cp 99
+	jr z, .asm_248f5
+	ld a, [wMenuItemToSwap]
+	call Function249bf
+	cp 99
+	jr nz, .asm_248f7
+.asm_248f5
+	and a
+	ret
+
+.asm_248f7
+	scf
+	ret
+
+Function248f9:
+	ld a, [wMenuItemToSwap]
+	call ItemSwitch_GetNthItem
+	inc hl
+	push hl
+	ld a, [wScrollingMenuCursorPosition]
+	call ItemSwitch_GetNthItem
+	inc hl
+	ld a, [hl]
+	pop hl
+	add [hl]
+	cp 100
+	jr c, .asm_24929
 	sub 99
-	ld [de], a
-	ld a, 99
+	push af
+	ld a, [wScrollingMenuCursorPosition]
+	call ItemSwitch_GetNthItem
+	inc hl
+	ld [hl], 99
+	ld a, [wMenuItemToSwap]
+	call ItemSwitch_GetNthItem
+	inc hl
+	pop af
 	ld [hl], a
-	jr .done
-.combineItemSlots
-	ld [hl], a ; put the sum in the second item slot
-	ld hl, wListPointer
+	xor a
+	ld [wMenuItemToSwap], a
+	ret
+
+.asm_24929
+	push af
+	ld a, [wScrollingMenuCursorPosition]
+	call ItemSwitch_GetNthItem
+	inc hl
+	pop af
+	ld [hl], a
+	ld hl, wMenuData_ItemsPointerAddr
 	ld a, [hli]
 	ld h, [hl]
 	ld l, a
-	dec [hl] ; decrease the number of items
-	ld a, [hl]
-	ld [wListCount], a ; update number of items variable
-	cp 1
-	jr nz, .skipSettingMaxMenuItemID
-	ld [wMaxMenuItem], a ; if the number of items is only one now, update the max menu item ID
-.skipSettingMaxMenuItemID
-	dec de
-	ld h, d
-	ld l, e
-	inc hl
-	inc hl ; hl = address of item after first item to swap
-.moveItemsUpLoop ; erase the first item slot and move up all the following item slots to fill the gap
-	ld a, [hli]
-	ld [de], a
-	inc de
-	inc a ; reached the $ff terminator?
-	jr z, .afterMovingItemsUp
-	ld a, [hli]
-	ld [de], a
-	inc de
-	jr .moveItemsUpLoop
-.afterMovingItemsUp
+	ld a, [wMenuItemToSwap]
+	cp [hl]
+	jr nz, .asm_2494d
+	dec [hl]
+	ld a, [wMenuItemToSwap]
+	call ItemSwitch_GetNthItem
+	ld [hl], $ff
 	xor a
-	ld [wListScrollOffset], a
-	ld [wCurrentMenuItem], a
-.done
-	xor a
-	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
+	ld [wMenuItemToSwap], a
+	ret
+
+.asm_2494d
+	dec [hl]
+	call ItemSwitch_ConvertItemFormatToDW
+	push bc
+	ld a, [wMenuItemToSwap]
+	call ItemSwitch_GetNthItem
+	pop bc
+	push hl
+	add hl, bc
 	pop de
+.asm_2495c
+	ld a, [hli]
+	ld [de], a
+	inc de
+	cp $ff
+	jr nz, .asm_2495c
+	xor a
+	ld [wMenuItemToSwap], a
+	ret
+
+Function24968:
+	call ItemSwitch_GetNthItem
+	ld de, $ff95
+	call ItemSwitch_ConvertItemFormatToDW
+	call CopyData
+	ret
+
+Function24975:
+	call ItemSwitch_GetNthItem
+	ld d, h
+	ld e, l
+	ld hl, $ff95
+	call ItemSwitch_ConvertItemFormatToDW
+	call CopyData
+	ret
+
+ItemSwitch_GetNthItem:
+	push af
+	call ItemSwitch_ConvertItemFormatToDW
+	ld hl, wMenuData_ItemsPointerAddr
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	inc hl
+	pop af
+	call AddNTimes
+	ret
+
+Function24994:
+	push hl
+	call ItemSwitch_ConvertItemFormatToDW
+	ld a, d
+	sub e
+	jr nc, .dont_negate
+	dec a
+	cpl
+.dont_negate
+	ld hl, 0
+	call AddNTimes
+	ld b, h
+	ld c, l
 	pop hl
-	jp DisplayListMenuIDLoop
+	ret
+
+ItemSwitch_ConvertItemFormatToDW:
+	push hl
+	ld a, [wMenuData_ScrollingMenuItemFormat]
+	ld c, a
+	ld b, 0
+	ld hl, .format_dws
+	add hl, bc
+	add hl, bc
+	ld c, [hl]
+	inc hl
+	ld b, [hl]
+	pop hl
+	ret
+
+.format_dws
+	dw 0
+	dw 1
+	dw 2
+
+Function249bf:
+	push af
+	call ItemSwitch_ConvertItemFormatToDW
+	ld a, c
+	cp 2
+	jr nz, .not_2
+	pop af
+	call ItemSwitch_GetNthItem
+	inc hl
+	ld a, [hl]
+	ret
+
+.not_2
+	pop af
+	ld a, $1
+	ret
+
+Function249d3:
+.loop
+	ld a, [hld]
+	ld [de], a
+	dec de
+	dec bc
+	ld a, b
+	or c
+	jr nz, .loop
+	ret

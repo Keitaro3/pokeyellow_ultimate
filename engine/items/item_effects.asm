@@ -2,8 +2,6 @@ UseItem_::
 	ld a, 1
 	ld [wActionResultOrTookBattleTurn], a ; initialise to success value
 	ld a, [wcf91] ;contains item_ID
-	cp HM01
-	jp nc, ItemUseTMHM
 	ld hl, ItemUsePtrTable
 	dec a
 	add a
@@ -17,131 +15,129 @@ UseItem_::
 
 ItemUsePtrTable:
 ; entries correspond to item ids
-	dw ItemUseBall       ; MASTER_BALL
-	dw ItemUseBall       ; ULTRA_BALL
-	dw ItemUseBall       ; GREAT_BALL
-	dw ItemUseBall       ; POKE_BALL
-	dw ItemUseTownMap    ; TOWN_MAP
-	dw ItemUseBicycle    ; BICYCLE
-	dw ItemUseSurfboard  ; out-of-battle Surf effect
-	dw ItemUseBall       ; SAFARI_BALL
-	dw ItemUsePokedex    ; POKEDEX
-	dw ItemUseEvoStone   ; MOON_STONE
-	dw ItemUseMedicine   ; ANTIDOTE
-	dw ItemUseMedicine   ; BURN_HEAL
-	dw ItemUseMedicine   ; ICE_HEAL
-	dw ItemUseMedicine   ; AWAKENING
-	dw ItemUseMedicine   ; PARLYZ_HEAL
-	dw ItemUseMedicine   ; FULL_RESTORE
-	dw ItemUseMedicine   ; MAX_POTION
-	dw ItemUseMedicine   ; HYPER_POTION
-	dw ItemUseMedicine   ; SUPER_POTION
-	dw ItemUseMedicine   ; POTION
-	dw ItemUseBait       ; BOULDERBADGE
-	dw ItemUseRock       ; CASCADEBADGE
-	dw UnusableItem      ; THUNDERBADGE
-	dw UnusableItem      ; RAINBOWBADGE
-	dw UnusableItem      ; SOULBADGE
-	dw UnusableItem      ; MARSHBADGE
-	dw UnusableItem      ; VOLCANOBADGE
-	dw UnusableItem      ; EARTHBADGE
-	dw ItemUseEscapeRope ; ESCAPE_ROPE
-	dw ItemUseRepel      ; REPEL
-	dw UnusableItem      ; OLD_AMBER
-	dw ItemUseEvoStone   ; FIRE_STONE
-	dw ItemUseEvoStone   ; THUNDER_STONE
-	dw ItemUseEvoStone   ; WATER_STONE
-	dw ItemUseVitamin    ; HP_UP
-	dw ItemUseVitamin    ; PROTEIN
-	dw ItemUseVitamin    ; IRON
-	dw ItemUseVitamin    ; CARBOS
-	dw ItemUseVitamin    ; CALCIUM
-	dw ItemUseVitamin    ; RARE_CANDY
-	dw UnusableItem      ; DOME_FOSSIL
-	dw UnusableItem      ; HELIX_FOSSIL
-	dw UnusableItem      ; SECRET_KEY
+	dw ItemUseBall         ; MASTER_BALL
+	dw ItemUseBall         ; ULTRA_BALL
+	dw ItemUseBall         ; GREAT_BALL
+	dw ItemUseBall         ; POKE_BALL
+	dw ItemUseTownMap      ; TOWN_MAP
+	dw ItemUseBicycle      ; BICYCLE
+	dw ItemUseSurfboard    ; out-of-battle Surf effect
+	dw ItemUseBall         ; SAFARI_BALL
+	dw ItemUsePokedex      ; POKEDEX
+	dw ItemUseEvoStone     ; MOON_STONE
+	dw ItemUseMedicine     ; ANTIDOTE
+	dw ItemUseMedicine     ; BURN_HEAL
+	dw ItemUseMedicine     ; ICE_HEAL
+	dw ItemUseMedicine     ; AWAKENING
+	dw ItemUseMedicine     ; PARLYZ_HEAL
+	dw ItemUseMedicine     ; FULL_RESTORE
+	dw ItemUseMedicine     ; MAX_POTION
+	dw ItemUseMedicine     ; HYPER_POTION
+	dw ItemUseMedicine     ; SUPER_POTION
+	dw ItemUseMedicine     ; POTION
+	dw ItemUseBait         ; BOULDERBADGE
+	dw ItemUseRock         ; CASCADEBADGE
+	dw UnusableItem        ; THUNDERBADGE
+	dw UnusableItem        ; RAINBOWBADGE
+	dw UnusableItem        ; SOULBADGE
+	dw UnusableItem        ; MARSHBADGE
+	dw UnusableItem        ; VOLCANOBADGE
+	dw UnusableItem        ; EARTHBADGE
+	dw ItemUseEscapeRope   ; ESCAPE_ROPE
+	dw ItemUseRepel        ; REPEL
+	dw UnusableItem        ; OLD_AMBER
+	dw ItemUseEvoStone     ; FIRE_STONE
+	dw ItemUseEvoStone     ; THUNDER_STONE
+	dw ItemUseEvoStone     ; WATER_STONE
+	dw ItemUseVitamin      ; HP_UP
+	dw ItemUseVitamin      ; PROTEIN
+	dw ItemUseVitamin      ; IRON
+	dw ItemUseVitamin      ; CARBOS
+	dw ItemUseVitamin      ; CALCIUM
+	dw ItemUseVitamin      ; RARE_CANDY
+	dw UnusableItem        ; DOME_FOSSIL
+	dw UnusableItem        ; HELIX_FOSSIL
+	dw UnusableItem        ; SECRET_KEY
 	dw UnusableItem
-	dw UnusableItem      ; BIKE_VOUCHER
-	dw ItemUseXAccuracy  ; X_ACCURACY
-	dw ItemUseEvoStone   ; LEAF_STONE
-	dw ItemUseCardKey    ; CARD_KEY
-	dw UnusableItem      ; NUGGET
-	dw UnusableItem      ; ??? PP_UP
-	dw ItemUsePokedoll   ; POKE_DOLL
-	dw ItemUseMedicine   ; FULL_HEAL
-	dw ItemUseMedicine   ; REVIVE
-	dw ItemUseMedicine   ; MAX_REVIVE
-	dw ItemUseGuardSpec  ; GUARD_SPEC
-	dw ItemUseSuperRepel ; SUPER_REPL
-	dw ItemUseMaxRepel   ; MAX_REPEL
-	dw ItemUseDireHit    ; DIRE_HIT
-	dw UnusableItem      ; COIN
-	dw ItemUseMedicine   ; FRESH_WATER
-	dw ItemUseMedicine   ; SODA_POP
-	dw ItemUseMedicine   ; LEMONADE
-	dw UnusableItem      ; S_S_TICKET
-	dw UnusableItem      ; GOLD_TEETH
-	dw ItemUseXStat      ; X_ATTACK
-	dw ItemUseXStat      ; X_DEFEND
-	dw ItemUseXStat      ; X_SPEED
-	dw ItemUseXStat      ; X_SPECIAL
-	dw ItemUseCoinCase   ; COIN_CASE
-	dw ItemUseOaksParcel ; OAKS_PARCEL
-	dw ItemUseItemfinder ; ITEMFINDER
-	dw UnusableItem      ; SILPH_SCOPE
-	dw ItemUsePokeflute  ; POKE_FLUTE
-	dw UnusableItem      ; LIFT_KEY
-	dw UnusableItem      ; EXP_ALL
-	dw ItemUseOldRod     ; OLD_ROD
-	dw ItemUseGoodRod    ; GOOD_ROD
-	dw ItemUseSuperRod   ; SUPER_ROD
-	dw ItemUsePPUp       ; PP_UP (real one)
-	dw ItemUsePPRestore  ; ETHER
-	dw ItemUsePPRestore  ; MAX_ETHER
-	dw ItemUsePPRestore  ; ELIXER
-	dw ItemUsePPRestore  ; MAX_ELIXER
-	dw ItemUseMedicine   ; MOOMOO_MILK
-	dw ItemUseMedicine   ; PSNCUREBERRY
-	dw ItemUseMedicine   ; PRZCUREBERRY
-	dw ItemUseMedicine   ; BURNT_BERRY
-	dw ItemUseMedicine   ; ICE_BERRY
-	dw ItemCureConfusion ; BITTER_BERRY
-	dw ItemUseMedicine   ; MINT_BERRY
-	dw UnusableItem      ; TINYMUSHROOM
-	dw UnusableItem      ; BIG_MUSHROOM
-	dw ItemUseMedicine   ; MIRACLEBERRY
-	dw UnusableItem      ; PEARL
-	dw UnusableItem      ; BIG_PEARL
-	dw ItemUseMedicine   ; RAGECANDYBAR
-	dw UnusableItem      ; GS_BALL
-	dw ItemUseEnergypowder  ; ENERGYPOWDER
-	dw ItemUseEnergyRoot    ; ENERGY_ROOT
-	dw ItemUseEnergypowder  ; HEAL_POWDER
-	dw ItemUseRevivalHerb   ; REVIVAL_HERB
-	dw UnusableItem      ; STARDUST
-	dw UnusableItem      ; STAR_PIECE
-	dw ItemUseMedicine   ; BERRY_JUICE
-	dw ItemUsePPRestore  ; MYSTERYBERRY
-	dw UnusableItem      ; LEVEL_BALL
-	dw UnusableItem      ; LURE_BALL
-	dw ItemUseBall       ; FRIEND_BALL
-	dw UnusableItem		 ; NORMAL BOX
-	dw UnusableItem		 ; GORGEOUS BOX
-	dw ItemUseEvoStone   ; SUN_STONE
-	dw ItemUseMedicine   ; BERRY
-	dw ItemUseMedicine   ; GOLD_BERRY
-	dw UnusableItem      ; BRICK_PIECE
-	
-	dw UnusableItem      ; METEORITE
-	dw UnusableItem      ; TRI_PASS
-	dw UnusableItem      ; RAINBOW_PASS
-	dw UnusableItem      ; MYSTICTICKET
-	dw UnusableItem      ; GOLD_CORE
-	dw UnusableItem      ; SILVER_CORE
-	dw UnusableItem      ; OLD_SEA_MAP
-	
-	dw UnusableItem  	 ; SUN_SHARD
-	dw UnusableItem  	 ; MOON_SHARD
+	dw UnusableItem        ; BIKE_VOUCHER
+	dw ItemUseXAccuracy    ; X_ACCURACY
+	dw ItemUseEvoStone     ; LEAF_STONE
+	dw ItemUseCardKey      ; CARD_KEY
+	dw UnusableItem        ; NUGGET
+	dw UnusableItem        ; ??? PP_UP
+	dw ItemUsePokedoll     ; POKE_DOLL
+	dw ItemUseMedicine     ; FULL_HEAL
+	dw ItemUseMedicine     ; REVIVE
+	dw ItemUseMedicine     ; MAX_REVIVE
+	dw ItemUseGuardSpec    ; GUARD_SPEC
+	dw ItemUseSuperRepel   ; SUPER_REPL
+	dw ItemUseMaxRepel     ; MAX_REPEL
+	dw ItemUseDireHit      ; DIRE_HIT
+	dw UnusableItem        ; COIN
+	dw ItemUseMedicine     ; FRESH_WATER
+	dw ItemUseMedicine     ; SODA_POP
+	dw ItemUseMedicine     ; LEMONADE
+	dw UnusableItem        ; S_S_TICKET
+	dw UnusableItem        ; GOLD_TEETH
+	dw ItemUseXStat        ; X_ATTACK
+	dw ItemUseXStat        ; X_DEFEND
+	dw ItemUseXStat        ; X_SPEED
+	dw ItemUseXStat        ; X_SPECIAL
+	dw ItemUseCoinCase     ; COIN_CASE
+	dw ItemUseOaksParcel   ; OAKS_PARCEL
+	dw ItemUseItemfinder   ; ITEMFINDER
+	dw UnusableItem        ; SILPH_SCOPE
+	dw ItemUsePokeflute    ; POKE_FLUTE
+	dw UnusableItem        ; LIFT_KEY
+	dw UnusableItem        ; EXP_ALL
+	dw ItemUseOldRod       ; OLD_ROD
+	dw ItemUseGoodRod      ; GOOD_ROD
+	dw ItemUseSuperRod     ; SUPER_ROD
+	dw ItemUsePPUp         ; PP_UP (real one)
+	dw ItemUsePPRestore    ; ETHER
+	dw ItemUsePPRestore    ; MAX_ETHER
+	dw ItemUsePPRestore    ; ELIXER
+	dw ItemUsePPRestore    ; MAX_ELIXER
+	dw ItemUseMedicine     ; MOOMOO_MILK
+	dw ItemUseMedicine     ; PSNCUREBERRY
+	dw ItemUseMedicine     ; PRZCUREBERRY
+	dw ItemUseMedicine     ; BURNT_BERRY
+	dw ItemUseMedicine     ; ICE_BERRY
+	dw ItemCureConfusion   ; BITTER_BERRY
+	dw ItemUseMedicine     ; MINT_BERRY
+	dw UnusableItem        ; TINYMUSHROOM
+	dw UnusableItem        ; BIG_MUSHROOM
+	dw ItemUseMedicine     ; MIRACLEBERRY
+	dw UnusableItem        ; PEARL
+	dw UnusableItem        ; BIG_PEARL
+	dw ItemUseMedicine     ; RAGECANDYBAR
+	dw UnusableItem        ; GS_BALL
+	dw ItemUseEnergypowder ; ENERGYPOWDER
+	dw ItemUseEnergyRoot   ; ENERGY_ROOT
+	dw ItemUseEnergypowder ; HEAL_POWDER
+	dw ItemUseRevivalHerb  ; REVIVAL_HERB
+	dw UnusableItem        ; STARDUST
+	dw UnusableItem        ; STAR_PIECE
+	dw ItemUseMedicine     ; BERRY_JUICE
+	dw ItemUsePPRestore    ; MYSTERYBERRY
+	dw UnusableItem        ; LEVEL_BALL
+	dw UnusableItem        ; LURE_BALL
+	dw ItemUseBall         ; FRIEND_BALL
+	dw UnusableItem		   ; NORMAL BOX
+	dw UnusableItem		   ; GORGEOUS BOX
+	dw ItemUseEvoStone     ; SUN_STONE
+	dw ItemUseMedicine     ; BERRY
+	dw ItemUseMedicine     ; GOLD_BERRY
+	dw UnusableItem        ; BRICK_PIECE
+	dw UnusableItem        ; METEORITE
+	dw UnusableItem        ; TRI_PASS
+	dw UnusableItem        ; RAINBOW_PASS
+	dw UnusableItem        ; MYSTICTICKET
+	dw UnusableItem        ; GOLD_CORE
+	dw UnusableItem        ; SILVER_CORE
+	dw UnusableItem        ; OLD_SEA_MAP
+	dw UnusableItem  	   ; SUN_SHARD
+	dw UnusableItem  	   ; MOON_SHARD
 
 ItemUseBall:
 
@@ -652,8 +648,8 @@ ItemUseBall:
 ; Remove a ball from the bag.
 	ld hl, wNumBagItems
 	inc a
-	ld [wItemQuantity], a
-	jp RemoveItemFromInventory
+	ld [wItemQuantityChange], a
+	jp TossItem
 
 .emptyString
 	db "@"
@@ -862,9 +858,9 @@ ItemUseEvoStone:
 	pop af
 	ld [wWhichPokemon], a
 	ld hl, wNumBagItems
-	ld a, 1 ; remove 1 stone
-	ld [wItemQuantity], a
-	jp RemoveItemFromInventory
+	ld a, 1
+	ld [wItemQuantityChange], a
+	jp TossItem
 
 .noEffect
 	call ItemUseNoEffect
@@ -2520,26 +2516,23 @@ ConfusedNoMoreText2:
 UnusableItem:
 	jp ItemUseNotTime
 
-ItemUseTMHM:
-	ld a, [wIsInBattle]
-	and a
-	jp nz, ItemUseNotTime
-	ld a, [wcf91]
-	sub TM01 ; underflows below 0 for HM items (before TM items)
+AskTeachTMHM::
+	ld hl, wd730
+	ld a, [hl]
 	push af
-	jr nc, .skipAdding
-	add NUM_TMS + NUM_HMS ; adjust HM IDs to come after TM IDs
-.skipAdding
-	inc a
+	res 6, [hl] ; NO_TEXT_SCROLL
+	
+	ld a, [wcf91]
 	ld [wd11e], a
 	predef TMToMove ; get move ID from TM/HM ID
 	ld a, [wd11e]
 	ld [wMoveNum], a
 	call GetMoveName
 	call CopyToStringBuffer
-	pop af
+	ld a, [wcf91]
+	cp $32 ; HM01
 	ld hl, BootedUpTMText
-	jr nc, .printBootedUpMachineText
+	jr c, .printBootedUpMachineText
 	ld hl, BootedUpHMText
 .printBootedUpMachineText
 	call PrintText
@@ -2550,14 +2543,16 @@ ItemUseTMHM:
 	ld a, TWO_OPTION_MENU
 	ld [wTextBoxID], a
 	call DisplayTextBoxID ; yes/no menu
+	pop af
+	ld [wd730], a
+	
 	ld a, [wCurrentMenuItem]
 	and a
-	jr z, .useMachine
-	ld a, 2
-	ld [wActionResultOrTookBattleTurn], a ; item not used
+	ret z
+	scf
 	ret
-
-.useMachine
+	
+TeachTMHM:
 	ld a, [wWhichPokemon]
 	push af
 	ld a, [wcf91]
@@ -2626,7 +2621,19 @@ ItemUseTMHM:
 	ld a, [wcf91]
 	call IsItemHM
 	ret c
+	call .ConvertTMHMNumberToItem
 	jp RemoveUsedItem
+	
+.ConvertTMHMNumberToItem:
+	ld a, [wcf91]
+	dec a
+	cp $32 ; HM01
+	jr c, .skipSubtracting
+	sub NUM_TMS + NUM_HMS
+.skipSubtracting
+	add TM01
+	ld [wcf91], a
+	ret
 
 BootedUpTMText:
 	text_far _BootedUpTMText
@@ -2653,9 +2660,9 @@ PrintItemUseTextAndRemoveItem:
 
 RemoveUsedItem:
 	ld hl, wNumBagItems
-	ld a, 1 ; one item
-	ld [wItemQuantity], a
-	jp RemoveItemFromInventory
+	ld a, 1
+	ld [wItemQuantityChange], a
+	jp TossItem
 
 ItemUseNoEffect:
 	ld hl, ItemUseNoEffectText
@@ -2925,116 +2932,6 @@ GetSelectedMoveOffset2:
 	ld b, 0
 	add hl, bc
 	ret
-
-; confirms the item toss and then tosses the item
-; INPUT:
-; hl = address of inventory (either wNumBagItems or wNumBoxItems)
-; [wcf91] = item ID
-; [wWhichPokemon] = index of item within inventory
-; [wItemQuantity] = quantity to toss
-; OUTPUT:
-; clears carry flag if the item is tossed, sets carry flag if not
-TossItem_::
-	push hl
-	ld a, [wcf91]
-	call IsItemHM
-	pop hl
-	jr c, .tooImportantToToss
-	push hl
-	call IsKeyItem_
-	ld a, [wIsKeyItem]
-	pop hl
-	and a
-	jr nz, .tooImportantToToss
-	push hl
-	ld a, [wcf91]
-	ld [wd11e], a
-	call GetItemName
-	call CopyToStringBuffer
-	ld hl, IsItOKToTossItemText
-	call PrintText
-	hlcoord 14, 7
-	lb bc, 8, 15
-	ld a, TWO_OPTION_MENU
-	ld [wTextBoxID], a
-	call DisplayTextBoxID ; yes/no menu
-	ld a, [wMenuExitMethod]
-	cp CHOSE_SECOND_ITEM
-	pop hl
-	scf
-	ret z ; return if the player chose No
-; if the player chose Yes
-	push hl
-	ld a, [wWhichPokemon]
-	call RemoveItemFromInventory
-	ld a, [wcf91]
-	ld [wd11e], a
-	call GetItemName
-	call CopyToStringBuffer
-	ld hl, ThrewAwayItemText
-	call PrintText
-	pop hl
-	and a
-	ret
-
-.tooImportantToToss
-	push hl
-	ld hl, TooImportantToTossText
-	call PrintText
-	pop hl
-	scf
-	ret
-
-ThrewAwayItemText:
-	text_far _ThrewAwayItemText
-	text_end
-
-IsItOKToTossItemText:
-	text_far _IsItOKToTossItemText
-	text_end
-
-TooImportantToTossText:
-	text_far _TooImportantToTossText
-	text_end
-
-; checks if an item is a key item
-; INPUT:
-; [wcf91] = item ID
-; OUTPUT:
-; [wIsKeyItem] = result
-; 00: item is not key item
-; 01: item is key item
-IsKeyItem_::
-	ld a, $01
-	ld [wIsKeyItem], a
-	ld a, [wcf91]
-	cp HM01 ; is the item an HM or TM?
-	jr nc, .checkIfItemIsHM
-; if the item is not an HM or TM
-	push af
-	ld hl, KeyItemFlags
-	ld de, wBuffer
-	ld bc, 16 ; only 11 bytes are actually used
-	ASSERT 16 >= (NUM_ITEMS + 7) / 8
-	call CopyData
-	pop af
-	dec a
-	ld c, a
-	ld hl, wBuffer
-	ld b, FLAG_TEST
-	predef FlagActionPredef
-	ld a, c
-	and a
-	ret nz
-.checkIfItemIsHM
-	ld a, [wcf91]
-	call IsItemHM
-	ret c
-	xor a
-	ld [wIsKeyItem], a
-	ret
-
-INCLUDE "data/items/key_items.asm"
 
 SendNewMonToBox:
 	ld a, BANK(sCurBoxDataCount)

@@ -1,3 +1,10 @@
+_hl_::
+	jp hl
+
+_de_::
+	push de
+	ret
+
 ClearSprites::
 	xor a
 	ld hl, wShadowOAM

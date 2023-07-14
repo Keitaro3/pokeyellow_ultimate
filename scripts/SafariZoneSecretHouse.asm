@@ -33,7 +33,7 @@ SafariZoneSecretHouseText_4a350:
 
 ReceivedHM03Text:
 	text_far _ReceivedHM03Text
-	sound_get_item_1
+	sound_get_tm
 	text_end
 
 HM03ExplanationText:

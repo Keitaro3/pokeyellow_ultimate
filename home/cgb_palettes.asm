@@ -289,3 +289,7 @@ SwapTextboxPalettes::
 ScrollBGMapPalettes::
 	homecall _ScrollBGMapPalettes
 	ret
+	
+UpdateTimePals::
+	callfar _UpdateTimePals
+	ret

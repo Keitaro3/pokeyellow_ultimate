@@ -35,15 +35,13 @@ PrintBeginningBattleText:
 	call PrintText
 	jr .done
 .pokemonTower
-	ld b, SILPH_SCOPE
-	call IsItemInBag
 	ld a, [wEnemyMonSpecies2]
 	ld [wcf91], a
 	cp RESTLESS_SOUL
 	jr z, .isMarowak
-	ld a, b
-	and a
-	jr z, .noSilphScope
+	ld b, SILPH_SCOPE
+	call CheckItem
+	jr nc, .noSilphScope
 	callfar LoadEnemyMonData
 	jr .notPokemonTower
 .noSilphScope
@@ -53,9 +51,9 @@ PrintBeginningBattleText:
 	call PrintText
 	jr .done
 .isMarowak
-	ld a, b
-	and a
-	jr z, .noSilphScope
+	ld b, SILPH_SCOPE
+	call CheckItem
+	jr nc, .noSilphScope
 	ld hl, EnemyAppearedText
 	call PrintText
 	ld hl, UnveiledGhostText

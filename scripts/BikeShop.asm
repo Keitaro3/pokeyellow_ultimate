@@ -16,8 +16,8 @@ BikeShopText1:
 	jp .Done
 .asm_260d4
 	ld b, BIKE_VOUCHER
-	call IsItemInBag
-	jr z, .asm_41190
+	call CheckItem
+	jr nc, .asm_41190
 	ld hl, BikeShopText_1d81f
 	call PrintText
 	lb bc, BICYCLE, 1

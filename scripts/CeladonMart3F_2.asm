@@ -24,7 +24,7 @@ TM18PreReceiveText:
 
 ReceivedTM18Text:
 	text_far _ReceivedTM18Text
-	sound_get_item_1
+	sound_get_tm
 	text_end
 
 TM18ExplanationText:

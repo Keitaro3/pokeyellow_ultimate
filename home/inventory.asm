@@ -15,24 +15,22 @@ AddAmountSoldToMoney::
 	ld de, SFX_PURCHASE
 	call WaitPlaySFX
 	jp WaitSFX
-
-; function to remove an item (in varying quantities) from the player's bag or PC box
-; INPUT:
-; HL = address of inventory (either wNumBagItems or wNumBoxItems)
-; [wWhichPokemon] = index (within the inventory) of the item to remove
-; [wItemQuantity] = quantity to remove
-RemoveItemFromInventory::
-	homecall RemoveItemFromInventory_
-	ret
-
-; function to add an item (in varying quantities) to the player's bag or PC box
-; INPUT:
-; HL = address of inventory (either wNumBagItems or wNumBoxItems)
-; [wcf91] = item ID
-; [wItemQuantity] = item quantity
-; sets carry flag if successful, unsets carry flag if unsuccessful
-AddItemToInventory::
+	
+ReceiveItem::
 	push bc
-	homecall_sf AddItemToInventory_
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, BANK(_ReceiveItem)
+	call BankswitchCommon
+	push hl
+	push de
+
+	call _ReceiveItem
+
+	pop de
+	pop hl
 	pop bc
-	ret
+	ld a, b
+	call BankswitchCommon
+	pop bc
+	ret	

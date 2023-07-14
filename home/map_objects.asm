@@ -59,16 +59,29 @@ StartSimulatingJoypadStates::
 	ld hl, wd730
 	set 7, [hl]
 	ret
-
-IsItemInBag::
-; given an item_id in b
-; set zero flag if item isn't in player's bag
-; else reset zero flag
-; related to Pokémon Tower and ghosts
-	predef GetQuantityOfItemInBag
+	
+CheckItem::
 	ld a, b
-	and a
-	ret
+	ld [wcf91], a
+	ld hl, wNumBagItems
+
+	push hl
+	push de
+	push bc
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, BANK(_CheckItem)
+	call BankswitchCommon
+
+	call _CheckItem
+
+	pop bc
+	ld a, b
+	call BankswitchCommon
+	pop bc
+	pop de
+	pop hl
+	ret	
 
 DisplayPokedex::
 	ld [wd11e], a

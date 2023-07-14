@@ -649,25 +649,10 @@ OaksLabScript18:
 	ret
 
 OaksLabScript_RemoveParcel:
-	ld hl, wBagItems
-	ld bc, 0
-.loop
-	ld a, [hli]
-	cp $ff
-	ret z
-	cp OAKS_PARCEL
-	jr z, .foundParcel
-	inc hl
-	inc c
-	jr .loop
-.foundParcel
-	ld hl, wNumBagItems
-	ld a, c
-	ld [wWhichPokemon], a
-	ld a, 1
-	ld [wItemQuantity], a
-	jp RemoveItemFromInventory
-
+	ld a, OAKS_PARCEL
+	ld [hItemToRemoveID], a
+	farjp RemoveItemByID	
+	
 OaksLabScript_1d02b:
 	ld a, $7c
 	ldh [hSpriteScreenYCoord], a
@@ -979,8 +964,8 @@ OaksLabText5:
 	predef DisplayDexRating
 	jp .asm_1d2ed
 .asm_1d279
-	ld b, POKE_BALL
-	call IsItemInBag
+	ld a, [wBalls]
+	cp $FF
 	jr nz, .asm_1d2e7
 	CheckEvent EVENT_BEAT_ROUTE22_RIVAL_1ST_BATTLE
 	jr nz, .asm_1d2d0
@@ -1000,8 +985,8 @@ OaksLabText5:
 	jr .asm_1d2ed
 .asm_1d2a9
 	ld b, OAKS_PARCEL
-	call IsItemInBag
-	jr nz, .asm_1d2b8
+	call CheckItem
+	jr c, .asm_1d2b8
 	ld hl, OaksLabText_1d2fa
 	call PrintText
 	jr .asm_1d2ed

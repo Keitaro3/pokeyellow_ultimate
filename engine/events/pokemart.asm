@@ -68,10 +68,10 @@ DisplayPokemartDialogue_::
 	call DisplayListMenuID
 	jp c, .returnToMainPokemartMenu ; if the player closed the menu
 .confirmItemSale ; if the player is trying to sell a specific item
-	call IsKeyItem
-	ld a, [wIsKeyItem]
-	and a
-	jr nz, .unsellableItem
+	;call IsKeyItem
+	;ld a, [wIsKeyItem]
+	;and a
+	;jr nz, .unsellableItem
 	ld a, [wcf91]
 	call IsItemHM
 	jr c, .unsellableItem
@@ -108,7 +108,7 @@ DisplayPokemartDialogue_::
 .skipSettingFlag1
 	call AddAmountSoldToMoney
 	ld hl, wNumBagItems
-	call RemoveItemFromInventory
+	;call RemoveItemFromInventory
 	jp .sellMenuLoop
 .unsellableItem
 	ld hl, PokemartUnsellableItemText
@@ -150,7 +150,7 @@ DisplayPokemartDialogue_::
 	call DisplayListMenuID
 	jr c, .returnToMainPokemartMenu ; if the player closed the menu
 	ld a, 99
-	ld [wMaxItemQuantity], a
+	ld [wItemQuantityChange], a
 	xor a
 	ldh [hHalveItemPrices], a ; don't halve item prices when buying
 	call DisplayChooseQuantityMenu
@@ -181,7 +181,7 @@ DisplayPokemartDialogue_::
 	call .isThereEnoughMoney
 	jr c, .notEnoughMoney
 	ld hl, wNumBagItems
-	call AddItemToInventory
+	;call AddItemToInventory
 	jr nc, .bagFull
 	call SubtractAmountPaidFromMoney
 	ld a, [wBoughtOrSoldItemInMart]

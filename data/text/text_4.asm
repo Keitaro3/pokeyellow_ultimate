@@ -54,3 +54,8 @@ _StoppedEvolvingText::
 	text_start
 	line "stopped evolving!"
 	prompt
+	
+_WindowPoppingErrorText::
+	text "No windows avail-"
+	line "able for popping."
+	done

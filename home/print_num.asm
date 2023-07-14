@@ -8,6 +8,23 @@ FarPrintText::
 	pop af
 	call BankswitchCommon
 	ret
+	
+CallPointerAt::
+	ldh a, [hLoadedROMBank]
+	push af
+	ld a, [hli]
+	call BankswitchCommon
+
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+
+	call _hl_
+
+	pop hl
+	ld a, h
+	call BankswitchCommon
+	ret	
 
 PrintNumber::
 ; Print the c-digit, b-byte value at de.

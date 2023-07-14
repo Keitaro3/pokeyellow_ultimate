@@ -145,8 +145,8 @@ CeladonGameCornerText2:
 	and a
 	jr nz, .asm_48d0f
 	ld b, COIN_CASE
-	call IsItemInBag
-	jr z, .asm_48d19
+	call CheckItem
+	jr nc, .asm_48d19
 	call Has9990Coins
 	jr nc, .asm_48d14
 	xor a
@@ -231,8 +231,8 @@ CeladonGameCornerText5:
 	ld hl, CeladonGameCornerText_48d9c
 	call PrintText
 	ld b, COIN_CASE
-	call IsItemInBag
-	jr z, .asm_48d93
+	call CheckItem
+	jr nc, .asm_48d93
 	call Has9990Coins
 	jr nc, .asm_48d8e
 	xor a
@@ -311,8 +311,8 @@ CeladonGameCornerText9:
 	ld hl, CeladonGameCornerText_48e26
 	call PrintText
 	ld b, COIN_CASE
-	call IsItemInBag
-	jr z, .asm_48e1d
+	call CheckItem
+	jr c, .asm_48e1d
 	call Has9990Coins
 	jr nc, .asm_48e18
 	xor a
@@ -363,8 +363,8 @@ CeladonGameCornerText10:
 	ld hl, CeladonGameCornerText_48e88
 	call PrintText
 	ld b, COIN_CASE
-	call IsItemInBag
-	jr z, .asm_48e7f
+	call CheckItem
+	jr c, .asm_48e7f
 	call Has9990Coins
 	jr z, .asm_48e7a
 	xor a

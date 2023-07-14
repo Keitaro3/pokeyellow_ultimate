@@ -141,7 +141,7 @@ SabrinaPreBattleText:
 
 ReceivedMarshBadgeText:
 	text_far _ReceivedMarshBadgeText
-	sound_get_key_item ; actually plays the second channel of SFX_BALL_POOF due to the wrong music bank being loaded
+	sound_get_badge
 	text_promptbutton
 	text_end
 
@@ -155,7 +155,7 @@ KogaMarshBadgeInfoText:
 
 ReceivedTM46Text:
 	text_far _ReceivedTM46Text
-	sound_get_item_1
+	sound_get_tm
 	text_far _TM46ExplanationText
 	text_end
 

@@ -1,523 +1,416 @@
+StaticMenuJoypad::
+	callfar _StaticMenuJoypad
+	call GetMenuJoypad
+	ret
+
+ScrollingMenuJoypad::
+	callfar _ScrollingMenuJoypad
+	call GetMenuJoypad
+	ret
+
+GetMenuJoypad::
+	push bc
+	push af
+	ldh a, [hJoy5]
+	and D_PAD
+	ld b, a
+	ldh a, [hJoyPressed]
+	and BUTTONS
+	or b
+	ld b, a
+	pop af
+	ld a, b
+	pop bc
+	ret
+	
+PlaceHollowCursor::
+	ld hl, wCursorCurrentTile
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld [hl], "▷"
+	ret
+
+RestoreTileBackup::
+	call MenuBoxCoord2Tile
+	call GetMenuBoxDims
+	inc b
+	inc c
+
+.row
+	push bc
+	push hl
+
+.col
+	ld a, [de]
+	ld [hli], a
+	dec de
+	dec c
+	jr nz, .col
+
+	pop hl
+	ld bc, SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .row
+
+	ret
+	
+PushWindow::
+	callfar _PushWindow
+	ret
+	
+ExitMenu::
+	push af
+	callfar _ExitMenu
+	pop af
+	ret
+	
+InitVerticalMenuCursor::
+	callfar _InitVerticalMenuCursor
+	ret
+	
+CloseWindow::
+	push af
+	call ExitMenu
+	call ApplyTilemap
+	call UpdateSprites
+	pop af
+	ret	
+	
+PopWindow::
+	ld b, wMenuHeaderEnd - wMenuHeader
+	ld de, wMenuHeader
+.loop
+	ld a, [hld]
+	ld [de], a
+	inc de
+	dec b
+	jr nz, .loop
+	ret
+
+GetMenuBoxDims::
+	ld a, [wMenuBorderTopCoord] ; top
+	ld b, a
+	ld a, [wMenuBorderBottomCoord] ; bottom
+	sub b
+	ld b, a
+	ld a, [wMenuBorderLeftCoord] ; left
+	ld c, a
+	ld a, [wMenuBorderRightCoord] ; right
+	sub c
+	ld c, a
+	ret
+	
+CopyMenuData::
+	push hl
+	push de
+	push bc
+	push af
+	ld hl, wMenuDataPointer
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ld de, wMenuData
+	ld bc, wMenuDataEnd - wMenuData
+	call CopyData
+	pop af
+	pop bc
+	pop de
+	pop hl
+	ret
+	
+GetWindowStackTop::
+	ld hl, wWindowStackPointer
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	inc hl
+	ld a, [hli]
+	ld h, [hl]
+	ld l, a
+	ret
+	
+PlaceVerticalMenuItems::
+	call CopyMenuData
+	ld hl, wMenuDataPointer
+	ld e, [hl]
+	inc hl
+	ld d, [hl]
+	call GetMenuTextStartCoord
+	call Coord2Tile ; hl now contains the tilemap address where we will start printing text.
+	inc de
+	ld a, [de] ; Number of items
+	inc de
+	ld b, a
+.loop
+	push bc
+	call PlaceString
+	inc de
+	ld bc, 2 * SCREEN_WIDTH
+	add hl, bc
+	pop bc
+	dec b
+	jr nz, .loop
+
+	ld a, [wMenuDataFlags]
+	bit 4, a
+	ret z
+
+	call MenuBoxCoord2Tile
+	ld a, [de]
+	ld c, a
+	inc de
+	ld b, $0
+	add hl, bc
+	jp PlaceString
+	
+MenuBox::
+	call MenuBoxCoord2Tile
+	call GetMenuBoxDims
+	dec b
+	dec c
+	jp Textbox
+	
+GetMenuTextStartCoord::
+	ld a, [wMenuBorderTopCoord]
+	ld b, a
+	inc b
+	ld a, [wMenuBorderLeftCoord]
+	ld c, a
+	inc c
+; bit 6: if not set, leave extra room on top
+	ld a, [wMenuDataFlags]
+	bit 6, a
+	jr nz, .bit_6_set
+	inc b
+
+.bit_6_set
+; bit 7: if set, leave extra room on the left
+	ld a, [wMenuDataFlags]
+	bit 7, a
+	jr z, .bit_7_clear
+	inc c
+
+.bit_7_clear
+	ret
+
+ClearWholeMenuBox::
+	call MenuBoxCoord2Tile
+	call GetMenuBoxDims
+	inc c
+	inc b
+	call ClearScreenArea
+	ret
+
+MenuBoxCoord2Tile::
+	ld a, [wMenuBorderLeftCoord]
+	ld c, a
+	ld a, [wMenuBorderTopCoord]
+	ld b, a
+
+Coord2Tile::
+; Return the address of wTilemap(c, b) in hl.
+	xor a
+	ld h, a
+	ld l, b
+	ld a, c
+	ld b, h
+	ld c, l
+	add hl, hl
+	add hl, hl
+	add hl, bc
+	add hl, hl
+	add hl, hl
+	ld c, a
+	xor a
+	ld b, a
+	add hl, bc
+	bccoord 0, 0
+	add hl, bc
+	ret
+	
+LoadMenuHeader::
+	call CopyMenuHeader
+	call PushWindow
+	ret	
+	
+CopyMenuHeader::
+	ld de, wMenuHeader
+	ld bc, wMenuHeaderEnd - wMenuHeader
+	call CopyData
+	ret
+	
+MenuTextbox::
+	push hl
+	call LoadMenuTextbox
+	pop hl
+	jp PrintText
+	
+LoadMenuTextbox::
+	ld hl, .MenuHeader
+	call LoadMenuHeader
+	ret
+
+.MenuHeader:
+	db MENU_BACKUP_TILES ; flags
+	menu_coords 0, 12, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1
+	dw vChars0
+	db 0 ; default option
+	
+LoadStandardMenuHeader::
+	ld hl, .MenuHeader
+	call LoadMenuHeader
+	ret
+
+.MenuHeader:
+	db MENU_BACKUP_TILES ; flags
+	menu_coords 0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1
+	dw 0
+	db 1 ; default option
+
+Call_ExitMenu::
+	call ExitMenu
+	ret
+	
+VerticalMenu::
+	xor a
+	ldh [hAutoBGTransferEnabled], a
+	call MenuBox
+	call UpdateSprites
+	call PlaceVerticalMenuItems
+	call ApplyTilemap
+	call CopyMenuData
+	ld a, [wMenuDataFlags]
+	bit 7, a
+	jr z, .cancel
+	call InitVerticalMenuCursor
+	call StaticMenuJoypad
+	call MenuClickSound
+	bit 1, a
+	jr z, .okay
+.cancel
+	scf
+	ret
+
+.okay
+	and a
+	ret
+
+	
+YesNoBox::
+	lb bc, SCREEN_WIDTH - 6, 7
+
+PlaceYesNoBox::
+	jr _YesNoBox
+
+_YesNoBox::
+; Return nc (yes) or c (no).
+	push bc
+	ld hl, YesNoMenuHeader
+	call CopyMenuHeader
+	pop bc
+
+	ld a, b
+	ld [wMenuBorderLeftCoord], a
+	add 5
+	ld [wMenuBorderRightCoord], a
+	ld a, c
+	ld [wMenuBorderTopCoord], a
+	add 4
+	ld [wMenuBorderBottomCoord], a
+	call PushWindow
+
+InterpretTwoOptionMenu::
+	call VerticalMenu
+	push af
+	ld c, $f
+	call DelayFrames
+	call CloseWindow
+	pop af
+	jr c, .no
+	ld a, [wMenuCursorY]
+	cp 2 ; no
+	jr z, .no
+	and a
+	ret
+
+.no
+	ld a, 2
+	ld [wMenuCursorY], a
+	scf
+	ret
+
+YesNoMenuHeader::
+	db MENU_BACKUP_TILES ; flags
+	menu_coords 10, 5, 15, 9
+	dw .MenuData
+	db 1 ; default option
+
+.MenuData:
+	db STATICMENU_CURSOR | STATICMENU_NO_TOP_SPACING ; flags
+	db 2
+	db "YES@"
+	db "NO@"
+
+ClearWindowData::
+	ld hl, wWindowStackPointer
+	call .bytefill
+	ld hl, wMenuHeader
+	call .bytefill
+	ld hl, wMenuDataFlags
+	call .bytefill
+	ld hl, w2DMenuCursorInitY
+	call .bytefill
+
+	xor a
+	farcall EnableSRAMAndLatchClockData
+
+	xor a
+	ld hl, sWindowStackTop
+	ld [hld], a
+	ld [hld], a
+	ld a, l
+	ld [wWindowStackPointer], a
+	ld a, h
+	ld [wWindowStackPointer + 1], a
+
+	farcall DisableSRAMAndPrepareClockData
+	ret
+
+.bytefill
+	ld bc, $10
+	xor a
+	call FillMemory
+	ret	
+	
+MenuClickSound::
+	push af
+	and A_BUTTON | B_BUTTON
+	jr z, .nosound
+	ld hl, wMenuFlags
+	bit 3, a
+	jr nz, .nosound
+	call PlayClickSFX
+.nosound
+	pop af
+	ret
+
+PlayClickSFX::
+	push de
+	ld de, SFX_PRESS_AB
+	call PlaySFX
+	pop de
+	ret
+
+;----------------LEGACY FUNCTIONS TO REMOVE-------------------
+
 ; INPUT:
 ; [wListMenuID] = list menu ID
 ; [wListPointer] = address of the list (2 bytes)
 DisplayListMenuID::
-	xor a
-	ldh [hAutoBGTransferEnabled], a ; disable auto-transfer
-	ld a, 1
-	ldh [hJoy7], a ; joypad state update flag
-	ld a, [wBattleType]
-	and a ; is it the Old Man battle?
-	jr nz, .specialBattleType
-	ld a, $01 ; hardcoded bank
-	jr .bankswitch
-.specialBattleType ; Old Man battle
-	ld a, BANK(DisplayBattleMenu)
-.bankswitch
-	call BankswitchHome
-	ld hl, wd730
-	set 6, [hl] ; turn off letter printing delay
-	xor a
-	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
-	ld [wListCount], a
-	ld a, [wListPointer]
-	ld l, a
-	ld a, [wListPointer + 1]
-	ld h, a ; hl = address of the list
-	ld a, [hl] ; the first byte is the number of entries in the list
-	ld [wListCount], a
-	ld a, LIST_MENU_BOX
-	ld [wTextBoxID], a
-	call DisplayTextBoxID ; draw the menu text box
-	call UpdateSprites ; disable sprites behind the text box
-; the code up to .skipMovingSprites appears to be useless
-	hlcoord 4, 2 ; coordinates of upper left corner of menu text box
-	lb de, 9, 14 ; height and width of menu text box
-	ld a, [wListMenuID]
-	and a ; PCPOKEMONLISTMENU?
-	jr nz, .skipMovingSprites
-	call UpdateSprites
-.skipMovingSprites
-	ld a, 1 ; max menu item ID is 1 if the list has less than 2 entries
-	ld [wMenuWatchMovingOutOfBounds], a
-	ld a, [wListCount]
-	cp 2 ; does the list have less than 2 entries?
-	jr c, .setMenuVariables
-	ld a, 2 ; max menu item ID is 2 if the list has at least 2 entries
-.setMenuVariables
-	ld [wMaxMenuItem], a
-	ld a, 4
-	ld [wTopMenuItemY], a
-	ld a, 5
-	ld [wTopMenuItemX], a
-	ld a, A_BUTTON | B_BUTTON | SELECT
-	ld [wMenuWatchedKeys], a
-	ld c, 10
-	call DelayFrames
-
-DisplayListMenuIDLoop::
-	xor a
-	ldh [hAutoBGTransferEnabled], a ; disable transfer
-	call PrintListMenuEntries
-	ld a, 1
-	ldh [hAutoBGTransferEnabled], a ; enable transfer
-	call Delay3
-	ld a, [wBattleType]
-	and a ; is it the Old Man battle?
-	jr z, .notOldManBattle
-.oldManBattle
-	ld a, "▶"
-	ldcoord_a 5, 4 ; place menu cursor in front of first menu entry
-	ld c, 20
-	call DelayFrames
-	xor a
-	ld [wCurrentMenuItem], a
-	hlcoord 5, 4
-	ld a, l
-	ld [wMenuCursorLocation], a
-	ld a, h
-	ld [wMenuCursorLocation + 1], a
-	jr .buttonAPressed
-.notOldManBattle
-	call LoadGBPal
-	call HandleMenuInput
-	push af
-	call PlaceMenuCursor
-	pop af
-	bit BIT_A_BUTTON, a
-	jp z, .checkOtherKeys
-.buttonAPressed
-	ld a, [wCurrentMenuItem]
-	call PlaceUnfilledArrowMenuCursor
-
-; pointless because both values are overwritten before they are read
-	ld a, $01
-	ld [wMenuExitMethod], a
-	ld [wChosenMenuItem], a
-
-	xor a
-	ld [wMenuWatchMovingOutOfBounds], a
-	ld a, [wCurrentMenuItem]
-	ld c, a
-	ld a, [wListScrollOffset]
-	add c
-	ld c, a
-	ld a, [wListCount]
-	and a ; is the list empty?
-	jp z, ExitListMenu ; if so, exit the menu
-	dec a
-	cp c ; did the player select Cancel?
-	jp c, ExitListMenu ; if so, exit the menu
-	ld a, c
-	ld [wWhichPokemon], a
-	ld a, [wListMenuID]
-	cp ITEMLISTMENU
-	jr nz, .skipMultiplying
-; if it's an item menu
-	sla c ; item entries are 2 bytes long, so multiply by 2
-.skipMultiplying
-	ld a, [wListPointer]
-	ld l, a
-	ld a, [wListPointer + 1]
-	ld h, a
-	inc hl ; hl = beginning of list entries
-	ld b, 0
-	add hl, bc
-	ld a, [hl]
-	ld [wcf91], a
-	ld a, [wListMenuID]
-	and a ; PCPOKEMONLISTMENU?
-	jr z, .pokemonList
-	push hl
-	call GetItemPrice
-	pop hl
-	ld a, [wListMenuID]
-	cp ITEMLISTMENU
-	jr nz, .skipGettingQuantity
-; if it's an item menu
-	inc hl
-	ld a, [hl] ; a = item quantity
-	ld [wMaxItemQuantity], a
-.skipGettingQuantity
-	ld a, [wcf91]
-	ld [wd0b5], a
-	ld a, BANK(ItemNames)
-	ld [wPredefBank], a
-	call GetName
-	jr .storeChosenEntry
-.pokemonList
-	ld hl, wPartyCount
-	ld a, [wListPointer]
-	cp l ; is it a list of party pokemon or box pokemon?
-	ld hl, wPartyMonNicks
-	jr z, .getPokemonName
-	ld hl, wBoxMonNicks ; box pokemon names
-.getPokemonName
-	ld a, [wWhichPokemon]
-	call GetPartyMonName
-.storeChosenEntry ; store the menu entry that the player chose and return
-	ld de, wcd6d
-	call CopyToStringBuffer
-	ld a, CHOSE_MENU_ITEM
-	ld [wMenuExitMethod], a
-	ld a, [wCurrentMenuItem]
-	ld [wChosenMenuItem], a
-	xor a
-	ldh [hJoy7], a ; joypad state update flag
-	ld hl, wd730
-	res 6, [hl] ; turn on letter printing delay
-	jp BankswitchBack
-.checkOtherKeys ; check B, SELECT, Up, and Down keys
-	bit BIT_B_BUTTON, a
-	jp nz, ExitListMenu ; if so, exit the menu
-	bit BIT_SELECT, a
-	jp nz, HandleItemListSwapping ; if so, allow the player to swap menu entries
-	ld b, a
-	bit BIT_D_DOWN, b
-	ld hl, wListScrollOffset
-	jr z, .upPressed
-.downPressed
-	ld a, [hl]
-	add 3
-	ld b, a
-	ld a, [wListCount]
-	cp b ; will going down scroll past the Cancel button?
-	jp c, DisplayListMenuIDLoop
-	inc [hl] ; if not, go down
-	jp DisplayListMenuIDLoop
-.upPressed
-	ld a, [hl]
-	and a
-	jp z, DisplayListMenuIDLoop
-	dec [hl]
-	jp DisplayListMenuIDLoop
+	ret
 
 DisplayChooseQuantityMenu::
-; text box dimensions/coordinates for just quantity
-	hlcoord 15, 9
-	lb bc, 1, 3 ; height and width
-	ld a, [wListMenuID]
-	cp PRICEDITEMLISTMENU
-	jr nz, .drawTextBox
-; text box dimensions/coordinates for quantity and price
-	hlcoord 7, 9
-	lb bc, 1, 11  ; height and width
-.drawTextBox
-	call TextBoxBorder
-	hlcoord 16, 10
-	ld a, [wListMenuID]
-	cp PRICEDITEMLISTMENU
-	jr nz, .printInitialQuantity
-	hlcoord 8, 10
-.printInitialQuantity
-	ld de, InitialQuantityText
-	call PlaceString
-	xor a
-	ld [wItemQuantity], a ; initialize current quantity to 0
-	jp .incrementQuantity
-.waitForKeyPressLoop
-	call JoypadLowSensitivity
-	ldh a, [hJoyPressed] ; newly pressed buttons
-	bit BIT_A_BUTTON, a
-	jp nz, .buttonAPressed
-	bit BIT_B_BUTTON, a
-	jp nz, .buttonBPressed
-	bit BIT_D_UP, a
-	jr nz, .incrementQuantity
-	bit BIT_D_DOWN, a
-	jr nz, .decrementQuantity
-	jr .waitForKeyPressLoop
-.incrementQuantity
-	ld a, [wMaxItemQuantity]
-	inc a
-	ld b, a
-	ld hl, wItemQuantity ; current quantity
-	inc [hl]
-	ld a, [hl]
-	cp b
-	jr nz, .handleNewQuantity
-; wrap to 1 if the player goes above the max quantity
-	ld a, 1
-	ld [hl], a
-	jr .handleNewQuantity
-.decrementQuantity
-	ld hl, wItemQuantity ; current quantity
-	dec [hl]
-	jr nz, .handleNewQuantity
-; wrap to the max quantity if the player goes below 1
-	ld a, [wMaxItemQuantity]
-	ld [hl], a
-.handleNewQuantity
-	hlcoord 17, 10
-	ld a, [wListMenuID]
-	cp PRICEDITEMLISTMENU
-	jr nz, .printQuantity
-.printPrice
-	ld c, $03
-	ld a, [wItemQuantity]
-	ld b, a
-	ld hl, hMoney ; total price
-; initialize total price to 0
-	xor a
-	ld [hli], a
-	ld [hli], a
-	ld [hl], a
-.addLoop ; loop to multiply the individual price by the quantity to get the total price
-	ld de, hMoney + 2
-	ld hl, hItemPrice + 2
-	push bc
-	predef AddBCDPredef ; add the individual price to the current sum
-	pop bc
-	dec b
-	jr nz, .addLoop
-	ldh a, [hHalveItemPrices]
-	and a ; should the price be halved (for selling items)?
-	jr z, .skipHalvingPrice
-	xor a
-	ldh [hDivideBCDDivisor], a
-	ldh [hDivideBCDDivisor + 1], a
-	ld a, $02
-	ldh [hDivideBCDDivisor + 2], a
-	predef DivideBCDPredef3 ; halves the price
-; store the halved price
-	ldh a, [hDivideBCDQuotient]
-	ldh [hMoney], a
-	ldh a, [hDivideBCDQuotient + 1]
-	ldh [hMoney + 1], a
-	ldh a, [hDivideBCDQuotient + 2]
-	ldh [hMoney + 2], a
-.skipHalvingPrice
-	hlcoord 12, 10
-	ld de, SpacesBetweenQuantityAndPriceText
-	call PlaceString
-	ld de, hMoney ; total price
-	ld c, $a3
-	call PrintBCDNumber
-	hlcoord 9, 10
-.printQuantity
-	ld de, wItemQuantity ; current quantity
-	lb bc, LEADING_ZEROES | 1, 2 ; 1 byte, 2 digits
-	call PrintNumber
-	jp .waitForKeyPressLoop
-.buttonAPressed ; the player chose to make the transaction
-	xor a
-	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
 	ret
-.buttonBPressed ; the player chose to cancel the transaction
-	xor a
-	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
-	ld a, $ff
-	ret
-
-InitialQuantityText::
-	db "×01@"
-
-SpacesBetweenQuantityAndPriceText::
-	db "      @"
-
-ExitListMenu::
-	ld a, [wCurrentMenuItem]
-	ld [wChosenMenuItem], a
-	ld a, CANCELLED_MENU
-	ld [wMenuExitMethod], a
-	ld [wMenuWatchMovingOutOfBounds], a
-	xor a
-	ldh [hJoy7], a
-	ld hl, wd730
-	res 6, [hl]
-	call BankswitchBack
-	xor a
-	ld [wMenuItemToSwap], a ; 0 means no item is currently being swapped
-	scf
-	ret
-
-PrintListMenuEntries::
-	hlcoord 5, 3
-	lb bc, 9, 14
-	call ClearScreenArea
-	ld a, [wListPointer]
-	ld e, a
-	ld a, [wListPointer + 1]
-	ld d, a
-	inc de ; de = beginning of list entries
-	ld a, [wListScrollOffset]
-	ld c, a
-	ld a, [wListMenuID]
-	cp ITEMLISTMENU
-	ld a, c
-	jr nz, .skipMultiplying
-; if it's an item menu
-; item entries are 2 bytes long, so multiply by 2
-	add a
-	sla c
-.skipMultiplying
-	add e
-	ld e, a
-	jr nc, .noCarry
-	inc d
-.noCarry
-	hlcoord 6, 4 ; coordinates of first list entry name
-	ld b, 4 ; print 4 names
-.loop
-	ld a, b
-	ld [wWhichPokemon], a
-	ld a, [de]
-	ld [wd11e], a
-	cp $ff
-	jp z, .printCancelMenuItem
-	push bc
-	push de
-	push hl
-	push hl
-	push de
-	ld a, [wListMenuID]
-	and a ; PCPOKEMONLISTMENU?
-	jr z, .pokemonPCMenu
-	cp MOVESLISTMENU
-	jr z, .movesMenu
-.itemMenu
-	call GetItemName
-	jr .placeNameString
-.pokemonPCMenu
-	push hl
-	ld hl, wPartyCount
-	ld a, [wListPointer]
-	cp l ; is it a list of party pokemon or box pokemon?
-	ld hl, wPartyMonNicks
-	jr z, .getPokemonName
-	ld hl, wBoxMonNicks ; box pokemon names
-.getPokemonName
-	ld a, [wWhichPokemon]
-	ld b, a
-	ld a, 4
-	sub b
-	ld b, a
-	ld a, [wListScrollOffset]
-	add b
-	call GetPartyMonName
-	pop hl
-	jr .placeNameString
-.movesMenu
-	call GetMoveName
-.placeNameString
-	call PlaceString
-	pop de
-	pop hl
-	ld a, [wPrintItemPrices]
-	and a ; should prices be printed?
-	jr z, .skipPrintingItemPrice
-.printItemPrice
-	push hl
-	ld a, [de]
-	ld de, ItemPrices
-	ld [wcf91], a
-	call GetItemPrice ; get price
-	pop hl
-	ld bc, SCREEN_WIDTH + 5 ; 1 row down and 5 columns right
-	add hl, bc
-	ld c, $a3 ; no leading zeroes, right-aligned, print currency symbol, 3 bytes
-	call PrintBCDNumber
-.skipPrintingItemPrice
-	ld a, [wListMenuID]
-	and a ; PCPOKEMONLISTMENU?
-	jr nz, .skipPrintingPokemonLevel
-.printPokemonLevel
-	ld a, [wd11e]
-	push af
-	push hl
-	ld hl, wPartyCount
-	ld a, [wListPointer]
-	cp l ; is it a list of party pokemon or box pokemon?
-	ld a, PLAYER_PARTY_DATA
-	jr z, .next
-	ld a, BOX_DATA
-.next
-	ld [wMonDataLocation], a
-	ld hl, wWhichPokemon
-	ld a, [hl]
-	ld b, a
-	ld a, $04
-	sub b
-	ld b, a
-	ld a, [wListScrollOffset]
-	add b
-	ld [hl], a
-	call LoadMonData
-	ld a, [wMonDataLocation]
-	and a ; is it a list of party pokemon or box pokemon?
-	jr z, .skipCopyingLevel
-.copyLevel
-	ld a, [wLoadedMonBoxLevel]
-	ld [wLoadedMonLevel], a
-.skipCopyingLevel
-	pop hl
-	ld bc, $1c
-	add hl, bc
-	call PrintLevel
-	pop af
-	ld [wd11e], a
-.skipPrintingPokemonLevel
-	pop hl
-	pop de
-	inc de
-	ld a, [wListMenuID]
-	cp ITEMLISTMENU
-	jr nz, .nextListEntry
-.printItemQuantity
-	ld a, [wd11e]
-	ld [wcf91], a
-	call IsKeyItem ; check if item is unsellable
-	ld a, [wIsKeyItem]
-	and a ; is the item unsellable?
-	jr nz, .skipPrintingItemQuantity ; if so, don't print the quantity
-	push hl
-	ld bc, SCREEN_WIDTH + 8 ; 1 row down and 8 columns right
-	add hl, bc
-	ld a, "×"
-	ld [hli], a
-	ld a, [wd11e]
-	push af
-	ld a, [de]
-	ld [wMaxItemQuantity], a
-	push de
-	ld de, wd11e
-	ld [de], a
-	lb bc, 1, 2
-	call PrintNumber
-	pop de
-	pop af
-	ld [wd11e], a
-	pop hl
-.skipPrintingItemQuantity
-	inc de
-	pop bc
-	inc c
-	push bc
-	inc c
-	ld a, [wMenuItemToSwap] ; ID of item chosen for swapping (counts from 1)
-	and a ; is an item being swapped?
-	jr z, .nextListEntry
-	add a
-	cp c ; is it this item?
-	jr nz, .nextListEntry
-	dec hl
-	ld a, "▷"
-	ld [hli], a
-.nextListEntry
-	ld bc, 2 * SCREEN_WIDTH ; 2 rows
-	add hl, bc
-	pop bc
-	inc c
-	dec b
-	jp nz, .loop
-	ld bc, -8
-	add hl, bc
-	ld a, "▼"
-	ld [hl], a
-	ret
-.printCancelMenuItem
-	ld de, ListMenuCancelText
-	jp PlaceString
-
-ListMenuCancelText::
-	db "CANCEL@"

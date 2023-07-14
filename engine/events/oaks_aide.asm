@@ -24,6 +24,11 @@ OaksAideScript:
 	call GiveItem
 	jr nc, .bagFull
 	ld hl, OaksAideGotItemText
+	ldh a, [hOaksAideRewardItem]
+	cp HM_FLASH
+	jr nz, .printText
+	ld hl, OaksAideGotHMText
+.printText
 	call PrintText
 	ld a, OAKS_AIDE_GOT_ITEM
 	jr .done
@@ -65,6 +70,11 @@ OaksAideGotItemText:
 	text_far _OaksAideGotItemText
 	sound_get_item_1
 	text_end
+	
+OaksAideGotHMText:
+	text_far _OaksAideGotItemText
+	sound_get_tm
+	text_end	
 
 OaksAideNoRoomText:
 	text_far _OaksAideNoRoomText

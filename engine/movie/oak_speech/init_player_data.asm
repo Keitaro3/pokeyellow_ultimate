@@ -18,6 +18,10 @@ InitPlayerData2:
 	call InitializeEmptyList
 	ld hl, wNumBoxItems
 	call InitializeEmptyList
+	ld hl, wNumBalls
+	call InitializeEmptyList
+	ld hl, wNumKeyItems
+	call InitializeEmptyList
 	
 	ld a, BANK(sCurBoxData)
 	call SwitchSRAMBankAndLatchClockData

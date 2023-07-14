@@ -23,6 +23,107 @@ Delay3::
 	call DelayFrames
 	ret
 
+ApplyTilemap::
+	ldh a, [hGBC]
+	and a
+	jr z, .dmg
+
+	ld a, [wUpdateSpritesEnabled]
+	cp 0
+	jr z, .dmg
+
+	ld a, 1
+	ldh [hAutoBGTransferEnabled], a
+	jr CopyTilemapAtOnce
+
+.dmg
+	call Delay3
+	ret
+
+CGBOnly_CopyTilemapAtOnce::
+	ldh a, [hGBC]
+	and a
+	jr z, Delay3
+
+CopyTilemapAtOnce::
+	ldh a, [hAutoBGTransferEnabled]
+	push af
+	xor a
+	ldh [hAutoBGTransferEnabled], a
+
+	ldh a, [hTileAnimations]
+	push af
+	xor a
+	ldh [hTileAnimations], a
+
+.wait
+	ldh a, [rLY]
+	cp $80 - 1
+	jr c, .wait
+
+	di
+	ld a, BANK(vBGMap2)
+	ldh [rVBK], a
+	hlcoord 0, 0, wAttrmap
+	call .CopyBGMapViaStack
+	ld a, BANK(vBGMap0)
+	ldh [rVBK], a
+	hlcoord 0, 0
+	call .CopyBGMapViaStack
+
+.wait2
+	ldh a, [rLY]
+	cp $80 - 1
+	jr c, .wait2
+	ei
+
+	pop af
+	ldh [hTileAnimations], a
+	pop af
+	ldh [hAutoBGTransferEnabled], a
+	ret
+
+.CopyBGMapViaStack:
+; Copy all tiles to vBGMap
+	ld [hSPTemp], sp
+	ld sp, hl
+	ldh a, [hAutoBGTransferDest + 1]
+	ld h, a
+	ld l, 0
+	ld a, SCREEN_HEIGHT
+	ldh [hTilesPerCycle], a
+	ld b, 1 << 1 ; not in v/hblank
+	ld c, LOW(rSTAT)
+
+.loop
+rept SCREEN_WIDTH / 2
+	pop de
+; if in v/hblank, wait until not in v/hblank
+.loop\@
+	ldh a, [c]
+	and b
+	jr nz, .loop\@
+; load vBGMap
+	ld [hl], e
+	inc l
+	ld [hl], d
+	inc l
+endr
+
+	ld de, BG_MAP_WIDTH - SCREEN_WIDTH
+	add hl, de
+	ldh a, [hTilesPerCycle]
+	dec a
+	ldh [hTilesPerCycle], a
+	jr nz, .loop
+
+	ldh a, [hSPTemp]
+	ld l, a
+	ldh a, [hSPTemp + 1]
+	ld h, a
+	ld sp, hl
+	ret
+
 GBPalNormal::
 ; Inits the Palettes
 ; depending on the system the monochromes palettes or color palettes

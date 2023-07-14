@@ -1,3 +1,14 @@
+Textbox::
+; Draw a text box at hl with room for b lines of c characters each.
+; Places a border around the textbox, then switches the palette to the
+; text black-and-white scheme.
+	push bc
+	push hl
+	call TextBoxBorder
+	pop hl
+	pop bc
+	jr TextboxPalette
+
 TextBoxBorder::
 ; Draw a c×b text box at hl.
 
@@ -45,6 +56,30 @@ TextBoxBorder::
 	dec d
 	jr nz, .loop
 	ret
+	
+TextboxPalette::
+; Fill text box width c height b at hl with pal 7
+	ld de, wAttrmap - wTileMap
+	add hl, de
+	inc b
+	inc b
+	inc c
+	inc c
+	ld a, PAL_BG_TEXT
+.col
+	push bc
+	push hl
+.row
+	ld [hli], a
+	dec c
+	jr nz, .row
+	pop hl
+	ld de, SCREEN_WIDTH
+	add hl, de
+	pop bc
+	dec b
+	jr nz, .col
+	ret		
 
 PlaceString::
 	push hl
@@ -548,7 +583,7 @@ TextCommand_SOUND::
 	jp NextTextCommand
 
 TextCommandSounds::
-	db TX_SOUND_GET_ITEM_1,           SFX_GET_ITEM_1 ; actually plays SFX_LEVEL_UP when the battle music engine is loaded
+	db TX_SOUND_GET_ITEM_1,           SFX_GET_ITEM_1
 	db TX_SOUND_CAUGHT_MON,           SFX_CAUGHT_MON
 	db TX_SOUND_GET_BADGE,            SFX_GET_BADGE
 	db TX_SOUND_GET_TM,               SFX_GET_TM
@@ -643,3 +678,16 @@ ENDC
 	dw TextCommand_DOTS          ; TX_DOTS
 	dw TextCommand_WAIT_BUTTON   ; TX_WAIT_BUTTON
 	; greater TX_* constants are handled directly by NextTextCommand
+	
+FarString::
+	ld b, a
+	ldh a, [hLoadedROMBank]
+	push af
+
+	ld a, b
+	call BankswitchCommon
+	call PlaceString
+
+	pop af
+	call BankswitchCommon
+	ret

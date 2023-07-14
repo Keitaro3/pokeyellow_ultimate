@@ -1,7 +1,7 @@
 CeladonPrizeMenu::
 	ld b, COIN_CASE
-	call IsItemInBag
-	jr nz, .havingCoinCase
+	call CheckItem
+	jr c, .havingCoinCase
 	ld hl, RequireCoinCaseTextPtr
 	jp PrintText
 .havingCoinCase

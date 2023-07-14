@@ -7,4 +7,6 @@
 	db SURF
 	db STRENGTH
 	db FLASH
+	db ROCK_SMASH
+	db WATERFALL
 	db -1 ; end

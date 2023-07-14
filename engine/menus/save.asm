@@ -642,14 +642,14 @@ PadSRAM_FF:
 	ld a, $ff
 	jp FillMemory
 
-EnableSRAMAndLatchClockData:
+EnableSRAMAndLatchClockData::
 	ld a, $1
 	ld [MBC1SRamBankingMode], a
 	ld a, SRAM_ENABLE
 	ld [MBC1SRamEnable], a
 	ret
 
-DisableSRAMAndPrepareClockData:
+DisableSRAMAndPrepareClockData::
 	ld a, SRAM_DISABLE
 	ld [MBC1SRamBankingMode], a
 	ld [MBC1SRamEnable], a
